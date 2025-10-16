@@ -31,12 +31,16 @@
             menuStrip1 = new MenuStrip();
             animalToolStripMenuItem = new ToolStripMenuItem();
             cadastroToolStripMenuItem = new ToolStripMenuItem();
+            apostadorToolStripMenuItem = new ToolStripMenuItem();
+            cadastroToolStripMenuItem1 = new ToolStripMenuItem();
+            puleToolStripMenuItem = new ToolStripMenuItem();
+            cadastrarToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { animalToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { animalToolStripMenuItem, apostadorToolStripMenuItem, puleToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(800, 24);
@@ -54,7 +58,33 @@
             // 
             cadastroToolStripMenuItem.Name = "cadastroToolStripMenuItem";
             cadastroToolStripMenuItem.Size = new Size(180, 22);
-            cadastroToolStripMenuItem.Text = "Cadastro";
+            cadastroToolStripMenuItem.Text = "Cadastrar";
+            // 
+            // apostadorToolStripMenuItem
+            // 
+            apostadorToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { cadastroToolStripMenuItem1 });
+            apostadorToolStripMenuItem.Name = "apostadorToolStripMenuItem";
+            apostadorToolStripMenuItem.Size = new Size(74, 20);
+            apostadorToolStripMenuItem.Text = "Apostador";
+            // 
+            // cadastroToolStripMenuItem1
+            // 
+            cadastroToolStripMenuItem1.Name = "cadastroToolStripMenuItem1";
+            cadastroToolStripMenuItem1.Size = new Size(124, 22);
+            cadastroToolStripMenuItem1.Text = "Cadastrar";
+            // 
+            // puleToolStripMenuItem
+            // 
+            puleToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { cadastrarToolStripMenuItem });
+            puleToolStripMenuItem.Name = "puleToolStripMenuItem";
+            puleToolStripMenuItem.Size = new Size(42, 20);
+            puleToolStripMenuItem.Text = "Pule";
+            // 
+            // cadastrarToolStripMenuItem
+            // 
+            cadastrarToolStripMenuItem.Name = "cadastrarToolStripMenuItem";
+            cadastrarToolStripMenuItem.Size = new Size(180, 22);
+            cadastrarToolStripMenuItem.Text = "Cadastrar";
             // 
             // Main
             // 
@@ -76,5 +106,9 @@
         private MenuStrip menuStrip1;
         private ToolStripMenuItem animalToolStripMenuItem;
         private ToolStripMenuItem cadastroToolStripMenuItem;
+        private ToolStripMenuItem apostadorToolStripMenuItem;
+        private ToolStripMenuItem cadastroToolStripMenuItem1;
+        private ToolStripMenuItem puleToolStripMenuItem;
+        private ToolStripMenuItem cadastrarToolStripMenuItem;
     }
 }

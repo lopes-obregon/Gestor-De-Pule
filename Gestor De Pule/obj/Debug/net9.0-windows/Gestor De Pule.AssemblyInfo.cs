@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Gestor De Pule")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c2216d5e51e8d608fb5b3db561a9bc7e13e9d27b")]
 [assembly: System.Reflection.AssemblyProductAttribute("Gestor De Pule")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Gestor De Pule")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
