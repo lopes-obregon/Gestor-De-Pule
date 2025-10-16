@@ -1,0 +1,16 @@
+# Ignorar pastas de build
+/bin/
+/obj/
+
+# Ignorar arquivos temporários
+*.log
+*.tmp
+
+# Ignorar configurações do Visual Studio
+.vscode/
+*.suo
+*.user
+*.csproj.user
+.vs/
+# Ignorar arquivos de publicação
+publish/

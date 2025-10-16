@@ -1,0 +1,16 @@
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Gestor De Pule.exe
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Gestor De Pule.deps.json
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Gestor De Pule.runtimeconfig.json
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Gestor De Pule.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Gestor De Pule.pdb
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor_De_Pule.Main.resources
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor De Pule.csproj.GenerateResource.cache
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor De Pule.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor De Pule.AssemblyInfoInputs.cache
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor De Pule.AssemblyInfo.cs
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor De Pule.csproj.CoreCompileInputs.cache
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor De Pule.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\refint\Gestor De Pule.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor De Pule.pdb
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor De Pule.genruntimeconfig.cache
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\ref\Gestor De Pule.dll
