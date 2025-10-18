@@ -1,0 +1,27 @@
+﻿<Window x:Class="Gestor_De_Pule.src.Views.Apostador.WindowApostadoresCadastrados"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Gestor_De_Pule.src.Views.Apostador"
+        mc:Ignorable="d"
+        Title="WindowApostadoresCadastrados" Height="450" Width="800">
+    <Grid>
+        <ListView x:Name="ListViewApostadores" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="200,107,200,107" RenderTransformOrigin="0.608,0.497">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Nome" DisplayMemberBinding="{Binding Nome}"/>
+                    <GridViewColumn Header="Contato" DisplayMemberBinding="{Binding Contato}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <StackPanel Margin="631,99,57,153" RenderTransformOrigin="0.576,0.518" Orientation="Vertical">
+            <Button Content="Novo" Margin="0,0,0,10" Click="CadastrarApostador"/>
+            <Button Content="Alterar" Margin="0,0,0,10" Click="WindowsUpdateApostador"/>
+            <Button Content="Excluir" Margin="0,0,0,10" Click="ExcluirApostador"/>
+
+
+        </StackPanel>
+
+    </Grid>
+</Window>

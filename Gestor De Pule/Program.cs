@@ -1,3 +1,6 @@
+using Gestor_De_Pule.src.Persistencias;
+using Microsoft.EntityFrameworkCore;
+
 namespace Gestor_De_Pule
 {
     internal static class Program
@@ -8,6 +11,8 @@ namespace Gestor_De_Pule
         [STAThread]
         static void Main()
         {
+            using var context = new DataBase();
+            //context.Database.Migrate();
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();

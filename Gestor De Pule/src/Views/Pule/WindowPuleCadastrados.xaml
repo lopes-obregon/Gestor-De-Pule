@@ -1,0 +1,28 @@
+﻿<Window x:Class="Gestor_De_Pule.src.Views.Pule.WindowPuleCadastrados"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Gestor_De_Pule.src.Views.Pule"
+        mc:Ignorable="d"
+        Title="Pule Cadastrados" Height="450" Width="800">
+    <Grid>
+        <ListView d:ItemsSource="{d:SampleData ItemCount=5}" Margin="162,99,162,99">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Apostador" DisplayMemberBinding="{Binding Apostador.Nome}"/>
+                    <GridViewColumn Header="Animal" DisplayMemberBinding="{Binding Animal.Nome}"/>
+                    <GridViewColumn Header="Data" DisplayMemberBinding="{Binding Date}"/>
+                    <GridViewColumn Header="Pagamento" DisplayMemberBinding="{Binding StatusPagamento}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <StackPanel Margin="638,69,50,69" >
+            <Button Content="Novo" Margin="0,0,0,10" Click="CadastrarPule"/>
+            <Button Content="Atualizar" Margin="0,0,0,10"/>
+            <Button Content="Excluir" Margin="0,0,0,10"/>
+
+        </StackPanel>
+
+    </Grid>
+</Window>

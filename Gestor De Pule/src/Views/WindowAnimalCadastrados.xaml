@@ -1,0 +1,26 @@
+﻿<Window x:Class="Gestor_De_Pule.src.Views.WindowAnimalCadastrados"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Gestor_De_Pule.src.Views"
+        mc:Ignorable="d"
+        Title="WindowCadastroAnimal" Height="450" Width="800">
+    <Grid>
+        <ListView x:Name="ListViewAnimais" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="86,56,400,146">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Número" DisplayMemberBinding="{Binding Número}" />
+                    <GridViewColumn Header="Nome" DisplayMemberBinding="{Binding Nome}" />
+                    <GridViewColumn Header="Proprietário" DisplayMemberBinding="{Binding Proprietário}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <StackPanel Margin="435,104,278,194" Orientation="Vertical">
+            <Button Content="Novo" Margin="0,0,0,10" ClickMode="Press" Click="WindowCadastro"/>
+            <Button Content="Alterar" Margin="0,0,0,10" Click="AtualizarDadosAnimal"/>
+            <Button Content="Excluir" Click="DeleteAnimal" />
+        </StackPanel>
+
+    </Grid>
+</Window>
