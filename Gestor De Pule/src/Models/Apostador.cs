@@ -85,5 +85,9 @@ namespace Gestor_De_Pule.src.Model
                 return true;
             }catch { return false; }
         }
+        public override string ToString()
+        {
+            return _nome;
+        }
     }
 }

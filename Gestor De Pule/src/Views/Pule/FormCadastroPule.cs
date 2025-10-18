@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Gestor_De_Pule.src.Controllers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +16,16 @@ namespace Gestor_De_Pule.src.Views.Pule
         public FormCadastroPule()
         {
             InitializeComponent();
+            SetComboBox();
+        }
+
+        private void SetComboBox()
+        {
+            ApostadorController.LoadApostadores();
+            var ApostadoresCadastrados = ApostadorController.Apostadors;
+            if(ApostadoresCadastrados is not null)
+                comboBoxApostadores.Items.AddRange(ApostadoresCadastrados.ToArray());
+            comboBoxPagamento.DataSource = PuleController.GetStatusPagamento();
         }
     }
 }

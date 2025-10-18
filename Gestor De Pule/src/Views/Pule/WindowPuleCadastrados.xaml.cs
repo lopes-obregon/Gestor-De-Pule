@@ -26,7 +26,8 @@ namespace Gestor_De_Pule.src.Views.Pule
 
         private void CadastrarPule(object sender, RoutedEventArgs e)
         {
-
+            var form = new FormCadastroPule();
+            form.ShowDialog();
         }
     }
 }

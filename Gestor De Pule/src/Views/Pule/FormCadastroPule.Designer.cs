@@ -37,7 +37,11 @@
             comboBoxAnimais = new ComboBox();
             listBoxAnimaisSelecionados = new ListBox();
             label4 = new Label();
+            flowLayoutPanel1 = new FlowLayoutPanel();
+            button1 = new Button();
+            button2 = new Button();
             tableLayoutPanel1.SuspendLayout();
+            flowLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -131,16 +135,45 @@
             label4.TabIndex = 1;
             label4.Text = "Animais Selecionados";
             // 
+            // flowLayoutPanel1
+            // 
+            flowLayoutPanel1.Controls.Add(button1);
+            flowLayoutPanel1.Controls.Add(button2);
+            flowLayoutPanel1.Location = new Point(48, 291);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
+            flowLayoutPanel1.Size = new Size(200, 100);
+            flowLayoutPanel1.TabIndex = 1;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(3, 3);
+            button1.Name = "button1";
+            button1.Size = new Size(75, 23);
+            button1.TabIndex = 0;
+            button1.Text = "Salvar";
+            button1.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            button2.Location = new Point(84, 3);
+            button2.Name = "button2";
+            button2.Size = new Size(75, 23);
+            button2.TabIndex = 1;
+            button2.Text = "Cancelar";
+            button2.UseVisualStyleBackColor = true;
+            // 
             // FormCadastroPule
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(289, 400);
+            Controls.Add(flowLayoutPanel1);
             Controls.Add(tableLayoutPanel1);
             Name = "FormCadastroPule";
-            Text = "FormCadastroPule";
+            Text = "Cadastro Do Pule";
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
+            flowLayoutPanel1.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -155,5 +188,8 @@
         private Label label4;
         private ListBox listBoxAnimaisSelecionados;
         private ComboBox comboBoxAnimais;
+        private FlowLayoutPanel flowLayoutPanel1;
+        private Button button1;
+        private Button button2;
     }
 }

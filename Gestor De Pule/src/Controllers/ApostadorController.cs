@@ -26,6 +26,8 @@ namespace Gestor_De_Pule.src.Controllers
             return "";
         }
 
+       
+
         internal static void LoadApostador(object apostadorSelecionadoUi)
         {
             Apostador? apostador = apostadorSelecionadoUi as Apostador;
