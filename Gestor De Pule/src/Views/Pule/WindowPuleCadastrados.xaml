@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Pule Cadastrados" Height="450" Width="800">
     <Grid>
-        <ListView d:ItemsSource="{d:SampleData ItemCount=5}" Margin="162,99,162,99">
+        <ListView x:Name="listViewPules" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="162,99,162,99">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Apostador" DisplayMemberBinding="{Binding Apostador.Nome}"/>
@@ -19,7 +19,7 @@
         </ListView>
         <StackPanel Margin="638,69,50,69" >
             <Button Content="Novo" Margin="0,0,0,10" Click="CadastrarPule"/>
-            <Button Content="Atualizar" Margin="0,0,0,10"/>
+            <Button Content="Atualizar" Margin="0,0,0,10" Click="FormAtualizarPule"/>
             <Button Content="Excluir" Margin="0,0,0,10"/>
 
         </StackPanel>

@@ -17,6 +17,21 @@ namespace Gestor_De_Pule.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.10");
 
+            modelBuilder.Entity("AnimalPule", b =>
+                {
+                    b.Property<int>("AnimaisId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("PulesId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("AnimaisId", "PulesId");
+
+                    b.HasIndex("PulesId");
+
+                    b.ToTable("AnimalPule");
+                });
+
             modelBuilder.Entity("Gestor_De_Pule.src.Model.Animal", b =>
                 {
                     b.Property<int>("Id")
@@ -42,16 +57,11 @@ namespace Gestor_De_Pule.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("PuleId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Treinador")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PuleId");
 
                     b.ToTable("Animals");
                 });
@@ -97,17 +107,25 @@ namespace Gestor_De_Pule.Migrations
                     b.ToTable("Pules");
                 });
 
-            modelBuilder.Entity("Gestor_De_Pule.src.Model.Animal", b =>
+            modelBuilder.Entity("AnimalPule", b =>
                 {
+                    b.HasOne("Gestor_De_Pule.src.Model.Animal", null)
+                        .WithMany()
+                        .HasForeignKey("AnimaisId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Gestor_De_Pule.src.Model.Pule", null)
-                        .WithMany("Animais")
-                        .HasForeignKey("PuleId");
+                        .WithMany()
+                        .HasForeignKey("PulesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Gestor_De_Pule.src.Model.Pule", b =>
                 {
                     b.HasOne("Gestor_De_Pule.src.Model.Apostador", "Apostador")
-                        .WithMany()
+                        .WithMany("Pules")
                         .HasForeignKey("ApostadorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -115,9 +133,9 @@ namespace Gestor_De_Pule.Migrations
                     b.Navigation("Apostador");
                 });
 
-            modelBuilder.Entity("Gestor_De_Pule.src.Model.Pule", b =>
+            modelBuilder.Entity("Gestor_De_Pule.src.Model.Apostador", b =>
                 {
-                    b.Navigation("Animais");
+                    b.Navigation("Pules");
                 });
 #pragma warning restore 612, 618
         }

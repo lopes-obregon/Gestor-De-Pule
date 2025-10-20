@@ -65,7 +65,9 @@ namespace Gestor_De_Pule.src.Model
             using DataBase db = new DataBase();
             try
             {
-                return db.Animals.ToList();
+                return db.Animals
+                    .Include(a => a.Pules)
+                    .ToList();
             }catch { return new List<Animal>(); }
                 
         }
@@ -105,5 +107,12 @@ namespace Gestor_De_Pule.src.Model
             catch {  return false; }
                
         }
+        public override string ToString()
+        {
+
+            return _name;
+        }
+
+       
     }
 }

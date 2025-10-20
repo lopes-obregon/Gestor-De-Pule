@@ -151,3 +151,4 @@ C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windo
 C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\src\Views\Pule\WindowPuleCadastrados.g.cs
 C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\src\Views\Pule\WindowPuleCadastrados.baml
 C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor_De_Pule.src.Views.Pule.FormCadastroPule.resources
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor_De_Pule.src.Views.Pule.FormAtualizarPule.resources

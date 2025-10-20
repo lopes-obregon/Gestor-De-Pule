@@ -12,9 +12,9 @@ TRACE;DEBUG;NET;NET9_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR
 
 31300277945
 
-321582420556
+36655485331
 228468603755
 src\Views\Apostador\WindowApostadoresCadastrados.xaml;src\Views\Pule\WindowPuleCadastrados.xaml;src\Views\WindowAnimalCadastrados.xaml;
 
-False
+True
 

@@ -29,14 +29,14 @@
         private void InitializeComponent()
         {
             tableLayoutPanel1 = new TableLayoutPanel();
-            label2 = new Label();
-            label3 = new Label();
-            label1 = new Label();
-            comboBoxApostadores = new ComboBox();
-            comboBoxPagamento = new ComboBox();
-            comboBoxAnimais = new ComboBox();
-            listBoxAnimaisSelecionados = new ListBox();
             label4 = new Label();
+            listBoxAnimaisSelecionados = new ListBox();
+            comboBoxAnimais = new ComboBox();
+            comboBoxApostadores = new ComboBox();
+            label3 = new Label();
+            label2 = new Label();
+            label1 = new Label();
+            comboBoxPagamento = new ComboBox();
             flowLayoutPanel1 = new FlowLayoutPanel();
             button1 = new Button();
             button2 = new Button();
@@ -67,14 +67,40 @@
             tableLayoutPanel1.Size = new Size(270, 255);
             tableLayoutPanel1.TabIndex = 0;
             // 
-            // label2
+            // label4
             // 
-            label2.AutoSize = true;
-            label2.Location = new Point(3, 50);
-            label2.Name = "label2";
-            label2.Size = new Size(68, 15);
-            label2.TabIndex = 2;
-            label2.Text = "Pagamento";
+            label4.AutoSize = true;
+            label4.Location = new Point(3, 150);
+            label4.Name = "label4";
+            label4.Size = new Size(122, 15);
+            label4.TabIndex = 1;
+            label4.Text = "Animais Selecionados";
+            // 
+            // listBoxAnimaisSelecionados
+            // 
+            listBoxAnimaisSelecionados.FormattingEnabled = true;
+            listBoxAnimaisSelecionados.Location = new Point(138, 153);
+            listBoxAnimaisSelecionados.Name = "listBoxAnimaisSelecionados";
+            listBoxAnimaisSelecionados.Size = new Size(120, 94);
+            listBoxAnimaisSelecionados.TabIndex = 1;
+            listBoxAnimaisSelecionados.DoubleClick += RemoveAnimalSelecionado;
+            // 
+            // comboBoxAnimais
+            // 
+            comboBoxAnimais.FormattingEnabled = true;
+            comboBoxAnimais.Location = new Point(138, 103);
+            comboBoxAnimais.Name = "comboBoxAnimais";
+            comboBoxAnimais.Size = new Size(121, 23);
+            comboBoxAnimais.TabIndex = 1;
+            comboBoxAnimais.SelectedIndexChanged += AnimalSelecionadoUi;
+            // 
+            // comboBoxApostadores
+            // 
+            comboBoxApostadores.FormattingEnabled = true;
+            comboBoxApostadores.Location = new Point(138, 3);
+            comboBoxApostadores.Name = "comboBoxApostadores";
+            comboBoxApostadores.Size = new Size(121, 23);
+            comboBoxApostadores.TabIndex = 1;
             // 
             // label3
             // 
@@ -85,6 +111,15 @@
             label3.TabIndex = 3;
             label3.Text = "Animais";
             // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(3, 50);
+            label2.Name = "label2";
+            label2.Size = new Size(68, 15);
+            label2.TabIndex = 2;
+            label2.Text = "Pagamento";
+            // 
             // label1
             // 
             label1.AutoSize = true;
@@ -94,14 +129,6 @@
             label1.TabIndex = 4;
             label1.Text = "Apostador";
             // 
-            // comboBoxApostadores
-            // 
-            comboBoxApostadores.FormattingEnabled = true;
-            comboBoxApostadores.Location = new Point(138, 3);
-            comboBoxApostadores.Name = "comboBoxApostadores";
-            comboBoxApostadores.Size = new Size(121, 23);
-            comboBoxApostadores.TabIndex = 1;
-            // 
             // comboBoxPagamento
             // 
             comboBoxPagamento.FormattingEnabled = true;
@@ -109,31 +136,6 @@
             comboBoxPagamento.Name = "comboBoxPagamento";
             comboBoxPagamento.Size = new Size(121, 23);
             comboBoxPagamento.TabIndex = 1;
-            // 
-            // comboBoxAnimais
-            // 
-            comboBoxAnimais.FormattingEnabled = true;
-            comboBoxAnimais.Location = new Point(138, 103);
-            comboBoxAnimais.Name = "comboBoxAnimais";
-            comboBoxAnimais.Size = new Size(121, 23);
-            comboBoxAnimais.TabIndex = 1;
-            // 
-            // listBoxAnimaisSelecionados
-            // 
-            listBoxAnimaisSelecionados.FormattingEnabled = true;
-            listBoxAnimaisSelecionados.Location = new Point(138, 153);
-            listBoxAnimaisSelecionados.Name = "listBoxAnimaisSelecionados";
-            listBoxAnimaisSelecionados.Size = new Size(120, 94);
-            listBoxAnimaisSelecionados.TabIndex = 1;
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Location = new Point(3, 150);
-            label4.Name = "label4";
-            label4.Size = new Size(122, 15);
-            label4.TabIndex = 1;
-            label4.Text = "Animais Selecionados";
             // 
             // flowLayoutPanel1
             // 
@@ -152,6 +154,7 @@
             button1.TabIndex = 0;
             button1.Text = "Salvar";
             button1.UseVisualStyleBackColor = true;
+            button1.Click += SalvarPule;
             // 
             // button2
             // 
@@ -161,6 +164,7 @@
             button2.TabIndex = 1;
             button2.Text = "Cancelar";
             button2.UseVisualStyleBackColor = true;
+            button2.Click += FecharCadastros;
             // 
             // FormCadastroPule
             // 

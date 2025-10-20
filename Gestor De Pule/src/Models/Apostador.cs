@@ -1,4 +1,5 @@
 ﻿using Gestor_De_Pule.src.Persistencias;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,10 @@ namespace Gestor_De_Pule.src.Model
         string _nome = String.Empty;
         //contato
         string _contato = String.Empty;
-        public Apostador() { }
+        public List<Pule> Pules { get; set; }
+        public Apostador() {
+            Pules = new List<Pule>();
+        }
 
         public Apostador(string nome, string contato)
         {
@@ -46,7 +50,9 @@ namespace Gestor_De_Pule.src.Model
             using DataBase db = new DataBase();
             try
             {
-                return db.Apostadors.ToList();
+                return db.Apostadors
+                    .Include(a => a.Pules)
+                    .ToList();
             }
             catch { return new List<Apostador>(); }
         }
@@ -88,6 +94,19 @@ namespace Gestor_De_Pule.src.Model
         public override string ToString()
         {
             return _nome;
+        }
+        public override bool Equals(object? obj)
+        {
+            Apostador? apostadorSelecionado = obj as Apostador;
+            if (apostadorSelecionado is not null)
+            {
+                return this.Id == apostadorSelecionado.Id;
+            }
+            else return false;
+        }
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
         }
     }
 }

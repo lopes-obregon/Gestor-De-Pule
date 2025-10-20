@@ -33,6 +33,7 @@ namespace Gestor_De_Pule.src.Controllers
             Apostador? apostador = apostadorSelecionadoUi as Apostador;
           
             Apostador = Apostador.Load(apostador);
+            
         }
 
         internal static void LoadApostadores()

@@ -1,0 +1,200 @@
+﻿namespace Gestor_De_Pule.src.Views.Pule
+{
+    partial class FormAtualizarPule
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            flowLayoutPanel1 = new FlowLayoutPanel();
+            button1 = new Button();
+            button2 = new Button();
+            tableLayoutPanel1 = new TableLayoutPanel();
+            label4 = new Label();
+            listBoxAnimaisSelecionados = new ListBox();
+            comboBoxAnimais = new ComboBox();
+            comboBoxApostadores = new ComboBox();
+            label3 = new Label();
+            label2 = new Label();
+            label1 = new Label();
+            comboBoxPagamento = new ComboBox();
+            flowLayoutPanel1.SuspendLayout();
+            tableLayoutPanel1.SuspendLayout();
+            SuspendLayout();
+            // 
+            // flowLayoutPanel1
+            // 
+            flowLayoutPanel1.Controls.Add(button1);
+            flowLayoutPanel1.Controls.Add(button2);
+            flowLayoutPanel1.Location = new Point(48, 273);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
+            flowLayoutPanel1.Size = new Size(200, 100);
+            flowLayoutPanel1.TabIndex = 3;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(3, 3);
+            button1.Name = "button1";
+            button1.Size = new Size(75, 23);
+            button1.TabIndex = 0;
+            button1.Text = "Atualizar";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += AtualizarPule;
+            // 
+            // button2
+            // 
+            button2.Location = new Point(84, 3);
+            button2.Name = "button2";
+            button2.Size = new Size(75, 23);
+            button2.TabIndex = 1;
+            button2.Text = "Cancelar";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += CloseAtualizarForm;
+            // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.ColumnCount = 2;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.Controls.Add(label4, 0, 3);
+            tableLayoutPanel1.Controls.Add(listBoxAnimaisSelecionados, 1, 3);
+            tableLayoutPanel1.Controls.Add(comboBoxAnimais, 1, 2);
+            tableLayoutPanel1.Controls.Add(comboBoxApostadores, 1, 0);
+            tableLayoutPanel1.Controls.Add(label3, 0, 2);
+            tableLayoutPanel1.Controls.Add(label2, 0, 1);
+            tableLayoutPanel1.Controls.Add(label1, 0, 0);
+            tableLayoutPanel1.Controls.Add(comboBoxPagamento, 1, 1);
+            tableLayoutPanel1.Location = new Point(12, 12);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 4;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 34F));
+            tableLayoutPanel1.Size = new Size(270, 255);
+            tableLayoutPanel1.TabIndex = 2;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(3, 150);
+            label4.Name = "label4";
+            label4.Size = new Size(122, 15);
+            label4.TabIndex = 1;
+            label4.Text = "Animais Selecionados";
+            // 
+            // listBoxAnimaisSelecionados
+            // 
+            listBoxAnimaisSelecionados.FormattingEnabled = true;
+            listBoxAnimaisSelecionados.Location = new Point(138, 153);
+            listBoxAnimaisSelecionados.Name = "listBoxAnimaisSelecionados";
+            listBoxAnimaisSelecionados.Size = new Size(120, 94);
+            listBoxAnimaisSelecionados.TabIndex = 1;
+            listBoxAnimaisSelecionados.DoubleClick += RemoveAnimalSelect;
+            // 
+            // comboBoxAnimais
+            // 
+            comboBoxAnimais.FormattingEnabled = true;
+            comboBoxAnimais.Location = new Point(138, 103);
+            comboBoxAnimais.Name = "comboBoxAnimais";
+            comboBoxAnimais.Size = new Size(121, 23);
+            comboBoxAnimais.TabIndex = 1;
+            comboBoxAnimais.SelectedIndexChanged += AddToListBoxAnimaisSelecionados;
+            // 
+            // comboBoxApostadores
+            // 
+            comboBoxApostadores.Enabled = false;
+            comboBoxApostadores.FormattingEnabled = true;
+            comboBoxApostadores.Location = new Point(138, 3);
+            comboBoxApostadores.Name = "comboBoxApostadores";
+            comboBoxApostadores.Size = new Size(121, 23);
+            comboBoxApostadores.TabIndex = 1;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(3, 100);
+            label3.Name = "label3";
+            label3.Size = new Size(50, 15);
+            label3.TabIndex = 3;
+            label3.Text = "Animais";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(3, 50);
+            label2.Name = "label2";
+            label2.Size = new Size(68, 15);
+            label2.TabIndex = 2;
+            label2.Text = "Pagamento";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(3, 0);
+            label1.Name = "label1";
+            label1.Size = new Size(62, 15);
+            label1.TabIndex = 4;
+            label1.Text = "Apostador";
+            // 
+            // comboBoxPagamento
+            // 
+            comboBoxPagamento.FormattingEnabled = true;
+            comboBoxPagamento.Location = new Point(138, 53);
+            comboBoxPagamento.Name = "comboBoxPagamento";
+            comboBoxPagamento.Size = new Size(121, 23);
+            comboBoxPagamento.TabIndex = 1;
+            // 
+            // FormAtualizarPule
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(288, 392);
+            Controls.Add(flowLayoutPanel1);
+            Controls.Add(tableLayoutPanel1);
+            Name = "FormAtualizarPule";
+            Text = "Atualizar Pule";
+            flowLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel1.PerformLayout();
+            ResumeLayout(false);
+        }
+
+        #endregion
+
+        private FlowLayoutPanel flowLayoutPanel1;
+        private Button button1;
+        private Button button2;
+        private TableLayoutPanel tableLayoutPanel1;
+        private Label label4;
+        private ListBox listBoxAnimaisSelecionados;
+        private ComboBox comboBoxAnimais;
+        private ComboBox comboBoxApostadores;
+        private Label label3;
+        private Label label2;
+        private Label label1;
+        private ComboBox comboBoxPagamento;
+    }
+}
