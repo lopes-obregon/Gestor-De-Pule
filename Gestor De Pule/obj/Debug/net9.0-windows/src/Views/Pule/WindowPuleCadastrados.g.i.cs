@@ -62,7 +62,7 @@ namespace Gestor_De_Pule.src.Views.Pule {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/Gestor De Pule;V1.0.0.0;component/src/views/pule/windowpulecadastrados.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/Gestor De Pule;component/src/views/pule/windowpulecadastrados.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\src\Views\Pule\WindowPuleCadastrados.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

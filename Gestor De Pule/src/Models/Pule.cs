@@ -21,10 +21,10 @@ namespace Gestor_De_Pule.src.Model
     {
         //menbros
         private int _id;
-        private Apostador _apostador = new();
+        private Apostador? _apostador = new();
         private StatusPagamento _statusPagamento;
         private DateTime _date = DateTime.Now;
-        private List<Animal> _animais = new();
+        private List<Animal>? _animais = new();
         public float Valor {  get; set; }
         //construct
         public Pule() { }
@@ -44,7 +44,7 @@ namespace Gestor_De_Pule.src.Model
         public Apostador? Apostador { get { return _apostador; } set { _apostador = value; } }
         public StatusPagamento StatusPagamento { get { return _statusPagamento; } set { _statusPagamento = value; } }
         public DateTime Date { get { return _date; } set { _date = value; } }
-        public List<Animal> Animais { get { return _animais; } set { _animais = value; } }
+        public List<Animal>? Animais { get { return _animais; } set { _animais = value; } }
 
         internal static List<Pule> ReadPules()
         {
@@ -67,8 +67,9 @@ namespace Gestor_De_Pule.src.Model
                 if(pule is not null)
                 {
                     
-                   // db.Pules.Add(pule);
-                    //db.SaveChanges();
+                    
+                    db.Pules.Add(pule);
+                    db.SaveChanges();
                    // Apostador? apostador = pule.Apostador;
                 
                     if (pule.Apostador != null){
@@ -86,8 +87,8 @@ namespace Gestor_De_Pule.src.Model
                         }
                     }
 
-                    db.Pules.Add(pule);
-                   // db.Pules.Update(pule);
+                   // db.Pules.Add(pule);
+                   db.Pules.Update(pule);
                 }
                 db.SaveChanges();
                 return true;
@@ -186,6 +187,23 @@ namespace Gestor_De_Pule.src.Model
                     db.SaveChanges();
                 return true;
             }catch { return false; }
+        }
+
+        internal object AnimaisToString()
+        {
+            string nomeAnimal = String.Empty;
+            for(int i =0; i < Animais.Count; i++)
+            {
+                if(Animais[i] is not null)
+                {
+                    nomeAnimal += Animais[i].Nome;
+                    if (i+1 < Animais.Count)
+                    {
+                        nomeAnimal += ", ";
+                    }
+                }
+            }
+            return nomeAnimal;
         }
     }
 }

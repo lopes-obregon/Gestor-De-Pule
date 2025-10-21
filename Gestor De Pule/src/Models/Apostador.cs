@@ -16,9 +16,9 @@ namespace Gestor_De_Pule.src.Model
         string _nome = String.Empty;
         //contato
         string _contato = String.Empty;
-        public List<Pule> Pules { get; set; }
+        public List<Pule> Pules { get; set; } = new List<Pule>();
         public Apostador() {
-            Pules = new List<Pule>();
+           
         }
 
         public Apostador(string nome, string contato)
