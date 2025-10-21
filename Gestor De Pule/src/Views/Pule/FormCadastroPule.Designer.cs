@@ -75,6 +75,7 @@
             // 
             // numericUpDownValorPule
             // 
+            numericUpDownValorPule.DecimalPlaces = 2;
             numericUpDownValorPule.Location = new Point(138, 271);
             numericUpDownValorPule.Name = "numericUpDownValorPule";
             numericUpDownValorPule.Size = new Size(120, 23);

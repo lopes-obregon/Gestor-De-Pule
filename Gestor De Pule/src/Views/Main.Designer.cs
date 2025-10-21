@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             menuStrip1 = new MenuStrip();
             arquivoToolStripMenuItem = new ToolStripMenuItem();
             animalToolStripMenuItem = new ToolStripMenuItem();
@@ -39,17 +40,17 @@
             button1 = new Button();
             labelApostador = new Label();
             dataGridViewPules = new DataGridView();
+            label2 = new Label();
+            tableLayoutPanel2 = new TableLayoutPanel();
+            labelValorTotalApostado = new Label();
+            labelTotalDePules = new Label();
+            label3 = new Label();
+            label4 = new Label();
             NPule = new DataGridViewTextBoxColumn();
             Data = new DataGridViewTextBoxColumn();
             Animais = new DataGridViewTextBoxColumn();
             ValorRs = new DataGridViewTextBoxColumn();
             Status = new DataGridViewTextBoxColumn();
-            label2 = new Label();
-            tableLayoutPanel2 = new TableLayoutPanel();
-            label3 = new Label();
-            label4 = new Label();
-            labelValorTotalApostado = new Label();
-            labelTotalDePules = new Label();
             menuStrip1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewPules).BeginInit();
@@ -154,36 +155,6 @@
             dataGridViewPules.Size = new Size(544, 176);
             dataGridViewPules.TabIndex = 3;
             // 
-            // NPule
-            // 
-            NPule.HeaderText = "Nº Pule";
-            NPule.Name = "NPule";
-            NPule.ReadOnly = true;
-            // 
-            // Data
-            // 
-            Data.HeaderText = "Data";
-            Data.Name = "Data";
-            Data.ReadOnly = true;
-            // 
-            // Animais
-            // 
-            Animais.HeaderText = "Animais";
-            Animais.Name = "Animais";
-            Animais.ReadOnly = true;
-            // 
-            // ValorRs
-            // 
-            ValorRs.HeaderText = "Valor R$";
-            ValorRs.Name = "ValorRs";
-            ValorRs.ReadOnly = true;
-            // 
-            // Status
-            // 
-            Status.HeaderText = "Status";
-            Status.Name = "Status";
-            Status.ReadOnly = true;
-            // 
             // label2
             // 
             label2.AutoSize = true;
@@ -210,24 +181,6 @@
             tableLayoutPanel2.Size = new Size(249, 100);
             tableLayoutPanel2.TabIndex = 5;
             // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(3, 0);
-            label3.Name = "label3";
-            label3.Size = new Size(86, 15);
-            label3.TabIndex = 6;
-            label3.Text = "Total de Pules :";
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Location = new Point(3, 50);
-            label4.Name = "label4";
-            label4.Size = new Size(119, 15);
-            label4.TabIndex = 7;
-            label4.Text = "Valor Total Apostado:";
-            // 
             // labelValorTotalApostado
             // 
             labelValorTotalApostado.AutoSize = true;
@@ -246,6 +199,57 @@
             labelTotalDePules.Size = new Size(13, 15);
             labelTotalDePules.TabIndex = 9;
             labelTotalDePules.Text = "0";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(3, 0);
+            label3.Name = "label3";
+            label3.Size = new Size(86, 15);
+            label3.TabIndex = 6;
+            label3.Text = "Total de Pules :";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(3, 50);
+            label4.Name = "label4";
+            label4.Size = new Size(119, 15);
+            label4.TabIndex = 7;
+            label4.Text = "Valor Total Apostado:";
+            // 
+            // NPule
+            // 
+            NPule.HeaderText = "Nº Pule";
+            NPule.Name = "NPule";
+            NPule.ReadOnly = true;
+            // 
+            // Data
+            // 
+            Data.HeaderText = "Data";
+            Data.Name = "Data";
+            Data.ReadOnly = true;
+            // 
+            // Animais
+            // 
+            Animais.HeaderText = "Animais";
+            Animais.Name = "Animais";
+            Animais.ReadOnly = true;
+            // 
+            // ValorRs
+            // 
+            dataGridViewCellStyle1.Format = "C2";
+            dataGridViewCellStyle1.NullValue = null;
+            ValorRs.DefaultCellStyle = dataGridViewCellStyle1;
+            ValorRs.HeaderText = "Valor R$";
+            ValorRs.Name = "ValorRs";
+            ValorRs.ReadOnly = true;
+            // 
+            // Status
+            // 
+            Status.HeaderText = "Status";
+            Status.Name = "Status";
+            Status.ReadOnly = true;
             // 
             // Main
             // 
@@ -285,16 +289,16 @@
         private Button button1;
         private Label labelApostador;
         private DataGridView dataGridViewPules;
-        private DataGridViewTextBoxColumn NPule;
-        private DataGridViewTextBoxColumn Data;
-        private DataGridViewTextBoxColumn Animais;
-        private DataGridViewTextBoxColumn ValorRs;
-        private DataGridViewTextBoxColumn Status;
         private Label label2;
         private TableLayoutPanel tableLayoutPanel2;
         private Label labelTotalDePules;
         private Label label3;
         private Label label4;
         private Label labelValorTotalApostado;
+        private DataGridViewTextBoxColumn NPule;
+        private DataGridViewTextBoxColumn Data;
+        private DataGridViewTextBoxColumn Animais;
+        private DataGridViewTextBoxColumn ValorRs;
+        private DataGridViewTextBoxColumn Status;
     }
 }

@@ -16,10 +16,12 @@ namespace Gestor_De_Pule
 
         private void InitComboBox()
         {
+            comboBoxApostadores.Items.Clear();
             if (MainController.Apostadors.Count > 0)
             {
                 comboBoxApostadores.Items.AddRange(MainController.Apostadors.ToArray());
             }
+
         }
 
         private void JanelaCadastro(object sender, EventArgs e)
@@ -31,18 +33,21 @@ namespace Gestor_De_Pule
         {
             var window = new WindowAnimalCadastrados();
             window.ShowDialog();
+            InitComboBox();
         }
 
         private void OpenWindowApostadoresCadastrados(object sender, EventArgs e)
         {
             var window = new WindowApostadoresCadastrados();
             window.ShowDialog();
+            InitComboBox();
         }
 
         private void WindowPuleCadastrados(object sender, EventArgs e)
         {
             var window = new WindowPuleCadastrados();
             window.ShowDialog();
+            InitComboBox();
         }
 
         private void GerarRelatório(object sender, EventArgs e)
@@ -61,7 +66,7 @@ namespace Gestor_De_Pule
                 {
                     foreach (var pule in MainController.Pules)
                     {
-                        dataGridViewPules.Rows.Add(pule.Id, pule.Date, pule.AnimaisToString(), pule.Valor, pule.StatusPagamento);
+                        dataGridViewPules.Rows.Add(pule.Id, pule.Date.ToShortDateString(), pule.AnimaisToString(), pule.Valor, pule.StatusPagamento);
                         valorTotalApostado += pule.Valor;
                     }
                     labelTotalDePules.Text = MainController.Pules.Count.ToString();

@@ -29,7 +29,7 @@ namespace Gestor_De_Pule.src.Model
         //construct
         public Pule() { }
 
-        public Pule(Apostador? apostador, StatusPagamento pagamento, List<Animal> animais, float valor)
+        public Pule(Apostador? apostador, StatusPagamento pagamento, List<Animal>? animais, float valor)
         {
             Apostador = apostador;
             _statusPagamento = pagamento;
@@ -61,6 +61,7 @@ namespace Gestor_De_Pule.src.Model
 
         internal static bool Save(Pule pule)
         {
+            //são sei pq esse método ta dando erro.
             using DataBase db = new DataBase();
             try
             {
@@ -204,6 +205,69 @@ namespace Gestor_De_Pule.src.Model
                 }
             }
             return nomeAnimal;
+        }
+        //Salva apenas o pule
+        internal static bool SavePule(Pule pule)
+        {
+            using DataBase db = new DataBase();
+            try
+            {
+                if( pule is not null)
+                {
+                    db.Pules.Add(pule);
+                    db.SaveChanges();
+                    return true;
+                }
+            }catch { return false; }
+            return false;
+        }
+
+        internal bool Associete(Apostador? apostadorSelecionado, List<Animal> animais)
+        {
+            using DataBase db = new DataBase();
+            try
+            {
+                if(apostadorSelecionado is not null)
+                {
+                    //db.Apostadors.Attach(apostadorSelecionado);
+                    apostadorSelecionado = db.Apostadors.FirstOrDefault(a => a.Id == apostadorSelecionado.Id);
+                    if(apostadorSelecionado != null){
+                        apostadorSelecionado.Pules.Add(this);
+                        this._apostador = apostadorSelecionado;
+                         db.Apostadors.Update(apostadorSelecionado);
+                    }
+                }
+                //um ajuste de rastreio do ef core
+                /*foreach(Animal animal in animais)
+                {
+                    if(animal is not null )
+                        db.Animals.Attach(animal);
+                }*/
+                if(this._animais is not null)
+                    this._animais.Clear();
+                else
+                    this._animais = new List<Animal>();
+                if (animais is not null && animais.Count > 0)
+                {
+                    foreach (var ani in animais)
+                    {
+                        if (ani is not null)
+                        {
+                            var animal = db.Animals.Find(ani.Id);
+                            if (animal != null)
+                            {
+                                animal.Pules.Add(this);
+                                db.Animals.Update(animal);
+                                this._animais.Add(animal);
+                            }
+                        }
+                    }
+
+                }
+                db.Pules.Update(this);
+                db.SaveChanges();
+                return true;
+            }catch { return false; }
         }
     }
 }

@@ -12,8 +12,9 @@ namespace Gestor_De_Pule.src.Controllers
         {
            Apostador? apostadorUi =apostadorSelecionadoUi as Apostador;
             StatusPagamento pagamento;
-            List<Animal>? animais = animaisSelecionadosUi.Cast<Animal>().ToList();
+            List<Animal>? animaisUi = animaisSelecionadosUi.Cast<Animal>().ToList();
             Pule pule =null;
+            List<Animal>? animais = new List<Animal>();
             bool sucess = false;
             if (pagamentoUi is StatusPagamento status)
                 pagamento = status;
@@ -23,8 +24,16 @@ namespace Gestor_De_Pule.src.Controllers
             Apostador? apostadorSelecionado = null;
             if (apostadorUi is not null)
                 apostadorSelecionado = Apostadors.Find(a => a.Id == apostadorUi.Id);
-            pule = new Pule(apostadorSelecionado, pagamento, animais, valor);
-            sucess = Pule.Save(pule);
+            //pule = new Pule(apostadorSelecionado, pagamento, animais, valor);
+            //remap dos animais
+            var animalIds = animaisUi.Select(a => a.Id).ToHashSet();   
+            if(animaisUi is not null && animaisUi.Count > 0)
+                animais = Animals.Where(a => animalIds.Contains(a.Id)).ToList();
+            pule = new Pule(null, pagamento, null, valor);
+            //sucess = Pule.Save(pule);
+            sucess = Pule.SavePule(pule);
+            sucess = pule.Associete(apostadorSelecionado, animais);
+
             if (sucess)
                 return "Pule Cadastrado Com Sucesso!";
             else return "Algo Deu Errado No Cadastro Do Pule!";
