@@ -1,6 +1,6 @@
 ﻿namespace Gestor_De_Pule.src.Views
 {
-    partial class WindowAnimalAtualizar
+    partial class WindowAnimalCadastro
     {
         /// <summary>
         /// Required designer variable.

@@ -11,9 +11,9 @@ using System.Windows.Forms;
 
 namespace Gestor_De_Pule.src.Views
 {
-    public partial class WindowAnimalAtualizar : Form
+    public partial class WindowAnimalCadastro : Form
     {
-        public WindowAnimalAtualizar()
+        public WindowAnimalCadastro()
         {
             InitializeComponent();
         }

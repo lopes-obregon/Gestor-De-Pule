@@ -1,9 +1,11 @@
 ﻿using Gestor_De_Pule.src.Persistencias;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,23 +20,26 @@ namespace Gestor_De_Pule.src.Model
     internal class Pule
     {
         //menbros
-        private int _id = 0;
+        private int _id;
         private Apostador _apostador = new();
         private StatusPagamento _statusPagamento;
         private DateTime _date = DateTime.Now;
         private List<Animal> _animais = new();
+        public float Valor {  get; set; }
         //construct
         public Pule() { }
 
-        public Pule(Apostador? apostador, StatusPagamento pagamento, List<Animal> animais)
+        public Pule(Apostador? apostador, StatusPagamento pagamento, List<Animal> animais, float valor)
         {
             Apostador = apostador;
             _statusPagamento = pagamento;
             _date = DateTime.Now;
             _animais = animais;
+            Valor = valor;
         }
 
         //sett gett métodos
+
         public int Id { get { return _id; } set { _id = value; } }
         public Apostador? Apostador { get { return _apostador; } set { _apostador = value; } }
         public StatusPagamento StatusPagamento { get { return _statusPagamento; } set { _statusPagamento = value; } }
@@ -61,28 +66,64 @@ namespace Gestor_De_Pule.src.Model
             {
                 if(pule is not null)
                 {
-                    Apostador? apostador = pule.Apostador;
+                    
+                   // db.Pules.Add(pule);
+                    //db.SaveChanges();
+                   // Apostador? apostador = pule.Apostador;
                 
-                    if (apostador != null){
-                        apostador.Pules.Add(pule);
-                        db.Apostadors.Update(apostador);
+                    if (pule.Apostador != null){
+                        
+                        pule.Apostador.Pules.Add(pule);
+                        db.Apostadors.Update(pule.Apostador);
                     }
                     foreach(Animal animal in pule.Animais)
                     {
                         if(animal is not null)
                         {
+                           // db.Animals.Attach(animal);
                             animal.Pules.Add(pule);
                             db.Animals.Update(animal);
                         }
                     }
 
                     db.Pules.Add(pule);
+                   // db.Pules.Update(pule);
                 }
                 db.SaveChanges();
                 return true;
             }
             catch {  return false; }
 
+        }
+
+        internal static bool Remove(Pule puleSelecionado)
+        {
+            using DataBase db = new DataBase();
+            try
+            {
+                if(puleSelecionado is not null)
+                {
+                    db.Pules.Attach(puleSelecionado);
+                    foreach(var animal in puleSelecionado.Animais)
+                    {
+                        if(animal is not null)
+                        {
+                            db.Animals.Attach(animal);
+                            if(animal.Pules.Any(p => p.Id == puleSelecionado.Id))
+                            {
+
+                                animal.Pules.Remove(puleSelecionado);
+                                db.Animals.Update(animal);
+                            }
+                        }
+                    }
+                    puleSelecionado.Animais.Clear();
+                    db.Pules.Remove(puleSelecionado );
+                    db.SaveChanges();
+                    return true;
+                }
+            }catch { return false; }
+            return false;
         }
 
         internal bool Update(Pule pule, List<Animal> novosAnimais, bool isEqual)

@@ -7,7 +7,26 @@
         mc:Ignorable="d"
         Title="Pule Cadastrados" Height="450" Width="800">
     <Grid>
-        <ListView x:Name="listViewPules" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="162,99,162,99">
+        <ListView x:Name="listViewPules" Margin="162,99,162,99" ItemsSource="{Binding Pules}">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding StatusPagamento}" Value="Pago">
+                            <Setter Property="Background" Value="Green"/>
+                            
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding StatusPagamento}" Value="Cancelado">
+                            <Setter Property="Background" Value="Red" />
+                            
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding StatusPagamento}" Value="Pendente">
+                            <Setter Property="Background" Value="Yellow"/>
+                            
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ListView.ItemContainerStyle>
+
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Apostador" DisplayMemberBinding="{Binding Apostador.Nome}"/>
@@ -17,10 +36,12 @@
                 </GridView>
             </ListView.View>
         </ListView>
+
+
         <StackPanel Margin="638,69,50,69" >
             <Button Content="Novo" Margin="0,0,0,10" Click="CadastrarPule"/>
             <Button Content="Atualizar" Margin="0,0,0,10" Click="FormAtualizarPule"/>
-            <Button Content="Excluir" Margin="0,0,0,10"/>
+            <Button Content="Excluir" Margin="0,0,0,10" Click="ExcluirPule"/>
 
         </StackPanel>
 

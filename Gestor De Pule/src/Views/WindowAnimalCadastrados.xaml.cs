@@ -28,8 +28,8 @@ namespace Gestor_De_Pule.src.Views
 
         private void WindowCadastro(object sender, RoutedEventArgs e)
         {
-            var windowCadastro = new WindowAnimalCadastrados();
-            windowCadastro.ShowDialog();
+            var formWindow = new WindowAnimalCadastro();
+            formWindow.ShowDialog();
             AtualizarListViewAnimaisCadastrados();
 
         }

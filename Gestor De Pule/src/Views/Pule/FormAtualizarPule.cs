@@ -29,6 +29,12 @@ namespace Gestor_De_Pule.src.Views.Pule
                 comboBoxApostadores.SelectedItem = pule.Apostador;
                 comboBoxPagamento.SelectedItem = pule.StatusPagamento;
                 listBoxAnimaisSelecionados.Items.AddRange(pule.Animais.ToArray());
+                if (pule.StatusPagamento == Model.StatusPagamento.Pago)
+                {
+                    comboBoxAnimais.Enabled = false;
+                    listBoxAnimaisSelecionados.Enabled = false;
+
+                }
             }
         }
         private void SetComboBox()

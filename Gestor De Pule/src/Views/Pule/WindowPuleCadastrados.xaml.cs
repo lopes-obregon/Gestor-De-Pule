@@ -55,5 +55,18 @@ namespace Gestor_De_Pule.src.Views.Pule
             else
                 System.Windows.MessageBox.Show("Seleção Invalida!");
         }
+
+        private void ExcluirPule(object sender, RoutedEventArgs e)
+        {
+            var res = System.Windows.MessageBox.Show("Deseja Realmente remover O Pule ?", "Pergunta", System.Windows.MessageBoxButton.YesNoCancel);
+            if(res == MessageBoxResult.Yes)
+            {
+                var puleSelecionado = listViewPules.SelectedItem;
+                String mensagem = String.Empty;
+                mensagem = PuleController.RemovePule(puleSelecionado);
+                System.Windows.MessageBox.Show(mensagem);
+            }
+            UpdateListViewPules();
+        }
     }
 }

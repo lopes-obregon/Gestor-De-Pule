@@ -8,9 +8,9 @@ namespace Gestor_De_Pule.src.Controllers
         static public List<Animal>? Animals { get; private set; }
         static public List<Pule>? Pules { get; private set; }
         static public Pule? Pule { get; private set; }
-        internal static string CadastrarPule(object? apostadorSelecionadoUi, object? pagamentoUi, ListBox.ObjectCollection animaisSelecionadosUi)
+        internal static string CadastrarPule(object? apostadorSelecionadoUi, object? pagamentoUi, ListBox.ObjectCollection animaisSelecionadosUi, float valor)
         {
-           Apostador? apostador =apostadorSelecionadoUi as Apostador;
+           Apostador? apostadorUi =apostadorSelecionadoUi as Apostador;
             StatusPagamento pagamento;
             List<Animal>? animais = animaisSelecionadosUi.Cast<Animal>().ToList();
             Pule pule =null;
@@ -20,7 +20,10 @@ namespace Gestor_De_Pule.src.Controllers
             else
                 pagamento = StatusPagamento.Pendente;
 
-                pule = new Pule(apostador, pagamento, animais);
+            Apostador? apostadorSelecionado = null;
+            if (apostadorUi is not null)
+                apostadorSelecionado = Apostadors.Find(a => a.Id == apostadorUi.Id);
+            pule = new Pule(apostadorSelecionado, pagamento, animais, valor);
             sucess = Pule.Save(pule);
             if (sucess)
                 return "Pule Cadastrado Com Sucesso!";
@@ -56,6 +59,21 @@ namespace Gestor_De_Pule.src.Controllers
             Pules = new List<Pule>();
             Pules = Pule.ReadPules();
         }
+
+        internal static string RemovePule(object puleSelecionadoUi)
+        {
+            bool sucess = false;
+            Pule? puleSelecionado = puleSelecionadoUi as Pule;
+            if(puleSelecionado is not null)
+            {
+                sucess = Pule.Remove(puleSelecionado);
+                if (sucess) return "Pule Removido Com Sucesso!";
+                else return "Erro ao Remover O Pule!";
+            }
+                return "";
+        }
+
+        
 
         internal static string UpdateData(object? apostadorUi, object? pagamentoUi, ListBox.ObjectCollection animaisUi)
         {

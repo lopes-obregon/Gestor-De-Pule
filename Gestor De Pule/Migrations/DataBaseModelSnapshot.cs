@@ -91,7 +91,7 @@ namespace Gestor_De_Pule.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ApostadorId")
+                    b.Property<int?>("ApostadorId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("Date")
@@ -99,6 +99,9 @@ namespace Gestor_De_Pule.Migrations
 
                     b.Property<int>("StatusPagamento")
                         .HasColumnType("INTEGER");
+
+                    b.Property<float>("Valor")
+                        .HasColumnType("REAL");
 
                     b.HasKey("Id");
 
@@ -126,9 +129,7 @@ namespace Gestor_De_Pule.Migrations
                 {
                     b.HasOne("Gestor_De_Pule.src.Model.Apostador", "Apostador")
                         .WithMany("Pules")
-                        .HasForeignKey("ApostadorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ApostadorId");
 
                     b.Navigation("Apostador");
                 });

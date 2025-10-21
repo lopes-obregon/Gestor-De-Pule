@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             tableLayoutPanel1 = new TableLayoutPanel();
+            numericUpDownValorPule = new NumericUpDown();
+            label5 = new Label();
             label4 = new Label();
             listBoxAnimaisSelecionados = new ListBox();
             comboBoxAnimais = new ComboBox();
@@ -41,6 +43,7 @@
             button1 = new Button();
             button2 = new Button();
             tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownValorPule).BeginInit();
             flowLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -49,6 +52,8 @@
             tableLayoutPanel1.ColumnCount = 2;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.Controls.Add(numericUpDownValorPule, 1, 4);
+            tableLayoutPanel1.Controls.Add(label5, 0, 4);
             tableLayoutPanel1.Controls.Add(label4, 0, 3);
             tableLayoutPanel1.Controls.Add(listBoxAnimaisSelecionados, 1, 3);
             tableLayoutPanel1.Controls.Add(comboBoxAnimais, 1, 2);
@@ -59,13 +64,30 @@
             tableLayoutPanel1.Controls.Add(comboBoxPagamento, 1, 1);
             tableLayoutPanel1.Location = new Point(12, 30);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 4;
+            tableLayoutPanel1.RowCount = 5;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 34F));
-            tableLayoutPanel1.Size = new Size(270, 255);
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 118F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 18F));
+            tableLayoutPanel1.Size = new Size(270, 358);
             tableLayoutPanel1.TabIndex = 0;
+            // 
+            // numericUpDownValorPule
+            // 
+            numericUpDownValorPule.Location = new Point(138, 271);
+            numericUpDownValorPule.Name = "numericUpDownValorPule";
+            numericUpDownValorPule.Size = new Size(120, 23);
+            numericUpDownValorPule.TabIndex = 2;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(3, 268);
+            label5.Name = "label5";
+            label5.Size = new Size(49, 15);
+            label5.TabIndex = 3;
+            label5.Text = "Valor R$";
             // 
             // label4
             // 
@@ -141,7 +163,7 @@
             // 
             flowLayoutPanel1.Controls.Add(button1);
             flowLayoutPanel1.Controls.Add(button2);
-            flowLayoutPanel1.Location = new Point(48, 291);
+            flowLayoutPanel1.Location = new Point(15, 408);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
             flowLayoutPanel1.Size = new Size(200, 100);
             flowLayoutPanel1.TabIndex = 1;
@@ -170,13 +192,14 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(289, 400);
+            ClientSize = new Size(283, 520);
             Controls.Add(flowLayoutPanel1);
             Controls.Add(tableLayoutPanel1);
             Name = "FormCadastroPule";
             Text = "Cadastro Do Pule";
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownValorPule).EndInit();
             flowLayoutPanel1.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -195,5 +218,7 @@
         private FlowLayoutPanel flowLayoutPanel1;
         private Button button1;
         private Button button2;
+        private NumericUpDown numericUpDownValorPule;
+        private Label label5;
     }
 }
