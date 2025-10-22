@@ -1,4 +1,3 @@
-
 # Gestor De Pule
 
 This is a complete management system for betting control. The program allows for the full registration of Animals (competitors) and Bettors (clients). Its main function is to securely register each Pule (bet), tracking amounts and payments. The key feature is the Reports module, which allows filtering by any bettor to generate a detailed statement of all their plays, values, and total bets.
@@ -14,15 +13,18 @@ This is a complete management system for betting control. The program allows for
 **Back-end:** C#, .NET
 
 
-## Instalação
+## installation
 
-Instale my-project com dotnet
+Install my-project with  dotnet
 
 ```bash
   dotnet publish -c Release -r win-x64 --self-contained true
 ```
-    
-# Project Features
+## Project Window
+![Main Window](https://github.com/lopes-obregon/Gestor-De-Pule/blob/master/mainWindow?raw=true)
+![Window Data](https://github.com/lopes-obregon/Gestor-De-Pule/blob/master/FormData?raw=true)
+![Input Data](https://github.com/lopes-obregon/Gestor-De-Pule/blob/master/inputData?raw=true)
+## Project Features
 - `Registry Management`: Allows for the creation, modification, deletion, and searching of Animals (competitors, owners, etc.) and Bettors (clients).
 - `Bet Registration (Pules)`: Records each new bet into the system, linking the bettor, the selected animals (single, double, etc.), and the bet amount.
 - `Payment Control`: (related to Registration) Allows for managing the status of each pule (e.g., "Pending" or "Paid"), ensuring a receipt is only issued after confirmation.
@@ -31,13 +33,9 @@ Instale my-project com dotnet
 
 ## Actors
 
-- [@lopes-obregon](https://github.com/lopes-obregon)
+[<img loading="lazy" src="https://avatars.githubusercontent.com/u/45721862?v=4" width=115><br><sub>Renan Lopes Obregon</sub>](https://github.com/lopes-obregon)
 
-## Contribuindo
-
-Contribuições são sempre bem-vindas!
-
-Veja `contribuindo.md` para saber como começar.
-
-Por favor, siga o `código de conduta` desse projeto.
+## Contributing
+Contributions are always welcome!
+Please follow the `code of conduct` of this project.
 
