@@ -1,16 +1,25 @@
-# Ignorar pastas de build
-/bin/
-/obj/
+# Ignora bin e obj de qualquer configuração
+**/bin/
+**/obj/
 
-# Ignorar arquivos temporários
-*.log
-*.tmp
+# Ignora arquivos temporários gerados pelo build
+*.dll
+*.exe
+*.pdb
+*.cache
+*.csproj.BuildWithSkipAnalyzers
+*.GeneratedMSBuildEditorConfig.editorconfig
+*.GlobalUsings.g.cs
+*.nuget.dgspec.json
+*.nuget.cache
+*.assets.cache
+*.vs
+# Ignora pastas específicas de release e debug
+Gestor De Pule/bin/Release/
+Gestor De Pule/bin/Debug/
+Gestor De Pule/obj/Debug/
+Gestor De Pule/obj/Release/
 
-# Ignorar configurações do Visual Studio
-.vscode/
-*.suo
-*.user
+# Ignora arquivos temporários gerados por WPF ou WinForms
+*_wpftmp.*
 *.csproj.user
-.vs/
-# Ignorar arquivos de publicação
-publish/
