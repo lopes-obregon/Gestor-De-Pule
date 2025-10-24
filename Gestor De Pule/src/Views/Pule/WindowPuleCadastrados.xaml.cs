@@ -30,10 +30,17 @@ namespace Gestor_De_Pule.src.Views.Pule
         private void UpdateListViewPules()
         {
             PuleController.LoadPules();
+            PuleController.LoadAnimais();
             listViewPules.ItemsSource = null;
-            if (PuleController.Pules is not null || PuleController.Pules.Count > 0)
+            if (PuleController.Pules is not null && PuleController.Pules.Count > 0)
                 listViewPules.ItemsSource = PuleController.Pules;
             listViewPules.Items.Refresh();
+            if(PuleController.Animals is not null && PuleController.Animals.Count > 0)
+            {
+                var animaisMaisApostados = PuleController.Animals.OrderByDescending(a=>a.Pules.Count).ToList();
+                ListBoxAnimaisMaisApostados.ItemsSource = null;
+                ListBoxAnimaisMaisApostados.ItemsSource = animaisMaisApostados;
+            }
         }
 
         private void CadastrarPule(object sender, RoutedEventArgs e)

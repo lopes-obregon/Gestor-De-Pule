@@ -44,6 +44,7 @@ namespace Gestor_De_Pule.src.Views.Pule
             var pagamento = comboBoxPagamento.SelectedItem;
             var animaisSelecionados = listBoxAnimaisSelecionados.Items;
             float valor = (float) numericUpDownValorPule.Value;
+            int númeroDoPule = (int) numericUpDownNúmeroPule.Value;
             string mensagem = String.Empty;
             if (apostadorSelecionado is null)
                 mensagem += "Por Favor Selecione um Apostador ";
@@ -52,12 +53,13 @@ namespace Gestor_De_Pule.src.Views.Pule
             if (animaisSelecionados.Count < 1)
                 mensagem += "Por Favor Selecione Pelomenos Um Animal Para Apostar ";
             else
-                mensagem = PuleController.CadastrarPule(apostadorSelecionado, pagamento, animaisSelecionados, valor);
+                mensagem = PuleController.CadastrarPule(apostadorSelecionado, pagamento, animaisSelecionados, valor, númeroDoPule);
             MessageBox.Show(mensagem);
             //limpeza dos campos
             comboBoxAnimais.SelectedIndex = -1;
             comboBoxApostadores.SelectedIndex = -1;
-
+            numericUpDownNúmeroPule.Value = 0;
+            numericUpDownValorPule.Value = 0;
             listBoxAnimaisSelecionados.Items.Clear();
 
         }

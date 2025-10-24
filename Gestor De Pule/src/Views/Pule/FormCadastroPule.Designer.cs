@@ -39,11 +39,14 @@
             label2 = new Label();
             label1 = new Label();
             comboBoxPagamento = new ComboBox();
+            label6 = new Label();
+            numericUpDownNúmeroPule = new NumericUpDown();
             flowLayoutPanel1 = new FlowLayoutPanel();
             button1 = new Button();
             button2 = new Button();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDownValorPule).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownNúmeroPule).BeginInit();
             flowLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -62,14 +65,17 @@
             tableLayoutPanel1.Controls.Add(label2, 0, 1);
             tableLayoutPanel1.Controls.Add(label1, 0, 0);
             tableLayoutPanel1.Controls.Add(comboBoxPagamento, 1, 1);
+            tableLayoutPanel1.Controls.Add(label6, 0, 5);
+            tableLayoutPanel1.Controls.Add(numericUpDownNúmeroPule, 1, 5);
             tableLayoutPanel1.Location = new Point(12, 30);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 5;
+            tableLayoutPanel1.RowCount = 6;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 118F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 18F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 36F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 31F));
             tableLayoutPanel1.Size = new Size(270, 358);
             tableLayoutPanel1.TabIndex = 0;
             // 
@@ -77,6 +83,7 @@
             // 
             numericUpDownValorPule.DecimalPlaces = 2;
             numericUpDownValorPule.Location = new Point(138, 271);
+            numericUpDownValorPule.Maximum = new decimal(new int[] { 999999, 0, 0, 0 });
             numericUpDownValorPule.Name = "numericUpDownValorPule";
             numericUpDownValorPule.Size = new Size(120, 23);
             numericUpDownValorPule.TabIndex = 2;
@@ -86,9 +93,9 @@
             label5.AutoSize = true;
             label5.Location = new Point(3, 268);
             label5.Name = "label5";
-            label5.Size = new Size(49, 15);
+            label5.Size = new Size(93, 15);
             label5.TabIndex = 3;
-            label5.Text = "Valor R$";
+            label5.Text = "Valor Do Pule R$";
             // 
             // label4
             // 
@@ -160,6 +167,23 @@
             comboBoxPagamento.Size = new Size(121, 23);
             comboBoxPagamento.TabIndex = 1;
             // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(3, 304);
+            label6.Name = "label6";
+            label6.Size = new Size(95, 15);
+            label6.TabIndex = 5;
+            label6.Text = "Número Do Pule";
+            // 
+            // numericUpDownNúmeroPule
+            // 
+            numericUpDownNúmeroPule.Location = new Point(138, 307);
+            numericUpDownNúmeroPule.Maximum = new decimal(new int[] { 999999, 0, 0, 0 });
+            numericUpDownNúmeroPule.Name = "numericUpDownNúmeroPule";
+            numericUpDownNúmeroPule.Size = new Size(120, 23);
+            numericUpDownNúmeroPule.TabIndex = 6;
+            // 
             // flowLayoutPanel1
             // 
             flowLayoutPanel1.Controls.Add(button1);
@@ -193,7 +217,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(283, 520);
+            ClientSize = new Size(294, 520);
             Controls.Add(flowLayoutPanel1);
             Controls.Add(tableLayoutPanel1);
             Name = "FormCadastroPule";
@@ -201,6 +225,7 @@
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDownValorPule).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownNúmeroPule).EndInit();
             flowLayoutPanel1.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -221,5 +246,7 @@
         private Button button2;
         private NumericUpDown numericUpDownValorPule;
         private Label label5;
+        private Label label6;
+        private NumericUpDown numericUpDownNúmeroPule;
     }
 }
