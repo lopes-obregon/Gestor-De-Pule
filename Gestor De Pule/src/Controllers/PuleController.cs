@@ -8,12 +8,12 @@ namespace Gestor_De_Pule.src.Controllers
         static public List<Animal>? Animals { get; private set; }
         static public List<Pule>? Pules { get; private set; }
         static public Pule? Pule { get; private set; }
-        internal static string CadastrarPule(object? apostadorSelecionadoUi, object? pagamentoUi, ListBox.ObjectCollection animaisSelecionadosUi, float valor)
+        internal static string CadastrarPule(object? apostadorSelecionadoUi, object? pagamentoUi, ListBox.ObjectCollection animaisSelecionadosUi, float valor, int númeroDoPule)
         {
            Apostador? apostadorUi =apostadorSelecionadoUi as Apostador;
             StatusPagamento pagamento;
             List<Animal>? animaisUi = animaisSelecionadosUi.Cast<Animal>().ToList();
-            Pule pule =null;
+            Pule? pule =null;
             List<Animal>? animais = new List<Animal>();
             bool sucess = false;
             if (pagamentoUi is StatusPagamento status)
@@ -29,7 +29,7 @@ namespace Gestor_De_Pule.src.Controllers
             var animalIds = animaisUi.Select(a => a.Id).ToHashSet();   
             if(animaisUi is not null && animaisUi.Count > 0)
                 animais = Animals.Where(a => animalIds.Contains(a.Id)).ToList();
-            pule = new Pule(null, pagamento, null, valor);
+            pule = new Pule(null, pagamento, null, valor, númeroDoPule);
             //sucess = Pule.Save(pule);
             sucess = Pule.SavePule(pule);
             sucess = pule.Associete(apostadorSelecionado, animais);
@@ -43,6 +43,12 @@ namespace Gestor_De_Pule.src.Controllers
         internal static List<StatusPagamento>? GetStatusPagamento()
         {
             return Enum.GetValues(typeof(StatusPagamento)).Cast<StatusPagamento>().ToList();
+        }
+
+        internal static void LoadAnimais()
+        {
+            AnimalController.LoadAnimais();
+            Animals = AnimalController.Animals.ToList();
         }
 
         internal static void LoadLists()

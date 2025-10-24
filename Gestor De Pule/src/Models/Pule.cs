@@ -25,11 +25,14 @@ namespace Gestor_De_Pule.src.Model
         private StatusPagamento _statusPagamento;
         private DateTime _date = DateTime.Now;
         private List<Animal>? _animais = new();
+        public int Número { get; set; }
         public float Valor {  get; set; }
+        //Propriedade para chamar no listVew
+        public string NomeAnimais => (string)AnimaisToString();
         //construct
         public Pule() { }
 
-        public Pule(Apostador? apostador, StatusPagamento pagamento, List<Animal>? animais, float valor)
+        public Pule(Apostador? apostador, StatusPagamento pagamento, List<Animal>? animais, float valor, int númeroDoPule)
         {
             Apostador = apostador;
             _statusPagamento = pagamento;
@@ -189,7 +192,7 @@ namespace Gestor_De_Pule.src.Model
                 return true;
             }catch { return false; }
         }
-
+        
         internal object AnimaisToString()
         {
             string nomeAnimal = String.Empty;

@@ -13,15 +13,16 @@
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding StatusPagamento}" Value="Pago">
                             <Setter Property="Background" Value="Green"/>
-                            
+                            <Setter Property="IsEnabled" Value="False"/>
+
                         </DataTrigger>
                         <DataTrigger Binding="{Binding StatusPagamento}" Value="Cancelado">
                             <Setter Property="Background" Value="Red" />
-                            
+
                         </DataTrigger>
                         <DataTrigger Binding="{Binding StatusPagamento}" Value="Pendente">
                             <Setter Property="Background" Value="Yellow"/>
-                            
+
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -29,8 +30,9 @@
 
             <ListView.View>
                 <GridView>
+                    <GridViewColumn Header="Nº Do Pule" DisplayMemberBinding="{Binding Número}"/>
                     <GridViewColumn Header="Apostador" DisplayMemberBinding="{Binding Apostador.Nome}"/>
-                    <GridViewColumn Header="Animal" DisplayMemberBinding="{Binding Animal.Nome}"/>
+                    <GridViewColumn Header="Animais" DisplayMemberBinding="{Binding NomeAnimais}"/>
                     <GridViewColumn Header="Data" DisplayMemberBinding="{Binding Date}"/>
                     <GridViewColumn Header="Pagamento" DisplayMemberBinding="{Binding StatusPagamento}"/>
                 </GridView>
@@ -38,12 +40,15 @@
         </ListView>
 
 
-        <StackPanel Margin="638,69,50,69" >
+        <StackPanel Margin="658,99,30,217" >
             <Button Content="Novo" Margin="0,0,0,10" Click="CadastrarPule"/>
             <Button Content="Atualizar" Margin="0,0,0,10" Click="FormAtualizarPule"/>
             <Button Content="Excluir" Margin="0,0,0,10" Click="ExcluirPule"/>
 
         </StackPanel>
+        <ListBox x:Name="ListBoxAnimaisMaisApostados" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,82,666,135"/>
+        <Label Content="Pules Cadastrados" HorizontalAlignment="Center" Margin="0,34,0,0" VerticalAlignment="Top" FontSize="20" RenderTransformOrigin="0.513,0.479"/>
+        <Label Content="Animais Mais Apostados" HorizontalAlignment="Left" Margin="10,39,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

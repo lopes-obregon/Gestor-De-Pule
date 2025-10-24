@@ -110,7 +110,7 @@ namespace Gestor_De_Pule.src.Model
         public override string ToString()
         {
 
-            return _name;
+            return Número + " - " + _name;
         }
 
        
