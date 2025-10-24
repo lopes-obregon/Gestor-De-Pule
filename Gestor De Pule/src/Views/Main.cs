@@ -2,6 +2,7 @@ using Gestor_De_Pule.src.Controllers;
 using Gestor_De_Pule.src.Views;
 using Gestor_De_Pule.src.Views.Apostador;
 using Gestor_De_Pule.src.Views.Pule;
+using Gestor_De_Pule.src.Views.Relatórios.Apostador;
 
 namespace Gestor_De_Pule
 {
@@ -10,7 +11,7 @@ namespace Gestor_De_Pule
         public Main()
         {
             InitializeComponent();
-            MainController.LoadLists();
+            //MainController.LoadLists();
             InitComboBox();
             //this.Dock = DockStyle.Fill;
 
@@ -18,7 +19,7 @@ namespace Gestor_De_Pule
 
         private void InitComboBox()
         {
-            comboBoxApostadores.Items.Clear();
+            /*comboBoxApostadores.Items.Clear();
             comboBoxAnimais.Items.Clear();
             if (MainController.Apostadors.Count > 0)
             {
@@ -27,7 +28,7 @@ namespace Gestor_De_Pule
             if (MainController.Animals.Count > 0)
             {
                 comboBoxAnimais.Items.AddRange(MainController.Animals.ToArray());
-            }
+            }*/
 
         }
 
@@ -59,7 +60,7 @@ namespace Gestor_De_Pule
 
         private void GerarRelatório(object sender, EventArgs e)
         {
-            dataGridViewPules.Rows.Clear();
+            /*dataGridViewPules.Rows.Clear();
             labelValorTotalApostado.Text = "0";
             labelTotalDePules.Text = "0";
             var apostadorSelecionadoUi = comboBoxApostadores.SelectedItem;
@@ -80,7 +81,7 @@ namespace Gestor_De_Pule
                     labelValorTotalApostado.Text = valorTotalApostado.ToString();
                 }
 
-            }
+            }*/
         }
 
         private void GerarRelatórioAnimal(object sender, EventArgs e)
@@ -88,22 +89,22 @@ namespace Gestor_De_Pule
             var animalSelecionadoUi = comboBoxAnimais.SelectedItem;
             MainController.AnimalSelecionado(animalSelecionadoUi);
             LimparCaposAnimalTab();
-            
+
             var animal = MainController.Animal;
             if (animal != null)
             {
                 labelAnimalNome.Text = $"{animal.Número} - {animal.Nome}";
-                labelTotalPules.Text =$"Total De Pules {animal.Pules.Count}";
+                labelTotalPules.Text = $"Total De Pules {animal.Pules.Count}";
                 int totalApostador = 0;
                 float totalApostado = 0.0f;
-                foreach(var pule in animal.Pules)
+                foreach (var pule in animal.Pules)
                 {
-                   var puleBuscado = MainController.SearchPule(pule);
-                    if(puleBuscado is not null)
+                    var puleBuscado = MainController.SearchPule(pule);
+                    if (puleBuscado is not null)
                     {
                         ListViewItem itemPule = new ListViewItem(puleBuscado.Número.ToString());
                         itemPule.SubItems.Add(puleBuscado.Valor.ToString());
-                       if(puleBuscado.Apostador is not null)
+                        if (puleBuscado.Apostador is not null)
                         {
                             itemPule.SubItems.Add(puleBuscado.Apostador.Nome);
                             totalApostador++;
@@ -114,7 +115,7 @@ namespace Gestor_De_Pule
                             totalApostado += puleBuscado.Valor;
                         }
                         listViewPulesAnimal.Items.Add(itemPule);
-                        
+
                     }
                 }
                 labelTotalApostadores.Text = $"Total De Apostadores {totalApostador}";
@@ -131,6 +132,12 @@ namespace Gestor_De_Pule
         private void listViewAnimais_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void ApostadorWindow(object sender, EventArgs e)
+        {
+            var form = new FormRelatórioApostador();
+            form.ShowDialog();
         }
     }
 }

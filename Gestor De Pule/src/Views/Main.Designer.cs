@@ -28,29 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             menuStrip1 = new MenuStrip();
             arquivoToolStripMenuItem = new ToolStripMenuItem();
             animalToolStripMenuItem = new ToolStripMenuItem();
             apostadorToolStripMenuItem = new ToolStripMenuItem();
             puleToolStripMenuItem = new ToolStripMenuItem();
-            tableLayoutPanel1 = new TableLayoutPanel();
-            comboBoxApostadores = new ComboBox();
-            label1 = new Label();
-            button1 = new Button();
-            labelApostador = new Label();
-            dataGridViewPules = new DataGridView();
-            NPule = new DataGridViewTextBoxColumn();
-            Data = new DataGridViewTextBoxColumn();
-            Animais = new DataGridViewTextBoxColumn();
-            ValorRs = new DataGridViewTextBoxColumn();
-            Status = new DataGridViewTextBoxColumn();
-            label2 = new Label();
-            tableLayoutPanel2 = new TableLayoutPanel();
-            labelValorTotalApostado = new Label();
-            labelTotalDePules = new Label();
-            label3 = new Label();
-            label4 = new Label();
+            relatóriosToolStripMenuItem = new ToolStripMenuItem();
+            apostadorToolStripMenuItem1 = new ToolStripMenuItem();
             tabControlApostador = new TabControl();
             tabPage1 = new TabPage();
             tabPage2 = new TabPage();
@@ -66,21 +50,17 @@
             columnHeaderContato = new ColumnHeader();
             columnHeaderNome = new ColumnHeader();
             columnHeaderNPule = new ColumnHeader();
-            tableLayoutPanel3 = new TableLayoutPanel();
-            label5 = new Label();
-            comboBoxAnimais = new ComboBox();
-            button2 = new Button();
             label8 = new Label();
             listViewPulesAnimal = new ListView();
             columnHeaderNúmeroPule = new ColumnHeader();
             columnHeaderApostador = new ColumnHeader();
             columnHeaderValorApostado = new ColumnHeader();
+            tableLayoutPanel3 = new TableLayoutPanel();
+            label5 = new Label();
+            comboBoxAnimais = new ComboBox();
+            button2 = new Button();
             menuStrip1.SuspendLayout();
-            tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridViewPules).BeginInit();
-            tableLayoutPanel2.SuspendLayout();
             tabControlApostador.SuspendLayout();
-            tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
             tableLayoutPanel5.SuspendLayout();
             tableLayoutPanel4.SuspendLayout();
@@ -89,7 +69,7 @@
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { arquivoToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { arquivoToolStripMenuItem, relatóriosToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(1081, 24);
@@ -124,162 +104,19 @@
             puleToolStripMenuItem.Text = "Pule";
             puleToolStripMenuItem.Click += WindowPuleCadastrados;
             // 
-            // tableLayoutPanel1
+            // relatóriosToolStripMenuItem
             // 
-            tableLayoutPanel1.ColumnCount = 2;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 41.01877F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 58.98123F));
-            tableLayoutPanel1.Controls.Add(comboBoxApostadores, 1, 0);
-            tableLayoutPanel1.Controls.Add(label1, 0, 0);
-            tableLayoutPanel1.Controls.Add(button1, 1, 1);
-            tableLayoutPanel1.Location = new Point(6, 6);
-            tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 2;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.Size = new Size(373, 100);
-            tableLayoutPanel1.TabIndex = 1;
+            relatóriosToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { apostadorToolStripMenuItem1 });
+            relatóriosToolStripMenuItem.Name = "relatóriosToolStripMenuItem";
+            relatóriosToolStripMenuItem.Size = new Size(71, 20);
+            relatóriosToolStripMenuItem.Text = "Relatórios";
             // 
-            // comboBoxApostadores
+            // apostadorToolStripMenuItem1
             // 
-            comboBoxApostadores.FormattingEnabled = true;
-            comboBoxApostadores.Location = new Point(156, 3);
-            comboBoxApostadores.Name = "comboBoxApostadores";
-            comboBoxApostadores.Size = new Size(121, 23);
-            comboBoxApostadores.TabIndex = 2;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(3, 0);
-            label1.Name = "label1";
-            label1.Size = new Size(127, 15);
-            label1.TabIndex = 2;
-            label1.Text = "Selecione O Apostador";
-            // 
-            // button1
-            // 
-            button1.Location = new Point(156, 53);
-            button1.Name = "button1";
-            button1.Size = new Size(121, 23);
-            button1.TabIndex = 3;
-            button1.Text = "Gerar Relatório";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += GerarRelatório;
-            // 
-            // labelApostador
-            // 
-            labelApostador.AutoSize = true;
-            labelApostador.Location = new Point(6, 123);
-            labelApostador.Name = "labelApostador";
-            labelApostador.Size = new Size(38, 15);
-            labelApostador.TabIndex = 2;
-            labelApostador.Text = "label2";
-            // 
-            // dataGridViewPules
-            // 
-            dataGridViewPules.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewPules.Columns.AddRange(new DataGridViewColumn[] { NPule, Data, Animais, ValorRs, Status });
-            dataGridViewPules.Location = new Point(6, 174);
-            dataGridViewPules.Name = "dataGridViewPules";
-            dataGridViewPules.Size = new Size(547, 176);
-            dataGridViewPules.TabIndex = 3;
-            // 
-            // NPule
-            // 
-            NPule.HeaderText = "Nº Pule";
-            NPule.Name = "NPule";
-            NPule.ReadOnly = true;
-            // 
-            // Data
-            // 
-            Data.HeaderText = "Data";
-            Data.Name = "Data";
-            Data.ReadOnly = true;
-            // 
-            // Animais
-            // 
-            Animais.HeaderText = "Animais";
-            Animais.Name = "Animais";
-            Animais.ReadOnly = true;
-            // 
-            // ValorRs
-            // 
-            dataGridViewCellStyle2.Format = "C2";
-            dataGridViewCellStyle2.NullValue = null;
-            ValorRs.DefaultCellStyle = dataGridViewCellStyle2;
-            ValorRs.HeaderText = "Valor R$";
-            ValorRs.Name = "ValorRs";
-            ValorRs.ReadOnly = true;
-            // 
-            // Status
-            // 
-            Status.HeaderText = "Status";
-            Status.Name = "Status";
-            Status.ReadOnly = true;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(9, 365);
-            label2.Name = "label2";
-            label2.Size = new Size(57, 15);
-            label2.TabIndex = 4;
-            label2.Text = "RESUMO:";
-            // 
-            // tableLayoutPanel2
-            // 
-            tableLayoutPanel2.ColumnCount = 2;
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 64.5F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35.5F));
-            tableLayoutPanel2.Controls.Add(labelValorTotalApostado, 1, 1);
-            tableLayoutPanel2.Controls.Add(labelTotalDePules, 1, 0);
-            tableLayoutPanel2.Controls.Add(label3, 0, 0);
-            tableLayoutPanel2.Controls.Add(label4, 0, 1);
-            tableLayoutPanel2.Location = new Point(34, 383);
-            tableLayoutPanel2.Name = "tableLayoutPanel2";
-            tableLayoutPanel2.RowCount = 2;
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel2.Size = new Size(249, 100);
-            tableLayoutPanel2.TabIndex = 5;
-            // 
-            // labelValorTotalApostado
-            // 
-            labelValorTotalApostado.AutoSize = true;
-            labelValorTotalApostado.Location = new Point(163, 50);
-            labelValorTotalApostado.Name = "labelValorTotalApostado";
-            labelValorTotalApostado.Size = new Size(13, 15);
-            labelValorTotalApostado.TabIndex = 8;
-            labelValorTotalApostado.Text = "0";
-            // 
-            // labelTotalDePules
-            // 
-            labelTotalDePules.AutoEllipsis = true;
-            labelTotalDePules.AutoSize = true;
-            labelTotalDePules.Location = new Point(163, 0);
-            labelTotalDePules.Name = "labelTotalDePules";
-            labelTotalDePules.Size = new Size(13, 15);
-            labelTotalDePules.TabIndex = 9;
-            labelTotalDePules.Text = "0";
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(3, 0);
-            label3.Name = "label3";
-            label3.Size = new Size(86, 15);
-            label3.TabIndex = 6;
-            label3.Text = "Total de Pules :";
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Location = new Point(3, 50);
-            label4.Name = "label4";
-            label4.Size = new Size(119, 15);
-            label4.TabIndex = 7;
-            label4.Text = "Valor Total Apostado:";
+            apostadorToolStripMenuItem1.Name = "apostadorToolStripMenuItem1";
+            apostadorToolStripMenuItem1.Size = new Size(180, 22);
+            apostadorToolStripMenuItem1.Text = "Apostador";
+            apostadorToolStripMenuItem1.Click += ApostadorWindow;
             // 
             // tabControlApostador
             // 
@@ -294,11 +131,6 @@
             // 
             // tabPage1
             // 
-            tabPage1.Controls.Add(tableLayoutPanel1);
-            tabPage1.Controls.Add(tableLayoutPanel2);
-            tabPage1.Controls.Add(labelApostador);
-            tabPage1.Controls.Add(label2);
-            tabPage1.Controls.Add(dataGridViewPules);
             tabPage1.Location = new Point(4, 24);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
@@ -409,7 +241,7 @@
             // 
             label6.AutoSize = true;
             label6.Font = new Font("Segoe UI", 12F);
-            label6.Location = new Point(3, 33);
+            label6.Location = new Point(3, 31);
             label6.Name = "label6";
             label6.Size = new Size(97, 21);
             label6.TabIndex = 2;
@@ -419,9 +251,9 @@
             // 
             listViewApostadores.Columns.AddRange(new ColumnHeader[] { columnHeaderContato, columnHeaderNome, columnHeaderNPule });
             listViewApostadores.Dock = DockStyle.Fill;
-            listViewApostadores.Location = new Point(3, 64);
+            listViewApostadores.Location = new Point(3, 61);
             listViewApostadores.Name = "listViewApostadores";
-            listViewApostadores.Size = new Size(381, 241);
+            listViewApostadores.Size = new Size(381, 244);
             listViewApostadores.TabIndex = 1;
             listViewApostadores.UseCompatibleStateImageBehavior = false;
             listViewApostadores.View = View.Details;
@@ -437,6 +269,39 @@
             // columnHeaderNPule
             // 
             columnHeaderNPule.Text = "Nº Do Pule";
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Font = new Font("Segoe UI", 12F);
+            label8.Location = new Point(390, 31);
+            label8.Name = "label8";
+            label8.Size = new Size(47, 21);
+            label8.TabIndex = 3;
+            label8.Text = "Pules";
+            // 
+            // listViewPulesAnimal
+            // 
+            listViewPulesAnimal.Columns.AddRange(new ColumnHeader[] { columnHeaderNúmeroPule, columnHeaderApostador, columnHeaderValorApostado });
+            listViewPulesAnimal.Dock = DockStyle.Fill;
+            listViewPulesAnimal.Location = new Point(390, 61);
+            listViewPulesAnimal.Name = "listViewPulesAnimal";
+            listViewPulesAnimal.Size = new Size(349, 244);
+            listViewPulesAnimal.TabIndex = 4;
+            listViewPulesAnimal.UseCompatibleStateImageBehavior = false;
+            listViewPulesAnimal.View = View.Details;
+            // 
+            // columnHeaderNúmeroPule
+            // 
+            columnHeaderNúmeroPule.Text = "Nº";
+            // 
+            // columnHeaderApostador
+            // 
+            columnHeaderApostador.Text = "Apostador";
+            // 
+            // columnHeaderValorApostado
+            // 
+            columnHeaderValorApostado.Text = "Valor Apostado R$";
             // 
             // tableLayoutPanel3
             // 
@@ -481,39 +346,6 @@
             button2.UseVisualStyleBackColor = true;
             button2.Click += GerarRelatórioAnimal;
             // 
-            // label8
-            // 
-            label8.AutoSize = true;
-            label8.Font = new Font("Segoe UI", 12F);
-            label8.Location = new Point(390, 33);
-            label8.Name = "label8";
-            label8.Size = new Size(47, 21);
-            label8.TabIndex = 3;
-            label8.Text = "Pules";
-            // 
-            // listViewPulesAnimal
-            // 
-            listViewPulesAnimal.Columns.AddRange(new ColumnHeader[] { columnHeaderNúmeroPule, columnHeaderApostador, columnHeaderValorApostado });
-            listViewPulesAnimal.Dock = DockStyle.Fill;
-            listViewPulesAnimal.Location = new Point(390, 64);
-            listViewPulesAnimal.Name = "listViewPulesAnimal";
-            listViewPulesAnimal.Size = new Size(349, 241);
-            listViewPulesAnimal.TabIndex = 4;
-            listViewPulesAnimal.UseCompatibleStateImageBehavior = false;
-            listViewPulesAnimal.View = View.Details;
-            // 
-            // columnHeaderNúmeroPule
-            // 
-            columnHeaderNúmeroPule.Text = "Nº";
-            // 
-            // columnHeaderApostador
-            // 
-            columnHeaderApostador.Text = "Apostador";
-            // 
-            // columnHeaderValorApostado
-            // 
-            columnHeaderValorApostado.Text = "Valor Apostado R$";
-            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -526,14 +358,7 @@
             Text = "Gestor Pule";
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
-            tableLayoutPanel1.ResumeLayout(false);
-            tableLayoutPanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridViewPules).EndInit();
-            tableLayoutPanel2.ResumeLayout(false);
-            tableLayoutPanel2.PerformLayout();
             tabControlApostador.ResumeLayout(false);
-            tabPage1.ResumeLayout(false);
-            tabPage1.PerformLayout();
             tabPage2.ResumeLayout(false);
             tableLayoutPanel5.ResumeLayout(false);
             tableLayoutPanel5.PerformLayout();
@@ -552,23 +377,6 @@
         private ToolStripMenuItem animalToolStripMenuItem;
         private ToolStripMenuItem apostadorToolStripMenuItem;
         private ToolStripMenuItem puleToolStripMenuItem;
-        private TableLayoutPanel tableLayoutPanel1;
-        private ComboBox comboBoxApostadores;
-        private Label label1;
-        private Button button1;
-        private Label labelApostador;
-        private DataGridView dataGridViewPules;
-        private Label label2;
-        private TableLayoutPanel tableLayoutPanel2;
-        private Label labelTotalDePules;
-        private Label label3;
-        private Label label4;
-        private Label labelValorTotalApostado;
-        private DataGridViewTextBoxColumn NPule;
-        private DataGridViewTextBoxColumn Data;
-        private DataGridViewTextBoxColumn Animais;
-        private DataGridViewTextBoxColumn ValorRs;
-        private DataGridViewTextBoxColumn Status;
         private TabControl tabControlApostador;
         private TabPage tabPage1;
         private TabPage tabPage2;
@@ -594,5 +402,7 @@
         private ColumnHeader columnHeaderNúmeroPule;
         private ColumnHeader columnHeaderApostador;
         private ColumnHeader columnHeaderValorApostado;
+        private ToolStripMenuItem relatóriosToolStripMenuItem;
+        private ToolStripMenuItem apostadorToolStripMenuItem1;
     }
 }

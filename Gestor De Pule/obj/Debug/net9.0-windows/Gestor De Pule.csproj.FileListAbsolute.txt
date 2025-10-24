@@ -1,0 +1,156 @@
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Gestor De Pule.exe
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Gestor De Pule.deps.json
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Gestor De Pule.runtimeconfig.json
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Gestor De Pule.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Gestor De Pule.pdb
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor_De_Pule.Main.resources
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor De Pule.csproj.GenerateResource.cache
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor De Pule.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor De Pule.AssemblyInfoInputs.cache
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor De Pule.AssemblyInfo.cs
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor De Pule.csproj.CoreCompileInputs.cache
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor De Pule.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\refint\Gestor De Pule.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor De Pule.pdb
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor De Pule.genruntimeconfig.cache
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\ref\Gestor De Pule.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor_De_Pule.Properties.Resources.resources
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor De Pule_MarkupCompile.cache
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor De Pule_MarkupCompile.lref
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor De Pule.g.resources
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\src\Views\WindowAnimalCadastrados.g.cs
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\src\Views\WindowAnimalCadastrados.baml
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Microsoft.Data.Sqlite.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.Sqlite.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Microsoft.Extensions.Caching.Abstractions.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Microsoft.Extensions.Caching.Memory.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Microsoft.Extensions.DependencyModel.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Microsoft.Extensions.Logging.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Microsoft.Extensions.Options.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Microsoft.Extensions.Primitives.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\SQLitePCLRaw.batteries_v2.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\SQLitePCLRaw.core.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\SQLitePCLRaw.provider.e_sqlite3.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\runtimes\browser-wasm\nativeassets\net9.0\e_sqlite3.a
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\runtimes\linux-arm\native\libe_sqlite3.so
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\runtimes\linux-arm64\native\libe_sqlite3.so
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\runtimes\linux-armel\native\libe_sqlite3.so
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\runtimes\linux-mips64\native\libe_sqlite3.so
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\runtimes\linux-musl-arm\native\libe_sqlite3.so
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\runtimes\linux-musl-arm64\native\libe_sqlite3.so
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\runtimes\linux-musl-s390x\native\libe_sqlite3.so
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\runtimes\linux-musl-x64\native\libe_sqlite3.so
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\runtimes\linux-ppc64le\native\libe_sqlite3.so
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\runtimes\linux-s390x\native\libe_sqlite3.so
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\runtimes\linux-x64\native\libe_sqlite3.so
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\runtimes\linux-x86\native\libe_sqlite3.so
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\runtimes\maccatalyst-arm64\native\libe_sqlite3.dylib
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\runtimes\maccatalyst-x64\native\libe_sqlite3.dylib
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\runtimes\osx-arm64\native\libe_sqlite3.dylib
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\runtimes\osx-x64\native\libe_sqlite3.dylib
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\runtimes\win-arm\native\e_sqlite3.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\runtimes\win-arm64\native\e_sqlite3.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\runtimes\win-x64\native\e_sqlite3.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\runtimes\win-x86\native\e_sqlite3.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor De Pule.csproj.AssemblyReference.cache
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor D.274B316E.Up2Date
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Humanizer.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Microsoft.Build.Locator.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.Workspaces.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.Workspaces.MSBuild.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Mono.TextTemplating.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\System.Composition.AttributedModel.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\System.Composition.Convention.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\System.Composition.Hosting.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\System.Composition.Runtime.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\System.Composition.TypedParts.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor_De_Pule.src.Views.FormAnimalAtualizar.resources
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\src\Views\Apostador\WindowApostadoresCadastrados.g.cs
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\src\Views\Apostador\WindowApostadoresCadastrados.baml
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor_De_Pule.src.Views.Apostador.FormCadastro.resources
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor_De_Pule.src.Views.Apostador.FormAlterarApostador.resources
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\src\Views\Pule\WindowPuleCadastrados.g.cs
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\src\Views\Pule\WindowPuleCadastrados.baml
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor_De_Pule.src.Views.Pule.FormCadastroPule.resources
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor_De_Pule.src.Views.Pule.FormAtualizarPule.resources
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor_De_Pule.src.Views.WindowAnimalCadastro.resources
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor De Pule.sourcelink.json
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor_De_Pule.src.Views.Relatórios.Apostador.FormRelatórioApostador.resources
