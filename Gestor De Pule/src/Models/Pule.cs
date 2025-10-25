@@ -193,7 +193,7 @@ namespace Gestor_De_Pule.src.Model
             }catch { return false; }
         }
         
-        internal object AnimaisToString()
+        internal String AnimaisToString()
         {
             string nomeAnimal = String.Empty;
             for(int i =0; i < Animais.Count; i++)

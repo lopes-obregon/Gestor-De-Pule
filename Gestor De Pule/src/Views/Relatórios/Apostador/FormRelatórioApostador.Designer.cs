@@ -40,7 +40,7 @@
             label4 = new Label();
             label2 = new Label();
             tableLayoutPanel3 = new TableLayoutPanel();
-            listView1 = new ListView();
+            listViewApostadores = new ListView();
             columnHeaderNumPule = new ColumnHeader();
             columnHeaderData = new ColumnHeader();
             columnHeaderAnimais = new ColumnHeader();
@@ -175,7 +175,7 @@
             tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
             tableLayoutPanel3.Controls.Add(labelApostador, 0, 0);
-            tableLayoutPanel3.Controls.Add(listView1, 0, 1);
+            tableLayoutPanel3.Controls.Add(listViewApostadores, 0, 1);
             tableLayoutPanel3.Location = new Point(12, 118);
             tableLayoutPanel3.Name = "tableLayoutPanel3";
             tableLayoutPanel3.RowCount = 2;
@@ -184,15 +184,15 @@
             tableLayoutPanel3.Size = new Size(577, 286);
             tableLayoutPanel3.TabIndex = 8;
             // 
-            // listView1
+            // listViewApostadores
             // 
-            listView1.Columns.AddRange(new ColumnHeader[] { columnHeaderNumPule, columnHeaderData, columnHeaderAnimais, columnHeaderValor, columnHeaderStatusPagamento });
-            listView1.Location = new Point(3, 26);
-            listView1.Name = "listView1";
-            listView1.Size = new Size(571, 257);
-            listView1.TabIndex = 5;
-            listView1.UseCompatibleStateImageBehavior = false;
-            listView1.View = View.Details;
+            listViewApostadores.Columns.AddRange(new ColumnHeader[] { columnHeaderNumPule, columnHeaderData, columnHeaderAnimais, columnHeaderValor, columnHeaderStatusPagamento });
+            listViewApostadores.Location = new Point(3, 26);
+            listViewApostadores.Name = "listViewApostadores";
+            listViewApostadores.Size = new Size(571, 257);
+            listViewApostadores.TabIndex = 5;
+            listViewApostadores.UseCompatibleStateImageBehavior = false;
+            listViewApostadores.View = View.Details;
             // 
             // columnHeaderNumPule
             // 
@@ -264,7 +264,7 @@
         private Label label4;
         private Label label2;
         private TableLayoutPanel tableLayoutPanel3;
-        private ListView listView1;
+        private ListView listViewApostadores;
         private ColumnHeader columnHeaderNumPule;
         private ColumnHeader columnHeaderData;
         private ColumnHeader columnHeaderAnimais;
