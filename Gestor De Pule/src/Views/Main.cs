@@ -4,6 +4,7 @@ using Gestor_De_Pule.src.Views.Apostador;
 using Gestor_De_Pule.src.Views.Pule;
 using Gestor_De_Pule.src.Views.Relatórios.Animal;
 using Gestor_De_Pule.src.Views.Relatórios.Apostador;
+using Gestor_De_Pule.src.Views.Relatórios.Pule;
 
 namespace Gestor_De_Pule
 {
@@ -126,11 +127,17 @@ namespace Gestor_De_Pule
             form.ShowDialog();
         }
 
-      
+
 
         private void CloseSystem(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void WindowRelatórioPule(object sender, EventArgs e)
+        {
+            var window = new WindowRelatórioPule();
+            window.ShowDialog();
         }
     }
 }

@@ -38,6 +38,7 @@
             relatóriosToolStripMenuItem = new ToolStripMenuItem();
             apostadorToolStripMenuItem1 = new ToolStripMenuItem();
             animalToolStripMenuItem1 = new ToolStripMenuItem();
+            puleToolStripMenuItem1 = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -60,7 +61,7 @@
             // sairToolStripMenuItem
             // 
             sairToolStripMenuItem.Name = "sairToolStripMenuItem";
-            sairToolStripMenuItem.Size = new Size(180, 22);
+            sairToolStripMenuItem.Size = new Size(93, 22);
             sairToolStripMenuItem.Text = "Sair";
             sairToolStripMenuItem.Click += CloseSystem;
             // 
@@ -94,7 +95,7 @@
             // 
             // relatóriosToolStripMenuItem
             // 
-            relatóriosToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { apostadorToolStripMenuItem1, animalToolStripMenuItem1 });
+            relatóriosToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { apostadorToolStripMenuItem1, animalToolStripMenuItem1, puleToolStripMenuItem1 });
             relatóriosToolStripMenuItem.Name = "relatóriosToolStripMenuItem";
             relatóriosToolStripMenuItem.Size = new Size(71, 20);
             relatóriosToolStripMenuItem.Text = "Relatórios";
@@ -102,16 +103,23 @@
             // apostadorToolStripMenuItem1
             // 
             apostadorToolStripMenuItem1.Name = "apostadorToolStripMenuItem1";
-            apostadorToolStripMenuItem1.Size = new Size(129, 22);
+            apostadorToolStripMenuItem1.Size = new Size(180, 22);
             apostadorToolStripMenuItem1.Text = "Apostador";
             apostadorToolStripMenuItem1.Click += ApostadorWindow;
             // 
             // animalToolStripMenuItem1
             // 
             animalToolStripMenuItem1.Name = "animalToolStripMenuItem1";
-            animalToolStripMenuItem1.Size = new Size(129, 22);
+            animalToolStripMenuItem1.Size = new Size(180, 22);
             animalToolStripMenuItem1.Text = "Animal";
             animalToolStripMenuItem1.Click += AnimalForm;
+            // 
+            // puleToolStripMenuItem1
+            // 
+            puleToolStripMenuItem1.Name = "puleToolStripMenuItem1";
+            puleToolStripMenuItem1.Size = new Size(180, 22);
+            puleToolStripMenuItem1.Text = "Pule";
+            puleToolStripMenuItem1.Click += WindowRelatórioPule;
             // 
             // Main
             // 
@@ -141,5 +149,6 @@
         private ToolStripMenuItem animalToolStripMenuItem1;
         private ToolStripMenuItem arquivoToolStripMenuItem1;
         private ToolStripMenuItem sairToolStripMenuItem;
+        private ToolStripMenuItem puleToolStripMenuItem1;
     }
 }

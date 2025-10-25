@@ -29,6 +29,7 @@ namespace Gestor_De_Pule.src.Model
         public float Valor {  get; set; }
         //Propriedade para chamar no listVew
         public string NomeAnimais => (string)AnimaisToString();
+        public string ValorFormatado => Valor.ToString("C2");
         //construct
         public Pule() { }
 
@@ -39,6 +40,7 @@ namespace Gestor_De_Pule.src.Model
             _date = DateTime.Now;
             _animais = animais;
             Valor = valor;
+            Número = númeroDoPule;
         }
 
         //sett gett métodos
@@ -271,6 +273,10 @@ namespace Gestor_De_Pule.src.Model
                 db.SaveChanges();
                 return true;
             }catch { return false; }
+        }
+        public override string ToString()
+        {
+            return Número.ToString();
         }
     }
 }

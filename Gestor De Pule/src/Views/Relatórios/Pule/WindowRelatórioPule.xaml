@@ -1,0 +1,62 @@
+﻿<Window x:Class="Gestor_De_Pule.src.Views.Relatórios.Pule.WindowRelatórioPule"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Gestor_De_Pule.src.Views.Relatórios.Pule"
+        mc:Ignorable="d"
+        Title="Relatório Do Pule" Height="534" Width="800">
+    <Canvas>
+        <Grid Height="88" Width="309" Canvas.Left="10" Canvas.Top="21" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto" MinWidth="89.227"/>
+                <ColumnDefinition Width="Auto" MinWidth="0"/>
+
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label Content="Selecione Um Pule" Margin="0,0,0,20" Grid.RowSpan="2"/>
+            <ComboBox x:Name="comboBoxPulesCadastrados" Margin="108,0,0,22" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+            <Button Content="Gerar Relatório" Margin="108,28,0,-28" Grid.Row="1" Grid.ColumnSpan="2" Click="GerarRelatórioPule"/>
+
+        </Grid>
+        <Grid Height="217" Width="780" Canvas.Left="20" Canvas.Top="144" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" MinHeight="26"/>
+                <RowDefinition Height="Auto" MinHeight="128.8"/>
+            </Grid.RowDefinitions>
+            <Label x:Name="labelNumPule" Content="-" HorizontalAlignment="Left"  VerticalAlignment="Center" Height="26" Width="753"/>
+            <ListView x:Name="listViewPule" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,0,0,0" Grid.Row="1">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Apostador" DisplayMemberBinding="{Binding Apostador}" />
+                        <GridViewColumn Header="Data" DisplayMemberBinding="{Binding Date}"/>
+                        <GridViewColumn Header="Animais" DisplayMemberBinding="{Binding NomeAnimais}"/>
+                        <GridViewColumn Header="Valor Apostado R$" DisplayMemberBinding="{Binding ValorFormatado}"/>
+                        <GridViewColumn Header="Status Do Pagamento" DisplayMemberBinding="{Binding StatusPagamento}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+        <Grid Height="129" Width="435" Canvas.Left="22" Canvas.Top="379" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="190.993"/>
+                <ColumnDefinition Width="*" MinWidth="38"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Label x:Name="labelTotalPule" Content="-"  Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="1"/>
+            <Label x:Name="labelTotalPedente" Content="-" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Column="0" Height="26" Width="222" Grid.Row="1" Grid.ColumnSpan="1"/>
+            <Label x:Name="labelTotalApostado" Content="-"  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="1" />
+            <Label x:Name="labelTotalPagos" Content="-" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1"/>
+        </Grid>
+    </Canvas>
+</Window>

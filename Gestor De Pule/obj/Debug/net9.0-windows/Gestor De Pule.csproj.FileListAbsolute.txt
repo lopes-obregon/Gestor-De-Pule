@@ -156,3 +156,5 @@ C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windo
 C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor_De_Pule.src.Views.Relatórios.Apostador.FormRelatórioApostador.resources
 C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.InMemory.dll
 C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\Gestor_De_Pule.src.Views.Relatórios.Animal.FormRelatórioAnimal.resources
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\src\Views\Relatórios\Pule\WindowRelatórioPule.g.cs
+C:\Users\renan\source\repos\Gestor De Pule\Gestor De Pule\obj\Debug\net9.0-windows\src\Views\Relatórios\Pule\WindowRelatórioPule.baml
