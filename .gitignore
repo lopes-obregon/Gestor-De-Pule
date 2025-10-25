@@ -19,6 +19,19 @@ Gestor De Pule/bin/Release/
 Gestor De Pule/bin/Debug/
 Gestor De Pule/obj/Debug/
 Gestor De Pule/obj/Release/
+Gestor De Pule/obj/
+Gestor De Pule/bin/Debug/net9.0-windows/Gestor De Pule.dll
+Gestor De Pule/bin/Debug/net9.0-windows/Gestor De Pule.exe
+Gestor De Pule/bin/Debug/net9.0-windows/Gestor De Pule.pdb
+Gestor De Pule/obj/Debug/net9.0-windows/Gestor De Pule.AssemblyInfo.cs
+Gestor De Pule/obj/Debug/net9.0-windows/Gestor De Pule.AssemblyInfoInputs.cache
+Gestor De Pule/obj/Debug/net9.0-windows/Gestor De Pule.csproj.GenerateResource.cache
+Gestor De Pule/obj/Debug/net9.0-windows/Gestor De Pule.dll
+Gestor De Pule/obj/Debug/net9.0-windows/Gestor De Pule.pdb
+Gestor De Pule/obj/Debug/net9.0-windows/Gestor De Pule.sourcelink.json
+Gestor De Pule/obj/Debug/net9.0-windows/apphost.exe
+Gestor De Pule/obj/Debug/net9.0-windows/ref/Gestor De Pule.dll
+Gestor De Pule/obj/Debug/net9.0-windows/refint/Gestor De Pule.dll
 
 # Ignora arquivos temporários gerados por WPF ou WinForms
 *_wpftmp.*
