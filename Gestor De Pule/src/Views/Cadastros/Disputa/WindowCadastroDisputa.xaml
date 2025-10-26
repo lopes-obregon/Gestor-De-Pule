@@ -1,0 +1,35 @@
+﻿<Window x:Class="Gestor_De_Pule.src.Views.Cadastros.WindowCadastroDisputa"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Gestor_De_Pule.src.Views.Cadastros"
+        mc:Ignorable="d"
+        Title="Cadastro Disputa" Height="450" Width="800">
+    <Canvas>
+        <Grid Height="434" Width="800">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="663*"/>
+                <ColumnDefinition Width="137*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="73*"/>
+                <RowDefinition Height="361*"/>
+            </Grid.RowDefinitions>
+            <Label Content="Disputas Cadastrados" HorizontalAlignment="Center" Margin="0,42,0,0" VerticalAlignment="Top" Height="26" Width="160" Grid.RowSpan="1"/>
+            <ListView Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical">
+                <Button Content="Nova" Margin="0,0,0,10" Click="FormCadastroDisputa"/>
+                <Button Content="Atualizar" Margin="0,0,0,10"/>
+                <Button Content="Excluir" Margin="0,0,0,10"/>
+
+            </StackPanel>
+        </Grid>
+    </Canvas>
+</Window>

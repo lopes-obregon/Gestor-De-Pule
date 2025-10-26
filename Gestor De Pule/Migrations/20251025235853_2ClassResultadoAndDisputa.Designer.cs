@@ -3,6 +3,7 @@ using System;
 using Gestor_De_Pule.src.Persistencias;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gestor_De_Pule.Migrations
 {
     [DbContext(typeof(DataBase))]
-    partial class DataBaseModelSnapshot : ModelSnapshot
+    [Migration("20251025235853_2ClassResultadoAndDisputa")]
+    partial class _2ClassResultadoAndDisputa
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.10");
@@ -128,7 +131,7 @@ namespace Gestor_De_Pule.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Disputas");
+                    b.ToTable("Disputa");
                 });
 
             modelBuilder.Entity("Gestor_De_Pule.src.Models.Resultado", b =>
@@ -155,7 +158,7 @@ namespace Gestor_De_Pule.Migrations
 
                     b.HasIndex("DisputaId");
 
-                    b.ToTable("Resultados");
+                    b.ToTable("Resultado");
                 });
 
             modelBuilder.Entity("AnimalPule", b =>

@@ -1,6 +1,7 @@
 using Gestor_De_Pule.src.Controllers;
 using Gestor_De_Pule.src.Views;
 using Gestor_De_Pule.src.Views.Apostador;
+using Gestor_De_Pule.src.Views.Cadastros;
 using Gestor_De_Pule.src.Views.Pule;
 using Gestor_De_Pule.src.Views.Relatórios.Animal;
 using Gestor_De_Pule.src.Views.Relatórios.Apostador;
@@ -137,6 +138,12 @@ namespace Gestor_De_Pule
         private void WindowRelatórioPule(object sender, EventArgs e)
         {
             var window = new WindowRelatórioPule();
+            window.ShowDialog();
+        }
+
+        private void DisputaCadastradosWindow(object sender, EventArgs e)
+        {
+            var window = new WindowCadastroDisputa();
             window.ShowDialog();
         }
     }
