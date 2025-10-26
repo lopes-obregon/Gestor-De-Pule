@@ -49,6 +49,7 @@ namespace Gestor_De_Pule.src.Controllers
                         sucess = ResultadoRepository.Update(resultado);
                         if (sucess == false) return "Erro ao Atualizar o resultados!";
                         animal.Resultados.Add(resultado);
+                        //parei aqui
                         Animal.Update(animal);
                         sucess = AnimalRepository.Update(animal);
                         if (sucess == false) return "Erro ao atualizar o Animal!";
