@@ -1,4 +1,5 @@
-﻿using Gestor_De_Pule.src.Persistencias;
+﻿using Gestor_De_Pule.src.Models;
+using Gestor_De_Pule.src.Persistencias;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
@@ -15,6 +16,7 @@ namespace Gestor_De_Pule.src.Model
         private string _jockey = "";
         private string _cidade = "";
         private List<Pule> _pules = new();
+        public List<Resultado> Resultados { get; set; } = new List<Resultado>();
         //publics métodos
         //retorna e seta a o id
         public int Id { get { return _id; } set { _id = value; } }
@@ -30,6 +32,7 @@ namespace Gestor_De_Pule.src.Model
         public string Cidade { get { return _cidade; } set { _cidade = value; } }
         public int Número { get { return _número; } set { _número = value; } }
         public List<Pule> Pules { get { return _pules; } set { _pules = value; } }
+
         //construct
         public Animal(int número)
         {
@@ -113,6 +116,17 @@ namespace Gestor_De_Pule.src.Model
             return Número + " - " + _name;
         }
 
-       
+        internal void UpDate()
+        {
+            using DataBase db = new DataBase();
+            try
+            {
+                if(this is not null)
+                {
+                    db.Animals.Update(this);
+                    db.SaveChanges();
+                }
+            }catch { }
+        }
     }
 }

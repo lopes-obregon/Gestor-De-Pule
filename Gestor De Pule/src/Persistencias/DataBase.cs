@@ -1,4 +1,5 @@
 ﻿using Gestor_De_Pule.src.Model;
+using Gestor_De_Pule.src.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Gestor_De_Pule.src.Persistencias
@@ -8,6 +9,8 @@ namespace Gestor_De_Pule.src.Persistencias
         public DbSet<Animal> Animals { get; set; }
         public DbSet<Apostador> Apostadors { get; set; }
         public DbSet<Pule> Pules { get; set; }
+        public DbSet<Disputa> Disputas { get; set; }
+        public DbSet<Resultado> Resultados { get; set; }
        public string Dbpath { get; }
         public DataBase() {
             var folder = Environment.SpecialFolder.LocalApplicationData;

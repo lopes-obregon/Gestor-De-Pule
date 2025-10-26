@@ -13,7 +13,9 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Pule
             InitializeComponent();
             InitComboBox();
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         private void InitComboBox()
         {
             comboBoxPulesCadastrados.Items.Clear();
@@ -28,7 +30,15 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Pule
 
             }
         }
-
+        /// <summary>
+        /// Generates a report for the selected betting slip and updates the UI with the report details.
+        /// </summary>
+        /// <remarks>This method retrieves the selected betting slip from the UI, calculates totals for
+        /// the number of slips, the total amount bet, and the number of paid and pending slips. It then updates the UI
+        /// labels with these calculated values. Ensure that a betting slip is selected before invoking this method to
+        /// avoid null references.</remarks>
+        /// <param name="sender">The source of the event, typically a button or UI element.</param>
+        /// <param name="e">The event data associated with the routed event.</param>
         private void GerarRelatórioPule(object sender, RoutedEventArgs e)
         {
             var puleSelecionadoUi = comboBoxPulesCadastrados.SelectedItem;
