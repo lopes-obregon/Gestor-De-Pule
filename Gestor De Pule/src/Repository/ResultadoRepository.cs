@@ -1,5 +1,6 @@
 ﻿using Gestor_De_Pule.src.Models;
 using Gestor_De_Pule.src.Persistencias;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,33 @@ namespace Gestor_De_Pule.src
             }
             catch {  return false; }
             return false;
+        }
+
+        internal static List<Resultado> ReadResultados(List<Resultado> resultadoList)
+        {
+            using DataBase db = new DataBase();
+            List<Resultado> resultadosMapeados = new List<Resultado>();
+            try
+            {
+                if (resultadoList is not null && resultadoList.Count > 0)
+                {
+                    foreach (Resultado resultado in resultadoList)
+                    {
+                        if (resultado is not null)
+                        {
+                            var resultadoDb = db.Resultados.Include(res=> res.Animal).FirstOrDefault(res=> res.Id == resultado.Id);
+                            if (resultadoDb is not null)
+                                resultadosMapeados.Add(resultadoDb);
+
+                        }
+                    }
+                    if (resultadosMapeados.Count > 0)
+                        return resultadosMapeados.ToList();
+                    else return new List<Resultado>();
+                }
+            }
+            catch { return  resultadoList; }
+            return new List<Resultado>();
         }
 
         internal static bool Update(Resultado resultado)

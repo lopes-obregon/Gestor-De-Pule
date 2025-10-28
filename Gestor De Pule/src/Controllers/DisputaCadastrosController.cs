@@ -6,7 +6,26 @@ namespace Gestor_De_Pule.src.Controllers
     class DisputaCadastrosController
     {
         public static List<Animal> Animals { get; set; } = new List<Animal>();
-        
+        public static Disputa? Disputa { get; private set; } = null;
+        public static List<Disputa> Disputas { get;private set; } = new List<Disputa>();
+
+        internal static string AtualizarDados(string nomeDisputa, DateTime? date, ListBox.ObjectCollection items)
+        {
+            bool sucess = false;
+            List<Animal>? animaisSelecionadosUi = items.Cast<Animal>().ToList();
+            if(Disputa is not null)
+            {
+                Disputa.Nome = nomeDisputa;
+                if (date != null)
+                    Disputa.DataEHora = date ?? DateTime.Now;
+                else
+                    Disputa.DataEHora = DateTime.Now;
+                sucess = DisputaRepository.UpdateDisputa(Disputa, animaisSelecionadosUi);
+
+            }
+
+        }
+
         internal static string Cadastrar(string nomeDisputa, DateTime? date, ListBox.ObjectCollection items)
         {
             if (String.IsNullOrEmpty(nomeDisputa))
@@ -50,7 +69,7 @@ namespace Gestor_De_Pule.src.Controllers
                         if (sucess == false) return "Erro ao Atualizar o resultados!";
                         animal.Resultados.Add(resultado);
                         //parei aqui
-                        Animal.Update(animal);
+                        //Animal.Update(animal);
                         sucess = AnimalRepository.Update(animal);
                         if (sucess == false) return "Erro ao atualizar o Animal!";
 
@@ -60,6 +79,31 @@ namespace Gestor_De_Pule.src.Controllers
                 
             }
 
+        }
+
+        internal static string LoadDisputa(object itemSelecionadoUi)
+        {
+           bool sucess = false;
+            Disputa? disputaSelecionado = itemSelecionadoUi as Disputa;
+            if (disputaSelecionado == null) sucess = false;
+            else
+            {
+               Disputa =  DisputaRepository.ReadDisputa(disputaSelecionado);
+             
+                if (Disputa == null) sucess = false;
+                else
+                {
+                    Disputa.ResultadoList = ResultadoRepository.ReadResultados(Disputa.ResultadoList);
+                    if(Disputa.ResultadoList.Count >0) sucess = true;
+                }
+            }
+            if (sucess == false) return "Erro Ao carregar a disputa!";
+            else return "Disputa Carregado com Sucesso!";
+        }
+
+        internal static void LoadListDisputa()
+        {
+            Disputas = DisputaRepository.ReadDisputas();
         }
 
         internal static void LoadLists()

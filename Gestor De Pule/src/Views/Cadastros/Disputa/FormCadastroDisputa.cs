@@ -44,7 +44,13 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
 
                 }
         }
-
+        /// <summary>
+        /// Removes the currently selected animal from the list.
+        /// </summary>
+        /// <remarks>This method is intended to be used as an event handler for a <see cref="ListBox"/>
+        /// control. It removes the selected item from the list if an item is selected.</remarks>
+        /// <param name="sender">The source of the event, expected to be a <see cref="ListBox"/>.</param>
+        /// <param name="e">The event data associated with the removal action.</param>
         private void RemoveAnimal(object sender, EventArgs e)
         {
             ListBox? list = sender as ListBox;
@@ -54,7 +60,16 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
                     list.Items.Remove(list.SelectedItem);
                 }
         }
-
+        /// <summary>
+        /// Registers a new competition with the specified name, date, and list of animals.
+        /// </summary>
+        /// <remarks>This method collects input from the user interface, including the competition name,
+        /// date, and a list of animals. It validates that a name and at least one animal are provided before proceeding
+        /// with the registration. If the inputs are valid, it calls the <see
+        /// cref="DisputaCadastrosController.Cadastrar"/> method to register the competition and displays a message
+        /// indicating the result. The input fields are cleared after registration.</remarks>
+        /// <param name="sender">The source of the event, typically a button.</param>
+        /// <param name="e">The event data associated with the click event.</param>
         private void CadastrarDisputa(object sender, EventArgs e)
         {
             string nomeDisputa = String.Empty;
@@ -73,6 +88,11 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
             else
             {
                 mensagem = DisputaCadastrosController.Cadastrar(nomeDisputa, date, listBoxAnimaisToDisputa.Items);
+                MessageBox.Show(mensagem);
+                //limpa os dados
+                textBoxNomeDaDisputa.Text = String.Empty;
+                dateTimePicker1.Text = String.Empty;
+                listBoxAnimaisToDisputa.Items.Clear();
             }
         }
     }

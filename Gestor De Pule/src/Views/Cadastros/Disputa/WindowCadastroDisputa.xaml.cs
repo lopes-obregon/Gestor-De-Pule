@@ -1,4 +1,5 @@
-﻿using Gestor_De_Pule.src.Views.Cadastros.Disputa;
+﻿using Gestor_De_Pule.src.Controllers;
+using Gestor_De_Pule.src.Views.Cadastros.Disputa;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,11 +24,26 @@ namespace Gestor_De_Pule.src.Views.Cadastros
         public WindowCadastroDisputa()
         {
             InitializeComponent();
+            InitList();
+        }
+
+        private void InitList()
+        {
+            DisputaCadastrosController.LoadListDisputa();
+            var disputas = DisputaCadastrosController.Disputas;
+            if (disputas != null) listViewDisputaCadastrados.ItemsSource = disputas;
         }
 
         private void FormCadastroDisputa(object sender, RoutedEventArgs e)
         {
             var form = new FormCadastroDisputa();
+            form.ShowDialog();
+        }
+
+        private void AtualizarDisputaSelecionado(object sender, RoutedEventArgs e)
+        {
+            var itemSelecionadoUi = listViewDisputaCadastrados.SelectedItem;
+            var form = new FormAtualizarDisputaCadastrado(itemSelecionadoUi);
             form.ShowDialog();
         }
     }

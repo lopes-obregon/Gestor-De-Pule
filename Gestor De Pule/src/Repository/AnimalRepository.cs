@@ -17,6 +17,7 @@ namespace Gestor_De_Pule.src.Repository
             {
                 try
                 {
+                    db.Attach(animal);
                     db.Animals.Update(animal);
                     db.SaveChanges();
                     return true;
