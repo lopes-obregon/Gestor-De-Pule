@@ -1,4 +1,5 @@
-﻿using Gestor_De_Pule.src.Repository;
+﻿using Gestor_De_Pule.src.Persistencias;
+using Gestor_De_Pule.src.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,11 +23,16 @@ namespace Gestor_De_Pule.src.Models
             ResultadoList.Add(resultados);
         }
 
-        internal Disputa? isCreate(string nomeDisputa)
+        internal  static Disputa? isCreate(string nomeDisputa)
         {
-            Disputa? disputa = DisputaRepository.Exist(nomeDisputa);
-            if (disputa == null) return null;
-            else return disputa;
+            Disputa? disputaDb;
+            using DataBase db = new DataBase();
+            disputaDb =  db.Disputas.FirstOrDefault(dis=> dis.Nome == nomeDisputa);
+            if (disputaDb == null)
+                return null;
+            else
+                return disputaDb;
+            
         }
     }
 }

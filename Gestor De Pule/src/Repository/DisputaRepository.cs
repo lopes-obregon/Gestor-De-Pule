@@ -9,12 +9,11 @@ namespace Gestor_De_Pule.src.Repository
     {
         internal static Disputa? Exist(string nomeDisputa)
         {
-            using DataBase db = new DataBase();
-            try
-            {
-                return db.Disputas.Include(dis => dis.ResultadoList).First(dis => dis.Nome == nomeDisputa);
-            }
-            catch { return null; }
+            using var db = new DataBase();
+
+            return db.Disputas
+                
+                .FirstOrDefault(dis => dis.Nome == nomeDisputa);
         }
 
         internal static Disputa? ReadDisputa(Disputa disputaSelecionado)

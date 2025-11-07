@@ -71,29 +71,39 @@ namespace Gestor_De_Pule.src.Controllers
                 {
                     animaisSelecionados = Animals.Where(an=> animaisSelecionadosUi.Any(anUi=>anUi.Id == an.Id)).ToList();
                 }
-                foreach(var animal in animaisSelecionados)
+
+                Disputa? disputa = null;
+
+                foreach (var animal in animaisSelecionados)
                 {
-                    if(animal is not null)
+                    if (animal is null)
+                        continue;
+
+                    var resultado = new Resultado(animal);
+                     sucess = ResultadoRepository.Save(resultado);
+                    if (!sucess)
+                        return "Erro ao salvar o Resultado!";
+
+                     disputa = Disputa.isCreate(nomeDisputa);
+
+                    if (disputa == null)
                     {
-                        Resultado resultado = new Resultado(animal);
-                        sucess = ResultadoRepository.Save(resultado);
-                        //sucess = Resultado.Save(resultado);
-                        if (sucess == false) return "Erro ao salvar o Resultado!";
-                        Disputa disputa = new Disputa(nomeDisputa, date ?? new DateTime(),  resultado);
-                        //Disputa.Save(disputa);
-                        sucess =DisputaRepository.Save(disputa);
-                        if (sucess == false) return "Erro ao Salvar a Disputa!";
-
-                        //resultado.Disputa = disputa;
-                        sucess = ResultadoRepository.Update(resultado, disputa);
-                        if (sucess == false) return "Erro ao Atualizar o resultados!";
-                        
-                        //animal.Resultados.Add(resultado);
-                        //Animal.Update(animal);
-                        sucess = AnimalRepository.Update(animal, resultado);
-                        if (sucess == false) return "Erro ao atualizar o Animal!";
-
+                        disputa = new Disputa(nomeDisputa, date ?? DateTime.Now, resultado);
+                        sucess = DisputaRepository.Save(disputa);
+                        if (!sucess)
+                            return "Erro ao salvar a Disputa!";
                     }
+
+                    if (disputa == null)
+                        return "Disputa ainda está nula após tentativa de criação!";
+
+                    sucess = ResultadoRepository.Update(resultado, disputa);
+                    if (!sucess)
+                        return "Erro ao atualizar o Resultado!";
+
+                    sucess = AnimalRepository.Update(animal, resultado);
+                    if (!sucess)
+                        return "Erro ao atualizar o Animal!";
                 }
                 return "Disputa salva com sucesso!";
                 
