@@ -70,6 +70,7 @@ namespace Gestor_De_Pule.src.Model
             {
                 return db.Animals
                     .Include(a => a.Pules)
+                    .Include(a => a.Resultados)
                     .ToList();
             }catch { return new List<Animal>(); }
                 

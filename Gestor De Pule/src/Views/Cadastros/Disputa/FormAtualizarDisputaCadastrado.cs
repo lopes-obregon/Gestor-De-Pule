@@ -90,6 +90,9 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
                 {
                     var animalSelecionadoUi = list.SelectedItem;
                     listBoxAnimaisToDisputa.Items.Remove(animalSelecionadoUi);
+                    animalSelecionadoUi = DisputaCadastrosController.ToAnimal(animalSelecionadoUi);
+                    if(animalSelecionadoUi != null)
+                        DisputaCadastrosController.AddAnimalRemovido(animalSelecionadoUi);
                 }
             }
         }
@@ -103,7 +106,8 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
             else { date = dateTimePicker1.Value;
                 nomeDisputa = textBoxNomeDaDisputa.Text;
                 mensagem = DisputaCadastrosController.AtualizarDados(nomeDisputa, date, listBoxAnimaisToDisputa.Items);
-                    }
+                MessageBox.Show(mensagem);        
+            }
         }
     }
 }

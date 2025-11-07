@@ -8,11 +8,23 @@ namespace Gestor_De_Pule.src.Controllers
         public static List<Animal> Animals { get; set; } = new List<Animal>();
         public static Disputa? Disputa { get; private set; } = null;
         public static List<Disputa> Disputas { get;private set; } = new List<Disputa>();
+        public static List<Animal> AnimaisRemovidos { get; private set; } = new List<Animal>();
+
+        internal static void AddAnimalRemovido(object animalSelecionadoUi)
+        {
+            if (animalSelecionadoUi is Animal)
+                {var animalSelecionado = animalSelecionadoUi as Animal;
+                if(animalSelecionado is not null)
+                    AnimaisRemovidos.Add(animalSelecionado);
+            }
+
+        }
 
         internal static string AtualizarDados(string nomeDisputa, DateTime? date, ListBox.ObjectCollection items)
         {
             bool sucess = false;
             List<Animal>? animaisSelecionadosUi = items.Cast<Animal>().ToList();
+            List<Animal>? animaisSelecionados = null;
             if(Disputa is not null)
             {
                 Disputa.Nome = nomeDisputa;
@@ -20,9 +32,17 @@ namespace Gestor_De_Pule.src.Controllers
                     Disputa.DataEHora = date ?? DateTime.Now;
                 else
                     Disputa.DataEHora = DateTime.Now;
-                sucess = DisputaRepository.UpdateDisputa(Disputa, animaisSelecionadosUi);
+                if(animaisSelecionadosUi.Count > 0)
+                {
+                    var idsAnimalSelecionadoUi = animaisSelecionadosUi.Select(a => a.Id).ToList();
+                    animaisSelecionados = Animals.Where(a=>idsAnimalSelecionadoUi.Contains(a.Id)).ToList();
+                }
+                sucess = DisputaRepository.UpdateDisputa(Disputa, animaisSelecionadosUi, AnimaisRemovidos);
+                if (sucess) return "Disputa Atualizado com sucesso!";
+                else return "Erro ao Atualizar a Disputa!";
 
             }
+            return "Erro Ao Atualizar A Disputa!";
 
         }
 
@@ -64,13 +84,13 @@ namespace Gestor_De_Pule.src.Controllers
                         sucess =DisputaRepository.Save(disputa);
                         if (sucess == false) return "Erro ao Salvar a Disputa!";
 
-                        resultado.Disputa = disputa;
-                        sucess = ResultadoRepository.Update(resultado);
+                        //resultado.Disputa = disputa;
+                        sucess = ResultadoRepository.Update(resultado, disputa);
                         if (sucess == false) return "Erro ao Atualizar o resultados!";
-                        animal.Resultados.Add(resultado);
-                        //parei aqui
+                        
+                        //animal.Resultados.Add(resultado);
                         //Animal.Update(animal);
-                        sucess = AnimalRepository.Update(animal);
+                        sucess = AnimalRepository.Update(animal, resultado);
                         if (sucess == false) return "Erro ao atualizar o Animal!";
 
                     }
@@ -110,6 +130,27 @@ namespace Gestor_De_Pule.src.Controllers
         {
             AnimalController.LoadAnimais();
             Animals = AnimalController.Animals.ToList();
+        }
+
+        internal static bool RemoveDisuptaSelecionado(object disputaSelecionadoUi)
+        {
+            Disputa? disputaSelecionado = disputaSelecionadoUi as Disputa;
+            bool sucess = false;
+            if(disputaSelecionado is not null)
+            {
+                 sucess = DisputaRepository.Remove(disputaSelecionado);
+            }
+            if (sucess) return true;
+            else return false;
+        }
+
+        internal static object? ToAnimal(object animalSelecionadoUi)
+        {
+            Animal? animal = animalSelecionadoUi as Animal;
+            if (animal == null)
+                return null;
+            else  
+                return animal;
         }
     }
 }

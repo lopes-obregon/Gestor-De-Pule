@@ -28,7 +28,7 @@
             <StackPanel Grid.Row="1" Orientation="Vertical" Margin="5,19,93,10" Grid.Column="1">
                 <Button Content="Nova" Margin="0,0,0,10" Click="FormCadastroDisputa"/>
                 <Button Content="Atualizar" Margin="0,0,0,10" Click="AtualizarDisputaSelecionado"/>
-                <Button Content="Excluir" Margin="0,0,0,10"/>
+                <Button Content="Excluir" Margin="0,0,0,10" Click="ExcluirDisputa"/>
 
             </StackPanel>
         </Grid>

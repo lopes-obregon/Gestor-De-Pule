@@ -18,12 +18,19 @@ namespace Gestor_De_Pule.src
             {
                 if(resultado is not null)
                 {
-                    if (resultado.Animal is not null)
+                    var animalDb = db.Animals
+                        .Include(a=>a.Resultados)
+                        .FirstOrDefault(a=> a.Id == resultado.Animal.Id);
+                    if (animalDb is not null)
                     {
-                        resultado.Animal = db.Animals.Find(resultado.Animal.Id);
-                        db.Resultados.Add(resultado);
-                        db.SaveChanges();
-                        return true;
+                       if(animalDb.Id == resultado.Animal.Id)
+                        {
+                            resultado.Animal = animalDb;
+                            db.Resultados.Add(resultado);
+                            db.SaveChanges();
+                            return true;
+                        }
+                        //resultado.Animal = db.Animals.Find(resultado.Animal.Id);
                     }
                 }
             }
@@ -71,6 +78,41 @@ namespace Gestor_De_Pule.src
                 }
             }catch { return false; }
             return false;
+        }
+
+        internal static bool Update(Resultado? resultado, Disputa? disputa)
+        {
+            using DataBase db = new DataBase();
+            try
+            {
+                if(resultado is not null)
+                {
+                    var resultadoDb = db.Resultados
+                        .Include(res => res.Disputa)
+                        .Include(res=>res.Animal)
+                        .FirstOrDefault(res => res.Id == resultado.Id);
+                    if(resultadoDb is not null)
+                    {
+                        if(disputa is not null)
+                        {
+                            var disputaDb = db.Disputas
+                                .Include(dis => dis.ResultadoList)
+                                .FirstOrDefault(dis => dis.Id == disputa.Id);
+                            if(disputaDb is not null)
+                            {
+                                resultadoDb.Disputa = disputaDb;
+                                disputaDb.ResultadoList.Add(resultadoDb);
+                                db.Resultados.Update(resultadoDb);
+                                db.Disputas.Update(disputaDb);
+                                disputa = disputaDb;
+                                resultado = resultadoDb;
+                                db.SaveChanges();
+                            }
+                        }
+                    }
+                }
+                return true;
+            }catch { return false; }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Gestor_De_Pule.src.Repository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,6 +22,11 @@ namespace Gestor_De_Pule.src.Models
             ResultadoList.Add(resultados);
         }
 
-       
+        internal Disputa? isCreate(string nomeDisputa)
+        {
+            Disputa? disputa = DisputaRepository.Exist(nomeDisputa);
+            if (disputa == null) return null;
+            else return disputa;
+        }
     }
 }

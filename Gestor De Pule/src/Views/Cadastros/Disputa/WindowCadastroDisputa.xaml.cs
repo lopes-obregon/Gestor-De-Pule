@@ -38,6 +38,7 @@ namespace Gestor_De_Pule.src.Views.Cadastros
         {
             var form = new FormCadastroDisputa();
             form.ShowDialog();
+            InitList();
         }
 
         private void AtualizarDisputaSelecionado(object sender, RoutedEventArgs e)
@@ -45,6 +46,26 @@ namespace Gestor_De_Pule.src.Views.Cadastros
             var itemSelecionadoUi = listViewDisputaCadastrados.SelectedItem;
             var form = new FormAtualizarDisputaCadastrado(itemSelecionadoUi);
             form.ShowDialog();
+            InitList();
+        }
+
+        private void ExcluirDisputa(object sender, RoutedEventArgs e)
+        {
+            var disputaSelecionadoUi = listViewDisputaCadastrados.SelectedItem;
+            if(disputaSelecionadoUi is not null)
+            {
+
+                var resposta = System.Windows.MessageBox.Show("Deseja Realmente Remover ?", "Pergunta", MessageBoxButton.YesNoCancel);
+                if(resposta == MessageBoxResult.Yes)
+                {
+                    bool sucess = false;
+                    sucess = DisputaCadastrosController.RemoveDisuptaSelecionado(disputaSelecionadoUi);
+                    if (sucess) System.Windows.MessageBox.Show("Disputa Removida com Sucesso!");
+                    else
+                        System.Windows.MessageBox.Show("Desculpe houve algum problema para Remover a disputa!");
+                }
+            }
+            InitList();
         }
     }
 }
