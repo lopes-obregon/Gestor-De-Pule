@@ -22,7 +22,10 @@ namespace Gestor_De_Pule.src.Repository
             try
             {
                 if (disputaSelecionado == null) return null;
-                return db.Disputas.Include(d => d.ResultadoList).First();
+                return db.Disputas
+                    .Include(d => d.ResultadoList)
+                    .ThenInclude(res=> res.Animal)
+                    .FirstOrDefault(dis=> dis.Id == disputaSelecionado.Id);
                 
             }
             catch { return null; }

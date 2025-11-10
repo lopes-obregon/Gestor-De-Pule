@@ -119,13 +119,9 @@ namespace Gestor_De_Pule.src.Controllers
             else
             {
                Disputa =  DisputaRepository.ReadDisputa(disputaSelecionado);
-             
+                sucess = true;
                 if (Disputa == null) sucess = false;
-                else
-                {
-                    Disputa.ResultadoList = ResultadoRepository.ReadResultados(Disputa.ResultadoList);
-                    if(Disputa.ResultadoList.Count >0) sucess = true;
-                }
+                
             }
             if (sucess == false) return "Erro Ao carregar a disputa!";
             else return "Disputa Carregado com Sucesso!";
