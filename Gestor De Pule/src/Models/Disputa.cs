@@ -34,5 +34,9 @@ namespace Gestor_De_Pule.src.Models
                 return disputaDb;
             
         }
+        public override string ToString()
+        {
+            return Nome;
+        }
     }
 }

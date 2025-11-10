@@ -15,13 +15,19 @@ namespace Gestor_De_Pule
         {
             InitializeComponent();
             //MainController.LoadLists();
-            //InitComboBox();
+            InitComboBox();
             //this.Dock = DockStyle.Fill;
 
         }
 
         private void InitComboBox()
         {
+            comboBoxDisputas.Items.Clear();
+            var disputasCadastradas = MainController.ListarDisputas();
+            if (disputasCadastradas is not null)
+            {
+                comboBoxDisputas.Items.AddRange(disputasCadastradas.ToArray());
+            }
             /*comboBoxApostadores.Items.Clear();
             comboBoxAnimais.Items.Clear();
             if (MainController.Apostadors.Count > 0)
@@ -145,6 +151,41 @@ namespace Gestor_De_Pule
         {
             var window = new WindowCadastroDisputa();
             window.ShowDialog();
+        }
+
+        private void BuscarDisputa(object sender, EventArgs e)
+        {
+            var disputaSelecionadaUi = comboBoxDisputas.SelectedItem;
+            if(disputaSelecionadaUi is null)
+            {
+                //preencher o data grid
+                SetDataGridDisputa();
+            }
+
+        }
+
+        private void SetDataGridDisputa()
+        {
+            var disputaCadastrados = MainController.ListarDisputas();
+            if(disputaCadastrados is not null)
+            {
+                foreach(var disputa in disputaCadastrados)
+                {
+                    if(disputa is not null && disputa.ResultadoList.Count > 0)
+                    {
+                        foreach(var resultado in disputa.ResultadoList)
+                        {
+                            dataGridViewDisputas.Rows.Add(resultado.Animal.Nome, resultado.Posição, resultado.Tempo);
+                        }
+
+                    }
+                }
+            }
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }
