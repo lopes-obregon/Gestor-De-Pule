@@ -43,6 +43,15 @@ namespace Gestor_De_Pule.src.Controllers
             }
         }
 
+        internal static Disputa? BuscarDisputa(object disputaSelecionadaUi)
+        {
+            Disputa? disputaSelecionado = disputaSelecionadaUi as Disputa;
+            if(disputaSelecionado is not null)
+            {
+                return DisputaService.ReadDisputa(disputaSelecionado);
+            }else return null;
+        }
+
         internal static List<Disputa>? ListarDisputas()
         {
             return DisputaService.ListarTodas();

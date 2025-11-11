@@ -22,5 +22,17 @@ namespace Gestor_De_Pule.src.Service
                     .ToList();
             }catch { return null; }
         }
+
+        internal static Disputa? ReadDisputa(Disputa disputaSelecionado)
+        {
+            using DataBase db = new DataBase();
+            try
+            {
+                return db.Disputas
+                    .Include(dis => dis.ResultadoList)
+                    .ThenInclude(res => res.Animal)
+                    .First(dis => dis.Id == disputaSelecionado.Id);
+            }catch { return null; }
+        }
     }
 }

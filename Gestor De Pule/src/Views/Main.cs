@@ -156,24 +156,46 @@ namespace Gestor_De_Pule
         private void BuscarDisputa(object sender, EventArgs e)
         {
             var disputaSelecionadaUi = comboBoxDisputas.SelectedItem;
-            if(disputaSelecionadaUi is null)
+            ClearDatagridDisputas();
+            if (disputaSelecionadaUi is null)
             {
                 //preencher o data grid
                 SetDataGridDisputa();
             }
+            else
+            {
+                SetDataGridDisputa(disputaSelecionadaUi);
+            }
 
+        }
+
+        private void SetDataGridDisputa(object disputaSelecionadaUi)
+        {
+            var disputaSelecionadoDb = MainController.BuscarDisputa(disputaSelecionadaUi);
+            if(disputaSelecionadoDb is not null)
+            {
+                foreach(var resultado in disputaSelecionadoDb.ResultadoList)
+                {
+                    dataGridViewDisputas.Rows.Add(resultado.Animal.Nome, resultado.Posição, resultado.Tempo);
+                }
+            }
+        }
+
+        private void ClearDatagridDisputas()
+        {
+            dataGridViewDisputas.Rows.Clear();
         }
 
         private void SetDataGridDisputa()
         {
             var disputaCadastrados = MainController.ListarDisputas();
-            if(disputaCadastrados is not null)
+            if (disputaCadastrados is not null)
             {
-                foreach(var disputa in disputaCadastrados)
+                foreach (var disputa in disputaCadastrados)
                 {
-                    if(disputa is not null && disputa.ResultadoList.Count > 0)
+                    if (disputa is not null && disputa.ResultadoList.Count > 0)
                     {
-                        foreach(var resultado in disputa.ResultadoList)
+                        foreach (var resultado in disputa.ResultadoList)
                         {
                             dataGridViewDisputas.Rows.Add(resultado.Animal.Nome, resultado.Posição, resultado.Tempo);
                         }
