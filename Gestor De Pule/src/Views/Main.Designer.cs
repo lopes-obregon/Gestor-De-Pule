@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             menuStrip1 = new MenuStrip();
             arquivoToolStripMenuItem1 = new ToolStripMenuItem();
             sairToolStripMenuItem = new ToolStripMenuItem();
@@ -35,12 +36,31 @@
             animalToolStripMenuItem = new ToolStripMenuItem();
             apostadorToolStripMenuItem = new ToolStripMenuItem();
             puleToolStripMenuItem = new ToolStripMenuItem();
+            disputaToolStripMenuItem = new ToolStripMenuItem();
             relatóriosToolStripMenuItem = new ToolStripMenuItem();
             apostadorToolStripMenuItem1 = new ToolStripMenuItem();
             animalToolStripMenuItem1 = new ToolStripMenuItem();
             puleToolStripMenuItem1 = new ToolStripMenuItem();
-            disputaToolStripMenuItem = new ToolStripMenuItem();
+            tableLayoutPanelFiltrosSelect = new TableLayoutPanel();
+            dateTimePickerDisputa = new DateTimePicker();
+            label2 = new Label();
+            label1 = new Label();
+            comboBoxDisputas = new ComboBox();
+            flowLayoutPanelButtons = new FlowLayoutPanel();
+            button1 = new Button();
+            tableLayoutPanel1 = new TableLayoutPanel();
+            labelDisputaNome = new Label();
+            dataGridViewDisputas = new DataGridView();
+            ColumnAnimalNome = new DataGridViewTextBoxColumn();
+            ColumnPosição = new DataGridViewTextBoxColumn();
+            ColumnTempo = new DataGridViewTextBoxColumn();
+            windowCadastroDisputaBindingSource = new BindingSource(components);
             menuStrip1.SuspendLayout();
+            tableLayoutPanelFiltrosSelect.SuspendLayout();
+            flowLayoutPanelButtons.SuspendLayout();
+            tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewDisputas).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)windowCadastroDisputaBindingSource).BeginInit();
             SuspendLayout();
             // 
             // menuStrip1
@@ -48,7 +68,7 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { arquivoToolStripMenuItem1, arquivoToolStripMenuItem, relatóriosToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(1081, 24);
+            menuStrip1.Size = new Size(660, 24);
             menuStrip1.TabIndex = 0;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -62,7 +82,7 @@
             // sairToolStripMenuItem
             // 
             sairToolStripMenuItem.Name = "sairToolStripMenuItem";
-            sairToolStripMenuItem.Size = new Size(93, 22);
+            sairToolStripMenuItem.Size = new Size(180, 22);
             sairToolStripMenuItem.Text = "Sair";
             sairToolStripMenuItem.Click += CloseSystem;
             // 
@@ -76,23 +96,30 @@
             // animalToolStripMenuItem
             // 
             animalToolStripMenuItem.Name = "animalToolStripMenuItem";
-            animalToolStripMenuItem.Size = new Size(180, 22);
+            animalToolStripMenuItem.Size = new Size(129, 22);
             animalToolStripMenuItem.Text = "Animal";
             animalToolStripMenuItem.Click += JanelaCadastro;
             // 
             // apostadorToolStripMenuItem
             // 
             apostadorToolStripMenuItem.Name = "apostadorToolStripMenuItem";
-            apostadorToolStripMenuItem.Size = new Size(180, 22);
+            apostadorToolStripMenuItem.Size = new Size(129, 22);
             apostadorToolStripMenuItem.Text = "Apostador";
             apostadorToolStripMenuItem.Click += OpenWindowApostadoresCadastrados;
             // 
             // puleToolStripMenuItem
             // 
             puleToolStripMenuItem.Name = "puleToolStripMenuItem";
-            puleToolStripMenuItem.Size = new Size(180, 22);
+            puleToolStripMenuItem.Size = new Size(129, 22);
             puleToolStripMenuItem.Text = "Pule";
             puleToolStripMenuItem.Click += WindowPuleCadastrados;
+            // 
+            // disputaToolStripMenuItem
+            // 
+            disputaToolStripMenuItem.Name = "disputaToolStripMenuItem";
+            disputaToolStripMenuItem.Size = new Size(129, 22);
+            disputaToolStripMenuItem.Text = "Disputa";
+            disputaToolStripMenuItem.Click += DisputaCadastradosWindow;
             // 
             // relatóriosToolStripMenuItem
             // 
@@ -122,24 +149,151 @@
             puleToolStripMenuItem1.Text = "Pule";
             puleToolStripMenuItem1.Click += WindowRelatórioPule;
             // 
-            // disputaToolStripMenuItem
+            // tableLayoutPanelFiltrosSelect
             // 
-            disputaToolStripMenuItem.Name = "disputaToolStripMenuItem";
-            disputaToolStripMenuItem.Size = new Size(180, 22);
-            disputaToolStripMenuItem.Text = "Disputa";
-            disputaToolStripMenuItem.Click += DisputaCadastradosWindow;
+            tableLayoutPanelFiltrosSelect.ColumnCount = 2;
+            tableLayoutPanelFiltrosSelect.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanelFiltrosSelect.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanelFiltrosSelect.Controls.Add(dateTimePickerDisputa, 1, 1);
+            tableLayoutPanelFiltrosSelect.Controls.Add(label2, 0, 1);
+            tableLayoutPanelFiltrosSelect.Controls.Add(label1, 0, 0);
+            tableLayoutPanelFiltrosSelect.Controls.Add(comboBoxDisputas, 1, 0);
+            tableLayoutPanelFiltrosSelect.Location = new Point(12, 27);
+            tableLayoutPanelFiltrosSelect.Name = "tableLayoutPanelFiltrosSelect";
+            tableLayoutPanelFiltrosSelect.RowCount = 2;
+            tableLayoutPanelFiltrosSelect.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanelFiltrosSelect.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanelFiltrosSelect.Size = new Size(443, 100);
+            tableLayoutPanelFiltrosSelect.TabIndex = 1;
+            // 
+            // dateTimePickerDisputa
+            // 
+            dateTimePickerDisputa.Location = new Point(224, 53);
+            dateTimePickerDisputa.Name = "dateTimePickerDisputa";
+            dateTimePickerDisputa.Size = new Size(200, 23);
+            dateTimePickerDisputa.TabIndex = 2;
+            dateTimePickerDisputa.Visible = false;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(3, 50);
+            label2.Name = "label2";
+            label2.Size = new Size(91, 15);
+            label2.TabIndex = 2;
+            label2.Text = "Data Da Disputa";
+            label2.Visible = false;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(3, 0);
+            label1.Name = "label1";
+            label1.Size = new Size(100, 15);
+            label1.TabIndex = 2;
+            label1.Text = "Nome Da Disputa";
+            // 
+            // comboBoxDisputas
+            // 
+            comboBoxDisputas.FormattingEnabled = true;
+            comboBoxDisputas.Location = new Point(224, 3);
+            comboBoxDisputas.Name = "comboBoxDisputas";
+            comboBoxDisputas.Size = new Size(121, 23);
+            comboBoxDisputas.TabIndex = 2;
+            // 
+            // flowLayoutPanelButtons
+            // 
+            flowLayoutPanelButtons.Controls.Add(button1);
+            flowLayoutPanelButtons.Location = new Point(461, 30);
+            flowLayoutPanelButtons.Name = "flowLayoutPanelButtons";
+            flowLayoutPanelButtons.Size = new Size(194, 100);
+            flowLayoutPanelButtons.TabIndex = 2;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(3, 3);
+            button1.Name = "button1";
+            button1.Size = new Size(75, 23);
+            button1.TabIndex = 0;
+            button1.Text = "Buscar";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += BuscarDisputa;
+            // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.ColumnCount = 1;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.Controls.Add(labelDisputaNome, 0, 0);
+            tableLayoutPanel1.Controls.Add(dataGridViewDisputas, 0, 1);
+            tableLayoutPanel1.Location = new Point(12, 145);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 2;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10.1639347F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 89.83607F));
+            tableLayoutPanel1.Size = new Size(646, 305);
+            tableLayoutPanel1.TabIndex = 3;
+            // 
+            // labelDisputaNome
+            // 
+            labelDisputaNome.AutoSize = true;
+            labelDisputaNome.Location = new Point(3, 0);
+            labelDisputaNome.Name = "labelDisputaNome";
+            labelDisputaNome.Size = new Size(105, 15);
+            labelDisputaNome.TabIndex = 0;
+            labelDisputaNome.Text = "labelDisputaNome";
+            // 
+            // dataGridViewDisputas
+            // 
+            dataGridViewDisputas.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewDisputas.Columns.AddRange(new DataGridViewColumn[] { ColumnAnimalNome, ColumnPosição, ColumnTempo });
+            dataGridViewDisputas.Location = new Point(3, 34);
+            dataGridViewDisputas.Name = "dataGridViewDisputas";
+            dataGridViewDisputas.Size = new Size(640, 268);
+            dataGridViewDisputas.TabIndex = 1;
+            // 
+            // ColumnAnimalNome
+            // 
+            ColumnAnimalNome.HeaderText = "Nome Do Animal";
+            ColumnAnimalNome.Name = "ColumnAnimalNome";
+            ColumnAnimalNome.ReadOnly = true;
+            // 
+            // ColumnPosição
+            // 
+            ColumnPosição.HeaderText = "Posição";
+            ColumnPosição.Name = "ColumnPosição";
+            ColumnPosição.ReadOnly = true;
+            // 
+            // ColumnTempo
+            // 
+            ColumnTempo.HeaderText = "Tempo";
+            ColumnTempo.Name = "ColumnTempo";
+            // 
+            // windowCadastroDisputaBindingSource
+            // 
+            windowCadastroDisputaBindingSource.DataSource = typeof(src.Views.Cadastros.WindowCadastroDisputa);
             // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1081, 593);
+            ClientSize = new Size(660, 593);
+            Controls.Add(tableLayoutPanel1);
+            Controls.Add(flowLayoutPanelButtons);
+            Controls.Add(tableLayoutPanelFiltrosSelect);
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
             Name = "Main";
             Text = "Gestor Pule";
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
+            tableLayoutPanelFiltrosSelect.ResumeLayout(false);
+            tableLayoutPanelFiltrosSelect.PerformLayout();
+            flowLayoutPanelButtons.ResumeLayout(false);
+            tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewDisputas).EndInit();
+            ((System.ComponentModel.ISupportInitialize)windowCadastroDisputaBindingSource).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -159,5 +313,19 @@
         private ToolStripMenuItem sairToolStripMenuItem;
         private ToolStripMenuItem puleToolStripMenuItem1;
         private ToolStripMenuItem disputaToolStripMenuItem;
+        private TableLayoutPanel tableLayoutPanelFiltrosSelect;
+        private DateTimePicker dateTimePickerDisputa;
+        private Label label2;
+        private Label label1;
+        private ComboBox comboBoxDisputas;
+        private FlowLayoutPanel flowLayoutPanelButtons;
+        private Button button1;
+        private TableLayoutPanel tableLayoutPanel1;
+        private Label labelDisputaNome;
+        private DataGridView dataGridViewDisputas;
+        private BindingSource windowCadastroDisputaBindingSource;
+        private DataGridViewTextBoxColumn ColumnAnimalNome;
+        private DataGridViewTextBoxColumn ColumnPosição;
+        private DataGridViewTextBoxColumn ColumnTempo;
     }
 }

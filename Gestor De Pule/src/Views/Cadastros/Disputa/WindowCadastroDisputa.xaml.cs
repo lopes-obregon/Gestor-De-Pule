@@ -1,4 +1,5 @@
-﻿using Gestor_De_Pule.src.Views.Cadastros.Disputa;
+﻿using Gestor_De_Pule.src.Controllers;
+using Gestor_De_Pule.src.Views.Cadastros.Disputa;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,12 +24,48 @@ namespace Gestor_De_Pule.src.Views.Cadastros
         public WindowCadastroDisputa()
         {
             InitializeComponent();
+            InitList();
+        }
+
+        private void InitList()
+        {
+            DisputaCadastrosController.LoadListDisputa();
+            var disputas = DisputaCadastrosController.Disputas;
+            if (disputas != null) listViewDisputaCadastrados.ItemsSource = disputas;
         }
 
         private void FormCadastroDisputa(object sender, RoutedEventArgs e)
         {
             var form = new FormCadastroDisputa();
             form.ShowDialog();
+            InitList();
+        }
+
+        private void AtualizarDisputaSelecionado(object sender, RoutedEventArgs e)
+        {
+            var itemSelecionadoUi = listViewDisputaCadastrados.SelectedItem;
+            var form = new FormAtualizarDisputaCadastrado(itemSelecionadoUi);
+            form.ShowDialog();
+            InitList();
+        }
+
+        private void ExcluirDisputa(object sender, RoutedEventArgs e)
+        {
+            var disputaSelecionadoUi = listViewDisputaCadastrados.SelectedItem;
+            if(disputaSelecionadoUi is not null)
+            {
+
+                var resposta = System.Windows.MessageBox.Show("Deseja Realmente Remover ?", "Pergunta", MessageBoxButton.YesNoCancel);
+                if(resposta == MessageBoxResult.Yes)
+                {
+                    bool sucess = false;
+                    sucess = DisputaCadastrosController.RemoveDisuptaSelecionado(disputaSelecionadoUi);
+                    if (sucess) System.Windows.MessageBox.Show("Disputa Removida com Sucesso!");
+                    else
+                        System.Windows.MessageBox.Show("Desculpe houve algum problema para Remover a disputa!");
+                }
+            }
+            InitList();
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using Gestor_De_Pule.src.Model;
+using Gestor_De_Pule.src.Models;
+using Gestor_De_Pule.src.Service;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using System;
 using System.Collections.Generic;
@@ -17,6 +19,11 @@ namespace Gestor_De_Pule.src.Controllers
         static public Animal? Animal { get; private set; }
         //pules do apostador
         static public List<Pule>? Pules { get; private set; }
+      
+
+        
+        
+        
         /// <summary>
         /// Handles the selection of an animal from the user interface.
         /// </summary>
@@ -35,6 +42,21 @@ namespace Gestor_De_Pule.src.Controllers
                     Animal = Animals.Find(a => a.Id == animalSelecionado.Id);
             }
         }
+
+        internal static Disputa? BuscarDisputa(object disputaSelecionadaUi)
+        {
+            Disputa? disputaSelecionado = disputaSelecionadaUi as Disputa;
+            if(disputaSelecionado is not null)
+            {
+                return DisputaService.ReadDisputa(disputaSelecionado);
+            }else return null;
+        }
+
+        internal static List<Disputa>? ListarDisputas()
+        {
+            return DisputaService.ListarTodas();
+        }
+
         /// <summary>
         /// Loads the selected apostador from the UI and updates the current apostador reference.
         /// </summary>

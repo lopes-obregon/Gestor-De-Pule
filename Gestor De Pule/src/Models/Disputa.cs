@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Gestor_De_Pule.src.Persistencias;
+using Gestor_De_Pule.src.Repository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,6 +23,20 @@ namespace Gestor_De_Pule.src.Models
             ResultadoList.Add(resultados);
         }
 
-       
+        internal  static Disputa? isCreate(string nomeDisputa)
+        {
+            Disputa? disputaDb;
+            using DataBase db = new DataBase();
+            disputaDb =  db.Disputas.FirstOrDefault(dis=> dis.Nome == nomeDisputa);
+            if (disputaDb == null)
+                return null;
+            else
+                return disputaDb;
+            
+        }
+        public override string ToString()
+        {
+            return Nome;
+        }
     }
 }

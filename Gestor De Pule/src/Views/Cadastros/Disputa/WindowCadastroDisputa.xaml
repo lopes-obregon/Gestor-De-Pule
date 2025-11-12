@@ -5,29 +5,30 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Gestor_De_Pule.src.Views.Cadastros"
         mc:Ignorable="d"
-        Title="Cadastro Disputa" Height="450" Width="800">
-    <Canvas>
-        <Grid Height="434" Width="800">
+        Title="Cadastro Disputa" Height="450" Width="434">
+    <Canvas Margin="0,0,263,7">
+        <Grid Height="434" Width="496" HorizontalAlignment="Left" VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="663*"/>
-                <ColumnDefinition Width="137*"/>
+                <ColumnDefinition Width="265*"/>
+                <ColumnDefinition Width="231*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="73*"/>
                 <RowDefinition Height="361*"/>
             </Grid.RowDefinitions>
             <Label Content="Disputas Cadastrados" HorizontalAlignment="Center" Margin="0,42,0,0" VerticalAlignment="Top" Height="26" Width="160" Grid.RowSpan="1"/>
-            <ListView Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}">
+            <ListView x:Name="listViewDisputaCadastrados" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn/>
+                        <GridViewColumn Header="Nome Da Disputa" DisplayMemberBinding="{Binding Nome}"/>
+                        <GridViewColumn Header="Data e Hora Da Disputa" DisplayMemberBinding="{Binding DataEHora}"/>
                     </GridView>
                 </ListView.View>
             </ListView>
-            <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical">
+            <StackPanel Grid.Row="1" Orientation="Vertical" Margin="5,19,93,10" Grid.Column="1">
                 <Button Content="Nova" Margin="0,0,0,10" Click="FormCadastroDisputa"/>
-                <Button Content="Atualizar" Margin="0,0,0,10"/>
-                <Button Content="Excluir" Margin="0,0,0,10"/>
+                <Button Content="Atualizar" Margin="0,0,0,10" Click="AtualizarDisputaSelecionado"/>
+                <Button Content="Excluir" Margin="0,0,0,10" Click="ExcluirDisputa"/>
 
             </StackPanel>
         </Grid>

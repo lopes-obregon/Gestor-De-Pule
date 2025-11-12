@@ -278,5 +278,12 @@ namespace Gestor_De_Pule.src.Model
         {
             return Número.ToString();
         }
+
+        internal static Pule? ToPule(object puleSelecionadoUi)
+        {
+            Pule? pule = puleSelecionadoUi as Pule;
+            if (pule == null) return null;
+            else return pule;
+        }
     }
 }

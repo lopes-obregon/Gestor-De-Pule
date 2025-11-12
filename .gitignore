@@ -1,7 +1,8 @@
 # Ignora bin e obj de qualquer configuração
 **/bin/
 **/obj/
-
+obj/
+bin/
 # Ignora arquivos temporários gerados pelo build
 *.dll
 *.exe

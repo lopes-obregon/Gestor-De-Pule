@@ -40,10 +40,11 @@
         </ListView>
 
 
-        <StackPanel Margin="658,99,30,217" >
+        <StackPanel Margin="658,99,30,101" >
             <Button Content="Novo" Margin="0,0,0,10" Click="CadastrarPule"/>
             <Button Content="Atualizar" Margin="0,0,0,10" Click="FormAtualizarPule"/>
             <Button Content="Excluir" Margin="0,0,0,10" Click="ExcluirPule"/>
+            <Button Content="Imprimir" Margin="0,0,0 ,10" Click="ImprimirPule"/>
 
         </StackPanel>
         <ListBox x:Name="ListBoxAnimaisMaisApostados" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,82,666,135"/>
