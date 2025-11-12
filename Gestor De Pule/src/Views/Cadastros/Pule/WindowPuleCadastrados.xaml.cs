@@ -1,4 +1,5 @@
 ﻿using Gestor_De_Pule.src.Controllers;
+using Gestor_De_Pule.src.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -74,6 +75,20 @@ namespace Gestor_De_Pule.src.Views.Pule
                 System.Windows.MessageBox.Show(mensagem);
             }
             UpdateListViewPules();
+        }
+        private void ImprimirPule(object sender, RoutedEventArgs e)
+        {
+            var puleSelecionadoUi = listViewPules.SelectedItem;
+            if(puleSelecionadoUi != null)
+            {
+                ComprovanteService comprovanteService = new ComprovanteService();
+                comprovanteService.PrintPule(puleSelecionadoUi);
+
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("Selecione um pule para imprimir!");
+            }
         }
     }
 }

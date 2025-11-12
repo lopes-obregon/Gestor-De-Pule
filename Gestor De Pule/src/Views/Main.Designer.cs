@@ -82,7 +82,7 @@
             // sairToolStripMenuItem
             // 
             sairToolStripMenuItem.Name = "sairToolStripMenuItem";
-            sairToolStripMenuItem.Size = new Size(93, 22);
+            sairToolStripMenuItem.Size = new Size(180, 22);
             sairToolStripMenuItem.Text = "Sair";
             sairToolStripMenuItem.Click += CloseSystem;
             // 

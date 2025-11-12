@@ -172,9 +172,9 @@ namespace Gestor_De_Pule
         private void SetDataGridDisputa(object disputaSelecionadaUi)
         {
             var disputaSelecionadoDb = MainController.BuscarDisputa(disputaSelecionadaUi);
-            if(disputaSelecionadoDb is not null)
+            if (disputaSelecionadoDb is not null)
             {
-                foreach(var resultado in disputaSelecionadoDb.ResultadoList)
+                foreach (var resultado in disputaSelecionadoDb.ResultadoList)
                 {
                     dataGridViewDisputas.Rows.Add(resultado.Animal.Nome, resultado.Posição, resultado.Tempo);
                 }
@@ -209,5 +209,7 @@ namespace Gestor_De_Pule
         {
 
         }
+
+       
     }
 }
