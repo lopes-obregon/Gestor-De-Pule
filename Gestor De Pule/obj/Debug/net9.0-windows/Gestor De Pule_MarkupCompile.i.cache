@@ -16,5 +16,5 @@ TRACE;DEBUG;NET;NET9_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR
 2831064815125
 src\Views\Cadastros\Animal\WindowAnimalCadastrados.xaml;src\Views\Cadastros\Apostador\WindowApostadoresCadastrados.xaml;src\Views\Cadastros\Disputa\WindowCadastroDisputa.xaml;src\Views\Cadastros\Pule\WindowPuleCadastrados.xaml;src\Views\Relatórios\Pule\WindowRelatórioPule.xaml;
 
-False
+True
 
