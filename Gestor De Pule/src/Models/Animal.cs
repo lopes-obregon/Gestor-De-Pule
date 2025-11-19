@@ -129,5 +129,26 @@ namespace Gestor_De_Pule.src.Model
                 }
             }catch { }
         }
+
+        internal bool isAnimalMesmoNome(object animalNome)
+        {
+           string? animalNomeStr = animalNome.ToString();
+            if(animalNomeStr != null)
+            {
+                if (animalNomeStr == Nome) return true;
+                else return false;
+            }
+            else { return false; }
+        }
+
+        internal bool isMesmoId(object animalUi)
+        {
+            Animal? animal = animalUi as Animal;
+            if(animal is not null)
+            {
+                if (animal.Id == _id) return true;
+                else return false;
+            }else { return false; }
+        }
     }
 }

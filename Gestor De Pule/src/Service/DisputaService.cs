@@ -19,6 +19,7 @@ namespace Gestor_De_Pule.src.Service
                 return db.Disputas
                     .Include(dis => dis.ResultadoList)
                     .ThenInclude(res => res.Animal)
+                    .Where(dis => !String.IsNullOrEmpty(dis.Nome))
                     .ToList();
             }catch { return null; }
         }

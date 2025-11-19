@@ -6,6 +6,7 @@ using Gestor_De_Pule.src.Views.Pule;
 using Gestor_De_Pule.src.Views.Relatórios.Animal;
 using Gestor_De_Pule.src.Views.Relatórios.Apostador;
 using Gestor_De_Pule.src.Views.Relatórios.Pule;
+using System.Globalization;
 
 namespace Gestor_De_Pule
 {
@@ -210,6 +211,55 @@ namespace Gestor_De_Pule
 
         }
 
-       
+        private void SalvarDados(object sender, EventArgs e)
+        {
+            var disputaSelecionado = comboBoxDisputas.SelectedItem;
+            if (disputaSelecionado is not null)
+            {
+                DisputaCadastrosController.LoadDisputa(disputaSelecionado);
+                var disputa = DisputaCadastrosController.Disputa;
+                if(disputa is not null)
+                {
+                    int quantiaAnimais = disputa.GetNumAnimais();
+                    for(int i = 0; i < quantiaAnimais; i++)
+                    {
+                        //var tempo = dataGridViewDisputas.SelectedRows[i].Cells[2].Value;
+                        var tempo = dataGridViewDisputas.Rows[i].Cells[2].Value;
+                        var animal = dataGridViewDisputas.Rows[i].Cells[0].Value;
+                        if(tempo is not null && animal is not null)
+                        {
+                            string? tempoStr = tempo.ToString();
+                            
+                            if(!String.IsNullOrEmpty(tempoStr))
+                            {
+                                bool valido = TimeSpan.TryParseExact(
+                                    tempoStr,
+                                    @"hh\:mm\:ss\,ff",
+                                    CultureInfo.InvariantCulture,
+                                    out TimeSpan resultado
+                                    );
+                                
+                                if (valido)
+                                {
+                                    //MainController.SalvarDisputa(tempoStr);
+                                    DisputaCadastrosController.SalvarDisputa(animal, resultado);
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Por favor tempo está no formato Errado corrija para hh:mm:ss,ff");
+                                }
+                            }
+                        }
+                    }
+                    if(quantiaAnimais > 1)
+                    {
+                        disputa.ajustarPosiçãoDosAnimais();
+                    }
+
+                }
+                
+
+            }
+        }
     }
 }

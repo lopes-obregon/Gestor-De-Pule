@@ -98,6 +98,11 @@ namespace Gestor_De_Pule.src.Controllers
             Pules = PuleController.Pules.Where(p => p.Apostador != null && p.Apostador.Id == Apostador.Id).ToList();
         }
 
+        internal static void SalvarDisputa(string tempoStr)
+        {
+            throw new NotImplementedException();
+        }
+
         internal static Pule? SearchPule(Pule pule)
         {
             if(Pules is not null && Pules.Count > 0)
