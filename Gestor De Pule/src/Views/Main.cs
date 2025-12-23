@@ -1,4 +1,5 @@
 using Gestor_De_Pule.src.Controllers;
+using Gestor_De_Pule.src.Models;
 using Gestor_De_Pule.src.Views;
 using Gestor_De_Pule.src.Views.Apostador;
 using Gestor_De_Pule.src.Views.Cadastros;
@@ -218,19 +219,19 @@ namespace Gestor_De_Pule
             {
                 DisputaCadastrosController.LoadDisputa(disputaSelecionado);
                 var disputa = DisputaCadastrosController.Disputa;
-                if(disputa is not null)
+                if (disputa is not null)
                 {
                     int quantiaAnimais = disputa.GetNumAnimais();
-                    for(int i = 0; i < quantiaAnimais; i++)
+                    for (int i = 0; i < quantiaAnimais; i++)
                     {
                         //var tempo = dataGridViewDisputas.SelectedRows[i].Cells[2].Value;
                         var tempo = dataGridViewDisputas.Rows[i].Cells[2].Value;
-                        var animal = dataGridViewDisputas.Rows[i].Cells[0].Value;
-                        if(tempo is not null && animal is not null)
+                        var animal = GetAnimal(i);
+                        if (tempo is not null && animal is not null)
                         {
                             string? tempoStr = tempo.ToString();
-                            
-                            if(!String.IsNullOrEmpty(tempoStr))
+
+                            if (!String.IsNullOrEmpty(tempoStr))
                             {
                                 bool valido = TimeSpan.TryParseExact(
                                     tempoStr,
@@ -238,7 +239,7 @@ namespace Gestor_De_Pule
                                     CultureInfo.InvariantCulture,
                                     out TimeSpan resultado
                                     );
-                                
+
                                 if (valido)
                                 {
                                     //MainController.SalvarDisputa(tempoStr);
@@ -251,15 +252,42 @@ namespace Gestor_De_Pule
                             }
                         }
                     }
-                    if(quantiaAnimais > 1)
+                    if (quantiaAnimais > 1)
                     {
                         disputa.ajustarPosiçãoDosAnimais();
                     }
 
                 }
-                
+
 
             }
         }
+        private object? GetAnimal(int i)
+        {
+            var animal = dataGridViewDisputas.Rows[i].Cells[0].Value;
+            if(animal is not null)
+                return animal;
+            else return null;
+        }
+
+        private void CalcularPosição(object sender, EventArgs e)
+        {
+            var disputaSelecionado = comboBoxDisputas.SelectedItem;
+            if (disputaSelecionado is not null)
+
+            {
+                DisputaCadastrosController.LoadDisputa(disputaSelecionado);
+                var disputa = DisputaCadastrosController.Disputa;
+                if (disputa is not null)
+                {
+                    disputa.ajustarPosiçãoDosAnimais();
+                    disputa.Atualizar();
+                    dataGridViewDisputas.Rows.Clear();
+                    SetDataGridDisputa(disputa);
+                }
+            }
+        }
+
+       
     }
 }

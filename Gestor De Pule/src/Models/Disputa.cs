@@ -1,8 +1,10 @@
-﻿using Gestor_De_Pule.src.Persistencias;
+﻿using Gestor_De_Pule.src.Model;
+using Gestor_De_Pule.src.Persistencias;
 using Gestor_De_Pule.src.Repository;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -107,7 +109,64 @@ namespace Gestor_De_Pule.src.Models
 
         internal void ajustarPosiçãoDosAnimais()
         {
-            throw new NotImplementedException();
+            List<Resultado> resultadoList = new List<Resultado>();
+            foreach (var resultadoUi in ResultadoList)
+            {
+                if (resultadoUi is not null)
+                {
+                    //buscar os resultados no banco que podem estar atualizados
+                    Resultado? resultado = Resultado.BuscarResultado(resultadoUi);
+                    //se os resultados não forem nulos buscado no banco.
+                    if (resultado is not null)
+                    {
+                        //agora  adiciona na lista para manipular mais tarde
+                        resultadoList.Add(resultado);
+                    }
+                }
+            }
+            //agora vamos organizar as posição pelo tempo
+           // resultadoList.Sort(); //ORDENA DO MENOR PARA O MAIOR;
+           resultadoList = resultadoList.OrderBy(res=> res.Tempo).ToList();
+            byte pos = 0;
+            foreach (var resultado in resultadoList) { 
+                if(resultado is not null)
+                {
+                    resultado.Posição = ++pos;
+                }
+            }
+            ResultadoList = resultadoList;
+        }
+
+        internal void Atualizar()
+        {
+            using DataBase db = new DataBase();
+            try
+            {
+                var disputaDb = db.Disputas.Include(dis => dis.ResultadoList)
+                    .ThenInclude(res => res.Animal).FirstOrDefault(dis => dis.Id == this.Id);
+                if (disputaDb is not null)
+                {
+                    if (disputaDb.Id == this.Id)
+                    {
+                        foreach (var resultado in disputaDb.ResultadoList)
+                        {
+                            if (resultado is not null)
+                            {
+                                if (ResultadoList.Any(res => res.Animal.Id == resultado.Animal.Id))
+                                {
+                                    int pos = ResultadoList.FindIndex(r => r.Animal.Id == resultado.Animal.Id);
+                                    resultado.Posição = ResultadoList[pos].Posição;
+                                    db.Update(resultado);
+                                }
+                            }
+
+                        }
+                        db.Update(disputaDb);
+                        db.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex) { Debug.WriteLine(ex); }
         }
     }
 }

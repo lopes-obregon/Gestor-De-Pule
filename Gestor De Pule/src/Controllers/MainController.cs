@@ -52,6 +52,8 @@ namespace Gestor_De_Pule.src.Controllers
             }else return null;
         }
 
+      
+
         internal static List<Disputa>? ListarDisputas()
         {
             return DisputaService.ListarTodas();
