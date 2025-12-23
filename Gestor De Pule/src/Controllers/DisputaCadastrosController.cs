@@ -150,6 +150,30 @@ namespace Gestor_De_Pule.src.Controllers
             else return false;
         }
 
+        internal static void SalvarDisputa(object animalUi, TimeSpan tempoUi)
+        {
+
+            if (Disputa is not null)
+            {
+                foreach (var res in Disputa.ResultadoList)
+                {
+                    if (res is not null) {
+                        var animal = res.Animal;
+                        if (animal is not null)
+                        {
+                            if (animal.isAnimalMesmoNome(animalUi))
+                            {
+                                if(res.Tempo != tempoUi)
+                                {
+                                    Disputa.UpdateTempo(animalUi, tempoUi, res);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         internal static object? ToAnimal(object animalSelecionadoUi)
         {
             Animal? animal = animalSelecionadoUi as Animal;

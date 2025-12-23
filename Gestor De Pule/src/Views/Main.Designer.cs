@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             menuStrip1 = new MenuStrip();
             arquivoToolStripMenuItem1 = new ToolStripMenuItem();
             sairToolStripMenuItem = new ToolStripMenuItem();
@@ -55,6 +56,8 @@
             ColumnPosição = new DataGridViewTextBoxColumn();
             ColumnTempo = new DataGridViewTextBoxColumn();
             windowCadastroDisputaBindingSource = new BindingSource(components);
+            button2 = new Button();
+            button3 = new Button();
             menuStrip1.SuspendLayout();
             tableLayoutPanelFiltrosSelect.SuspendLayout();
             flowLayoutPanelButtons.SuspendLayout();
@@ -82,7 +85,7 @@
             // sairToolStripMenuItem
             // 
             sairToolStripMenuItem.Name = "sairToolStripMenuItem";
-            sairToolStripMenuItem.Size = new Size(180, 22);
+            sairToolStripMenuItem.Size = new Size(93, 22);
             sairToolStripMenuItem.Text = "Sair";
             sairToolStripMenuItem.Click += CloseSystem;
             // 
@@ -266,6 +269,9 @@
             // 
             // ColumnTempo
             // 
+            dataGridViewCellStyle1.Format = "hh\\:mm\\:ss\\,ff";
+            dataGridViewCellStyle1.NullValue = null;
+            ColumnTempo.DefaultCellStyle = dataGridViewCellStyle1;
             ColumnTempo.HeaderText = "Tempo";
             ColumnTempo.Name = "ColumnTempo";
             // 
@@ -273,11 +279,33 @@
             // 
             windowCadastroDisputaBindingSource.DataSource = typeof(src.Views.Cadastros.WindowCadastroDisputa);
             // 
+            // button2
+            // 
+            button2.Location = new Point(159, 483);
+            button2.Name = "button2";
+            button2.Size = new Size(75, 23);
+            button2.TabIndex = 4;
+            button2.Text = "Salvar";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += SalvarDados;
+            // 
+            // button3
+            // 
+            button3.Location = new Point(297, 486);
+            button3.Name = "button3";
+            button3.Size = new Size(126, 23);
+            button3.TabIndex = 5;
+            button3.Text = "Calcular Posição";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += CalcularPosição;
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(660, 593);
+            Controls.Add(button3);
+            Controls.Add(button2);
             Controls.Add(tableLayoutPanel1);
             Controls.Add(flowLayoutPanelButtons);
             Controls.Add(tableLayoutPanelFiltrosSelect);
@@ -324,8 +352,10 @@
         private Label labelDisputaNome;
         private DataGridView dataGridViewDisputas;
         private BindingSource windowCadastroDisputaBindingSource;
+        private Button button2;
         private DataGridViewTextBoxColumn ColumnAnimalNome;
         private DataGridViewTextBoxColumn ColumnPosição;
         private DataGridViewTextBoxColumn ColumnTempo;
+        private Button button3;
     }
 }

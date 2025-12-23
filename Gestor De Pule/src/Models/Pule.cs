@@ -285,5 +285,11 @@ namespace Gestor_De_Pule.src.Model
             if (pule == null) return null;
             else return pule;
         }
+
+        internal static List<Pule>? ToPules(object puleSelecionadosUi)
+        {
+            List<Pule>? pules = puleSelecionadosUi as List<Pule>;
+            if (pules == null) return null; return pules;
+        }
     }
 }

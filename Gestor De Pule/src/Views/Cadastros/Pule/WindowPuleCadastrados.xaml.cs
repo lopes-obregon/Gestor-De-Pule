@@ -78,7 +78,7 @@ namespace Gestor_De_Pule.src.Views.Pule
         }
         private void ImprimirPule(object sender, RoutedEventArgs e)
         {
-            var puleSelecionadoUi = listViewPules.SelectedItem;
+            var puleSelecionadoUi = listViewPules.SelectedItems;
             if(puleSelecionadoUi != null)
             {
                 ComprovanteService comprovanteService = new ComprovanteService();

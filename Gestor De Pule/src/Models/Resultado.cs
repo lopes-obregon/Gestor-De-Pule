@@ -1,5 +1,6 @@
 ﻿using Gestor_De_Pule.src.Model;
 using Gestor_De_Pule.src.Persistencias;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,22 @@ namespace Gestor_De_Pule.src.Models
             Animal = animal;
         }
 
-      
+        internal static Resultado? BuscarResultado(Resultado resultadoUi)
+        {
+            using DataBase db = new DataBase();
+            try
+            {
+                if(resultadoUi is not null)
+                {
+                    var resultadoDb = db.Resultados
+                        .Include(res => res.Disputa)
+                        .Include(res => res.Animal)
+                        .FirstOrDefault(res => res.Id == resultadoUi.Id);
+                    if (resultadoDb is not null) return resultadoDb;
+                    else return null;
+                }
+            }catch { return null; }
+            return null;
+        }
     }
 }
