@@ -5,6 +5,8 @@ namespace Gestor_De_Pule.src.Service
 {
     internal class ComprovanteService
     {
+          private const int Coluna1 = 40;
+        private const int Coluna2 = 380;
         internal void PrintPule(object puleSelecionadosUi)
         {
            // var puleSelecionados = Pule.ToPules(puleSelecionadosUi);
@@ -17,19 +19,36 @@ namespace Gestor_De_Pule.src.Service
                 printDocument.PrintPage += (s, e) =>
                 {
                     int pulesPorPágina = 4;
-                    float y = 40;
+                    float y = 40, saveIniY = 0, saveFinalY = 0;
+                    bool isSegundaCoulna = false;
                     Font fonte = new Font("Arial", 12);
                     e.Graphics.DrawString("Comprovante de Aposta", new Font("Arial", 14, FontStyle.Bold), Brushes.Black, 20, y); y += 20;
-
+                    float x = Coluna1;
                     for (int i = 0; i < pulesPorPágina && indicieAtual < puleSelecionados.Count; i++)
                     {
                         var pule = puleSelecionados[indicieAtual];
-                        e.Graphics.DrawString($"Pule Nº: {pule.Id}", fonte, Brushes.Black, 20, y); y += 20;
-                        e.Graphics.DrawString($"Animais: {string.Join(", ", pule.Animais)}", fonte, Brushes.Black, 20, y); y += 20;
-                        e.Graphics.DrawString($"Data: {pule.Date:dd/MM/yyyy HH:mm}", fonte, Brushes.Black, 20, y); y += 20;
-                        e.Graphics.DrawString($"Status: {pule.StatusPagamento}", fonte, Brushes.Black, 20, y); y += 20;
-                        e.Graphics.DrawString($"Status: {pule.Valor.ToString("C")}", fonte, Brushes.Black, 20, y); y += 40;
+                        saveIniY = y;
+                        e.Graphics.DrawString($"Pule Nº: {pule.Número}", fonte, Brushes.Black, x, y); y += 20;
+                        e.Graphics.DrawString($"Apostador: {pule.Apostador}", fonte, Brushes.Black, x , y); y += 20;
+                        e.Graphics.DrawString($"Animal: {string.Join(", ", pule.Animais)}", fonte, Brushes.Black, x, y); y += 20;
+                        e.Graphics.DrawString($"Data: {pule.Date:dd/MM/yyyy HH:mm}", fonte, Brushes.Black, x, y); y += 20;
+                        e.Graphics.DrawString($"Status: {pule.StatusPagamento}", fonte, Brushes.Black, x, y); y += 20;
+                        e.Graphics.DrawString($"Status: {pule.Valor.ToString("C")}", fonte, Brushes.Black, x, y); y += 40;
+                        saveFinalY = y;
                         indicieAtual++;
+                        if (!isSegundaCoulna)
+                        {
+                            x = Coluna2; // seta x para segunda coluna
+                            y = saveIniY;
+                            isSegundaCoulna = true;
+
+                        }
+                        else
+                        {
+                            x = Coluna1; //x seta para primeira coluna
+                            y = saveFinalY;
+                            isSegundaCoulna = false;
+                        }
                     }
                     //continuar imprimido se houver pules
                     e.HasMorePages = indicieAtual < puleSelecionados.Count;

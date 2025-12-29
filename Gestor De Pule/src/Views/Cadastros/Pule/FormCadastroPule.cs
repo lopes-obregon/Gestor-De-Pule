@@ -27,8 +27,14 @@ namespace Gestor_De_Pule.src.Views.Pule
         private void AnimalSelecionadoUi(object sender, EventArgs e)
         {
             var animalSelecionado = comboBoxAnimais.SelectedItem;
-            if (animalSelecionado is not null)
-                listBoxAnimaisSelecionados.Items.Add(animalSelecionado);
+            if (listBoxAnimaisSelecionados.Items.Count == 0)
+            {
+                if (animalSelecionado is not null)
+                    listBoxAnimaisSelecionados.Items.Add(animalSelecionado);
+
+            }
+            else
+                MessageBox.Show("Só Pode Selecionar 1 Animal!");
         }
 
         private void RemoveAnimalSelecionado(object sender, EventArgs e)

@@ -47,6 +47,7 @@
             columnHeaderValor = new ColumnHeader();
             columnHeaderStatusPagamento = new ColumnHeader();
             tableLayoutPanel4 = new TableLayoutPanel();
+            button2 = new Button();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
@@ -55,18 +56,20 @@
             // 
             // tableLayoutPanel1
             // 
-            tableLayoutPanel1.ColumnCount = 2;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 41.01877F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 58.98123F));
+            tableLayoutPanel1.ColumnCount = 3;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50.8982048F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 49.1017952F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 207F));
             tableLayoutPanel1.Controls.Add(comboBoxApostadores, 1, 0);
             tableLayoutPanel1.Controls.Add(label1, 0, 0);
-            tableLayoutPanel1.Controls.Add(button1, 1, 1);
+            tableLayoutPanel1.Controls.Add(button2, 2, 1);
+            tableLayoutPanel1.Controls.Add(button1, 2, 0);
             tableLayoutPanel1.Location = new Point(12, 12);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 2;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.Size = new Size(373, 100);
+            tableLayoutPanel1.Size = new Size(508, 100);
             tableLayoutPanel1.TabIndex = 2;
             // 
             // comboBoxApostadores
@@ -88,7 +91,7 @@
             // 
             // button1
             // 
-            button1.Location = new Point(156, 53);
+            button1.Location = new Point(303, 3);
             button1.Name = "button1";
             button1.Size = new Size(121, 23);
             button1.TabIndex = 3;
@@ -229,6 +232,16 @@
             tableLayoutPanel4.Size = new Size(274, 148);
             tableLayoutPanel4.TabIndex = 9;
             // 
+            // button2
+            // 
+            button2.Location = new Point(303, 53);
+            button2.Name = "button2";
+            button2.Size = new Size(75, 23);
+            button2.TabIndex = 10;
+            button2.Text = "Imprimir";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += ImprimirRelaTório;
+            // 
             // FormRelatórioApostador
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -271,5 +284,6 @@
         private ColumnHeader columnHeaderValor;
         private ColumnHeader columnHeaderStatusPagamento;
         private TableLayoutPanel tableLayoutPanel4;
+        private Button button2;
     }
 }

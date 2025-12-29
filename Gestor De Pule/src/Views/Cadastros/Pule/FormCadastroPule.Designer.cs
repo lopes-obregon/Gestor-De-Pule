@@ -102,9 +102,9 @@
             label4.AutoSize = true;
             label4.Location = new Point(3, 150);
             label4.Name = "label4";
-            label4.Size = new Size(122, 15);
+            label4.Size = new Size(112, 15);
             label4.TabIndex = 1;
-            label4.Text = "Animais Selecionados";
+            label4.Text = "Animal Selecionado";
             // 
             // listBoxAnimaisSelecionados
             // 
@@ -172,9 +172,9 @@
             label6.AutoSize = true;
             label6.Location = new Point(3, 304);
             label6.Name = "label6";
-            label6.Size = new Size(95, 15);
+            label6.Size = new Size(50, 15);
             label6.TabIndex = 5;
-            label6.Text = "Número Do Pule";
+            label6.Text = "N º Pule";
             // 
             // numericUpDownNúmeroPule
             // 

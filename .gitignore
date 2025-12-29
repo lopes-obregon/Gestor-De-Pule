@@ -37,3 +37,8 @@ Gestor De Pule/obj/Debug/net9.0-windows/refint/Gestor De Pule.dll
 # Ignora arquivos temporários gerados por WPF ou WinForms
 *_wpftmp.*
 *.csproj.user
+
+#Outros
+
+Gestor_De_Pule.rar
+publish/
