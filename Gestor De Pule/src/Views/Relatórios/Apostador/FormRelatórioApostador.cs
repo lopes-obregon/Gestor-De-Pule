@@ -5,7 +5,7 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Apostador
 {
     public partial class FormRelatórioApostador : Form
     {
-       
+
         public FormRelatórioApostador()
         {
             InitializeComponent();
@@ -20,10 +20,18 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Apostador
             if (controller != null)
                 comboBoxApostadores.Items.AddRange(controller.ToArray());
         }
-
+        /// <summary>
+        /// Handles the event to generate and display the report for the selected bettor, including their bets and total
+        /// amounts.
+        /// </summary>
+        /// <remarks>This method is intended to be used as an event handler for UI actions that trigger
+        /// the generation of a bettor's report. It updates the UI components to reflect the selected bettor's
+        /// information and their associated bets. If no bettor is selected or no bets are found, the report fields are
+        /// reset to default values.</remarks>
+        
         private void GerarRelatório(object sender, EventArgs e)
         {
-            
+
             listViewApostadores.Items.Clear();
             labelValorTotalApostado.Text = "0";
             labelTotalDePules.Text = "0";
@@ -39,7 +47,7 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Apostador
                     foreach (var pule in RelatórioApostadorController.Pules)
                     {
                         //dataGridViewPules.Rows.Ad(pule.Número, pule.Date.ToShortDateString(), pule.AnimaisToString(), pule.Valor, pule.StatusPagamento);
-                        if(pule is not null)
+                        if (pule is not null)
                         {
                             ListViewItem item = new ListViewItem(pule.Número.ToString());
                             item.SubItems.Add(pule.Date.ToShortDateString());
@@ -56,6 +64,11 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Apostador
                 }
 
             }
+
+        }
+
+        private void ImprimirRelaTório(object sender, EventArgs e)
+        {
 
         }
     }
