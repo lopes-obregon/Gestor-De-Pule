@@ -1,4 +1,5 @@
 ﻿using Gestor_De_Pule.src.Controllers;
+using Gestor_De_Pule.src.Service;
 using System.Windows.Forms.Integration;
 namespace Gestor_De_Pule.src.Views.Relatórios.Animal
 {
@@ -58,7 +59,35 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Animal
                     }
                 }
                 labelTotalApostadores.Text = $"Total De Apostadores {totalApostador}";
-                labelTotalApostadoAnimal.Text = $"Total Apostado {totalApostado}";
+                labelTotalApostadoAnimal.Text = $"Total Apostado {totalApostado.ToString("C")}";
+            }
+        }
+
+        private void ImprimirRelatórioAnimal(object sender, EventArgs e)
+        {
+            string totalApostado = labelTotalApostadores.Text;
+            string totalApostadoAnimal = labelTotalApostadoAnimal.Text;
+            if (String.IsNullOrEmpty(totalApostado))
+            {
+                MessageBox.Show("Por Favor Gere o Relatório para imprir!");
+            }
+           
+            else if (String.IsNullOrEmpty(totalApostadoAnimal))
+            {
+                MessageBox.Show("Por Favor Gere o Relatório para imprir!");
+            }
+            else
+            {
+                var animalSelecionadoUi = comboBoxAnimais.SelectedItem;
+                if(animalSelecionadoUi != null)
+                {
+                    RelatórioAnimalController.LoadAnimal(animalSelecionadoUi);
+                    
+                }
+                var animal = RelatórioAnimalController.Animal;
+                RelatórioAnimalController.LoadLists();
+                var pules = RelatórioAnimalController.Pules;
+                PrintService.PrintAnimal(animal, pules);
             }
         }
     }

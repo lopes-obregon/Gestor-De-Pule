@@ -49,6 +49,7 @@
             labelTotalPules = new Label();
             labelTotalApostadores = new Label();
             labelTotalApostadoAnimal = new Label();
+            button1 = new Button();
             tableLayoutPanel3.SuspendLayout();
             tableLayoutPanel4.SuspendLayout();
             tableLayoutPanel5.SuspendLayout();
@@ -62,6 +63,7 @@
             tableLayoutPanel3.Controls.Add(label5, 0, 0);
             tableLayoutPanel3.Controls.Add(comboBoxAnimais, 1, 0);
             tableLayoutPanel3.Controls.Add(button2, 1, 1);
+            tableLayoutPanel3.Controls.Add(button1, 0, 1);
             tableLayoutPanel3.Location = new Point(12, 12);
             tableLayoutPanel3.Name = "tableLayoutPanel3";
             tableLayoutPanel3.RowCount = 2;
@@ -140,9 +142,9 @@
             // 
             listViewApostadores.Columns.AddRange(new ColumnHeader[] { columnHeaderContato, columnHeaderNome, columnHeaderNPule });
             listViewApostadores.Dock = DockStyle.Fill;
-            listViewApostadores.Location = new Point(3, 57);
+            listViewApostadores.Location = new Point(3, 56);
             listViewApostadores.Name = "listViewApostadores";
-            listViewApostadores.Size = new Size(381, 248);
+            listViewApostadores.Size = new Size(381, 249);
             listViewApostadores.TabIndex = 1;
             listViewApostadores.UseCompatibleStateImageBehavior = false;
             listViewApostadores.View = View.Details;
@@ -173,9 +175,9 @@
             // 
             listViewPulesAnimal.Columns.AddRange(new ColumnHeader[] { columnHeaderNúmeroPule, columnHeaderApostador, columnHeaderValorApostado });
             listViewPulesAnimal.Dock = DockStyle.Fill;
-            listViewPulesAnimal.Location = new Point(390, 57);
+            listViewPulesAnimal.Location = new Point(390, 56);
             listViewPulesAnimal.Name = "listViewPulesAnimal";
-            listViewPulesAnimal.Size = new Size(349, 248);
+            listViewPulesAnimal.Size = new Size(349, 249);
             listViewPulesAnimal.TabIndex = 4;
             listViewPulesAnimal.UseCompatibleStateImageBehavior = false;
             listViewPulesAnimal.View = View.Details;
@@ -248,6 +250,16 @@
             labelTotalApostadoAnimal.TabIndex = 5;
             labelTotalApostadoAnimal.Text = "-";
             // 
+            // button1
+            // 
+            button1.Location = new Point(3, 48);
+            button1.Name = "button1";
+            button1.Size = new Size(75, 23);
+            button1.TabIndex = 3;
+            button1.Text = "Imprimir";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += ImprimirRelatórioAnimal;
+            // 
             // FormRelatórioAnimal
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -290,5 +302,6 @@
         private Label labelTotalPules;
         private Label labelTotalApostadores;
         private Label labelTotalApostadoAnimal;
+        private Button button1;
     }
 }

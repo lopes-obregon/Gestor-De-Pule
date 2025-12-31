@@ -1,4 +1,5 @@
 ﻿using Gestor_De_Pule.src.Model;
+using Gestor_De_Pule.src.Views.Relatórios.Animal;
 using System;
 using System.Collections.Generic;
 using System.Drawing.Printing;
@@ -10,6 +11,39 @@ namespace Gestor_De_Pule.src.Service
 {
     internal class PrintService
     {
+        internal static void PrintAnimal(Animal? animal, List<Pule>? pules)
+        {
+            PrintDocument printDocument = new PrintDocument();
+            int pageLinha = 80, pageColuna = 20;
+            Font font = new Font("Arial", 12);
+            if (animal is null)
+            {
+                printDocument.PrintPage += (s, e) => {
+
+                    e.Graphics.DrawString("Algo Deu Errado!", new Font("Arial", 14, FontStyle.Bold), Brushes.Black, 20, pageLinha);
+
+                };
+            }
+            else
+            {
+                printDocument.PrintPage += (s, e) => {
+                    e.Graphics.DrawString("Relatório Do Animal", new Font("Arial", 20, FontStyle.Bold), Brushes.Black, 20, 20);
+                    e.Graphics.DrawString($"Nome Do Animal: {animal.Nome}  \t Nº {animal.Número}", font, Brushes.Black, pageColuna, pageLinha); pageLinha += 20;
+                    e.Graphics.DrawString($"Apostadores", new Font("Arial", 14, FontStyle.Bold), Brushes.Black, pageColuna, pageLinha); pageLinha += 20;
+                    e.Graphics.DrawLine(new Pen(Color.Black, 2),e.MarginBounds.Left, pageLinha, e.MarginBounds.Right, pageLinha); pageLinha +=20;
+                    foreach(var pule in animal.Pules)
+                    {
+                        var puleBuscado = pules.Find(pu => pu.Id == pule.Id);
+                        e.Graphics.DrawString($"\nNome: {pule.Apostador.Nome}", font, Brushes.Black, pageColuna, pageLinha); pageLinha += 20;
+                    }
+
+                };
+            }
+                PrintPreviewDialog printPreviewDialog = new PrintPreviewDialog();
+            printPreviewDialog.Document = printDocument;
+            printPreviewDialog.ShowDialog();
+        }
+
         internal static void PrintRelatórioApostador(Apostador apostadorUi, List<Pule>? pulesUi, string totalDePules, string valorTotalApostado)
         {
             Apostador? apostador = Apostador.GetApostador(apostadorUi);
