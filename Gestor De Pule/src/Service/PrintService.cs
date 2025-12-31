@@ -35,12 +35,13 @@ namespace Gestor_De_Pule.src.Service
                     Font font = new Font("Arial", 12);
                     e.Graphics.DrawString("Relatório Do Apostador", new Font("Arial", 16, FontStyle.Bold), Brushes.Black, 20, 20);
                     e.Graphics.DrawString($"Nome Do Apostador: {apostador.Nome}", font, Brushes.Black, pageColuna, pageLinha); pageLinha += 20;
-                    e.Graphics.DrawString($"Contato Do Apostador: {apostador.Contato}", font, Brushes.Black, pageColuna, pageLinha); pageLinha += 20;
-                    e.Graphics.DrawString($"Pules Do Apostador:", new Font("Arial", 14, FontStyle.Bold), Brushes.Black, pageColuna, pageLinha); pageLinha += 20;
+                    e.Graphics.DrawString($"Contato Do Apostador: {apostador.Contato}", font, Brushes.Black, pageColuna, pageLinha); pageLinha += 40;
+                    e.Graphics.DrawString($"Pules Do Apostador:", new Font("Arial", 14, FontStyle.Bold), Brushes.Black, pageColuna, pageLinha); pageLinha += 30;
                     foreach(var pule in apostador.Pules)
                     {
                         e.Graphics.DrawString($"Nº: {pule.Número}, Data: {pule.Date}", font, Brushes.Black, pageColuna, pageLinha); pageLinha += 20;
-                        e.Graphics.DrawString($" Animal: {pule.Animais.First().Nome}, Valor {pule.Valor.ToString("C")}, Status Pagamento: {pule.StatusPagamento}", font, Brushes.Black, pageColuna, pageLinha); pageLinha += 20;
+                        e.Graphics.DrawString($"Animal: {pule.Animais.First().Nome}, Valor {pule.Valor.ToString("C")}", font, Brushes.Black, pageColuna, pageLinha); pageLinha += 20;
+                        e.Graphics.DrawString($"Status Pagamento: {pule.StatusPagamento}", font, Brushes.Black, pageColuna, pageLinha); pageLinha += 40;
                     }
                 };
                 PrintPreviewDialog printPreviewDialog = new PrintPreviewDialog();

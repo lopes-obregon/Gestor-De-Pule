@@ -61,7 +61,7 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Apostador
                         }
                     }
                     labelTotalDePules.Text = RelatórioApostadorController.Pules.Count.ToString();
-                    labelValorTotalApostado.Text = valorTotalApostado.ToString();
+                    labelValorTotalApostado.Text = valorTotalApostado.ToString("C");
                 }
 
             }
