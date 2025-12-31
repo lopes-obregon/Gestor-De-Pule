@@ -1,4 +1,5 @@
 ﻿using Gestor_De_Pule.src.Controllers;
+using Gestor_De_Pule.src.Service;
 
 namespace Gestor_De_Pule.src.Views.Relatórios.Apostador
 
@@ -60,7 +61,7 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Apostador
                         }
                     }
                     labelTotalDePules.Text = RelatórioApostadorController.Pules.Count.ToString();
-                    labelValorTotalApostado.Text = valorTotalApostado.ToString();
+                    labelValorTotalApostado.Text = valorTotalApostado.ToString("C");
                 }
 
             }
@@ -69,7 +70,23 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Apostador
 
         private void ImprimirRelaTório(object sender, EventArgs e)
         {
+            var apostadorSelecionadoUi = comboBoxApostadores.SelectedItem;
+            string totalDePules = labelTotalDePules.Text;
+            string valorTotalApostado = labelValorTotalApostado.Text;
+            if (RelatórioApostadorController.Apostador is null)
+            {
+                RelatórioApostadorController.LoadApostador(apostadorSelecionadoUi);
+                RelatórioApostadorController.LoadPuLesDoApostador();
 
+            }
+            if(RelatórioApostadorController.Apostador is not null)
+            {
+                if (String.IsNullOrEmpty(totalDePules))
+                {
+                    totalDePules = RelatórioApostadorController.Pules.Count.ToString();
+                }
+                PrintService.PrintRelatórioApostador(RelatórioApostadorController.Apostador, RelatórioApostadorController.Pules, totalDePules, valorTotalApostado);
+            }
         }
     }
 }
