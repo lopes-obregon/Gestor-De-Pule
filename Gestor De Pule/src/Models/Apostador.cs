@@ -108,5 +108,25 @@ namespace Gestor_De_Pule.src.Model
         {
             return Id.GetHashCode();
         }
+
+        internal static Apostador? GetApostador(Apostador apostadorUi)
+        {
+            using DataBase db = new DataBase();
+            try
+            {
+                if(apostadorUi is not null)
+                {
+                    var apostadorDb = db.Apostadors.Include(ap => ap.Pules).ThenInclude(pule => pule.Animais).FirstOrDefault(ap => ap.Id == apostadorUi.Id);
+                    if (apostadorDb is not null)
+                        return apostadorDb;
+                    else
+                        return null;
+                }
+                else
+                {
+                    return null;
+                }
+            }catch { return null; }
+        }
     }
 }
