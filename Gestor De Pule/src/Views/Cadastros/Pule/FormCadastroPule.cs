@@ -17,11 +17,14 @@ namespace Gestor_De_Pule.src.Views.Pule
             PuleController.LoadLists();
             var animaisCadastrados = PuleController.Animals;
             var ApostadoresCadastrados = PuleController.Apostadors;
+            var disputasCadastrados = PuleController.Disputas;
             if (ApostadoresCadastrados is not null)
                 comboBoxApostadores.Items.AddRange(ApostadoresCadastrados.ToArray());
             comboBoxPagamento.DataSource = Enum.GetValues(typeof(Gestor_De_Pule.src.Model.StatusPagamento));
             if (animaisCadastrados is not null)
                 comboBoxAnimais.Items.AddRange(animaisCadastrados.ToArray());
+            if (disputasCadastrados is not null)
+                comboBoxDisputas.Items.AddRange(disputasCadastrados.ToArray());
         }
 
         private void AnimalSelecionadoUi(object sender, EventArgs e)
@@ -49,9 +52,12 @@ namespace Gestor_De_Pule.src.Views.Pule
             var apostadorSelecionado = comboBoxApostadores.SelectedItem;
             var pagamento = comboBoxPagamento.SelectedItem;
             var animaisSelecionados = listBoxAnimaisSelecionados.Items;
-            float valor = (float) numericUpDownValorPule.Value;
-            int númeroDoPule = (int) numericUpDownNúmeroPule.Value;
+            var disputaSelecionado = comboBoxDisputas.SelectedItem;
+            float valor = (float)numericUpDownValorPule.Value;
+            int númeroDoPule = (int)numericUpDownNúmeroPule.Value;
             string mensagem = String.Empty;
+            if (disputaSelecionado is null)
+                mensagem += "Por Favor Selecione uma Disputa ";
             if (apostadorSelecionado is null)
                 mensagem += "Por Favor Selecione um Apostador ";
             if (pagamento is null)
@@ -59,7 +65,7 @@ namespace Gestor_De_Pule.src.Views.Pule
             if (animaisSelecionados.Count < 1)
                 mensagem += "Por Favor Selecione Pelomenos Um Animal Para Apostar ";
             else
-                mensagem = PuleController.CadastrarPule(apostadorSelecionado, pagamento, animaisSelecionados, valor, númeroDoPule);
+                mensagem = PuleController.CadastrarPule(apostadorSelecionado, pagamento, animaisSelecionados, valor, númeroDoPule, disputaSelecionado);
             MessageBox.Show(mensagem);
             //limpeza dos campos
             comboBoxAnimais.SelectedIndex = -1;
@@ -73,6 +79,19 @@ namespace Gestor_De_Pule.src.Views.Pule
         private void FecharCadastros(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void comboBoxDisputa(object sender, EventArgs e)
+        {
+            var DisputaSelecionada = comboBoxDisputas.SelectedItem;
+            if (DisputaSelecionada is not null)
+            {
+                var animais = PuleController.AttComboBoxAnimais(DisputaSelecionada);
+                comboBoxAnimais.Items.Clear();
+                if(animais is not null && animais.Count > 0)
+                    comboBoxAnimais.Items.AddRange(animais.ToArray());
+            }
+
         }
     }
 }

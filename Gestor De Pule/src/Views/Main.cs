@@ -176,6 +176,7 @@ namespace Gestor_De_Pule
             var disputaSelecionadoDb = MainController.BuscarDisputa(disputaSelecionadaUi);
             if (disputaSelecionadoDb is not null)
             {
+                labelDisputaNome.Text = "Disputa:" + disputaSelecionadoDb.Nome;
                 foreach (var resultado in disputaSelecionadoDb.ResultadoList)
                 {
                     dataGridViewDisputas.Rows.Add(resultado.Animal.Nome, resultado.Posição, resultado.Tempo);

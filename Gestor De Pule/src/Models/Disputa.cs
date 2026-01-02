@@ -169,5 +169,27 @@ namespace Gestor_De_Pule.src.Models
             }
             catch (Exception ex) { Debug.WriteLine(ex); }
         }
+
+        internal static List<Disputa>? GetDisputas()
+        {
+           using DataBase db = new DataBase();
+            try
+            {
+                var disputasDb = db.Disputas
+                    .Include(d=> d.ResultadoList)
+                    .ThenInclude(r=> r.Animal)
+                    .Where(d=> !String.IsNullOrEmpty(d.Nome))
+                    .ToList();
+                if(disputasDb is null || disputasDb.Count == 0)
+                {
+                    return null;
+                }
+                else
+                {
+                    return disputasDb;
+                }
+            }
+            catch { return null; }
+        }
     }
 }
