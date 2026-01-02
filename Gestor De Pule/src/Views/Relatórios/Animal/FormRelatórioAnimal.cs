@@ -45,8 +45,8 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Animal
                         if (puleBuscado.Apostador is not null)
                         {
                             ListViewItem itemPule = new ListViewItem(puleBuscado.Número.ToString());
-                            itemPule.SubItems.Add(puleBuscado.Valor.ToString());
                             itemPule.SubItems.Add(puleBuscado.Apostador.Nome);
+                            itemPule.SubItems.Add(puleBuscado.Valor.ToString("C"));
                             totalApostador++;
                             ListViewItem item = new ListViewItem(puleBuscado.Apostador.Contato);
                             item.SubItems.Add(puleBuscado.Apostador.Nome);

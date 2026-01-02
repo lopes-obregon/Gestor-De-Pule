@@ -37,11 +37,15 @@ namespace Gestor_De_Pule.src.Service
                         var puleBuscado = pules.Find(pu => pu.Id == pule.Id);
                         if(puleBuscado != null)
                         {
-                            e.Graphics.DrawString($"\n Nome: {puleBuscado.Apostador.Nome}\t Contato: {puleBuscado.Apostador.Contato}", font, Brushes.Black, pageColuna, pageLinha); pageLinha += 20;
-                            e.Graphics.DrawString($"\n Nº Pule: {puleBuscado.Número}\t R$ {puleBuscado.Valor.ToString("C")}", font, Brushes.Black, pageColuna, pageLinha); pageLinha += 20;
-                            cntTotalApostado += puleBuscado.Valor;
-                            cntTotalPule++;
-                            cntTotalApostadores++;
+                            if(puleBuscado.Apostador is not null)
+                            {
+                                e.Graphics.DrawString($"\n Nome: {puleBuscado.Apostador.Nome}\t Contato: {puleBuscado.Apostador.Contato}", font, Brushes.Black, pageColuna, pageLinha); pageLinha += 20;
+                                e.Graphics.DrawString($"\n Nº Pule: {puleBuscado.Número}\t R$ {puleBuscado.Valor.ToString("C")}", font, Brushes.Black, pageColuna, pageLinha); pageLinha += 20;
+                                cntTotalApostado += puleBuscado.Valor;
+                                cntTotalPule++;
+                                cntTotalApostadores++;
+
+                            }
                         }
                         
                     }
