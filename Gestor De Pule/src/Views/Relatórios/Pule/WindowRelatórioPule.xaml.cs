@@ -1,4 +1,5 @@
 ﻿using Gestor_De_Pule.src.Controllers;
+using Gestor_De_Pule.src.Service;
 using System.Windows;
 
 namespace Gestor_De_Pule.src.Views.Relatórios.Pule
@@ -68,6 +69,31 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Pule
                 labelTotalPedente.Content = "Total Pendente: "+totalPedente;
             }
             
+        }
+
+        private void ImprimirRelatório(object sender, RoutedEventArgs e)
+        {
+            string numPule = labelNumPule.Content.ToString();
+            string totalApostado = labelTotalApostado.Content.ToString();
+            string totalPagos = labelTotalPagos.Content.ToString();
+            string totalPedente = labelTotalPedente.Content.ToString();
+            if (String.IsNullOrEmpty(numPule) || String.IsNullOrEmpty(totalApostado) || String.IsNullOrEmpty(totalPagos) || String.IsNullOrEmpty(totalPedente) ) 
+            {
+                System.Windows.MessageBox.Show("Por favor, gere o relatório!");
+            }
+            else
+            {
+                var puleSelecionadoUi = comboBoxPulesCadastrados.SelectedItem;
+                var pules = RelatórioPuleController.PuleSelecionado(puleSelecionadoUi);
+                if (pules == null)
+                {
+                    System.Windows.MessageBox.Show("Pule Invalido!");
+                }
+                else
+                {
+                    PrintService.PrintRelatórioPule(pules, puleSelecionadoUi);
+                }
+            }
         }
     }
 }

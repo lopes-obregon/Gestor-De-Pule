@@ -98,5 +98,39 @@ namespace Gestor_De_Pule.src.Service
                 printPreviewDialog.ShowDialog();
             }
         }
+
+        internal static void PrintRelatórioPule(List<Pule> pules, object numPuleUi)
+        {
+            int? numPule = numPuleUi as int?;
+            PrintDocument printDocument = new PrintDocument();
+            Font font = new Font("Arial", 12);
+            int pagLinha = 80, pagColuna = 20;
+            if (pules is null || pules.Count == 0)
+            {
+                printDocument.PrintPage += (s, e) =>
+                {
+                    e.Graphics.DrawString("Algo Deu Errado!", new Font("Arial", 14, FontStyle.Bold), Brushes.Black, 20, pagLinha);
+                };
+            }
+            else
+            {
+                printDocument.PrintPage += (s, e) => {
+                    e.Graphics.DrawString($"Relatório Pule {numPule}", new Font("Arial", 20, FontStyle.Bold), Brushes.Black, pagColuna, pagLinha); pagLinha += 20;
+                    foreach (Pule pule in pules)
+                    {
+                        if (pule is not null)
+                        {
+                            // e.Graphics.DrawString($"\n Nº {pule.Número}", new Font("Arial", 14, FontStyle.Bold), Brushes.Black, pagColuna, pagLinha); pagLinha += 20;
+                           // e.Graphics.DrawString($"\n Apostador:{pule.Apostador} ", font, Brushes.Black, pagColuna, pagLinha); pagLinha += 20;
+                            e.Graphics.DrawString($"\n Apostador:{pule.Apostador}\t Data:{pule.Date}\t Animal:{pule.Animais.First().Nome}\n Valor Apostado:{pule.Valor.ToString("C")}\t Status Pagamento:{pule.StatusPagamento}", font, Brushes.Black, pagColuna, pagLinha); pagLinha += 80;
+                        }
+                    }
+                };
+            }
+            PrintPreviewDialog printPreviewDialog = new PrintPreviewDialog();
+            printPreviewDialog.Document = printDocument;
+            printPreviewDialog.ShowDialog();
+
+        }
     }
 }

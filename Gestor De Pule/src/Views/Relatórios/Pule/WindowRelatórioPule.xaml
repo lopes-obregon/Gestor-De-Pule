@@ -21,6 +21,7 @@
             <Label Content="Selecione Um Pule" Margin="0,0,0,20" Grid.RowSpan="2"/>
             <ComboBox x:Name="comboBoxPulesCadastrados" Margin="108,0,0,22" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
             <Button Content="Gerar Relatório" Margin="108,28,0,-28" Grid.Row="1" Grid.ColumnSpan="2" Click="GerarRelatórioPule"/>
+            <Button Content="Imprimir" Grid.Column="2" Margin="10,32,-102,-28" Grid.Row="1" Click="ImprimirRelatório"/>
 
         </Grid>
         <Grid Height="217" Width="780" Canvas.Left="20" Canvas.Top="144" HorizontalAlignment="Left" VerticalAlignment="Top">
