@@ -41,6 +41,8 @@
             comboBoxPagamento = new ComboBox();
             label6 = new Label();
             numericUpDownNúmeroPule = new NumericUpDown();
+            label7 = new Label();
+            comboBoxDisputas = new ComboBox();
             flowLayoutPanel1 = new FlowLayoutPanel();
             button1 = new Button();
             button2 = new Button();
@@ -57,26 +59,29 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.Controls.Add(numericUpDownValorPule, 1, 4);
             tableLayoutPanel1.Controls.Add(label5, 0, 4);
+            tableLayoutPanel1.Controls.Add(comboBoxPagamento, 1, 6);
+            tableLayoutPanel1.Controls.Add(label2, 0, 6);
             tableLayoutPanel1.Controls.Add(label4, 0, 3);
             tableLayoutPanel1.Controls.Add(listBoxAnimaisSelecionados, 1, 3);
             tableLayoutPanel1.Controls.Add(comboBoxAnimais, 1, 2);
             tableLayoutPanel1.Controls.Add(comboBoxApostadores, 1, 0);
             tableLayoutPanel1.Controls.Add(label3, 0, 2);
-            tableLayoutPanel1.Controls.Add(label2, 0, 1);
             tableLayoutPanel1.Controls.Add(label1, 0, 0);
-            tableLayoutPanel1.Controls.Add(comboBoxPagamento, 1, 1);
             tableLayoutPanel1.Controls.Add(label6, 0, 5);
             tableLayoutPanel1.Controls.Add(numericUpDownNúmeroPule, 1, 5);
+            tableLayoutPanel1.Controls.Add(label7, 0, 1);
+            tableLayoutPanel1.Controls.Add(comboBoxDisputas, 1, 1);
             tableLayoutPanel1.Location = new Point(12, 30);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 6;
+            tableLayoutPanel1.RowCount = 7;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 118F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 36F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 31F));
-            tableLayoutPanel1.Size = new Size(270, 358);
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 44F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 8F));
+            tableLayoutPanel1.Size = new Size(270, 400);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // numericUpDownValorPule
@@ -144,7 +149,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(3, 50);
+            label2.Location = new Point(3, 348);
             label2.Name = "label2";
             label2.Size = new Size(68, 15);
             label2.TabIndex = 2;
@@ -162,7 +167,7 @@
             // comboBoxPagamento
             // 
             comboBoxPagamento.FormattingEnabled = true;
-            comboBoxPagamento.Location = new Point(138, 53);
+            comboBoxPagamento.Location = new Point(138, 351);
             comboBoxPagamento.Name = "comboBoxPagamento";
             comboBoxPagamento.Size = new Size(121, 23);
             comboBoxPagamento.TabIndex = 1;
@@ -184,11 +189,29 @@
             numericUpDownNúmeroPule.Size = new Size(120, 23);
             numericUpDownNúmeroPule.TabIndex = 6;
             // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(3, 50);
+            label7.Name = "label7";
+            label7.Size = new Size(47, 15);
+            label7.TabIndex = 7;
+            label7.Text = "Disputa";
+            // 
+            // comboBoxDisputas
+            // 
+            comboBoxDisputas.FormattingEnabled = true;
+            comboBoxDisputas.Location = new Point(138, 53);
+            comboBoxDisputas.Name = "comboBoxDisputas";
+            comboBoxDisputas.Size = new Size(121, 23);
+            comboBoxDisputas.TabIndex = 8;
+            comboBoxDisputas.SelectedIndexChanged += comboBoxDisputa;
+            // 
             // flowLayoutPanel1
             // 
             flowLayoutPanel1.Controls.Add(button1);
             flowLayoutPanel1.Controls.Add(button2);
-            flowLayoutPanel1.Location = new Point(15, 408);
+            flowLayoutPanel1.Location = new Point(12, 474);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
             flowLayoutPanel1.Size = new Size(200, 100);
             flowLayoutPanel1.TabIndex = 1;
@@ -217,7 +240,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(294, 520);
+            ClientSize = new Size(294, 607);
             Controls.Add(flowLayoutPanel1);
             Controls.Add(tableLayoutPanel1);
             Name = "FormCadastroPule";
@@ -248,5 +271,7 @@
         private Label label5;
         private Label label6;
         private NumericUpDown numericUpDownNúmeroPule;
+        private Label label7;
+        private ComboBox comboBoxDisputas;
     }
 }

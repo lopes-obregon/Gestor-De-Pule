@@ -1,13 +1,7 @@
-﻿using Gestor_De_Pule.src.Persistencias;
+﻿using Gestor_De_Pule.src.Models;
+using Gestor_De_Pule.src.Persistencias;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.Intrinsics.X86;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Gestor_De_Pule.src.Model
 {
@@ -25,6 +19,7 @@ namespace Gestor_De_Pule.src.Model
         private StatusPagamento _statusPagamento;
         private DateTime _date = DateTime.Now;
         private List<Animal>? _animais = new();
+        public Disputa? Disputa { get; set; }
         public int Número { get; set; }
         public float Valor {  get; set; }
         //Propriedade para chamar no listVew
@@ -227,7 +222,7 @@ namespace Gestor_De_Pule.src.Model
             return false;
         }
 
-        internal bool Associete(Apostador? apostadorSelecionado, List<Animal> animais)
+        internal bool Associete(Apostador? apostadorSelecionado, List<Animal> animais, Models.Disputa? disputaSelecionado)
         {
             using DataBase db = new DataBase();
             try
@@ -268,6 +263,20 @@ namespace Gestor_De_Pule.src.Model
                         }
                     }
 
+                }
+
+                if(disputaSelecionado is not null)
+                {
+                    var disputaDb = db.Disputas
+                        .Include(d=> d.Pules)
+                        .Include(d=>d.ResultadoList)
+                        .FirstOrDefault(d=> d.Id == disputaSelecionado.Id);
+                    if(disputaDb is not null)
+                    {
+                        disputaDb.Pules.Add(this);
+                        db.Disputas.Update(disputaDb);
+                        this.Disputa = disputaDb;
+                    }
                 }
                 db.Pules.Update(this);
                 db.SaveChanges();

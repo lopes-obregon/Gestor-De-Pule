@@ -91,7 +91,7 @@
             // 
             // arquivoToolStripMenuItem
             // 
-            arquivoToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { animalToolStripMenuItem, apostadorToolStripMenuItem, puleToolStripMenuItem, disputaToolStripMenuItem });
+            arquivoToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { animalToolStripMenuItem, disputaToolStripMenuItem, apostadorToolStripMenuItem, puleToolStripMenuItem });
             arquivoToolStripMenuItem.Name = "arquivoToolStripMenuItem";
             arquivoToolStripMenuItem.Size = new Size(71, 20);
             arquivoToolStripMenuItem.Text = "Cadastros";
@@ -99,28 +99,28 @@
             // animalToolStripMenuItem
             // 
             animalToolStripMenuItem.Name = "animalToolStripMenuItem";
-            animalToolStripMenuItem.Size = new Size(129, 22);
+            animalToolStripMenuItem.Size = new Size(180, 22);
             animalToolStripMenuItem.Text = "Animal";
             animalToolStripMenuItem.Click += JanelaCadastro;
             // 
             // apostadorToolStripMenuItem
             // 
             apostadorToolStripMenuItem.Name = "apostadorToolStripMenuItem";
-            apostadorToolStripMenuItem.Size = new Size(129, 22);
+            apostadorToolStripMenuItem.Size = new Size(180, 22);
             apostadorToolStripMenuItem.Text = "Apostador";
             apostadorToolStripMenuItem.Click += OpenWindowApostadoresCadastrados;
             // 
             // puleToolStripMenuItem
             // 
             puleToolStripMenuItem.Name = "puleToolStripMenuItem";
-            puleToolStripMenuItem.Size = new Size(129, 22);
+            puleToolStripMenuItem.Size = new Size(180, 22);
             puleToolStripMenuItem.Text = "Pule";
             puleToolStripMenuItem.Click += WindowPuleCadastrados;
             // 
             // disputaToolStripMenuItem
             // 
             disputaToolStripMenuItem.Name = "disputaToolStripMenuItem";
-            disputaToolStripMenuItem.Size = new Size(129, 22);
+            disputaToolStripMenuItem.Size = new Size(180, 22);
             disputaToolStripMenuItem.Text = "Disputa";
             disputaToolStripMenuItem.Click += DisputaCadastradosWindow;
             // 
