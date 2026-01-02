@@ -35,9 +35,9 @@
             sairToolStripMenuItem = new ToolStripMenuItem();
             arquivoToolStripMenuItem = new ToolStripMenuItem();
             animalToolStripMenuItem = new ToolStripMenuItem();
+            disputaToolStripMenuItem = new ToolStripMenuItem();
             apostadorToolStripMenuItem = new ToolStripMenuItem();
             puleToolStripMenuItem = new ToolStripMenuItem();
-            disputaToolStripMenuItem = new ToolStripMenuItem();
             relatóriosToolStripMenuItem = new ToolStripMenuItem();
             apostadorToolStripMenuItem1 = new ToolStripMenuItem();
             animalToolStripMenuItem1 = new ToolStripMenuItem();
@@ -58,6 +58,9 @@
             windowCadastroDisputaBindingSource = new BindingSource(components);
             button2 = new Button();
             button3 = new Button();
+            financeiroToolStripMenuItem = new ToolStripMenuItem();
+            fluxoDeCaixaToolStripMenuItem = new ToolStripMenuItem();
+            taxaToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             tableLayoutPanelFiltrosSelect.SuspendLayout();
             flowLayoutPanelButtons.SuspendLayout();
@@ -68,7 +71,7 @@
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { arquivoToolStripMenuItem1, arquivoToolStripMenuItem, relatóriosToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { arquivoToolStripMenuItem1, arquivoToolStripMenuItem, relatóriosToolStripMenuItem, financeiroToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(660, 24);
@@ -99,30 +102,30 @@
             // animalToolStripMenuItem
             // 
             animalToolStripMenuItem.Name = "animalToolStripMenuItem";
-            animalToolStripMenuItem.Size = new Size(180, 22);
+            animalToolStripMenuItem.Size = new Size(129, 22);
             animalToolStripMenuItem.Text = "Animal";
             animalToolStripMenuItem.Click += JanelaCadastro;
+            // 
+            // disputaToolStripMenuItem
+            // 
+            disputaToolStripMenuItem.Name = "disputaToolStripMenuItem";
+            disputaToolStripMenuItem.Size = new Size(129, 22);
+            disputaToolStripMenuItem.Text = "Disputa";
+            disputaToolStripMenuItem.Click += DisputaCadastradosWindow;
             // 
             // apostadorToolStripMenuItem
             // 
             apostadorToolStripMenuItem.Name = "apostadorToolStripMenuItem";
-            apostadorToolStripMenuItem.Size = new Size(180, 22);
+            apostadorToolStripMenuItem.Size = new Size(129, 22);
             apostadorToolStripMenuItem.Text = "Apostador";
             apostadorToolStripMenuItem.Click += OpenWindowApostadoresCadastrados;
             // 
             // puleToolStripMenuItem
             // 
             puleToolStripMenuItem.Name = "puleToolStripMenuItem";
-            puleToolStripMenuItem.Size = new Size(180, 22);
+            puleToolStripMenuItem.Size = new Size(129, 22);
             puleToolStripMenuItem.Text = "Pule";
             puleToolStripMenuItem.Click += WindowPuleCadastrados;
-            // 
-            // disputaToolStripMenuItem
-            // 
-            disputaToolStripMenuItem.Name = "disputaToolStripMenuItem";
-            disputaToolStripMenuItem.Size = new Size(180, 22);
-            disputaToolStripMenuItem.Text = "Disputa";
-            disputaToolStripMenuItem.Click += DisputaCadastradosWindow;
             // 
             // relatóriosToolStripMenuItem
             // 
@@ -299,6 +302,25 @@
             button3.UseVisualStyleBackColor = true;
             button3.Click += CalcularPosição;
             // 
+            // financeiroToolStripMenuItem
+            // 
+            financeiroToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { fluxoDeCaixaToolStripMenuItem, taxaToolStripMenuItem });
+            financeiroToolStripMenuItem.Name = "financeiroToolStripMenuItem";
+            financeiroToolStripMenuItem.Size = new Size(74, 20);
+            financeiroToolStripMenuItem.Text = "Financeiro";
+            // 
+            // fluxoDeCaixaToolStripMenuItem
+            // 
+            fluxoDeCaixaToolStripMenuItem.Name = "fluxoDeCaixaToolStripMenuItem";
+            fluxoDeCaixaToolStripMenuItem.Size = new Size(180, 22);
+            fluxoDeCaixaToolStripMenuItem.Text = "Fluxo de Caixa";
+            // 
+            // taxaToolStripMenuItem
+            // 
+            taxaToolStripMenuItem.Name = "taxaToolStripMenuItem";
+            taxaToolStripMenuItem.Size = new Size(180, 22);
+            taxaToolStripMenuItem.Text = "Taxa";
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -357,5 +379,8 @@
         private DataGridViewTextBoxColumn ColumnPosição;
         private DataGridViewTextBoxColumn ColumnTempo;
         private Button button3;
+        private ToolStripMenuItem financeiroToolStripMenuItem;
+        private ToolStripMenuItem fluxoDeCaixaToolStripMenuItem;
+        private ToolStripMenuItem taxaToolStripMenuItem;
     }
 }
