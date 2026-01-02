@@ -9,7 +9,7 @@ namespace Gestor_De_Pule.src.Controllers
         /// </summary>
         public static List<Animal>? Animals {  get; private set; }
         public static Animal ? Animal { get; private set; }
-        private static List<Pule>? Pules { get; set; }
+        public static List<Pule>? Pules { get; set; }
         /// <summary>
         /// Selects an animal from the list of available animals based on the provided UI object.
         /// </summary>
@@ -28,6 +28,25 @@ namespace Gestor_De_Pule.src.Controllers
                 }
             }
         }
+
+        internal static void LoadAnimal(object? animalSelecionadoUi)
+        {
+            Animal? animalSelecionado = animalSelecionadoUi as Animal;
+            if(animalSelecionado != null)
+            {
+                if(Animal is not null)
+                {
+                    //verificar se é o mesmo animal
+                    //se for diferente temos que dar o load no animal 
+                    if(Animal.Id != animalSelecionado.Id)
+                    {
+                        Animal = Animal.GetAnimal(animalSelecionado);
+                    }
+                   
+                }
+            }
+        }
+
         /// <summary>
         /// Loads and initializes the lists of animals and pules.
         /// </summary>

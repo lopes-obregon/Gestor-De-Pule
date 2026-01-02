@@ -150,5 +150,25 @@ namespace Gestor_De_Pule.src.Model
                 else return false;
             }else { return false; }
         }
+
+        internal  static Animal? GetAnimal(Animal animalSelecionado)
+        {
+            using DataBase db = new DataBase();
+            try
+            {
+                var animalDb = db.Animals.Include(an => an.Resultados)
+                    .Include(an => an.Pules)
+                    .FirstOrDefault(an => an.Id == animalSelecionado.Id);
+                if (animalDb != null)
+                {
+                    return animalDb;
+                }
+                else
+                {
+                    return null;
+                }
+
+            } catch { return null; }
+        }
     }
 }

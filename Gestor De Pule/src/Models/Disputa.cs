@@ -18,6 +18,7 @@ namespace Gestor_De_Pule.src.Models
         public DateTime DataEHora { get; set; } = new DateTime();
         public string Nome { get; set; } = String.Empty;
         public List<Resultado> ResultadoList { get; set; } = new List<Resultado>();
+        public List<Pule> Pules { get; set; }
         public Disputa() { }
         public Disputa(string nome,  DateTime dataEHora,Resultado resultados)
         {
