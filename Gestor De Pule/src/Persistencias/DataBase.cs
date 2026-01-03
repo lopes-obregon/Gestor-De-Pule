@@ -11,6 +11,7 @@ namespace Gestor_De_Pule.src.Persistencias
         public DbSet<Pule> Pules { get; set; }
         public DbSet<Disputa> Disputas { get; set; }
         public DbSet<Resultado> Resultados { get; set; }
+        public DbSet<Caixa> Caixas { get; set; }
        public string Dbpath { get; }
         public DataBase() {
             var folder = Environment.SpecialFolder.LocalApplicationData;

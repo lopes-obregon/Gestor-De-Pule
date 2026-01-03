@@ -42,6 +42,9 @@
             apostadorToolStripMenuItem1 = new ToolStripMenuItem();
             animalToolStripMenuItem1 = new ToolStripMenuItem();
             puleToolStripMenuItem1 = new ToolStripMenuItem();
+            financeiroToolStripMenuItem = new ToolStripMenuItem();
+            fluxoDeCaixaToolStripMenuItem = new ToolStripMenuItem();
+            taxaToolStripMenuItem = new ToolStripMenuItem();
             tableLayoutPanelFiltrosSelect = new TableLayoutPanel();
             dateTimePickerDisputa = new DateTimePicker();
             label2 = new Label();
@@ -58,15 +61,19 @@
             windowCadastroDisputaBindingSource = new BindingSource(components);
             button2 = new Button();
             button3 = new Button();
-            financeiroToolStripMenuItem = new ToolStripMenuItem();
-            fluxoDeCaixaToolStripMenuItem = new ToolStripMenuItem();
-            taxaToolStripMenuItem = new ToolStripMenuItem();
+            flowLayoutPanel1 = new FlowLayoutPanel();
+            tableLayoutPanel2 = new TableLayoutPanel();
+            labelVitória = new Label();
+            labelTotalGanhadores = new Label();
+            labelPagamentoPorPule = new Label();
             menuStrip1.SuspendLayout();
             tableLayoutPanelFiltrosSelect.SuspendLayout();
             flowLayoutPanelButtons.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewDisputas).BeginInit();
             ((System.ComponentModel.ISupportInitialize)windowCadastroDisputaBindingSource).BeginInit();
+            flowLayoutPanel1.SuspendLayout();
+            tableLayoutPanel2.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
@@ -74,7 +81,7 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { arquivoToolStripMenuItem1, arquivoToolStripMenuItem, relatóriosToolStripMenuItem, financeiroToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(660, 24);
+            menuStrip1.Size = new Size(933, 24);
             menuStrip1.TabIndex = 0;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -154,6 +161,26 @@
             puleToolStripMenuItem1.Size = new Size(129, 22);
             puleToolStripMenuItem1.Text = "Pule";
             puleToolStripMenuItem1.Click += WindowRelatórioPule;
+            // 
+            // financeiroToolStripMenuItem
+            // 
+            financeiroToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { fluxoDeCaixaToolStripMenuItem, taxaToolStripMenuItem });
+            financeiroToolStripMenuItem.Name = "financeiroToolStripMenuItem";
+            financeiroToolStripMenuItem.Size = new Size(74, 20);
+            financeiroToolStripMenuItem.Text = "Financeiro";
+            // 
+            // fluxoDeCaixaToolStripMenuItem
+            // 
+            fluxoDeCaixaToolStripMenuItem.Name = "fluxoDeCaixaToolStripMenuItem";
+            fluxoDeCaixaToolStripMenuItem.Size = new Size(149, 22);
+            fluxoDeCaixaToolStripMenuItem.Text = "Fluxo de Caixa";
+            // 
+            // taxaToolStripMenuItem
+            // 
+            taxaToolStripMenuItem.Name = "taxaToolStripMenuItem";
+            taxaToolStripMenuItem.Size = new Size(149, 22);
+            taxaToolStripMenuItem.Text = "Taxa";
+            taxaToolStripMenuItem.Click += TaxaView;
             // 
             // tableLayoutPanelFiltrosSelect
             // 
@@ -284,7 +311,7 @@
             // 
             // button2
             // 
-            button2.Location = new Point(159, 483);
+            button2.Location = new Point(3, 3);
             button2.Name = "button2";
             button2.Size = new Size(75, 23);
             button2.TabIndex = 4;
@@ -294,7 +321,7 @@
             // 
             // button3
             // 
-            button3.Location = new Point(297, 486);
+            button3.Location = new Point(84, 3);
             button3.Name = "button3";
             button3.Size = new Size(126, 23);
             button3.TabIndex = 5;
@@ -302,32 +329,66 @@
             button3.UseVisualStyleBackColor = true;
             button3.Click += CalcularPosição;
             // 
-            // financeiroToolStripMenuItem
+            // flowLayoutPanel1
             // 
-            financeiroToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { fluxoDeCaixaToolStripMenuItem, taxaToolStripMenuItem });
-            financeiroToolStripMenuItem.Name = "financeiroToolStripMenuItem";
-            financeiroToolStripMenuItem.Size = new Size(74, 20);
-            financeiroToolStripMenuItem.Text = "Financeiro";
+            flowLayoutPanel1.Controls.Add(button2);
+            flowLayoutPanel1.Controls.Add(button3);
+            flowLayoutPanel1.Location = new Point(192, 481);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
+            flowLayoutPanel1.Size = new Size(244, 100);
+            flowLayoutPanel1.TabIndex = 6;
             // 
-            // fluxoDeCaixaToolStripMenuItem
+            // tableLayoutPanel2
             // 
-            fluxoDeCaixaToolStripMenuItem.Name = "fluxoDeCaixaToolStripMenuItem";
-            fluxoDeCaixaToolStripMenuItem.Size = new Size(180, 22);
-            fluxoDeCaixaToolStripMenuItem.Text = "Fluxo de Caixa";
+            tableLayoutPanel2.BackColor = SystemColors.ActiveBorder;
+            tableLayoutPanel2.ColumnCount = 1;
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 66F));
+            tableLayoutPanel2.Controls.Add(labelVitória, 0, 0);
+            tableLayoutPanel2.Controls.Add(labelTotalGanhadores, 0, 1);
+            tableLayoutPanel2.Controls.Add(labelPagamentoPorPule, 0, 2);
+            tableLayoutPanel2.Location = new Point(721, 145);
+            tableLayoutPanel2.Name = "tableLayoutPanel2";
+            tableLayoutPanel2.RowCount = 3;
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 129F));
+            tableLayoutPanel2.Size = new Size(200, 208);
+            tableLayoutPanel2.TabIndex = 7;
             // 
-            // taxaToolStripMenuItem
+            // labelVitória
             // 
-            taxaToolStripMenuItem.Name = "taxaToolStripMenuItem";
-            taxaToolStripMenuItem.Size = new Size(180, 22);
-            taxaToolStripMenuItem.Text = "Taxa";
+            labelVitória.AutoSize = true;
+            labelVitória.Location = new Point(3, 0);
+            labelVitória.Name = "labelVitória";
+            labelVitória.Size = new Size(52, 15);
+            labelVitória.TabIndex = 0;
+            labelVitória.Text = "Vitória:[]";
+            // 
+            // labelTotalGanhadores
+            // 
+            labelTotalGanhadores.AutoSize = true;
+            labelTotalGanhadores.Location = new Point(3, 39);
+            labelTotalGanhadores.Name = "labelTotalGanhadores";
+            labelTotalGanhadores.Size = new Size(99, 15);
+            labelTotalGanhadores.TabIndex = 1;
+            labelTotalGanhadores.Text = "Total Ganhadores";
+            // 
+            // labelPagamentoPorPule
+            // 
+            labelPagamentoPorPule.AutoSize = true;
+            labelPagamentoPorPule.Location = new Point(3, 78);
+            labelPagamentoPorPule.Name = "labelPagamentoPorPule";
+            labelPagamentoPorPule.Size = new Size(115, 15);
+            labelPagamentoPorPule.TabIndex = 2;
+            labelPagamentoPorPule.Text = "Pagamento Por Pule";
             // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(660, 593);
-            Controls.Add(button3);
-            Controls.Add(button2);
+            ClientSize = new Size(933, 593);
+            Controls.Add(tableLayoutPanel2);
+            Controls.Add(flowLayoutPanel1);
             Controls.Add(tableLayoutPanel1);
             Controls.Add(flowLayoutPanelButtons);
             Controls.Add(tableLayoutPanelFiltrosSelect);
@@ -344,6 +405,9 @@
             tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewDisputas).EndInit();
             ((System.ComponentModel.ISupportInitialize)windowCadastroDisputaBindingSource).EndInit();
+            flowLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel2.ResumeLayout(false);
+            tableLayoutPanel2.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -382,5 +446,10 @@
         private ToolStripMenuItem financeiroToolStripMenuItem;
         private ToolStripMenuItem fluxoDeCaixaToolStripMenuItem;
         private ToolStripMenuItem taxaToolStripMenuItem;
+        private FlowLayoutPanel flowLayoutPanel1;
+        private TableLayoutPanel tableLayoutPanel2;
+        private Label labelVitória;
+        private Label labelTotalGanhadores;
+        private Label labelPagamentoPorPule;
     }
 }
