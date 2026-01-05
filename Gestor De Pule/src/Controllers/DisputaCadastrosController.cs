@@ -79,8 +79,17 @@ namespace Gestor_De_Pule.src.Controllers
                     if (animal is null)
                         continue;
 
-                    var resultado = new Resultado(animal);
-                     sucess = ResultadoRepository.Save(resultado);
+                    //var resultado = new Resultado(animal);
+                    var resultado = new Resultado();
+
+                    if (resultado is not null)
+                    {
+                        sucess =  resultado.save();
+                        resultado.AssociarAnimal(animal);
+                        resultado.Update(animal);
+
+                    }
+                    // sucess = ResultadoRepository.Save(resultado);
                     if (!sucess)
                         return "Erro ao salvar o Resultado!";
 
@@ -88,8 +97,11 @@ namespace Gestor_De_Pule.src.Controllers
 
                     if (disputa == null)
                     {
-                        disputa = new Disputa(nomeDisputa, date ?? DateTime.Now, resultado);
-                        sucess = DisputaRepository.Save(disputa);
+                        //criar a disputa.
+                        //disputa = new Disputa(nomeDisputa, date ?? DateTime.Now, resultado);
+                        disputa = new Disputa(nomeDisputa, date ?? DateTime.Now);
+                        //sucess = DisputaRepository.Save(disputa);
+                        sucess = disputa.save();
                         if (!sucess)
                             return "Erro ao salvar a Disputa!";
                     }
@@ -104,6 +116,13 @@ namespace Gestor_De_Pule.src.Controllers
                     sucess = AnimalRepository.Update(animal, resultado);
                     if (!sucess)
                         return "Erro ao atualizar o Animal!";
+                    Caixa? caixa = Caixa.GetCaixa() as Caixa;
+                    if(caixa is not null)
+                    {
+                        sucess = caixa.SaveWithDisputa(disputa);
+                    }
+                    if (!sucess)
+                        return "Erro Interno Por Favor contate ao suporte!";
                 }
                 return "Disputa salva com sucesso!";
                 

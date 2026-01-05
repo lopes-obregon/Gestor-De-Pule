@@ -1,4 +1,5 @@
 ﻿using Gestor_De_Pule.src.Persistencias;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Gestor_De_Pule.src.Models
     {
         public int Id { get; set; }
         public decimal Taxa { get; set; }
-
+        public List<Disputa>? Disputs { get; set; }
         internal static  object GetCaixa()
         {
             using DataBase db = new DataBase();
@@ -21,7 +22,7 @@ namespace Gestor_De_Pule.src.Models
                 if(db.Caixas.Count() > 0)
                 {
                     //existe um caixa registrado no sistema
-                    var caixaDb = db.Caixas.FirstOrDefault();
+                    var caixaDb = db.Caixas.Include(caix=>caix.Disputs).FirstOrDefault();
                     if (caixaDb != null)
                         return caixaDb;
                 }
@@ -56,6 +57,41 @@ namespace Gestor_De_Pule.src.Models
                 db.SaveChanges();
             }
             catch { return; }
+        }
+
+        internal bool SaveWithDisputa(Disputa disputa)
+        {
+            using DataBase db = new DataBase();
+            try
+            {
+                var disputaDb = db.Disputas
+                    .FirstOrDefault(d => d.Id == disputa.Id);
+                var caixaDb = db.Caixas.Include(caixa => caixa.Disputs).FirstOrDefault(caixa => caixa.Id == this.Id);
+                if(disputaDb != null)
+                {
+                    disputaDb.Caixa = this;
+                    if(caixaDb is not null)
+                    {
+                        if(caixaDb.Disputs is null)
+                        {
+                            caixaDb.Disputs = new List<Disputa>();
+                            
+                        }
+                        else
+                        {
+                            caixaDb.Disputs.Add(disputaDb);
+                            db.Caixas.Update(caixaDb);
+                            db.Disputas.Update(disputaDb);
+
+
+                        }
+
+                    }
+                }
+                db.SaveChanges();
+                return true;
+            }
+            catch { return false; }
         }
     }
 }

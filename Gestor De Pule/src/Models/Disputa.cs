@@ -13,12 +13,15 @@ namespace Gestor_De_Pule.src.Models
 {
     class Disputa
     {
-       
+        private string nomeDisputa;
+        private DateTime dateTime;
+
         public int Id { get; set; }
         public DateTime DataEHora { get; set; } = new DateTime();
         public string Nome { get; set; } = String.Empty;
-        public List<Resultado> ResultadoList { get; set; } = new List<Resultado>();
-        public List<Pule> Pules { get; set; }
+        public List<Resultado>? ResultadoList { get; set; }
+        public List<Pule>? Pules { get; set; }
+        public Caixa? Caixa { get; set; }
         public Disputa() { }
         public Disputa(string nome,  DateTime dataEHora,Resultado resultados)
         {
@@ -27,6 +30,13 @@ namespace Gestor_De_Pule.src.Models
             Nome = nome;
             ResultadoList.Add(resultados);
         }
+
+        public Disputa(string nome, DateTime dateTime)
+        {
+            this.Nome = nome;
+            this.dateTime = dateTime;
+        }
+
         /// <summary>
         /// Verifica se essa disputa já foi criada!
         /// </summary>
@@ -190,6 +200,27 @@ namespace Gestor_De_Pule.src.Models
                 }
             }
             catch { return null; }
+        }
+
+        internal bool save()
+        {
+            using DataBase db = new DataBase();
+            try
+            {
+                if(this is not null)
+                {
+                    var disputaDb = db.Disputas.FirstOrDefault(dis => dis.Id == this.Id);
+                    if(disputaDb is null)
+                    {
+                        //quer dizer que não existe essa disputa a inda
+                        db.Disputas.Add(this);
+                    }
+                }
+
+                db.SaveChanges();
+                return true;
+            }
+            catch { return false; }
         }
     }
 }

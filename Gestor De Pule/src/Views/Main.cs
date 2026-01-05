@@ -286,6 +286,7 @@ namespace Gestor_De_Pule
                     disputa.Atualizar();
                     dataGridViewDisputas.Rows.Clear();
                     SetDataGridDisputa(disputa);
+
                 }
             }
         }

@@ -3,6 +3,7 @@ using System;
 using Gestor_De_Pule.src.Persistencias;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gestor_De_Pule.Migrations
 {
     [DbContext(typeof(DataBase))]
-    partial class DataBaseModelSnapshot : ModelSnapshot
+    [Migration("20260104013912_ResultadoDisputaAnimal")]
+    partial class ResultadoDisputaAnimal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.10");
@@ -138,7 +141,7 @@ namespace Gestor_De_Pule.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CaixaId")
+                    b.Property<int>("CaixaId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("DataEHora")
@@ -161,10 +164,10 @@ namespace Gestor_De_Pule.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("AnimalId")
+                    b.Property<int>("AnimalId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("DisputaId")
+                    b.Property<int>("DisputaId")
                         .HasColumnType("INTEGER");
 
                     b.Property<byte>("Posição")
@@ -216,7 +219,9 @@ namespace Gestor_De_Pule.Migrations
                 {
                     b.HasOne("Gestor_De_Pule.src.Models.Caixa", "Caixa")
                         .WithMany("Disputs")
-                        .HasForeignKey("CaixaId");
+                        .HasForeignKey("CaixaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Caixa");
                 });
@@ -225,11 +230,15 @@ namespace Gestor_De_Pule.Migrations
                 {
                     b.HasOne("Gestor_De_Pule.src.Model.Animal", "Animal")
                         .WithMany("Resultados")
-                        .HasForeignKey("AnimalId");
+                        .HasForeignKey("AnimalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Gestor_De_Pule.src.Models.Disputa", "Disputa")
                         .WithMany("ResultadoList")
-                        .HasForeignKey("DisputaId");
+                        .HasForeignKey("DisputaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Animal");
 
