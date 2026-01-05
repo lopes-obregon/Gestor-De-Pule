@@ -62,6 +62,7 @@
             button2 = new Button();
             button3 = new Button();
             flowLayoutPanel1 = new FlowLayoutPanel();
+            button4 = new Button();
             tableLayoutPanel2 = new TableLayoutPanel();
             labelVitória = new Label();
             labelTotalGanhadores = new Label();
@@ -333,10 +334,21 @@
             // 
             flowLayoutPanel1.Controls.Add(button2);
             flowLayoutPanel1.Controls.Add(button3);
+            flowLayoutPanel1.Controls.Add(button4);
             flowLayoutPanel1.Location = new Point(192, 481);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
             flowLayoutPanel1.Size = new Size(244, 100);
             flowLayoutPanel1.TabIndex = 6;
+            // 
+            // button4
+            // 
+            button4.Location = new Point(3, 32);
+            button4.Name = "button4";
+            button4.Size = new Size(118, 23);
+            button4.TabIndex = 6;
+            button4.Text = "Calcular Prêmio";
+            button4.UseVisualStyleBackColor = true;
+            button4.Click += CalcularPrêmio;
             // 
             // tableLayoutPanel2
             // 
@@ -451,5 +463,6 @@
         private Label labelVitória;
         private Label labelTotalGanhadores;
         private Label labelPagamentoPorPule;
+        private Button button4;
     }
 }

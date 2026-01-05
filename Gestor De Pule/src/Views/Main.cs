@@ -296,5 +296,24 @@ namespace Gestor_De_Pule
             var form = new FormCadastroDeTaxaEAtt();
             form.ShowDialog();
         }
+
+        private void CalcularPrêmio(object sender, EventArgs e)
+        {
+            var disputaMemória = MainController.Disputa;
+
+            if (disputaMemória is not null)
+            {
+                //fazer uma atualização com os dados do banco.
+                var disputa = Disputa.Reload(disputaMemória);
+                if (disputa is not null)
+                {
+                    labelVitória.Text = "Vitória: " + disputa.GetNomeAnimalVencedor();
+                    labelTotalGanhadores.Text = "Total Ganhadores: " + disputa.CntTotalGanhadoresPules().ToString();
+                    labelPagamentoPorPule.Text = "Pagamento Por Pule: " + disputa.PagamentoPorPule();
+                    
+                }
+            }
+
+        }
     }
 }

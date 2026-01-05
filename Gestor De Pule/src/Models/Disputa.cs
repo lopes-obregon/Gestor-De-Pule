@@ -222,5 +222,120 @@ namespace Gestor_De_Pule.src.Models
             }
             catch { return false; }
         }
+
+        internal static Disputa? Reload(Disputa disputa)
+        {
+            using DataBase db = new DataBase();
+            try
+            {
+                if(disputa is not null)
+                {
+                    var disputaDb = db.Disputas.Include(dis => dis.Pules)
+                        .ThenInclude(pu => pu.Animais).Include(dis => dis.Caixa).Include(dis => dis.ResultadoList)
+                        .ThenInclude(res => res.Animal).Include(dis => dis.Pules).ThenInclude(pu => pu.Apostador).FirstOrDefault(dis => dis.Id == disputa.Id);
+                    if(disputaDb != null)
+                    {
+                        return disputaDb;
+
+                    }
+                }
+                return null;
+            }catch { return null; }
+        }
+
+        internal string GetNomeAnimalVencedor()
+        {
+            if(ResultadoList is not null &&  ResultadoList.Count > 0)
+            {
+                foreach(var resultado in ResultadoList)
+                {
+                    if(resultado is not null)
+                    {
+                        if(resultado.Posição == 1)
+                        {
+                            if(resultado.Animal != null && !String.IsNullOrEmpty(resultado.Animal.Nome))
+                            {
+                                return resultado.Animal.Nome;
+                            } 
+                        }
+                    }
+                }
+            }
+            return "Animal Não encontrado!";
+        }
+
+        internal int CntTotalGanhadoresPules()
+        {
+            //contar e retornar a quantidade de ganhadores de pules ganhadores.
+            int idAnimalVencedor = GetIdAnimalVencedor();
+            int cntGanhadores = 0;
+            if(idAnimalVencedor > -1)
+            {
+                if (Pules is not null && Pules.Count > 0)
+                {
+                    foreach (var pule in Pules)
+                    {
+                        if (pule is not null)
+                        {
+                            if (pule.Animais.First().Id == idAnimalVencedor)
+                            {
+                                cntGanhadores++;
+                            }
+                        }
+                    }
+                }
+                return cntGanhadores;
+            }
+            return cntGanhadores;
+        }
+
+        private int GetIdAnimalVencedor()
+        {
+            if (ResultadoList is not null && ResultadoList.Count > 0)
+            {
+                foreach (var resultado in ResultadoList)
+                {
+                    if (resultado is not null)
+                    {
+                        if (resultado.Posição == 1)
+                        {
+                            if (resultado.Animal != null && !String.IsNullOrEmpty(resultado.Animal.Nome))
+                            {
+                                return resultado.Animal.Id;
+                            }
+                        }
+                    }
+                }
+            }
+            return -1;
+        }
+
+        internal string PagamentoPorPule()
+        {
+            int quantidadeDePulesVencedores = CntTotalGanhadoresPules();
+            float totalArrecadado = 0.0f;
+            float valorTaxa = 0.0f;
+            float prêmioLiquido = 0.0f; 
+            if (Pules is not null && Pules.Count > 0)
+            {
+                foreach (var pule in Pules)
+                {
+                    if (pule is not null)
+                        totalArrecadado += pule.Valor;
+                }
+                if (Caixa is not null)
+                {
+                    valorTaxa = totalArrecadado * (float)Caixa.Taxa;
+                    prêmioLiquido = totalArrecadado - valorTaxa;
+                    return (prêmioLiquido / quantidadeDePulesVencedores).ToString("C");
+
+                }
+                else
+                    return "Erro ao calcular!";
+
+            }
+            return "Algum Erro encontrado!";
+
+        }
     }
 }
