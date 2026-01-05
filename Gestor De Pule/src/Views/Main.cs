@@ -3,6 +3,7 @@ using Gestor_De_Pule.src.Models;
 using Gestor_De_Pule.src.Views;
 using Gestor_De_Pule.src.Views.Apostador;
 using Gestor_De_Pule.src.Views.Cadastros;
+using Gestor_De_Pule.src.Views.Financeiro.Taxa;
 using Gestor_De_Pule.src.Views.Pule;
 using Gestor_De_Pule.src.Views.Relatórios.Animal;
 using Gestor_De_Pule.src.Views.Relatórios.Apostador;
@@ -266,7 +267,7 @@ namespace Gestor_De_Pule
         private object? GetAnimal(int i)
         {
             var animal = dataGridViewDisputas.Rows[i].Cells[0].Value;
-            if(animal is not null)
+            if (animal is not null)
                 return animal;
             else return null;
         }
@@ -285,10 +286,34 @@ namespace Gestor_De_Pule
                     disputa.Atualizar();
                     dataGridViewDisputas.Rows.Clear();
                     SetDataGridDisputa(disputa);
+
                 }
             }
         }
 
-       
+        private void TaxaView(object sender, EventArgs e)
+        {
+            var form = new FormCadastroDeTaxaEAtt();
+            form.ShowDialog();
+        }
+
+        private void CalcularPrêmio(object sender, EventArgs e)
+        {
+            var disputaMemória = MainController.Disputa;
+
+            if (disputaMemória is not null)
+            {
+                //fazer uma atualização com os dados do banco.
+                var disputa = Disputa.Reload(disputaMemória);
+                if (disputa is not null)
+                {
+                    labelVitória.Text = "Vitória: " + disputa.GetNomeAnimalVencedor();
+                    labelTotalGanhadores.Text = "Total Ganhadores: " + disputa.CntTotalGanhadoresPules().ToString();
+                    labelPagamentoPorPule.Text = "Pagamento Por Pule: " + disputa.PagamentoPorPule();
+                    
+                }
+            }
+
+        }
     }
 }

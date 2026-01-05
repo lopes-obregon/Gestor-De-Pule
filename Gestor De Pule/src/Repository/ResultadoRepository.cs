@@ -21,12 +21,15 @@ namespace Gestor_De_Pule.src
                     var animalDb = db.Animals
                         .Include(a=>a.Resultados)
                         .FirstOrDefault(a=> a.Id == resultado.Animal.Id);
-                    if (animalDb is not null)
+                    var resultadoDb = db.Resultados.Include(res=>res.Animal).FirstOrDefault(res=>res.Id == resultado.Id);
+
+                    if (animalDb is not null && resultadoDb is not null)
                     {
                        if(animalDb.Id == resultado.Animal.Id)
                         {
-                            resultado.Animal = animalDb;
-                            db.Resultados.Add(resultado);
+                            //resultado.Animal = animalDb;
+                            resultadoDb.Animal = animalDb;
+                            db.Resultados.Add(resultadoDb);
                             db.SaveChanges();
                             return true;
                         }

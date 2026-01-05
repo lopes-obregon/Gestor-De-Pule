@@ -19,7 +19,7 @@ namespace Gestor_De_Pule.src.Controllers
         static public Animal? Animal { get; private set; }
         //pules do apostador
         static public List<Pule>? Pules { get; private set; }
-      
+        static public Disputa? Disputa { get; private set; }
 
         
         
@@ -48,7 +48,8 @@ namespace Gestor_De_Pule.src.Controllers
             Disputa? disputaSelecionado = disputaSelecionadaUi as Disputa;
             if(disputaSelecionado is not null)
             {
-                return DisputaService.ReadDisputa(disputaSelecionado);
+                Disputa = DisputaService.ReadDisputa(disputaSelecionado);
+                return Disputa;
             }else return null;
         }
 
