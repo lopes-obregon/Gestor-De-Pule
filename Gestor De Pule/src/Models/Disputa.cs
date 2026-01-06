@@ -337,5 +337,80 @@ namespace Gestor_De_Pule.src.Models
             return "Algum Erro encontrado!";
 
         }
+
+        internal static Disputa? GetDisputaWithPule(Disputa disputa)
+        {
+            using DataBase db = new DataBase();
+            Disputa? disputaDb = null;
+            try
+            {
+                if (disputa is not null)
+                {
+                    disputaDb = db.Disputas.Include(dis => dis.Pules).ThenInclude(pu=>pu.Animais).Include(dis=> dis.Caixa).FirstOrDefault(dis => dis.Id == disputa.Id);
+                    if (disputaDb is not null)
+                        return disputaDb;
+                }
+             
+                   
+            }catch { return disputaDb; }
+            return disputaDb;
+        }
+
+        internal float GetTotalArrecadado()
+        {
+            float totalArrecadado = 0;
+            if(Pules is not null && Pules.Count > 0)
+            {
+                foreach(var pule in Pules)
+                {
+                    if(pule is not null)
+                    {
+                        totalArrecadado += pule.Valor;
+                    }
+                }
+            }
+            return totalArrecadado;
+        }
+
+        internal float GetTaxaToFloat()
+        {
+            float taxa = 0;
+            if(Caixa is not null)
+            {
+                taxa = (float) Caixa.Taxa;
+            }
+            return taxa;
+        }
+
+        internal float GetTotalAnimal(List<Animal> animais)
+        {
+            float totalAnimal = 0;
+            if(animais is not null)
+            {
+                var animal = animais.First();
+                if(Pules is not null && Pules.Count > 0)
+                {
+                    foreach (var pule in Pules)
+                    {
+                        if(pule is not null && pule.Animais is not null)
+                        {
+                            if(pule.Animais.First().Id == animal.Id)
+                            {
+                                totalAnimal += pule.Valor;
+                            }
+                        }
+                    }
+                }
+            }
+            return totalAnimal;
+        }
+
+        internal decimal GetTaxa()
+        {
+            decimal total = 0.00m;
+            if (Caixa is not null)
+                total = Caixa.Taxa;
+            return total;
+        }
     }
 }

@@ -36,7 +36,9 @@ namespace Gestor_De_Pule.src.Repository
                         }
                         var pulesDb = db.Pules
                             .Include(p => p.Animais)
-                            .Include(p=> p.Apostador)
+                            .Include(p => p.Apostador)
+                            .Include(p => p.Disputa)
+                            .ThenInclude(dis => dis.ResultadoList)
                             .Where(p => ids.Contains(p.Id))
                             .ToList();
                         if (pulesDb != null)

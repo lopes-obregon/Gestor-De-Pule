@@ -1,4 +1,5 @@
 ﻿using Gestor_De_Pule.src.Model;
+using Gestor_De_Pule.src.Models;
 using System.Drawing.Printing;
 
 namespace Gestor_De_Pule.src.Service
@@ -11,7 +12,9 @@ namespace Gestor_De_Pule.src.Service
         {
            // var puleSelecionados = Pule.ToPules(puleSelecionadosUi);
             var puleSelecionados = PuleService.ObterPulesSelecionados(puleSelecionadosUi);
-            
+            float projeção = 0;
+            float totalArrecadado = 0;
+            float valorTaxa = 0;
             int indicieAtual = 0;
             PrintDocument printDocument = new PrintDocument();
             if (puleSelecionados != null && puleSelecionados.Count > 0)
@@ -28,12 +31,35 @@ namespace Gestor_De_Pule.src.Service
                     {
                         var pule = puleSelecionados[indicieAtual];
                         saveIniY = y;
-                        e.Graphics.DrawString($"Pule Nº: {pule.Número}", fonte, Brushes.Black, x, y); y += 20;
+                        if(pule.Disputa is not null)
+                        {
+                            e.Graphics.DrawString($"Pule Nº: {pule.Número} Disputa: {pule.Disputa.Nome}", fonte, Brushes.Black, x, y); y += 20;
+
+                        }else
+                            e.Graphics.DrawString($"Pule Nº: {pule.Número} ", fonte, Brushes.Black, x, y); y += 20;
                         e.Graphics.DrawString($"Apostador: {pule.Apostador}", fonte, Brushes.Black, x , y); y += 20;
                         e.Graphics.DrawString($"Animal: {string.Join(", ", pule.Animais)}", fonte, Brushes.Black, x, y); y += 20;
                         e.Graphics.DrawString($"Data: {pule.Date:dd/MM/yyyy HH:mm}", fonte, Brushes.Black, x, y); y += 20;
                         e.Graphics.DrawString($"Status: {pule.StatusPagamento}", fonte, Brushes.Black, x, y); y += 20;
-                        e.Graphics.DrawString($"Status: {pule.Valor.ToString("C")}", fonte, Brushes.Black, x, y); y += 40;
+                        e.Graphics.DrawString($"Valor: {pule.Valor.ToString("C")}", fonte, Brushes.Black, x, y); y += 40;
+                        if(pule.Disputa is not null)
+                        {
+                            var disputa = Disputa.GetDisputaWithPule(pule.Disputa);
+                            
+                            if(disputa is not null)
+                            { 
+                                totalArrecadado = disputa.GetTotalArrecadado();
+                                valorTaxa = totalArrecadado * disputa.GetTaxaToFloat();
+                                projeção = totalArrecadado + pule.Valor - valorTaxa;
+                                projeção /= disputa.GetTotalAnimal(pule.Animais) + pule.Valor;
+                                projeção *= pule.Valor;
+                                e.Graphics.DrawString($"Valor Aproximado de Prêmio: {projeção.ToString("C")}", fonte, Brushes.Black, x, y); y += 20;
+                                e.Graphics.DrawString($"Taxa: {disputa.GetTaxa().ToString("P")}", fonte, Brushes.Black, x, y); y += 20;
+                                e.Graphics.DrawString($"Valor De taxa: {valorTaxa.ToString("C")}", fonte, Brushes.Black, x, y); y += 40;
+
+                            }
+
+                        }
                         saveFinalY = y;
                         indicieAtual++;
                         if (!isSegundaCoulna)
