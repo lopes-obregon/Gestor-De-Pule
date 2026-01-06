@@ -30,7 +30,9 @@ namespace Gestor_De_Pule.src.Service
                     for (int i = 0; i < pulesPorPágina && indicieAtual < puleSelecionados.Count; i++)
                     {
                         var pule = puleSelecionados[indicieAtual];
+                        var animal = pule.Animais.First();
                         saveIniY = y;
+
                         if(pule.Disputa is not null)
                         {
                             e.Graphics.DrawString($"Pule Nº: {pule.Número} Disputa: {pule.Disputa.Nome}", fonte, Brushes.Black, x, y); y += 20;
@@ -38,7 +40,18 @@ namespace Gestor_De_Pule.src.Service
                         }else
                             e.Graphics.DrawString($"Pule Nº: {pule.Número} ", fonte, Brushes.Black, x, y); y += 20;
                         e.Graphics.DrawString($"Apostador: {pule.Apostador}", fonte, Brushes.Black, x , y); y += 20;
-                        e.Graphics.DrawString($"Animal: {string.Join(", ", pule.Animais)}", fonte, Brushes.Black, x, y); y += 20;
+                        //e.Graphics.DrawString($"Animal: {string.Join(", ", pule.Animais)}", fonte, Brushes.Black, x, y); y += 20;
+                        if(animal != null)
+                        {
+                            e.Graphics.DrawString($"Animal: {animal.Nome}", fonte, Brushes.Black, x, y); y += 20;
+                            e.Graphics.DrawString($"Jockey: {animal.Jockey}", fonte, Brushes.Black, x, y); y += 20;
+
+                        }
+                        else
+                        {
+                            e.Graphics.DrawString($"Animal: Não encontrado", fonte, Brushes.Black, x, y); y += 20;
+                            e.Graphics.DrawString($"Jockey: Não encontrado", fonte, Brushes.Black, x, y); y += 20;
+                        }
                         e.Graphics.DrawString($"Data: {pule.Date:dd/MM/yyyy HH:mm}", fonte, Brushes.Black, x, y); y += 20;
                         e.Graphics.DrawString($"Status: {pule.StatusPagamento}", fonte, Brushes.Black, x, y); y += 20;
                         e.Graphics.DrawString($"Valor: {pule.Valor.ToString("C")}", fonte, Brushes.Black, x, y); y += 40;
