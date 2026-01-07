@@ -56,12 +56,16 @@ namespace Gestor_De_Pule.src.Service
             }
                 PrintPreviewDialog printPreviewDialog = new PrintPreviewDialog();
             printPreviewDialog.Document = printDocument;
-            printPreviewDialog.ShowDialog();
+            try{
+                printPreviewDialog.ShowDialog();
+            }
+            catch { PrintAnimal(animal, pules); }
         }
 
         internal static void PrintRelatórioApostador(Apostador apostadorUi, List<Pule>? pulesUi, string totalDePules, string valorTotalApostado)
         {
             Apostador? apostador = Apostador.GetApostador(apostadorUi);
+            PrintPreviewDialog printPreviewDialog = new PrintPreviewDialog();
             int pageLinha = 80, pageColuna = 20;
             if(apostador is  null)
             {
@@ -72,9 +76,9 @@ namespace Gestor_De_Pule.src.Service
                     e.Graphics.DrawString("Relatório Do Apostador", new Font("Arial", 14, FontStyle.Bold), Brushes.Black, 20, 20);
                     e.Graphics.DrawString("Algo Deu Errado!", new Font("Arial", 14, FontStyle.Bold), Brushes.Black, 20, pageLinha);
                 };
-                PrintPreviewDialog printPreviewDialog = new PrintPreviewDialog();
+               
                 printPreviewDialog.Document = printDocument;
-                printPreviewDialog.ShowDialog();
+                //printPreviewDialog.ShowDialog();
             }
             else
             {
@@ -93,10 +97,15 @@ namespace Gestor_De_Pule.src.Service
                         e.Graphics.DrawString($"Status Pagamento: {pule.StatusPagamento}", font, Brushes.Black, pageColuna, pageLinha); pageLinha += 40;
                     }
                 };
-                PrintPreviewDialog printPreviewDialog = new PrintPreviewDialog();
+               
                 printPreviewDialog.Document = printDocument;
-                printPreviewDialog.ShowDialog();
             }
+            try
+            {
+                printPreviewDialog.ShowDialog();
+
+            }
+            catch (Exception ex) { PrintRelatórioApostador(apostadorUi, pulesUi, totalDePules, valorTotalApostado); }
         }
 
         internal static void PrintRelatórioPule(List<Pule> pules, object numPuleUi)
@@ -129,7 +138,12 @@ namespace Gestor_De_Pule.src.Service
             }
             PrintPreviewDialog printPreviewDialog = new PrintPreviewDialog();
             printPreviewDialog.Document = printDocument;
-            printPreviewDialog.ShowDialog();
+            try
+            {
+                printPreviewDialog.ShowDialog();
+
+            }
+            catch (Exception ex) { PrintRelatórioPule(pules, numPuleUi); }
 
         }
     }
