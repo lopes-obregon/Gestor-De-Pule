@@ -173,13 +173,14 @@
             // fluxoDeCaixaToolStripMenuItem
             // 
             fluxoDeCaixaToolStripMenuItem.Name = "fluxoDeCaixaToolStripMenuItem";
-            fluxoDeCaixaToolStripMenuItem.Size = new Size(149, 22);
+            fluxoDeCaixaToolStripMenuItem.Size = new Size(180, 22);
             fluxoDeCaixaToolStripMenuItem.Text = "Fluxo de Caixa";
+            fluxoDeCaixaToolStripMenuItem.Click += FluxoCaixaView;
             // 
             // taxaToolStripMenuItem
             // 
             taxaToolStripMenuItem.Name = "taxaToolStripMenuItem";
-            taxaToolStripMenuItem.Size = new Size(149, 22);
+            taxaToolStripMenuItem.Size = new Size(180, 22);
             taxaToolStripMenuItem.Text = "Taxa";
             taxaToolStripMenuItem.Click += TaxaView;
             // 

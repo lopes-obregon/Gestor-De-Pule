@@ -1,0 +1,30 @@
+﻿<Window x:Class="Gestor_De_Pule.src.Views.Financeiro.FluxoCaixa.WindowFluxoCaixa"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Gestor_De_Pule.src.Views.Financeiro.FluxoCaixa"
+        mc:Ignorable="d"
+        Title="Fluxo de Caixa" Height="450" Width="319">
+    <Grid>
+        
+            <Border BorderBrush="Black" BorderThickness="1" Padding="10" Margin="5" >
+                <StackPanel >
+                    <Label x:Name="LabelFluxoDeCaixa" Content="Label" Margin="1,-1,-1,1" />
+                    <Separator Margin="0,10,0,0" BorderBrush="Black" BorderThickness="1" />
+                    <Label x:Name="LabelSaldoTotalCaixa" Content="Label"/>
+                    <Separator Margin="0,10,0,0" BorderBrush="Black" BorderThickness="1" />
+                    <Label Content="DETALHAMENTO:"/>
+                    <Label x:Name="LabelEntradaDeAposta" Content="Label"/>
+
+
+            </StackPanel>
+
+        </Border>
+
+
+
+
+
+    </Grid>
+</Window>

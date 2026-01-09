@@ -3,6 +3,7 @@ using System;
 using Gestor_De_Pule.src.Persistencias;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gestor_De_Pule.Migrations
 {
     [DbContext(typeof(DataBase))]
-    partial class DataBaseModelSnapshot : ModelSnapshot
+    [Migration("20260109015324_AjusteDataBase")]
+    partial class AjusteDataBase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.10");
@@ -124,19 +127,10 @@ namespace Gestor_De_Pule.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("DateClose")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("DateOpen")
-                        .HasColumnType("TEXT");
-
                     b.Property<int?>("Open")
                         .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Taxa")
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("TotalEmCaixa")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -158,9 +152,6 @@ namespace Gestor_De_Pule.Migrations
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal?>("TotalPago")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

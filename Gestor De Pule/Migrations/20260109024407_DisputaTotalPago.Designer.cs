@@ -3,6 +3,7 @@ using System;
 using Gestor_De_Pule.src.Persistencias;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gestor_De_Pule.Migrations
 {
     [DbContext(typeof(DataBase))]
-    partial class DataBaseModelSnapshot : ModelSnapshot
+    [Migration("20260109024407_DisputaTotalPago")]
+    partial class DisputaTotalPago
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.10");
@@ -136,9 +139,6 @@ namespace Gestor_De_Pule.Migrations
                     b.Property<decimal>("Taxa")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("TotalEmCaixa")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.ToTable("Caixas");
@@ -160,7 +160,7 @@ namespace Gestor_De_Pule.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal?>("TotalPago")
+                    b.Property<decimal?>("TotalDisputa")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

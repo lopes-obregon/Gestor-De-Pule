@@ -3,6 +3,7 @@ using Gestor_De_Pule.src.Models;
 using Gestor_De_Pule.src.Views;
 using Gestor_De_Pule.src.Views.Apostador;
 using Gestor_De_Pule.src.Views.Cadastros;
+using Gestor_De_Pule.src.Views.Financeiro.FluxoCaixa;
 using Gestor_De_Pule.src.Views.Financeiro.Taxa;
 using Gestor_De_Pule.src.Views.Pule;
 using Gestor_De_Pule.src.Views.Relatórios.Animal;
@@ -20,6 +21,14 @@ namespace Gestor_De_Pule
             //MainController.LoadLists();
             InitComboBox();
             //this.Dock = DockStyle.Fill;
+                //então carrego na memória.
+                FinanceiroController.LoadCaixaInit();
+            var caixa = FinanceiroController.Caixa;
+            if(caixa is null)
+            {
+                //então preciso criar um novo caixa;
+                FinanceiroController.OpenNewCaixa();
+            }
 
         }
 
@@ -310,10 +319,16 @@ namespace Gestor_De_Pule
                     labelVitória.Text = "Vitória: " + disputa.GetNomeAnimalVencedor();
                     labelTotalGanhadores.Text = "Total Ganhadores: " + disputa.CntTotalGanhadoresPules().ToString();
                     labelPagamentoPorPule.Text = "Pagamento Por Pule: " + disputa.PagamentoPorPule();
-                    
+
                 }
             }
 
+        }
+
+        private void FluxoCaixaView(object sender, EventArgs e)
+        {
+            WindowFluxoCaixa window = new WindowFluxoCaixa();
+            window.ShowDialog();
         }
     }
 }

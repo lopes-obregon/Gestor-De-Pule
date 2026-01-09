@@ -22,6 +22,7 @@ namespace Gestor_De_Pule.src.Models
         public List<Resultado>? ResultadoList { get; set; }
         public List<Pule>? Pules { get; set; }
         public Caixa? Caixa { get; set; }
+        public decimal ? TotalPago { get; set; }
         public Disputa() { }
         public Disputa(string nome,  DateTime dataEHora,Resultado resultados)
         {
@@ -313,19 +314,19 @@ namespace Gestor_De_Pule.src.Models
         internal string PagamentoPorPule()
         {
             int quantidadeDePulesVencedores = CntTotalGanhadoresPules();
-            float totalArrecadado = 0.0f;
-            float valorTaxa = 0.0f;
-            float prêmioLiquido = 0.0f; 
+            decimal totalArrecadado = 0.00m;
+            decimal valorTaxa = 0.00m;
+            decimal prêmioLiquido = 0.00m; 
             if (Pules is not null && Pules.Count > 0)
             {
                 foreach (var pule in Pules)
                 {
                     if (pule is not null)
-                        totalArrecadado += pule.Valor;
+                        totalArrecadado += (decimal)pule.Valor;
                 }
                 if (Caixa is not null)
                 {
-                    valorTaxa = totalArrecadado * (float)Caixa.Taxa;
+                    valorTaxa = totalArrecadado * Caixa.Taxa;
                     prêmioLiquido = totalArrecadado - valorTaxa;
                     return (prêmioLiquido / quantidadeDePulesVencedores).ToString("C");
 
@@ -410,6 +411,22 @@ namespace Gestor_De_Pule.src.Models
             decimal total = 0.00m;
             if (Caixa is not null)
                 total = Caixa.Taxa;
+            return total;
+        }
+
+        internal decimal GetTotalValorPule()
+        {
+            decimal total = 0;
+            if(Pules is not null && Pules.Count > 0)
+            {
+                foreach(var pule in Pules)
+                {
+                    if(pule is not null)
+                    {
+                        total += (decimal)pule.Valor;
+                    }
+                }
+            }
             return total;
         }
     }
