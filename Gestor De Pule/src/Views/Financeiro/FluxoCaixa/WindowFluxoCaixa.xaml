@@ -9,13 +9,27 @@
     <Grid>
         
             <Border BorderBrush="Black" BorderThickness="1" Padding="10" Margin="5" >
-                <StackPanel >
+                <StackPanel Margin="-1,0,0,52" >
                     <Label x:Name="LabelFluxoDeCaixa" Content="Label" Margin="1,-1,-1,1" />
                     <Separator Margin="0,10,0,0" BorderBrush="Black" BorderThickness="1" />
                     <Label x:Name="LabelSaldoTotalCaixa" Content="Label"/>
                     <Separator Margin="0,10,0,0" BorderBrush="Black" BorderThickness="1" />
                     <Label Content="DETALHAMENTO:"/>
                     <Label x:Name="LabelEntradaDeAposta" Content="Label"/>
+                <Label x:Name="LabelPremioApagar" Content="Label"/>
+                <Label x:Name="LabelLucro" Content="Label"/>
+                <Label x:Name="LabelInfo" Content="Label"/>
+                <Grid Height="20" Width="180">
+                    <!-- Definição das colunas -->
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <!--Elementos do grid-->
+                    <Button Content="Fechar Dia" Grid.Column="1" Click="FecharDia" />
+                    <Button Content="Retirar Lucro" Grid.Column="0" Click="RetiraLucro" />
+                </Grid>
 
 
             </StackPanel>

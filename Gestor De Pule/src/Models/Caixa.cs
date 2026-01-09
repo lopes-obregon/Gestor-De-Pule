@@ -101,6 +101,20 @@ namespace Gestor_De_Pule.src.Models
                 }
                 else
                 {
+                    var caixaDb = db.Caixas.OrderByDescending(c => c.Id).FirstOrDefault();
+                    if(caixaDb is not null)
+                    {
+                        //pega o saldo do anterior e acresenta no novo caixa;
+                        this.TotalEmCaixa = caixaDb.TotalEmCaixa;
+                    }
+                    if(this.DateOpen is null)
+                    {
+                        this.DateOpen = DateTime.Now;
+                    }
+                    if(this.Open is null)
+                    {
+                        this.Open = IsOpen.Open;
+                    }
                     //novo caixa sendo criado.
                     db.Caixas.Add(this);
 
@@ -175,6 +189,96 @@ namespace Gestor_De_Pule.src.Models
                 }
             }
             return result;
+        }
+
+        internal decimal GetPremioApagar()
+        {
+            decimal total = 0.00m;
+            decimal taxa = 0.00m;
+            decimal prêmioLíquido = 0.00m;
+            if(Disputs is not null && Disputs.Count > 0)
+            {
+                foreach (var disputa in Disputs)
+                {
+                    if(disputa is not null)
+                    {
+                        total += disputa.GetTotalValorPule();
+                    }
+                }
+                taxa = total * Taxa;
+                prêmioLíquido = total - taxa;
+            }
+            return prêmioLíquido;
+        }
+
+        internal decimal Lucro()
+        {
+            decimal total = 0.00m;
+            decimal taxa = 0.00m;
+            decimal prêmioLíquido = 0.00m;
+            if (Disputs is not null && Disputs.Count > 0)
+            {
+                foreach (var disputa in Disputs)
+                {
+                    if (disputa is not null)
+                    {
+                        total += disputa.GetTotalValorPule();
+                    }
+                }
+                taxa = total * Taxa;
+                prêmioLíquido = total - taxa;
+            }
+            return taxa;
+        }
+
+        internal string FecharDia()
+        {
+            this.TotalEmCaixa += this.Lucro();
+            if (Caixa.Fechar(this))
+            {
+                return "Caixa Fechado com sucesso na Data: " + DateTime.Now.ToString("dd/MM/yyyy");
+            }
+            else
+            {
+                return "Erro ao fechar o caixa!";
+            }
+        }
+
+        private static bool Fechar(Caixa caixa)
+        {
+            using DataBase db = new DataBase();
+            bool fechou = false;
+            try
+            {
+                var caixaDb = db.Caixas.FirstOrDefault(cai => cai.Id == cai.Id);
+                if(caixaDb != null)
+                {
+                    caixaDb.TotalEmCaixa = caixa.TotalEmCaixa;
+                    caixaDb.DateClose = DateTime.Now;
+                    caixaDb.Open = IsOpen.Close;
+                    db.Caixas.Update(caixaDb);
+                    caixa = caixaDb;
+                    db.SaveChanges();
+                    fechou = true;
+                }
+            }
+            catch { return fechou; }
+            return fechou;
+        }
+
+        internal bool RetirarLucro(decimal valor)
+        {
+            bool retirou = false;
+            decimal total = this.TotalEmCaixa + this.Lucro();
+            if (total  > 0)
+            {
+                total -= valor;
+                this.TotalEmCaixa = total;
+                retirou = true;
+
+            }
+            return retirou;
+            
         }
     }
 }
