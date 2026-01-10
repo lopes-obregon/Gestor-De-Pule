@@ -35,7 +35,7 @@ namespace Gestor_De_Pule.src.Models
         public Disputa(string nome, DateTime dateTime)
         {
             this.Nome = nome;
-            this.dateTime = dateTime;
+            this.DataEHora = dateTime;
         }
 
         /// <summary>
