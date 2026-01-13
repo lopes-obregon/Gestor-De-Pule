@@ -1,6 +1,7 @@
 ﻿using Gestor_De_Pule.src.Controllers;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -55,32 +56,32 @@ namespace Gestor_De_Pule.src.Views.Financeiro.FluxoCaixa
 
         private void TextBoxNumberPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = !decimal.TryParse(e.Text, out _); // só aceitua nº
+            e.Handled = !decimal.TryParse(e.Text, NumberStyles.Number,new CultureInfo("pt-BR"), out _); // só aceitua nº
         }
 
         private void PagarDisputa(object sender, RoutedEventArgs e)
         {
             var disputaSelecionadaUi = ComboBoxDisputasCadastradas.SelectedItem;
             string mensagem = String.Empty;
-            if(disputaSelecionadaUi != null)
+            decimal valor = Decimal.Zero;
+            if (disputaSelecionadaUi != null)
             {
-                string valorString = TextBoxNumber.Text;
-                decimal valor = Decimal.Parse(valorString);
-                if(String.IsNullOrEmpty(valorString) )
-                {
-                    System.Windows.MessageBox.Show("Por Favo Digite um valor para realizar o pagamento!");
+                if (DecimalUpDownValorPagar is not null)
+                    valor = DecimalUpDownValorPagar.Value ?? 0m;
+                else
+                    valor = -1;
 
-                }
-                else if (valor < 0)
+                if (valor < 0)
                 {
                     System.Windows.MessageBox.Show("Valor incorreto de pagamento!");
                 }
                 else
                 {
                     //considero um valor válido 
-                    if (financeiroController is not null && financeiroController.CaixaLocal is not null){
+                    if (financeiroController is not null && financeiroController.CaixaLocal is not null)
+                    {
                         //só para teste
-                       // financeiroController.CaixaLocal.TotalEmCaixaWithPulePago();
+                        // financeiroController.CaixaLocal.TotalEmCaixaWithPulePago();
                         mensagem = financeiroController.CaixaLocal.PagaDisputa(disputaSelecionadaUi, valor);
                     }
                 }
