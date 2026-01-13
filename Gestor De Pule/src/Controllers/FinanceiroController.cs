@@ -1,11 +1,16 @@
-﻿using Gestor_De_Pule.src.Models;
+﻿
+using Gestor_De_Pule.src.Models;
 
 namespace Gestor_De_Pule.src.Controllers
 {
-    internal class FinanceiroController
+     internal  class FinanceiroController
     {
         public static  Caixa? Caixa {  set; get; } = null;
-
+        public Caixa? CaixaLocal { set; get; } = null;
+        public FinanceiroController() 
+        {
+           
+        }
         internal static void InitCaixa()
         {
            if(Caixa is null)
@@ -21,6 +26,13 @@ namespace Gestor_De_Pule.src.Controllers
         {
             if (Caixa is null)
                 Caixa = Caixa.LoadInit();
+        }
+        internal void LoadCaixaLocal()
+        {
+            if(CaixaLocal is null)
+            {
+                CaixaLocal = Caixa.LoadInit();
+            }
         }
         internal static void LoadCaixa()
         {
@@ -51,5 +63,7 @@ namespace Gestor_De_Pule.src.Controllers
 
             Caixa = caixa;
         }
+
+        
     }
 }

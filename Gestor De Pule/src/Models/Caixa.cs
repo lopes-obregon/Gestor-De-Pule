@@ -1,15 +1,10 @@
 ﻿using Gestor_De_Pule.src.Persistencias;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections;
 
 namespace Gestor_De_Pule.src.Models
 {
-    internal class Caixa
+    internal   class Caixa
     {
         public enum IsOpen {Open, Close}
         public int Id { get; set; }
@@ -279,6 +274,86 @@ namespace Gestor_De_Pule.src.Models
             }
             return retirou;
             
+        }
+
+        internal void TotalEmCaixaWithPulePago()
+        {
+            decimal total = 0;
+            if (Disputs is not null && Disputs.Count > 0)
+            {
+                foreach (var disputa in Disputs)
+                    if (disputa is not null && disputa.Pagamento == Model.StatusPagamento.Pendente )
+                        total += disputa.PulesPagos();
+
+            }
+            this.TotalEmCaixa += total;
+           
+        }
+
+        internal List<Disputa> DisputsNãoPagos()
+        {
+            List<Disputa> disputs = new List<Disputa>();
+
+            if(Disputs is not null && Disputs.Count > 0)
+            {
+                foreach(var disputa in Disputs)
+                {
+                    if(disputa is not null)
+                    {
+                        if(disputa.Pagamento == Model.StatusPagamento.Pendente)
+                        {
+                            disputs.Add(disputa);
+                        }
+                    }
+                }
+            }
+            return disputs;
+        }
+
+        internal string PagaDisputa(object disputaSelecionadaUi, decimal valor)
+        {
+            bool sucess = false;
+            string mensagem = string.Empty;
+            Disputa? disputaSelecionado = disputaSelecionadaUi as Disputa;
+            if (disputaSelecionado != null)
+            {
+                if (this.TotalEmCaixa > valor)
+                {
+                    disputaSelecionado.Pagamento = Model.StatusPagamento.Pago;
+                    disputaSelecionado.TotalPago += valor;
+                    sucess = disputaSelecionado.UpdatePagamentoEpagamento();
+                    if (sucess)
+                        mensagem = "Disputa Pago Com Sucesso!";
+                    else
+                        mensagem = "Erro ao Paga A Disputa!";
+                    TotalEmCaixa -= valor;
+                    sucess = this.UpdateTotalEmCaixa();
+                    if (sucess)
+                        mensagem += " Valor Debitado Do Caixa!";
+                    else
+                        mensagem += " Algo Deu Errado ao Debitar do Caixa!";
+
+                }
+                else { mensagem = "Saldo Insuficiente!"; }
+            }
+            else
+                mensagem = "Disputa Inválida!";
+            return mensagem;
+        }
+
+        private bool UpdateTotalEmCaixa()
+        {
+            using DataBase db = new DataBase();
+            bool sucess = false;
+            try
+            {
+                db.Attach(this);
+                db.Caixas.Update(this);
+                db.SaveChanges();
+                sucess = true;
+            }
+            catch { sucess = false; }
+            return sucess;
         }
     }
 }

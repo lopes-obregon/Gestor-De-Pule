@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Gestor_De_Pule.src.Models
 {
-    class Disputa
+     internal class Disputa
     {
         private string nomeDisputa;
         private DateTime dateTime;
@@ -23,6 +23,7 @@ namespace Gestor_De_Pule.src.Models
         public List<Pule>? Pules { get; set; }
         public Caixa? Caixa { get; set; }
         public decimal ? TotalPago { get; set; }
+        public StatusPagamento Pagamento { get; set; }
         public Disputa() { }
         public Disputa(string nome,  DateTime dataEHora,Resultado resultados)
         {
@@ -30,6 +31,7 @@ namespace Gestor_De_Pule.src.Models
             DataEHora = dataEHora;
             Nome = nome;
             ResultadoList.Add(resultados);
+            Pagamento = StatusPagamento.Pendente;
         }
 
         public Disputa(string nome, DateTime dateTime)
@@ -428,6 +430,44 @@ namespace Gestor_De_Pule.src.Models
                 }
             }
             return total;
+        }
+
+        internal decimal PulesPagos()
+        {
+            decimal total = decimal.Zero;
+            if(Pules is not null)
+            {
+                foreach( var pule in Pules)
+                {
+                    if(pule is not null)
+                    {
+                        if(pule.StatusPagamento == StatusPagamento.Pago)
+                        {
+                            total += (decimal)pule.Valor;
+                        }
+                    }
+                }
+            }
+            return total;
+        }
+
+        internal bool UpdatePagamentoEpagamento()
+        {
+            using DataBase db = new DataBase();
+            bool sucess = false;
+            try
+            {
+                var disputaDb = db.Disputas.FirstOrDefault(dis => dis.Id == this.Id);
+                if (disputaDb != null) {
+                    disputaDb.Pagamento = this.Pagamento;
+                    disputaDb.TotalPago = TotalPago;
+                    db.Disputas.Update(disputaDb);
+                    db.SaveChanges();
+                    sucess = true;
+                }
+            }
+            catch {  sucess = false; }
+            return sucess;
         }
     }
 }

@@ -19,16 +19,18 @@
                 <Label x:Name="LabelPremioApagar" Content="Label"/>
                 <Label x:Name="LabelLucro" Content="Label"/>
                 <Label x:Name="LabelInfo" Content="Label"/>
-                <Grid Height="20" Width="180">
+                <Grid Height="20" Width="253">
                     <!-- Definição das colunas -->
 
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <!--Elementos do grid-->
                     <Button Content="Fechar Dia" Grid.Column="1" Click="FecharDia" />
                     <Button Content="Retirar Lucro" Grid.Column="0" Click="RetiraLucro" />
+                    <Button Grid.Column="2" Content="Pagar Disputa" Click="PagarDisputa"/>
                 </Grid>
 
 

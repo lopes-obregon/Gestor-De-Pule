@@ -9,33 +9,43 @@ namespace Gestor_De_Pule.src.Views.Financeiro.FluxoCaixa
     /// </summary>
     public partial class WindowFluxoCaixa : Window
     {
+        private FinanceiroController? financeiroController { get; set; } = null;
         public WindowFluxoCaixa()
         {
             InitializeComponent();
+            financeiroController = new FinanceiroController();
             Init();
         }
 
         private void Init()
         {
-            FinanceiroController.LoadCaixaInit();
-            var caixa = FinanceiroController.Caixa;
+            //FinanceiroController.LoadCaixaInit();
             LabelFluxoDeCaixa.Content = "FlUXO DE CAIXA - DATA: " + DateTime.Now.ToString("dd/MM/yyyy");
-            if (caixa != null)
+            if(financeiroController is not null)
             {
-                LabelSaldoTotalCaixa.Content = "SALDO TOTAL EM CAIXA: " + caixa.TotalEmCaixa.ToString("C");
-                LabelEntradaDeAposta.Content = "(+) Entradas de Apostas: " + caixa.GetEntradaDeApostas().ToString("C");
-                LabelPremioApagar.Content = "(-) Prêmios a Pagar: " + caixa.GetPremioApagar().ToString("C");
-                LabelLucro.Content = " (=) TAXA DA CASA (LUCRO): " + caixa.Lucro().ToString("C");
-                LabelInfo.Content = "TAXA CALCULADA DE: " + caixa.Taxa.ToString("P");
+                financeiroController.LoadCaixaLocal();
+                var caixa = financeiroController.CaixaLocal;
+                if (caixa != null)
+                {
+                    //método só para teste
+                    //caixa.TotalEmCaixaWithPulePago();
+                    LabelSaldoTotalCaixa.Content = "SALDO TOTAL EM CAIXA: " + caixa.TotalEmCaixa.ToString("C");
+                    LabelEntradaDeAposta.Content = "(+) Entradas de Apostas: " + caixa.GetEntradaDeApostas().ToString("C");
+                    LabelPremioApagar.Content = "(-) Prêmios a Pagar: " + caixa.GetPremioApagar().ToString("C");
+                    LabelLucro.Content = " (=) TAXA DA CASA (LUCRO): " + caixa.Lucro().ToString("C");
+                    LabelInfo.Content = "TAXA CALCULADA DE: " + caixa.Taxa.ToString("P");
+                }
+                else
+                {
+                    LabelSaldoTotalCaixa.Content = "SALDO TOTAL EM CAIXA: ---";
+                    LabelEntradaDeAposta.Content = "(+) Entradas de Apostas: ";
+                    LabelPremioApagar.Content = "(-) Prêmios a Pagar: ";
+                    LabelLucro.Content = " (=) TAXA DA CASA (LUCRO): ";
+                    LabelInfo.Content = "TAXA CALCULADA DE: ";
+                }
+
             }
-            else
-            {
-                LabelSaldoTotalCaixa.Content = "SALDO TOTAL EM CAIXA: ---";
-                LabelEntradaDeAposta.Content = "(+) Entradas de Apostas: ";
-                LabelPremioApagar.Content = "(-) Prêmios a Pagar: ";
-                LabelLucro.Content = " (=) TAXA DA CASA (LUCRO): ";
-                LabelInfo.Content = "TAXA CALCULADA DE: ";
-            }
+           // var caixa = FinanceiroController.Caixa;
 
         }
 
@@ -74,6 +84,13 @@ namespace Gestor_De_Pule.src.Views.Financeiro.FluxoCaixa
                 }
 
             }
+        }
+
+        private void PagarDisputa(object sender, RoutedEventArgs e)
+        {
+            WindowPagamentoDeDisputa window = new WindowPagamentoDeDisputa(financeiroController);
+            window.ShowDialog();
+            Init();
         }
     }
 }

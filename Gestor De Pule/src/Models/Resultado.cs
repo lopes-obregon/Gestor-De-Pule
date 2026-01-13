@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Gestor_De_Pule.src.Models
 {
-    class Resultado
+    internal class Resultado
     {
         public int Id { get; set; }
         public Disputa? Disputa { get; set; } = null;

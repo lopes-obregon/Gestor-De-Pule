@@ -27,7 +27,7 @@ namespace Gestor_De_Pule.src.Views.Financeiro.Taxa
             }
             else
             {
-
+                novoValorTaxa = novoValorTaxa / 100;
                 FinanceiroController.SaveOrAttTaxa(novoValorTaxa);
                 AtualizarTaxaLabel();
             }

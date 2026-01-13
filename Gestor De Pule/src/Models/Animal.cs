@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 
 namespace Gestor_De_Pule.src.Model
 {
-    internal class Animal
+     internal class Animal
     {
         private int _id = 0;
         private int _número = 0;

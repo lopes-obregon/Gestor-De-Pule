@@ -1,14 +1,9 @@
 ﻿using Gestor_De_Pule.src.Persistencias;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Gestor_De_Pule.src.Model
 {
-    internal class Apostador
+    internal   class Apostador
     {
         //id do apostador
         int _id = 0;

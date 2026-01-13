@@ -68,7 +68,6 @@
             // numericUpDown1
             // 
             numericUpDown1.DecimalPlaces = 2;
-            numericUpDown1.Increment = new decimal(new int[] { 1, 0, 0, 131072 });
             numericUpDown1.Location = new Point(103, 53);
             numericUpDown1.Name = "numericUpDown1";
             numericUpDown1.Size = new Size(94, 23);

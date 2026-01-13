@@ -11,7 +11,7 @@ namespace Gestor_De_Pule.src.Model
             Pago,
             Cancelado
         }
-    internal class Pule
+     internal class Pule
     {
         //menbros
         private int _id;
