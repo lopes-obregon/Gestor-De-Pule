@@ -128,7 +128,7 @@ namespace Gestor_De_Pule.src.Model
             return false;
         }
 
-        internal bool Update(Pule pule, List<Animal> novosAnimais, bool isEqual)
+        internal static  bool Update(Pule pule, List<Animal> novosAnimais, bool isEqual)
         {
             using DataBase db = new DataBase();
             try

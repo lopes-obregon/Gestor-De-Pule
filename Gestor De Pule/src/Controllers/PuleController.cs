@@ -5,12 +5,24 @@ namespace Gestor_De_Pule.src.Controllers
 {
     internal class PuleController
     {
+        
+
+      
+
         static public List<Apostador>? Apostadors { get; private set; }
         static public List<Animal>? Animals { get; private set; }
         static public List<Pule>? Pules { get; private set; }
         static public Pule? Pule { get; private set; }
+        public Pule? PuleLocal { get; private set; } = null;
         static public List<Disputa>? Disputas { get; private set; } = null;
+        public List<Apostador> ApostadorsLocal { get; private set; }
+        public List<Animal> AnimalsLocal { get; private set; }
+        public List<Disputa>? DisputasLocal { get; private set; }
 
+        public PuleController(object puleSelecionadoUi)
+        {
+            PuleLocal = puleSelecionadoUi as Pule;
+        }
         internal static List<Animal>? AttComboBoxAnimais(object disputaSelecionadaUi)
         {
             Disputa? disputaSelecionada = disputaSelecionadaUi as Disputa;
@@ -86,7 +98,15 @@ namespace Gestor_De_Pule.src.Controllers
             Animals = AnimalController.Animals.ToList();
             
         }
+        internal  void LoadListsLocal()
+        {
+            DisputasLocal = Disputa.GetDisputas();
+            AnimalController.LoadAnimais();
+            ApostadorController.LoadApostadores();
+            ApostadorsLocal = ApostadorController.Apostadors.ToList();
+            AnimalsLocal = AnimalController.Animals.ToList();
 
+        }
         internal static void LoadPule(object puleSelecionadoUi)
         {
             Pule? puleSelecionado = puleSelecionadoUi as Pule;
@@ -117,7 +137,7 @@ namespace Gestor_De_Pule.src.Controllers
 
         
 
-        internal static string UpdateData(object? apostadorUi, object? pagamentoUi, ListBox.ObjectCollection animaisUi)
+        internal  string UpdateData(object? apostadorUi, object? pagamentoUi, ListBox.ObjectCollection animaisUi)
         {
             Apostador? apostadorSelecionado = apostadorUi as Apostador;
             StatusPagamento pagamento = StatusPagamento.Pendente;

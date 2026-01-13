@@ -1,29 +1,24 @@
 ﻿using Gestor_De_Pule.src.Controllers;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Gestor_De_Pule.src.Views.Pule
 {
     public partial class FormAtualizarPule : Form
     {
+        private PuleController controller { get; set; } = null;
         public FormAtualizarPule(object puleSelecionadoUi)
         {
             InitializeComponent();
-            InitCampos(puleSelecionadoUi);
+            controller = new PuleController(puleSelecionadoUi);
+            
+            InitCampos();
         }
 
-        private void InitCampos(object puleSelecionadoUi)
+        private void InitCampos()
         {
-            PuleController.LoadPule(puleSelecionadoUi);
+            //PuleController.LoadPule(puleSelecionadoUi);
             SetComboBox();
-            var pule = PuleController.Pule;
+            //var pule = PuleController.Pule;
+            var pule = controller.PuleLocal;
             if (pule != null)
             {
                 comboBoxApostadores.SelectedItem = pule.Apostador;
@@ -40,9 +35,12 @@ namespace Gestor_De_Pule.src.Views.Pule
         private void SetComboBox()
         {
 
-            PuleController.LoadLists();
-            var animaisCadastrados = PuleController.Animals;
-            var ApostadoresCadastrados = PuleController.Apostadors;
+            //PuleController.LoadLists();
+            controller.LoadListsLocal();
+            //var animaisCadastrados = PuleController.Animals;
+            var animaisCadastrados = controller.AnimalsLocal;
+            //var ApostadoresCadastrados = PuleController.Apostadors;
+            var ApostadoresCadastrados = controller.ApostadorsLocal;
             if (ApostadoresCadastrados is not null)
                 comboBoxApostadores.Items.AddRange(ApostadoresCadastrados.ToArray());
             comboBoxPagamento.DataSource = Enum.GetValues(typeof(Gestor_De_Pule.src.Model.StatusPagamento));
@@ -79,7 +77,8 @@ namespace Gestor_De_Pule.src.Views.Pule
         private void AtualizarPule(object sender, EventArgs e)
         {
            string mensagem = String.Empty;
-            mensagem = PuleController.UpdateData(comboBoxApostadores.SelectedItem, comboBoxPagamento.SelectedItem, listBoxAnimaisSelecionados.Items);
+            //mensagem = PuleController.UpdateData(comboBoxApostadores.SelectedItem, comboBoxPagamento.SelectedItem, listBoxAnimaisSelecionados.Items);
+            mensagem = controller.UpdateData(comboBoxApostadores.SelectedItem, comboBoxPagamento.SelectedItem, listBoxAnimaisSelecionados.Items);
             MessageBox.Show(mensagem);
         }
     }
