@@ -93,5 +93,10 @@ namespace Gestor_De_Pule.src.Views.Financeiro.FluxoCaixa
 
             }
         }
+
+        private void Sair(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }
