@@ -27,8 +27,9 @@ namespace Gestor_De_Pule.src.Views.Financeiro.FluxoCaixa
                 var caixa = financeiroController.CaixaLocal;
                 if (caixa != null)
                 {
+                    //checar os pules pagos ou a quantidade que foram pagos
+                   // caixa.TotalEmCaixaWithPulePago();
                     //método só para teste
-                    //caixa.TotalEmCaixaWithPulePago();
                     LabelSaldoTotalCaixa.Content = "SALDO TOTAL EM CAIXA: " + caixa.TotalEmCaixa.ToString("C");
                     LabelEntradaDeAposta.Content = "(+) Entradas de Apostas: " + caixa.GetEntradaDeApostas().ToString("C");
                     LabelPremioApagar.Content = "(-) Prêmios a Pagar: " + caixa.GetPremioApagar().ToString("C");

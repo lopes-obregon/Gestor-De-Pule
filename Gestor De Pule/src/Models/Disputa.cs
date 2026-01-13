@@ -457,11 +457,18 @@ namespace Gestor_De_Pule.src.Models
             bool sucess = false;
             try
             {
-                var disputaDb = db.Disputas.FirstOrDefault(dis => dis.Id == this.Id);
+                /*var disputaDb = db.Disputas.FirstOrDefault(dis => dis.Id == this.Id);
                 if (disputaDb != null) {
                     disputaDb.Pagamento = this.Pagamento;
                     disputaDb.TotalPago = TotalPago;
                     db.Disputas.Update(disputaDb);
+                    db.SaveChanges();
+                    sucess = true;
+                }*/
+                if(this != null)
+                {
+                    db.Attach(this);
+                    db.Disputas.Update(this);
                     db.SaveChanges();
                     sucess = true;
                 }

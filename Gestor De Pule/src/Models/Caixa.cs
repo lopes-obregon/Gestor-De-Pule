@@ -14,6 +14,7 @@ namespace Gestor_De_Pule.src.Models
         public DateTime? DateOpen { get; set; }
         public DateTime? DateClose { get; set; }
         public decimal  TotalEmCaixa { get; set; }
+
         internal static  object GetCaixa()
         {
             using DataBase db = new DataBase();
@@ -278,15 +279,38 @@ namespace Gestor_De_Pule.src.Models
 
         internal void TotalEmCaixaWithPulePago()
         {
+            decimal totalPulesPagos = 0;
             decimal total = 0;
+            decimal totalDisputaPagos = Decimal.Zero;
+            decimal retirada = Decimal.Zero;
             if (Disputs is not null && Disputs.Count > 0)
             {
-                foreach (var disputa in Disputs)
-                    if (disputa is not null && disputa.Pagamento == Model.StatusPagamento.Pendente )
-                        total += disputa.PulesPagos();
+                foreach (var disputa in Disputs){
+                    if (disputa is not null)
+                    {
+                        if (disputa.Pagamento == Model.StatusPagamento.Pendente)
+                            totalPulesPagos += disputa.PulesPagos();
+                        else if (disputa.Pagamento == Model.StatusPagamento.Pago)
+                            totalDisputaPagos += disputa.TotalPago ?? 0;
+
+
+                    }
+                }
 
             }
-            this.TotalEmCaixa += total;
+            total = totalPulesPagos - totalDisputaPagos;
+            // se der igual não houve retirada
+            if(total != TotalEmCaixa)
+            {
+                //quantia que retirou 
+                retirada = total - TotalEmCaixa;
+                total -= retirada;
+                //fica igual
+                if(!(total ==  TotalEmCaixa))
+                    //se não for igual existe saldo anterior
+                    this.TotalEmCaixa = total;
+
+            }
            
         }
 
@@ -315,8 +339,11 @@ namespace Gestor_De_Pule.src.Models
             bool sucess = false;
             string mensagem = string.Empty;
             Disputa? disputaSelecionado = disputaSelecionadaUi as Disputa;
+            
             if (disputaSelecionado != null)
             {
+                if (disputaSelecionado.TotalPago is null)
+                    disputaSelecionado.TotalPago = Decimal.Zero;
                 if (this.TotalEmCaixa > valor)
                 {
                     disputaSelecionado.Pagamento = Model.StatusPagamento.Pago;
@@ -354,6 +381,23 @@ namespace Gestor_De_Pule.src.Models
             }
             catch { sucess = false; }
             return sucess;
+        }
+
+        internal bool Update()
+        {
+            using DataBase db = new DataBase();
+            bool sucss = false;
+            try
+            {
+                if(this is not null)
+                {
+                    db.Caixas.Attach(this);
+                    db.Caixas.Update(this);
+                    db.SaveChanges();
+                    sucss = true;
+                }
+            }catch { sucss = false; }
+            return sucss;
         }
     }
 }

@@ -18,10 +18,12 @@ namespace Gestor_De_Pule.src.Controllers
         public List<Apostador> ApostadorsLocal { get; private set; }
         public List<Animal> AnimalsLocal { get; private set; }
         public List<Disputa>? DisputasLocal { get; private set; }
+        private Caixa? Caixa { get; set; } = null;
 
         public PuleController(object puleSelecionadoUi)
         {
             PuleLocal = puleSelecionadoUi as Pule;
+            Caixa = (Caixa?)Caixa.GetCaixa();
         }
         internal static List<Animal>? AttComboBoxAnimais(object disputaSelecionadaUi)
         {
@@ -147,22 +149,33 @@ namespace Gestor_De_Pule.src.Controllers
             {
                 pagamento = status;
             }
-            if (Pule is not null)
+            if (PuleLocal is not null)
             {
                 //não pode mudar o apostador apenas status de pagamento e 
                 //animais apostados
                 //se for do pule igual a pendente ele recebe mesmo se atualizou
-                if (Pule.StatusPagamento.Equals(StatusPagamento.Pendente))
+                if (PuleLocal.StatusPagamento.Equals(StatusPagamento.Pendente))
                 {
-                    Pule.StatusPagamento = pagamento;
+                    PuleLocal.StatusPagamento = pagamento;
                 }
                 //verificar se são os mesmo animais
-                bool isEqual = Pule.Animais
+                bool isEqual = PuleLocal.Animais
                     .Select(a => a.Id)
                     .OrderBy(a => a)
                     .SequenceEqual(animais.Select(a => a.Id).OrderBy(x => x));
                 
-               sucess =  Pule.Update(Pule, animais, isEqual);
+               sucess =  Pule.Update(PuleLocal, animais, isEqual);
+                if(sucess)
+                {
+                   if(Caixa is not null)
+                    {
+                        Caixa.TotalEmCaixa += (decimal)PuleLocal.Valor;
+                        sucess = Caixa.Update();
+                    }
+                    else
+                        sucess = false;
+
+                }
             }
             else
                 sucess = false;
