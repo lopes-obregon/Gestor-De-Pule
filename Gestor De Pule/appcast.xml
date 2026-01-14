@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
+  <channel>
+    <title>MeuApp Updates</title>
+    <link>https://github.com/lopes-obregon/Gestor-De-Pule/releases</link>
+    
+    <description>Atualizações do MeuApp</description>
+    <language>pt-BR</language>
+
+    <item>
+      <title>Versão 1.0.0</title>
+      <sparkle:releaseNotesLink>https://github.com/lopes-obregon/Gestor-De-Pule/releases/tag/V1.2.0</sparkle:releaseNotesLink>
+      <enclosure url="https://github.com/lopes-obregon/Gestor-De-Pule/releases/download/V1.2.0/net9.0-windows.rar"
+                 sparkle:version="1.0.0"
+                 length="123456"
+                 type="application/octet-stream" />
+    </item>
+  </channel>
+</rss>
