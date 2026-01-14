@@ -1,19 +1,15 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
   <channel>
-    <title>MeuApp Updates</title>
-    <link>https://github.com/lopes-obregon/Gestor-De-Pule/releases</link>
-    
-    <description>Atualizações do MeuApp</description>
-    <language>pt-BR</language>
-
+    <title>Gestor De Pule</title>
+    <description>Most recent changes with links to updates</description>
+    <language>en</language>
     <item>
-      <title>Versão 1.0.0</title>
-      <sparkle:releaseNotesLink>https://github.com/lopes-obregon/Gestor-De-Pule/releases/tag/V1.2.0</sparkle:releaseNotesLink>
-      <enclosure url="https://github.com/lopes-obregon/Gestor-De-Pule/releases/download/V1.2.0/net9.0-windows.rar"
-                 sparkle:version="1.0.0"
-                 length="123456"
-                 type="application/octet-stream" />
+      <title>Gestor De Pule 1.2.1</title>
+      <pubDate>Wed, 14 Jan 2026 17:14:34 -04:00</pubDate>
+      <sparkle:version>1.2.1</sparkle:version>
+      <sparkle:shortVersionString>1.2.1</sparkle:shortVersionString>
+      <enclosure url="https://github.com/lopes-obregon/Gestor-De-Pule/releases/download/v1.1.0/GestorDePule-1.2.1.zip" sparkle:version="1.2.1" sparkle:shortVersionString="1.2.1" length="270347863" sparkle:os="windows" type="application/zip" sparkle:criticalUpdate="false" sparkle:signature="8x1RuVb5wCN7rPcROST1caZw5NLRJ+As4OvnVH8gr+wQ2eU4XRJ89LiyZazOfeFIrKDaHmB94MnS97Pj+7LmDg==" />
     </item>
   </channel>
 </rss>
