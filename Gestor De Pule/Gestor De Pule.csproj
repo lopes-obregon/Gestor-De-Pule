@@ -19,6 +19,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.10" />
+    <PackageReference Include="NetSparkleUpdater.UI.WPF" Version="3.0.0-preview20240914001" />
   </ItemGroup>
 
   <ItemGroup>
