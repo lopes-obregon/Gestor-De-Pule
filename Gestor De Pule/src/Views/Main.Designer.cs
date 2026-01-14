@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             menuStrip1 = new MenuStrip();
             arquivoToolStripMenuItem1 = new ToolStripMenuItem();
             sairToolStripMenuItem = new ToolStripMenuItem();
@@ -67,6 +67,7 @@
             labelVitória = new Label();
             labelTotalGanhadores = new Label();
             labelPagamentoPorPule = new Label();
+            disputaToolStripMenuItem1 = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             tableLayoutPanelFiltrosSelect.SuspendLayout();
             flowLayoutPanelButtons.SuspendLayout();
@@ -137,7 +138,7 @@
             // 
             // relatóriosToolStripMenuItem
             // 
-            relatóriosToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { apostadorToolStripMenuItem1, animalToolStripMenuItem1, puleToolStripMenuItem1 });
+            relatóriosToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { apostadorToolStripMenuItem1, animalToolStripMenuItem1, puleToolStripMenuItem1, disputaToolStripMenuItem1 });
             relatóriosToolStripMenuItem.Name = "relatóriosToolStripMenuItem";
             relatóriosToolStripMenuItem.Size = new Size(71, 20);
             relatóriosToolStripMenuItem.Text = "Relatórios";
@@ -145,21 +146,21 @@
             // apostadorToolStripMenuItem1
             // 
             apostadorToolStripMenuItem1.Name = "apostadorToolStripMenuItem1";
-            apostadorToolStripMenuItem1.Size = new Size(129, 22);
+            apostadorToolStripMenuItem1.Size = new Size(180, 22);
             apostadorToolStripMenuItem1.Text = "Apostador";
             apostadorToolStripMenuItem1.Click += ApostadorWindow;
             // 
             // animalToolStripMenuItem1
             // 
             animalToolStripMenuItem1.Name = "animalToolStripMenuItem1";
-            animalToolStripMenuItem1.Size = new Size(129, 22);
+            animalToolStripMenuItem1.Size = new Size(180, 22);
             animalToolStripMenuItem1.Text = "Animal";
             animalToolStripMenuItem1.Click += AnimalForm;
             // 
             // puleToolStripMenuItem1
             // 
             puleToolStripMenuItem1.Name = "puleToolStripMenuItem1";
-            puleToolStripMenuItem1.Size = new Size(129, 22);
+            puleToolStripMenuItem1.Size = new Size(180, 22);
             puleToolStripMenuItem1.Text = "Pule";
             puleToolStripMenuItem1.Click += WindowRelatórioPule;
             // 
@@ -173,14 +174,14 @@
             // fluxoDeCaixaToolStripMenuItem
             // 
             fluxoDeCaixaToolStripMenuItem.Name = "fluxoDeCaixaToolStripMenuItem";
-            fluxoDeCaixaToolStripMenuItem.Size = new Size(180, 22);
+            fluxoDeCaixaToolStripMenuItem.Size = new Size(149, 22);
             fluxoDeCaixaToolStripMenuItem.Text = "Fluxo de Caixa";
             fluxoDeCaixaToolStripMenuItem.Click += FluxoCaixaView;
             // 
             // taxaToolStripMenuItem
             // 
             taxaToolStripMenuItem.Name = "taxaToolStripMenuItem";
-            taxaToolStripMenuItem.Size = new Size(180, 22);
+            taxaToolStripMenuItem.Size = new Size(149, 22);
             taxaToolStripMenuItem.Text = "Taxa";
             taxaToolStripMenuItem.Click += TaxaView;
             // 
@@ -301,9 +302,9 @@
             // 
             // ColumnTempo
             // 
-            dataGridViewCellStyle1.Format = "hh\\:mm\\:ss\\,ff";
-            dataGridViewCellStyle1.NullValue = null;
-            ColumnTempo.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Format = "hh\\:mm\\:ss\\,ff";
+            dataGridViewCellStyle2.NullValue = null;
+            ColumnTempo.DefaultCellStyle = dataGridViewCellStyle2;
             ColumnTempo.HeaderText = "Tempo";
             ColumnTempo.Name = "ColumnTempo";
             // 
@@ -395,6 +396,13 @@
             labelPagamentoPorPule.TabIndex = 2;
             labelPagamentoPorPule.Text = "Pagamento Por Pule";
             // 
+            // disputaToolStripMenuItem1
+            // 
+            disputaToolStripMenuItem1.Name = "disputaToolStripMenuItem1";
+            disputaToolStripMenuItem1.Size = new Size(180, 22);
+            disputaToolStripMenuItem1.Text = "Disputa";
+            disputaToolStripMenuItem1.Click += RelatórioDisputa;
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -465,5 +473,6 @@
         private Label labelTotalGanhadores;
         private Label labelPagamentoPorPule;
         private Button button4;
+        private ToolStripMenuItem disputaToolStripMenuItem1;
     }
 }

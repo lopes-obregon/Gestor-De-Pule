@@ -20,8 +20,8 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
 
         private void InitComboBoxs()
         {
-            DisputaCadastrosController.LoadLists();
-            var animais = DisputaCadastrosController.Animals;
+            DisputaController.LoadLists();
+            var animais = DisputaController.Animals;
             if (animais != null && animais.Count > 0)
                 comboBoxAnimaisCadastrados.Items.AddRange(animais.ToArray());
 
@@ -66,7 +66,7 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
         /// <remarks>This method collects input from the user interface, including the competition name,
         /// date, and a list of animals. It validates that a name and at least one animal are provided before proceeding
         /// with the registration. If the inputs are valid, it calls the <see
-        /// cref="DisputaCadastrosController.Cadastrar"/> method to register the competition and displays a message
+        /// cref="DisputaController.Cadastrar"/> method to register the competition and displays a message
         /// indicating the result. The input fields are cleared after registration.</remarks>
         /// <param name="sender">The source of the event, typically a button.</param>
         /// <param name="e">The event data associated with the click event.</param>
@@ -87,7 +87,7 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
             }
             else
             {
-                mensagem = DisputaCadastrosController.Cadastrar(nomeDisputa, date, listBoxAnimaisToDisputa.Items);
+                mensagem = DisputaController.Cadastrar(nomeDisputa, date, listBoxAnimaisToDisputa.Items);
                 MessageBox.Show(mensagem);
                 //limpa os dados
                 textBoxNomeDaDisputa.Text = String.Empty;

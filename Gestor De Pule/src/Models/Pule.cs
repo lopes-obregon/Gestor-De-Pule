@@ -300,5 +300,64 @@ namespace Gestor_De_Pule.src.Model
             List<Pule>? pules = puleSelecionadosUi as List<Pule>;
             if (pules == null) return null; return pules;
         }
+
+        internal static Apostador? ReloadPuleApostador(int idApostador)
+        {
+            using DataBase db = new DataBase();
+            Apostador? apostador = null;
+            try
+            {
+                if(idApostador != 0)
+                {
+                    var apostadorPuleDb = db.Apostadors.FirstOrDefault(ap => ap.Id ==idApostador);
+                    if(apostadorPuleDb != null)
+                    {
+                        apostador = apostadorPuleDb;
+                        
+                    }
+                }
+            }
+            catch { return apostador; }
+            return apostador;
+        }
+
+        internal static Pule? ReloadPule(Pule pule)
+        {
+            using DataBase db = new DataBase();
+            Pule? puler = null;
+            try
+            {
+                if(pule != null)
+                {
+                    var puleDb = db.Pules.FirstOrDefault(pu => pu.Id ==pule.Id);
+                    if(puleDb != null)
+                    {
+                        puler = puleDb;
+                        
+                    }
+                }
+            }
+            catch { return puler; }
+            return puler;
+        }
+        /// <summary>
+        /// Reloads the Apostador property from the database for the current instance.
+        /// </summary>
+        internal void ReloadApostador()
+        {
+            using DataBase db = new DataBase();
+            try
+            {
+                if(this != null)
+                {
+                    var puleDb = db.Pules
+                        .Include(p => p.Apostador)
+                        .FirstOrDefault(p => p.Id == this.Id);
+                    if (puleDb != null)
+                        this.Apostador = puleDb.Apostador;
+                }
+            }
+            catch { this.Apostador = null;}
+        }
     }
 }

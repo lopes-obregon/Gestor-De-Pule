@@ -8,6 +8,7 @@ using Gestor_De_Pule.src.Views.Financeiro.Taxa;
 using Gestor_De_Pule.src.Views.Pule;
 using Gestor_De_Pule.src.Views.Relatórios.Animal;
 using Gestor_De_Pule.src.Views.Relatórios.Apostador;
+using Gestor_De_Pule.src.Views.Relatórios.Disputa;
 using Gestor_De_Pule.src.Views.Relatórios.Pule;
 using System.Globalization;
 
@@ -21,10 +22,10 @@ namespace Gestor_De_Pule
             //MainController.LoadLists();
             InitComboBox();
             //this.Dock = DockStyle.Fill;
-                //então carrego na memória.
-                FinanceiroController.LoadCaixaInit();
+            //então carrego na memória.
+            FinanceiroController.LoadCaixaInit();
             var caixa = FinanceiroController.Caixa;
-            if(caixa is null)
+            if (caixa is null)
             {
                 //então preciso criar um novo caixa;
                 FinanceiroController.OpenNewCaixa();
@@ -228,8 +229,8 @@ namespace Gestor_De_Pule
             var disputaSelecionado = comboBoxDisputas.SelectedItem;
             if (disputaSelecionado is not null)
             {
-                DisputaCadastrosController.LoadDisputa(disputaSelecionado);
-                var disputa = DisputaCadastrosController.Disputa;
+                DisputaController.LoadDisputa(disputaSelecionado);
+                var disputa = DisputaController.Disputa;
                 if (disputa is not null)
                 {
                     int quantiaAnimais = disputa.GetNumAnimais();
@@ -254,7 +255,7 @@ namespace Gestor_De_Pule
                                 if (valido)
                                 {
                                     //MainController.SalvarDisputa(tempoStr);
-                                    DisputaCadastrosController.SalvarDisputa(animal, resultado);
+                                    DisputaController.SalvarDisputa(animal, resultado);
                                 }
                                 else
                                 {
@@ -287,8 +288,8 @@ namespace Gestor_De_Pule
             if (disputaSelecionado is not null)
 
             {
-                DisputaCadastrosController.LoadDisputa(disputaSelecionado);
-                var disputa = DisputaCadastrosController.Disputa;
+                DisputaController.LoadDisputa(disputaSelecionado);
+                var disputa = DisputaController.Disputa;
                 if (disputa is not null)
                 {
                     disputa.ajustarPosiçãoDosAnimais();
@@ -329,6 +330,12 @@ namespace Gestor_De_Pule
         {
             WindowFluxoCaixa window = new WindowFluxoCaixa();
             window.ShowDialog();
+        }
+
+        private void RelatórioDisputa(object sender, EventArgs e)
+        {
+            WindowRelatórioDisputa windo = new WindowRelatórioDisputa();
+            windo.ShowDialog();
         }
     }
 }

@@ -24,9 +24,9 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
 
         private void InitDisputa()
         {
-            string mensagem = DisputaCadastrosController.LoadDisputa(itemSelecionadoUi);
+            string mensagem = DisputaController.LoadDisputa(itemSelecionadoUi);
             MessageBox.Show(mensagem);
-            var disputa = DisputaCadastrosController.Disputa;
+            var disputa = DisputaController.Disputa;
             if (disputa != null)
             {
                 textBoxNomeDaDisputa.Text = disputa.Nome;
@@ -60,8 +60,8 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
 
         private void InitComboBoxs()
         {
-            DisputaCadastrosController.LoadLists();
-            var animais = DisputaCadastrosController.Animals;
+            DisputaController.LoadLists();
+            var animais = DisputaController.Animals;
             if (animais != null && animais.Count > 0)
                 comboBoxAnimaisCadastrados.Items.AddRange(animais.ToArray());
 
@@ -90,9 +90,9 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
                 {
                     var animalSelecionadoUi = list.SelectedItem;
                     listBoxAnimaisToDisputa.Items.Remove(animalSelecionadoUi);
-                    animalSelecionadoUi = DisputaCadastrosController.ToAnimal(animalSelecionadoUi);
+                    animalSelecionadoUi = DisputaController.ToAnimal(animalSelecionadoUi);
                     if(animalSelecionadoUi != null)
-                        DisputaCadastrosController.AddAnimalRemovido(animalSelecionadoUi);
+                        DisputaController.AddAnimalRemovido(animalSelecionadoUi);
                 }
             }
         }
@@ -105,7 +105,7 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
             if (String.IsNullOrEmpty(textBoxNomeDaDisputa.Text)) MessageBox.Show("Por vafor Insira um nome para disputa!");
             else { date = dateTimePicker1.Value;
                 nomeDisputa = textBoxNomeDaDisputa.Text;
-                mensagem = DisputaCadastrosController.AtualizarDados(nomeDisputa, date, listBoxAnimaisToDisputa.Items);
+                mensagem = DisputaController.AtualizarDados(nomeDisputa, date, listBoxAnimaisToDisputa.Items);
                 MessageBox.Show(mensagem);        
             }
         }

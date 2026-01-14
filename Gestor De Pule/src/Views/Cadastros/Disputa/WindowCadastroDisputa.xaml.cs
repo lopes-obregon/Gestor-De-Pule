@@ -29,8 +29,8 @@ namespace Gestor_De_Pule.src.Views.Cadastros
 
         private void InitList()
         {
-            DisputaCadastrosController.LoadListDisputa();
-            var disputas = DisputaCadastrosController.Disputas;
+            DisputaController.LoadListDisputa();
+            var disputas = DisputaController.Disputas;
             if (disputas != null) listViewDisputaCadastrados.ItemsSource = disputas;
         }
 
@@ -59,7 +59,7 @@ namespace Gestor_De_Pule.src.Views.Cadastros
                 if(resposta == MessageBoxResult.Yes)
                 {
                     bool sucess = false;
-                    sucess = DisputaCadastrosController.RemoveDisuptaSelecionado(disputaSelecionadoUi);
+                    sucess = DisputaController.RemoveDisuptaSelecionado(disputaSelecionadoUi);
                     if (sucess) System.Windows.MessageBox.Show("Disputa Removida com Sucesso!");
                     else
                         System.Windows.MessageBox.Show("Desculpe houve algum problema para Remover a disputa!");

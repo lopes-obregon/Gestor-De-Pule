@@ -126,5 +126,25 @@ namespace Gestor_De_Pule.src.Models
             }
             catch { return; }
         }
+
+        internal void ReloadAnimal()
+        {
+            using DataBase db = new DataBase();
+            try
+            {
+                if (this is not null)
+                {
+                    if (this.Animal is null)
+                    {
+                        var resultadoDb = db.Resultados
+                            .Include(res => res.Animal)
+                            .FirstOrDefault(res => res.Id == this.Id);
+                        if (resultadoDb is not null)
+                            this.Animal = resultadoDb.Animal;
+                    }
+                }
+            }
+            catch { this.Animal = null; }
+        }
     }
 }
