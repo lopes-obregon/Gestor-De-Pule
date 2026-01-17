@@ -1,47 +1,48 @@
 ﻿using Gestor_De_Pule.src.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Navigation;
+using Gestor_De_Pule.src.Persistencias;
 
 namespace Gestor_De_Pule.src.Controllers
 {
     internal class AnimalController
     {
-        static List<Animal> _animals = new();
-        public static Animal? Animal { get; private set; } = new();
-        internal static void LoadAnimais()
+      
+       public  List<Animal> Animals { get; private set; } = new List<Animal>();
+        public  Animal? Animal { get; private set; } = new();
+        private AnimalRepository _repository {  get; set; } = new AnimalRepository();
+        internal  void LoadAnimais()
         {
-            _animals = Animal.ReadAnimals();
+            
+            
+                Animals = _repository.ReadAnimals().ToList();
+            
         }
-       public static List<Animal> Animals { get { return _animals; } }
 
-        internal static string Salvar(int número, string nome, string proprietário, string treinador, string jockey, string cidade)
+        internal  string Salvar(int número, string nome, string proprietário, string treinador, string jockey, string cidade)
         {
             bool sucess = false;
             Animal animal = new Animal(número, nome, proprietário,treinador, jockey, cidade);
-            sucess = Animal.Save(animal);
+            //sucess = Animal.Save(animal);
+            sucess = _repository.Save(animal);
             if (sucess)
                 return $"Animal {animal.Nome} Salvo com sucesso!";
             else
                 return "Erro ao Salvar o animal";
         }
 
-        internal static void AnimalSelecionado(object animalSelecionadoUi)
+        internal  void AnimalSelecionado(object animalSelecionadoUi)
         {
             Animal? animalSelecionado = null;
             if (animalSelecionadoUi is Animal)
             {
                 animalSelecionado = animalSelecionadoUi as Animal;
-                Animal? animalConsultado = Animal.Consultar(animalSelecionado);
+                //Animal? animalConsultado = Animal.Consultar(animalSelecionado);
+                Animal? animalConsultado = _repository.Consultar(animalSelecionado);
                 if (animalConsultado is not null) Animal = animalConsultado;
                 else Animal = null;
             }
         }
 
-        internal static string Atualizar(int número, string nome, string proprietário, string treinador, string cidade, string jockey)
+        internal  string Atualizar(int número, string nome, string proprietário, string treinador, string cidade, string jockey)
         {
             bool sucess = false;
             if(Animal is not null)
@@ -60,7 +61,8 @@ namespace Gestor_De_Pule.src.Controllers
                     Animal.Jockey = jockey;
                 else
                     return "Precisa mudar algum dado!";
-                sucess = Animal.Update(Animal);
+                //sucess = Animal.Update(Animal);
+                sucess = _repository.Update(Animal);
                 if (sucess)
                     return "Atualização realizado com sucesso!";
                 else
@@ -71,12 +73,13 @@ namespace Gestor_De_Pule.src.Controllers
             return "";
         }
 
-        internal static string DeleteAnimal(object animalSelecionadoUi)
+        internal  string DeleteAnimal(object animalSelecionadoUi)
         {
             Animal? animal = animalSelecionadoUi as Animal;
             bool sucess = false;
-            if(animal is not null)
-                sucess = Animal.Delete(animal);
+            if (animal is not null)
+                sucess = _repository.Delete(animal);
+                //sucess = Animal.Delete(animal);
             if (sucess) return "Removido Com Sucesso!";
             else return "Erro ao Remover!";
 

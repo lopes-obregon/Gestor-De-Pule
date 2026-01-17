@@ -1,21 +1,14 @@
 ﻿using Gestor_De_Pule.src.Controllers;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Gestor_De_Pule.src.Views
 {
     public partial class WindowAnimalCadastro : Form
     {
+        private AnimalController _controller;
         public WindowAnimalCadastro()
         {
             InitializeComponent();
+            _controller = new AnimalController();
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -44,7 +37,8 @@ namespace Gestor_De_Pule.src.Views
                 cidade = textBoxCidade.Text;
 
 
-            mensagem = AnimalController.Salvar(número, nome, proprietário, treinador, jockey, cidade);
+            //mensagem = AnimalControllSalvar(número, nome, proprietário, treinador, jockey, cidade);er.
+            mensagem = _controller.Salvar(número, nome, proprietário, treinador, jockey, cidade);
             MessageBox.Show(mensagem);
             textBoxNúmero.Text = textBoxNome.Text = textBoxProprietário.Text = textBoxTreinador.Text = textBoxJockey.Text = textBoxCidade.Text = "";
         }
