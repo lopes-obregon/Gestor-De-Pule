@@ -14,8 +14,10 @@ namespace Gestor_De_Pule.src.Views.Apostador
 {
     public partial class FormCadastro : Form
     {
+        private ApostadorController _controller;
         public FormCadastro()
         {
+            _controller = new ApostadorController();
             InitializeComponent();
         }
 
@@ -28,7 +30,8 @@ namespace Gestor_De_Pule.src.Views.Apostador
                 nome = textBoxNome.Text;
             if (!String.IsNullOrEmpty(textBoxContato.Text))
                 contato = textBoxContato.Text;
-            mensagem = ApostadorController.SaveApostador(nome, contato);
+            //mensagem = ApostadorController.SaveApostador(nome, contato);
+            mensagem = _controller.SaveApostador(nome, contato);
             MessageBox.Show(mensagem);
             textBoxContato.Text = String.Empty;
             textBoxNome.Text = String.Empty;

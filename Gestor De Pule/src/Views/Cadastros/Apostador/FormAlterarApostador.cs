@@ -4,15 +4,17 @@ namespace Gestor_De_Pule.src.Views.Apostador
 {
     public partial class FormAlterarApostador : Form
     {
+        private ApostadorController _controller = new ApostadorController();
         public FormAlterarApostador(object apostadorSelecionado)
         {
             InitializeComponent();
             if (apostadorSelecionado is not null)
-                ApostadorController.LoadApostador(apostadorSelecionado);
-            if (ApostadorController.Apostador is not null)
+                _controller.LoadApostador(apostadorSelecionado);
+                //ApostadorController.LoadApostador(apostadorSelecionado);
+            if (_controller.Apostador is not null)
             {
-                textBoxNome.Text = ApostadorController.Apostador.Nome;
-                textBoxContato.Text = ApostadorController.Apostador.Contato;
+                textBoxNome.Text = _controller.Apostador.Nome;
+                textBoxContato.Text = _controller.Apostador.Contato;
                 textBoxNome.ReadOnly = true;
 
             }
@@ -24,7 +26,8 @@ namespace Gestor_De_Pule.src.Views.Apostador
             nome = textBoxNome.Text;
             contato = textBoxContato.Text;
             string mensagem = String.Empty;
-            mensagem = ApostadorController.AtualizarApostador(nome, contato);
+            //mensagem = ApostadorController.AtualizarApostador(nome, contato);
+            mensagem = _controller.AtualizarApostador(nome, contato);
             MessageBox.Show(mensagem);
         }
 

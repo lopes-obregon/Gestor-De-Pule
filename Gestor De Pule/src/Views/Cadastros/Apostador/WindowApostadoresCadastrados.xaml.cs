@@ -7,17 +7,21 @@ namespace Gestor_De_Pule.src.Views.Apostador
     /// </summary>
     public partial class WindowApostadoresCadastrados : Window
     {
+        private ApostadorController _controller;
         public WindowApostadoresCadastrados()
         {
             InitializeComponent();
+            _controller = new ApostadorController();
             UpdateListViewApostadoresCadastrados();
         }
 
         private void UpdateListViewApostadoresCadastrados()
         {
-            ApostadorController.LoadApostadores();
+            //ApostadorController.LoadApostadores();
+            _controller.LoadApostadores();
             ListViewApostadores.ItemsSource = null;
-            var apostadoresCadastrados = ApostadorController.Apostadors;
+            //var apostadoresCadastrados = ApostadorController.Apostadors;
+            var apostadoresCadastrados = _controller.Apostadors;
             if (apostadoresCadastrados is not null) 
                 ListViewApostadores.ItemsSource = apostadoresCadastrados;
             ListViewApostadores.Items.Refresh();
@@ -48,7 +52,8 @@ namespace Gestor_De_Pule.src.Views.Apostador
             {
                 string mensagem = String.Empty;
                 if (apostadorSelecionadoUi is not null)
-                    mensagem = ApostadorController.RemoveApostador(apostadorSelecionadoUi);
+                    mensagem = _controller.RemoveApostador(apostadorSelecionadoUi);
+                    //mensagem = ApostadorController.RemoveApostador(apostadorSelecionadoUi);
 
             }
             UpdateListViewApostadoresCadastrados();

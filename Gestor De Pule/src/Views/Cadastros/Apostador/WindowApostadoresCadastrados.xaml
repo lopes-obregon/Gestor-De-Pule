@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Gestor_De_Pule.src.Views.Apostador"
         mc:Ignorable="d"
-        Title="WindowApostadoresCadastrados" Height="450" Width="800">
+        Title="Apostadores Cadastrados" Height="450" Width="800">
     <Grid>
         <ListView x:Name="ListViewApostadores" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="200,107,200,107" RenderTransformOrigin="0.608,0.497">
             <ListView.View>

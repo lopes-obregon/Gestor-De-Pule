@@ -5,12 +5,7 @@ namespace Gestor_De_Pule.src.Model
 {
     internal   class Apostador
     {
-        //id do apostador
-        int _id = 0;
-        //nome 
-        string _nome = String.Empty;
-        //contato
-        string _contato = String.Empty;
+       
         public List<Pule> Pules { get; set; } = new List<Pule>();
         public Apostador() {
            
@@ -18,27 +13,17 @@ namespace Gestor_De_Pule.src.Model
 
         public Apostador(string nome, string contato)
         {
-            _nome = nome;
-            _contato = contato;
+            Nome = nome;
+            Contato = contato;
         }
 
         //------------------------set e get --------------------------/
         //set e get do id
-        public int Id { get { return _id; }  set { _id = value; } }
-        public string Nome { get { return _nome; } set { _nome = value; } }
-        public string Contato { get { return _contato; } set { _contato = value; } }
+        public int Id { get; set; }
+        public string Nome { get; set; }
+        public string Contato { get; set; }
 
-        internal static bool Save(Apostador apostador)
-        {
-            using DataBase db = new DataBase();
-            try
-            {
-                db.Apostadors.Add(apostador);
-                db.SaveChanges();
-                return true;
-            }
-            catch { return false; }
-        }
+       
 
         internal  static List<Apostador> ReadApostadores()
         {
@@ -51,44 +36,9 @@ namespace Gestor_De_Pule.src.Model
             }
             catch { return new List<Apostador>(); }
         }
-
-        internal static Apostador? Load(Apostador? apostador)
-        {
-            using DataBase db = new DataBase();
-            try
-            {
-                if (apostador is not null)
-                    return db.Apostadors.Find(apostador.Id);
-            }catch { return null; }
-            return null;
-        }
-
-        internal static  bool Update(Apostador apostador)
-        {
-            using DataBase db = new DataBase();
-            try
-            {
-                if (apostador is not null)
-                    db.Apostadors.Update(apostador);
-                db.SaveChanges();
-                return true;
-            }catch { return false; }
-        }
-
-        internal static bool Remove(Apostador apostador)
-        {
-            using DataBase db = new DataBase();
-            try
-            {
-                if (apostador is not null)
-                    db.Apostadors.Remove(apostador);
-                db.SaveChanges();
-                return true;
-            }catch { return false; }
-        }
         public override string ToString()
         {
-            return _nome;
+            return Nome;
         }
         public override bool Equals(object? obj)
         {
