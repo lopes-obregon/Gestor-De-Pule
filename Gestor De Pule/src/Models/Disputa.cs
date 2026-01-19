@@ -47,22 +47,7 @@ namespace Gestor_De_Pule.src.Models
             this.DataEHora = dateTime;
         }
 
-        /// <summary>
-        /// Verifica se essa disputa já foi criada!
-        /// </summary>
-        /// <param name="nomeDisputa"></param>
-        /// <returns></returns>
-        internal  static Disputa? isCreate(string nomeDisputa)
-        {
-            Disputa? disputaDb;
-            using DataBase db = new DataBase();
-            disputaDb =  db.Disputas.FirstOrDefault(dis=> dis.Nome == nomeDisputa);
-            if (disputaDb == null)
-                return null;
-            else
-                return disputaDb;
-            
-        }
+       
         /// <summary>
         /// Returns a string that represents the current object.
         /// </summary>

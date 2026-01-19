@@ -1,17 +1,25 @@
 ﻿using Gestor_De_Pule.src.Models;
-using Gestor_De_Pule.src.Persistencias;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Serilog;
 
-namespace Gestor_De_Pule.src
+namespace Gestor_De_Pule.src.Persistencias
 {
     class ResultadoRepository
     {
-        public static bool Save(Models.Resultado resultado)
+        private DataBase _db = new DataBase();
+        public ResultadoRepository() {
+            Log.Logger = new LoggerConfiguration()
+               .WriteTo.File(
+               "logs/log.txt",
+               rollingInterval: RollingInterval.Day, //cria um arquivo por dia
+               retainedFileCountLimit: 7,//mantem 7 arquivos
+               fileSizeLimitBytes: 10_000_000,//limite de 10 mb
+               rollOnFileSizeLimit: true //cria novo arquivo quando chegar o limite
+               )
+               .CreateLogger();
+
+        }
+        public static bool Save(Resultado resultado)
         {
             using DataBase db = new DataBase();
             try
@@ -68,29 +76,30 @@ namespace Gestor_De_Pule.src
             return new List<Resultado>();
         }
 
-        internal static bool Update(Resultado resultado)
+        internal  bool Update(Resultado resultado)
         {
-            using DataBase db = new DataBase();
+            bool sucess = false;
+            
             try
             {
                 if (resultado is not null)
                 {
-                    db.Resultados.Update(resultado);
-                    db.SaveChanges();
-                    return true;
+                    _db.Resultados.Update(resultado);
+                    _db.SaveChanges();
+                    sucess =  true;
                 }
-            }catch { return false; }
-            return false;
+            }catch(Exception ex) { sucess =  false; Log.Error(ex, "Erro no resultado Id", resultado.Id); }
+            return sucess;
         }
 
-        internal static bool Update(Resultado? resultado, Disputa? disputa)
+        internal  bool Update(Resultado? resultado, Disputa? disputa)
         {
-            using DataBase db = new DataBase();
+            bool sucess = false;
             try
             {
                 if(resultado is not null)
                 {
-                    var resultadoDb = db.Resultados
+                    var resultadoDb = _db.Resultados
                         .Include(res => res.Disputa)
                         .Include(res=>res.Animal)
                         .FirstOrDefault(res => res.Id == resultado.Id);
@@ -98,24 +107,25 @@ namespace Gestor_De_Pule.src
                     {
                         if(disputa is not null)
                         {
-                            var disputaDb = db.Disputas
+                            var disputaDb = _db.Disputas
                                 .Include(dis => dis.ResultadoList)
                                 .FirstOrDefault(dis => dis.Id == disputa.Id);
                             if(disputaDb is not null)
                             {
                                 resultadoDb.Disputa = disputaDb;
                                 disputaDb.ResultadoList.Add(resultadoDb);
-                                db.Resultados.Update(resultadoDb);
-                                db.Disputas.Update(disputaDb);
+                                _db.Resultados.Update(resultadoDb);
+                                _db.Disputas.Update(disputaDb);
                                 disputa = disputaDb;
                                 resultado = resultadoDb;
-                                db.SaveChanges();
+                                _db.SaveChanges();
                             }
                         }
                     }
                 }
-                return true;
-            }catch { return false; }
+                sucess =  true;
+            }catch (Exception ex){ sucess =  false; Log.Error(ex, "Error no Resultado {Id} e Disputa {Id}", resultado?.Id, disputa?.Id); }
+            return sucess;
         }
     }
 }

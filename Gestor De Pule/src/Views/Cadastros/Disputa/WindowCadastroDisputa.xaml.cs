@@ -1,18 +1,6 @@
 ﻿using Gestor_De_Pule.src.Controllers;
 using Gestor_De_Pule.src.Views.Cadastros.Disputa;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Gestor_De_Pule.src.Views.Cadastros
 {
@@ -21,6 +9,7 @@ namespace Gestor_De_Pule.src.Views.Cadastros
     /// </summary>
     public partial class WindowCadastroDisputa : Window
     {
+        private DisputaController _controller = new DisputaController();
         public WindowCadastroDisputa()
         {
             InitializeComponent();
@@ -29,8 +18,10 @@ namespace Gestor_De_Pule.src.Views.Cadastros
 
         private void InitList()
         {
-            DisputaController.LoadListDisputa();
-            var disputas = DisputaController.Disputas;
+            // DisputaController.();
+            _controller.LoadListDisputa();
+            var disputas = _controller.Disputas;
+            //var disputas = DisputaController.Disputas;
             if (disputas != null) listViewDisputaCadastrados.ItemsSource = disputas;
         }
 
@@ -59,7 +50,7 @@ namespace Gestor_De_Pule.src.Views.Cadastros
                 if(resposta == MessageBoxResult.Yes)
                 {
                     bool sucess = false;
-                    sucess = DisputaController.RemoveDisuptaSelecionado(disputaSelecionadoUi);
+                    sucess = _controller.RemoveDisuptaSelecionado(disputaSelecionadoUi);
                     if (sucess) System.Windows.MessageBox.Show("Disputa Removida com Sucesso!");
                     else
                         System.Windows.MessageBox.Show("Desculpe houve algum problema para Remover a disputa!");

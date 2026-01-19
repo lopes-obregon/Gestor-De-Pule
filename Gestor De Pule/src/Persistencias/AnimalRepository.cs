@@ -1,5 +1,6 @@
 ﻿
 using Gestor_De_Pule.src.Model;
+using Gestor_De_Pule.src.Models;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -7,11 +8,11 @@ namespace Gestor_De_Pule.src.Persistencias
 {
     internal class AnimalRepository
     {
-        private readonly DataBase _db;
+        private readonly DataBase _db = new();
         
         public AnimalRepository() { 
             
-            _db = new DataBase();
+            //_db = new DataBase();
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.File(
                 "logs/log.txt",
@@ -122,6 +123,38 @@ namespace Gestor_De_Pule.src.Persistencias
                 }
             }
             return sucess;
+        }
+        internal  bool Update(Animal? animal, Resultado? resultado)
+        {
+            
+            try
+            {
+                if (animal is not null)
+                {
+                    var animalDb = _db.Animals
+                        .Include(a => a.Resultados)
+                        .ThenInclude(res => res.Disputa)
+                        .FirstOrDefault(a => a.Id == animal.Id);
+                    if (animalDb is not null)
+                    {
+                        if (resultado is not null)
+                        {
+                            var resultadoDb = _db.Resultados
+                                .Include(res => res.Animal)
+                                .Include(res => res.Disputa)
+                                .FirstOrDefault(res => res.Id == resultado.Id);
+                            if (resultadoDb is not null)
+                            {
+                                animalDb.Resultados.Add(resultadoDb);
+                                _db.Animals.Update(animalDb);
+                                _db.SaveChanges();
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+            catch { return false; }
         }
     }
 }

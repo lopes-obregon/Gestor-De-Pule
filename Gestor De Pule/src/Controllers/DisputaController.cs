@@ -1,16 +1,22 @@
 ﻿using Gestor_De_Pule.src.Model;
 using Gestor_De_Pule.src.Models;
+using Gestor_De_Pule.src.Persistencias;
 using Gestor_De_Pule.src.Repository;
 namespace Gestor_De_Pule.src.Controllers
 {
     class DisputaController
     {
-        public static List<Animal> Animals { get; set; } = new List<Animal>();
-        public static Disputa? Disputa { get; private set; } = null;
-        public static List<Disputa> Disputas { get; private set; } = new List<Disputa>();
-        public static List<Animal> AnimaisRemovidos { get; private set; } = new List<Animal>();
+        public  List<Animal> Animals { get; set; } = new List<Animal>();
+        public  Disputa? Disputa { get; private set; } = null;
+        public  List<Disputa> Disputas { get; private set; } = new List<Disputa>();
+        public  List<Animal> AnimaisRemovidos { get; private set; } = new List<Animal>();
         public List<Disputa>? DisputasLocal { get; }
         public Disputa DisputaLocal { get; private set; }
+        private DisputaRepository _disputaRepository = new DisputaRepository();
+        private AnimalController _animalController = new ();
+        private AnimalRepository _animalRepository = new();
+        private ResultadoRepository _resultadoRepository = new();
+        private CaixaRepository _caixaRepository = new();
 
         /// <summary>
         /// Initializes a new instance of the DisputaCadastrosController class.
@@ -19,7 +25,7 @@ namespace Gestor_De_Pule.src.Controllers
         {
             DisputasLocal = Disputa.GetDisputasLocal();
         }
-        internal static void AddAnimalRemovido(object animalSelecionadoUi)
+        internal  void AddAnimalRemovido(object animalSelecionadoUi)
         {
             if (animalSelecionadoUi is Animal)
             {
@@ -30,7 +36,7 @@ namespace Gestor_De_Pule.src.Controllers
 
         }
 
-        internal static string AtualizarDados(string nomeDisputa, DateTime? date, ListBox.ObjectCollection items)
+        internal  string AtualizarDados(string nomeDisputa, DateTime? date, ListBox.ObjectCollection items)
         {
             bool sucess = false;
             List<Animal>? animaisSelecionadosUi = items.Cast<Animal>().ToList();
@@ -47,7 +53,8 @@ namespace Gestor_De_Pule.src.Controllers
                     var idsAnimalSelecionadoUi = animaisSelecionadosUi.Select(a => a.Id).ToList();
                     animaisSelecionados = Animals.Where(a => idsAnimalSelecionadoUi.Contains(a.Id)).ToList();
                 }
-                sucess = DisputaRepository.UpdateDisputa(Disputa, animaisSelecionadosUi, AnimaisRemovidos);
+                //sucess = DisputaRepository.UpdateDisputa(Disputa, animaisSelecionadosUi, AnimaisRemovidos);
+                sucess = _disputaRepository.UpdateDisputa(Disputa, animaisSelecionadosUi, AnimaisRemovidos);
                 if (sucess) return "Disputa Atualizado com sucesso!";
                 else return "Erro ao Atualizar a Disputa!";
 
@@ -56,7 +63,7 @@ namespace Gestor_De_Pule.src.Controllers
 
         }
 
-        internal static string Cadastrar(string nomeDisputa, DateTime? date, ListBox.ObjectCollection items)
+        internal  string Cadastrar(string nomeDisputa, DateTime? date, ListBox.ObjectCollection items)
         {
             if (String.IsNullOrEmpty(nomeDisputa))
             {
@@ -103,7 +110,8 @@ namespace Gestor_De_Pule.src.Controllers
                     if (!sucess)
                         return "Erro ao salvar o Resultado!";
 
-                    disputa = Disputa.isCreate(nomeDisputa);
+                    disputa = _disputaRepository.isCreate(nomeDisputa);
+                   // disputa = Disputa.isCreate(nomeDisputa);
 
                     if (disputa == null)
                     {
@@ -112,6 +120,7 @@ namespace Gestor_De_Pule.src.Controllers
                         disputa = new Disputa(nomeDisputa, date ?? DateTime.Now);
                         //sucess = DisputaRepository.Save(disputa);
                         sucess = disputa.save();
+                        sucess = disputa.save();
                         if (!sucess)
                             return "Erro ao salvar a Disputa!";
                     }
@@ -119,17 +128,17 @@ namespace Gestor_De_Pule.src.Controllers
                     if (disputa == null)
                         return "Disputa ainda está nula após tentativa de criação!";
 
-                    sucess = ResultadoRepository.Update(resultado, disputa);
+                    sucess = _resultadoRepository.Update(resultado, disputa);
                     if (!sucess)
                         return "Erro ao atualizar o Resultado!";
 
-                    sucess = AnimalRepository.Update(animal, resultado);
+                    sucess = _animalRepository.Update(animal, resultado);
                     if (!sucess)
                         return "Erro ao atualizar o Animal!";
-                    Caixa? caixa = Caixa.GetCaixa() as Caixa;
+                    var caixa = _caixaRepository.GetCaixa();
                     if (caixa is not null)
                     {
-                        sucess = caixa.SaveWithDisputa(disputa);
+                        sucess = _caixaRepository.SaveWithDisputa(disputa, caixa);
                     }
                     if (!sucess)
                         return "Erro Interno Por Favor contate ao suporte!";
@@ -145,14 +154,15 @@ namespace Gestor_De_Pule.src.Controllers
         /// </summary>
         /// <param name="itemSelecionadoUi">The UI item representing the selected Disputa.</param>
         /// <returns>A string message indicating whether the Disputa was loaded successfully or if an error occurred.</returns>
-        internal static string LoadDisputa(object itemSelecionadoUi)
+        internal  string LoadDisputa(object itemSelecionadoUi)
         {
             bool sucess = false;
             Disputa? disputaSelecionado = itemSelecionadoUi as Disputa;
             if (disputaSelecionado == null) sucess = false;
             else
             {
-                Disputa = DisputaRepository.ReadDisputa(disputaSelecionado);
+                //Disputa = DisputaRepository.ReadDisputa(disputaSelecionado);
+                Disputa = _disputaRepository.ReadDisputa(disputaSelecionado);
                 sucess = true;
                 if (Disputa == null) sucess = false;
 
@@ -163,30 +173,33 @@ namespace Gestor_De_Pule.src.Controllers
         /// <summary>
         /// Loads the list of disputes from the repository into the Disputas collection.
         /// </summary>
-        internal static void LoadListDisputa()
+        internal  void LoadListDisputa()
         {
-            Disputas = DisputaRepository.ReadDisputas();
+            Disputas = _disputaRepository.ReadDisputas();
+            //Disputas = DisputaRepository.ReadDisputas();
         }
         /// <summary>
         /// Loads animal data and populates the Animals list from the AnimalController.
         /// </summary>
-        internal static void LoadLists()
+        internal  void LoadLists()
         {
-            AnimalController.LoadAnimais();
-            Animals = AnimalController.Animals.ToList();
+            //AnimalController.LoadAnimais();
+            _animalController.LoadAnimais();
+            Animals = _animalController.Animals.ToList();
+            //Animals = AnimalController.Animal;
         }
         /// <summary>
         /// Attempts to remove the selected Disputa from the repository.
         /// </summary>
         /// <param name="disputaSelecionadoUi">The UI object representing the selected Disputa.</param>
         /// <returns>True if the Disputa was successfully removed; otherwise, false.</returns>
-        internal static bool RemoveDisuptaSelecionado(object disputaSelecionadoUi)
+        internal  bool RemoveDisuptaSelecionado(object disputaSelecionadoUi)
         {
             Disputa? disputaSelecionado = disputaSelecionadoUi as Disputa;
             bool sucess = false;
             if (disputaSelecionado is not null)
             {
-                sucess = DisputaRepository.Remove(disputaSelecionado);
+                sucess = _disputaRepository.Remove(disputaSelecionado);
             }
             if (sucess) return true;
             else return false;
@@ -225,7 +238,7 @@ namespace Gestor_De_Pule.src.Controllers
         /// </summary>
         /// <param name="animalSelecionadoUi">The object to be cast to Animal.</param>
         /// <returns>The Animal instance if the cast is successful; otherwise, null.</returns>
-        internal static object? ToAnimal(object animalSelecionadoUi)
+        internal  object? ToAnimal(object animalSelecionadoUi)
         {
             Animal? animal = animalSelecionadoUi as Animal;
             if (animal == null)

@@ -1,37 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Gestor_De_Pule.src.Controllers;
+﻿using Gestor_De_Pule.src.Controllers;
 namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
 {
     public partial class FormCadastroDisputa : Form
     {
+        private DisputaController _controller = new DisputaController();
         public FormCadastroDisputa()
         {
             InitializeComponent();
             InitComboBoxs();
         }
-
+        /// <summary>
+        /// Initializes the combo box with a list of registered animals by loading data from the controller and adding
+        /// the animals to the combo box items.
+        /// </summary>
         private void InitComboBoxs()
         {
-            DisputaController.LoadLists();
-            var animais = DisputaController.Animals;
+            //DisputaController.LoadLists();
+            _controller.LoadLists();
+            var animais = _controller.Animals;
             if (animais != null && animais.Count > 0)
                 comboBoxAnimaisCadastrados.Items.AddRange(animais.ToArray());
 
         }
-
-        private void CancelarCadastro(object sender, EventArgs e)
+        /// <summary>
+        /// Closes the current form.
+        /// </summary>
+        private void CancelarCadastro()
         {
             this.Close();
         }
-
+        /// <summary>
+        /// Adds the selected animal from the ComboBox to the listBoxAnimaisToDisputa control.
+        /// </summary>
+        /// <param name="sender">The ComboBox control that triggered the event.</param>
+        /// <param name="e">The event data.</param>
         private void AnimalToLisBoxAnimais(object sender, EventArgs e)
         {
             ComboBox? combo = sender as ComboBox;
@@ -70,7 +72,7 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
         /// indicating the result. The input fields are cleared after registration.</remarks>
         /// <param name="sender">The source of the event, typically a button.</param>
         /// <param name="e">The event data associated with the click event.</param>
-        private void CadastrarDisputa(object sender, EventArgs e)
+        private void CadastrarDisputa()
         {
             string nomeDisputa = String.Empty;
             DateTime? date = null;
@@ -87,7 +89,8 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
             }
             else
             {
-                mensagem = DisputaController.Cadastrar(nomeDisputa, date, listBoxAnimaisToDisputa.Items);
+                //mensagem = DisputaController.Cadastrar(nomeDisputa, date, listBoxAnimaisToDisputa.Items);
+                mensagem = _controller.Cadastrar(nomeDisputa, date, listBoxAnimaisToDisputa.Items);
                 MessageBox.Show(mensagem);
                 //limpa os dados
                 textBoxNomeDaDisputa.Text = String.Empty;

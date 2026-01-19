@@ -15,26 +15,7 @@ namespace Gestor_De_Pule.src.Models
         public DateTime? DateClose { get; set; }
         public decimal  TotalEmCaixa { get; set; }
 
-        internal static  object GetCaixa()
-        {
-            using DataBase db = new DataBase();
-            try
-            {
-                if(db.Caixas.Count() > 0)
-                {
-                    //existe um caixa registrado no sistema
-                    var caixaDb = db.Caixas.Include(caix=>caix.Disputs).FirstOrDefault(caix => caix.Open == IsOpen.Open);
-                    if (caixaDb != null)
-                        return caixaDb;
-                }
-                else
-                {
-                    return new Caixa();
-                }
-            }
-            catch { return new Caixa(); }
-            return new Caixa();
-        }
+        
 
         internal decimal GetSaldoTotal()
         {
@@ -120,40 +101,7 @@ namespace Gestor_De_Pule.src.Models
             catch { return; }
         }
 
-        internal bool SaveWithDisputa(Disputa disputa)
-        {
-            using DataBase db = new DataBase();
-            try
-            {
-                var disputaDb = db.Disputas
-                    .FirstOrDefault(d => d.Id == disputa.Id);
-                var caixaDb = db.Caixas.Include(caixa => caixa.Disputs).FirstOrDefault(caixa => caixa.Id == this.Id);
-                if(disputaDb != null)
-                {
-                    disputaDb.Caixa = this;
-                    if(caixaDb is not null)
-                    {
-                        if(caixaDb.Disputs is null)
-                        {
-                            caixaDb.Disputs = new List<Disputa>();
-                            
-                        }
-                        else
-                        {
-                            caixaDb.Disputs.Add(disputaDb);
-                            db.Caixas.Update(caixaDb);
-                            db.Disputas.Update(disputaDb);
-
-
-                        }
-
-                    }
-                }
-                db.SaveChanges();
-                return true;
-            }
-            catch { return false; }
-        }
+        
 
         internal static Caixa? LoadInit()
         {

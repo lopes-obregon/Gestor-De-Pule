@@ -1,12 +1,25 @@
 ﻿using Gestor_De_Pule.src.Model;
 using Gestor_De_Pule.src.Models;
-using Gestor_De_Pule.src.Persistencias;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
-namespace Gestor_De_Pule.src.Repository
+namespace Gestor_De_Pule.src.Persistencias
 {
     class DisputaRepository
     {
+        private DataBase _dataBase = new();
+        public DisputaRepository()
+        {
+            Log.Logger = new LoggerConfiguration()
+               .WriteTo.File(
+               "logs/log.txt",
+               rollingInterval: RollingInterval.Day, //cria um arquivo por dia
+               retainedFileCountLimit: 7,//mantem 7 arquivos
+               fileSizeLimitBytes: 10_000_000,//limite de 10 mb
+               rollOnFileSizeLimit: true //cria novo arquivo quando chegar o limite
+               )
+               .CreateLogger();
+        }
         internal static Disputa? Exist(string nomeDisputa)
         {
             using var db = new DataBase();
@@ -16,13 +29,13 @@ namespace Gestor_De_Pule.src.Repository
                 .FirstOrDefault(dis => dis.Nome == nomeDisputa);
         }
 
-        internal static Disputa? ReadDisputa(Disputa disputaSelecionado)
+        internal  Disputa? ReadDisputa(Disputa disputaSelecionado)
         {
-            using DataBase db = new DataBase();
+            
             try
             {
                 if (disputaSelecionado == null) return null;
-                return db.Disputas
+                return _dataBase.Disputas
                     .Include(d => d.ResultadoList)
                     .ThenInclude(res=> res.Animal)
                     .FirstOrDefault(dis=> dis.Id == disputaSelecionado.Id);
@@ -31,25 +44,29 @@ namespace Gestor_De_Pule.src.Repository
             catch { return null; }
         }
 
-        internal static List<Disputa> ReadDisputas()
+        internal  List<Disputa> ReadDisputas()
         {
             using DataBase db = new DataBase();
             try
             {
                 return db.Disputas
                     .Include(d => d.ResultadoList)
-                    .Where(dis=> !String.IsNullOrEmpty(dis.Nome))
+                    .Where(dis=> !string.IsNullOrEmpty(dis.Nome))
                     .ToList();
             }
             catch { return new List<Disputa>(); }
         }
-
-        internal static bool Remove(Disputa disputaSelecionado)
+        /// <summary>
+        /// Remove uma disputa que foi selecionado na Ui
+        /// </summary>
+        /// <param name="disputaSelecionado"></param>
+        /// <returns></returns>
+        internal  bool Remove(Disputa disputaSelecionado)
         {
-            using DataBase db = new DataBase();
+            
             try
             {
-                var disputaDb = db.Disputas
+                var disputaDb = _dataBase.Disputas
                     .Include(d => d.ResultadoList)
                     .ThenInclude(res => res.Animal)
                     .FirstOrDefault(d=> d.Id ==  disputaSelecionado.Id);
@@ -63,17 +80,17 @@ namespace Gestor_De_Pule.src.Repository
                             if (resultado.Disputa.Id == disputaSelecionado.Id)
                             {
                                 resultado.Disputa = new();//remove associação   
-                                db.Resultados.Update(resultado);
-                                db.SaveChanges();
+                                _dataBase.Resultados.Update(resultado);
+                                _dataBase.SaveChanges();
                             }
                         }
                     }
-                    db.Disputas.Remove(disputaDb);
-                    db.SaveChanges();
+                    _dataBase.Disputas.Remove(disputaDb);
+                    _dataBase.SaveChanges();
                 }
                 return true;
             }
-            catch { return false; }
+            catch (Exception ex){ return false;  Log.Error(ex, "Error ao Remor a disputa!"); }
         }
         /// <summary>
         /// Saves the specified <see cref="Disputa"/> instance to the database.
@@ -108,20 +125,20 @@ namespace Gestor_De_Pule.src.Repository
             return false;
         }
 
-        internal static bool  UpdateDisputa(Disputa disputa, List<Animal> animaisSelecionadosUi)
+        internal  bool  UpdateDisputa(Disputa disputa, List<Animal> animaisSelecionadosUi)
         {
-            using DataBase db = new DataBase();
+           
             try
             {
                 if(disputa is not null)
 
                 {
-                    db.Disputas.Attach(disputa);
+                    //db.Disputas.Attach(disputa);
                     List<Resultado> resultadosUi = disputa.ResultadoList.ToList();
                     if(animaisSelecionadosUi is not null && animaisSelecionadosUi.Count > 0)
                     {
                         var ids = animaisSelecionadosUi.Select(a=> a.Id).ToList();
-                        var animaisDb = db.Animals.Where(a=>ids.Contains(a.Id)).ToList();
+                        var animaisDb = _dataBase.Animals.Where(a=>ids.Contains(a.Id)).ToList();
                         foreach(var animal in animaisDb)
                         {
                             if(animal is not null)
@@ -132,15 +149,15 @@ namespace Gestor_De_Pule.src.Repository
                                 if (!temEssaDisputa)
                                 {
                                     Resultado resultado = resultadosUi.Find(res => res.Disputa.Id == disputa.Id) ?? new Resultado();
-                                    db.Resultados.Attach(resultado);
-                                    db.Entry(resultado).State = EntityState.Modified;
+                                    _dataBase.Resultados.Attach(resultado);
+                                    _dataBase.Entry(resultado).State = EntityState.Modified;
                                     if (resultado.Disputa is null)
                                         resultado.Disputa = disputa;
                                     resultado.Animal = animal;
                                     
                                     animal.Resultados.Add(resultado);
-                                    db.Update(animal);
-                                    db.Update(resultado);
+                                    _dataBase.Update(animal);
+                                    _dataBase.Update(resultado);
 
                                 }
                                 else
@@ -160,23 +177,29 @@ namespace Gestor_De_Pule.src.Repository
                             }
                         }
                     }
-                    db.Update(disputa);
-                    db.SaveChanges();
+                    _dataBase.Update(disputa);
+                    _dataBase.SaveChanges();
                     return true;
                 }
             }
-            catch { return false; }
+            catch(Exception ex) { return false; Log.Error(ex, "ERROR AO ATUALIZAR DISPITA!"); }
             return false;
         }
-
-        internal static bool UpdateDisputa(Disputa disputa, List<Animal> animaisSelecionadosUi, List<Animal> animaisRemovidos)
+        /// <summary>
+        /// Update disputa;
+        /// </summary>
+        /// <param name="disputa"></param>
+        /// <param name="animaisSelecionadosUi"></param>
+        /// <param name="animaisRemovidos"></param>
+        /// <returns></returns>
+        internal  bool UpdateDisputa(Disputa disputa, List<Animal> animaisSelecionadosUi, List<Animal> animaisRemovidos)
         {
-            using DataBase db = new DataBase();
+            
             try
             {
                 if(disputa is not null)
                 {
-                    var disputaDb = db.Disputas
+                    var disputaDb = _dataBase.Disputas
                         .Include(d => d.ResultadoList)
                         .FirstOrDefault(d => d.Id == disputa.Id);
                     if (disputa.Nome != disputaDb.Nome)
@@ -191,15 +214,15 @@ namespace Gestor_De_Pule.src.Repository
                         {
                             if(animal is not null)
                             {
-                                db.Animals.Attach(animal);
+                                _dataBase.Animals.Attach(animal);
                                 var resultadoDoAnimal = animal.Resultados.Find(res => res.Disputa.Id == disputaDb.Id);
                                 if(resultadoDoAnimal is not null)
                                 {
-                                    db.Resultados.Attach(resultadoDoAnimal);
+                                    _dataBase.Resultados.Attach(resultadoDoAnimal);
                                     //encontramos a disputa devemos remover ela da relação
                                     // no caso o resultado
                                     resultadoDoAnimal.Disputa = new Disputa();
-                                    db.Resultados.Update(resultadoDoAnimal);
+                                    _dataBase.Resultados.Update(resultadoDoAnimal);
                                     disputa.ResultadoList.Remove(resultadoDoAnimal);
 
                                 }
@@ -210,7 +233,7 @@ namespace Gestor_De_Pule.src.Repository
                     {
                         foreach (var animal in animaisSelecionadosUi)
                         {
-                            var animalDb = db.Animals
+                            var animalDb = _dataBase.Animals
                                 .Include(a=> a.Resultados)
                                 .ThenInclude(r=>r.Disputa)
                                 .FirstOrDefault(a=> a.Id == animal.Id);
@@ -232,23 +255,40 @@ namespace Gestor_De_Pule.src.Repository
                                     Disputa = disputaDb
                                 };
                                 // Adiciona o resultado ao contexto
-                                db.Resultados.Add(resultado);
+                                _dataBase.Resultados.Add(resultado);
 
                                 // Atualiza as relações
                                 animalDb.Resultados.Add(resultado);
                                 disputaDb.ResultadoList.Add(resultado);
 
-                                db.Animals.Update(animalDb);
+                                _dataBase.Animals.Update(animalDb);
                             }
                         }
 
                         // Atualiza a disputa (se necessário)
-                        db.Disputas.Update(disputaDb);
-                        db.SaveChanges();
+                        _dataBase.Disputas.Update(disputaDb);
+                        _dataBase.SaveChanges();
                     }
                 }
                 return true;
             }catch {  return false; }
+        }
+
+        /// <summary>
+        /// Verifica se essa disputa já foi criada!
+        /// </summary>
+        /// <param name="nomeDisputa"></param>
+        /// <returns></returns>
+        internal  Disputa? isCreate(string nomeDisputa)
+        {
+            Disputa? disputaDb;
+            
+            disputaDb = _dataBase.Disputas.FirstOrDefault(dis => dis.Nome == nomeDisputa);
+            if (disputaDb == null)
+                return null;
+            else
+                return disputaDb;
+
         }
     }
 }
