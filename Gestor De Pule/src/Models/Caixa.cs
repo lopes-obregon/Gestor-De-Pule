@@ -63,62 +63,10 @@ namespace Gestor_De_Pule.src.Models
             return caixa;
         }
 
-        internal void save()
-        {
-            using DataBase db = new DataBase();
-            try
-            {
-                //melhor forma para rastrear o caixa
-                var CaixaDb = db.Caixas.FirstOrDefault(cai => cai.Id == this.Id);
-                if(CaixaDb != null)
-                {
-                    //atualiza para o valor atual
-                    CaixaDb.Taxa = this.Taxa;
-                    db.Caixas.Update(CaixaDb);
-                }
-                else
-                {
-                    var caixaDb = db.Caixas.OrderByDescending(c => c.Id).FirstOrDefault();
-                    if(caixaDb is not null)
-                    {
-                        //pega o saldo do anterior e acresenta no novo caixa;
-                        this.TotalEmCaixa = caixaDb.TotalEmCaixa;
-                    }
-                    if(this.DateOpen is null)
-                    {
-                        this.DateOpen = DateTime.Now;
-                    }
-                    if(this.Open is null)
-                    {
-                        this.Open = IsOpen.Open;
-                    }
-                    //novo caixa sendo criado.
-                    db.Caixas.Add(this);
-
-                }
-                db.SaveChanges();
-            }
-            catch { return; }
-        }
-
+       
         
 
-        internal static Caixa? LoadInit()
-        {
-            using DataBase db = new DataBase();
-            Caixa caixa = null;
-            try
-            {
-                var caixaDb = db.Caixas.Include(cai=>cai.Disputs).ThenInclude(dis=>dis.Pules).FirstOrDefault(cai => cai.Open == IsOpen.Open);
-                if (caixaDb != null)
-                {
-                    caixa = caixaDb;
-                }
-            }
-            catch (Exception ex) { return caixa; }
-            return caixa;
-        }
-
+        
         internal decimal GetEntradaDeApostas()
         {
             decimal result = 0;

@@ -9,11 +9,11 @@ namespace Gestor_De_Pule.src.Views.Financeiro.FluxoCaixa
     /// </summary>
     public partial class WindowFluxoCaixa : Window
     {
-        private FinanceiroController? financeiroController { get; set; } = null;
+        private FinanceiroController? _financeiroController { get; set; } = null;
         public WindowFluxoCaixa()
         {
             InitializeComponent();
-            financeiroController = new FinanceiroController();
+            _financeiroController = new FinanceiroController();
             Init();
         }
 
@@ -21,10 +21,10 @@ namespace Gestor_De_Pule.src.Views.Financeiro.FluxoCaixa
         {
             //FinanceiroController.LoadCaixaInit();
             LabelFluxoDeCaixa.Content = "FlUXO DE CAIXA - DATA: " + DateTime.Now.ToString("dd/MM/yyyy");
-            if(financeiroController is not null)
+            if(_financeiroController is not null)
             {
-                financeiroController.LoadCaixaLocal();
-                var caixa = financeiroController.CaixaLocal;
+                _financeiroController.LoadCaixaInit();
+                var caixa = _financeiroController.Caixa;
                 if (caixa != null)
                 {
                     //checar os pules pagos ou a quantidade que foram pagos
@@ -52,7 +52,7 @@ namespace Gestor_De_Pule.src.Views.Financeiro.FluxoCaixa
 
         private void FecharDia(object sender, RoutedEventArgs e)
         {
-            var caixa = FinanceiroController.Caixa;
+            var caixa = _financeiroController.Caixa;
             if (caixa != null)
             {
                 string mensagem = caixa.FecharDia();
@@ -67,7 +67,7 @@ namespace Gestor_De_Pule.src.Views.Financeiro.FluxoCaixa
 
         private void RetiraLucro(object sender, RoutedEventArgs e)
         {
-            var caixa = FinanceiroController.Caixa;
+            var caixa = _financeiroController.Caixa;
             string valorStr = Interaction.InputBox("Quanto Deseja retirar?", "Retirada de Lucro", "0");
             if (caixa != null)
             {
@@ -89,7 +89,7 @@ namespace Gestor_De_Pule.src.Views.Financeiro.FluxoCaixa
 
         private void PagarDisputa(object sender, RoutedEventArgs e)
         {
-            WindowPagamentoDeDisputa window = new WindowPagamentoDeDisputa(financeiroController);
+            WindowPagamentoDeDisputa window = new WindowPagamentoDeDisputa(_financeiroController);
             window.ShowDialog();
             Init();
         }

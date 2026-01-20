@@ -41,9 +41,9 @@ namespace Gestor_De_Pule.src.Views.Financeiro.FluxoCaixa
         {
 
                 //financeiroController.LoadCaixaLocal();
-            if(financeiroController is not null && financeiroController.CaixaLocal is not null && financeiroController.CaixaLocal.Disputs is not null)
+            if(financeiroController is not null && financeiroController.Caixa is not null && financeiroController.Caixa.Disputs is not null)
             {
-                var disputas = financeiroController.CaixaLocal.DisputsNãoPagos();
+                var disputas = financeiroController.Caixa.DisputsNãoPagos();
                 if (disputas != null)
                 {
 
@@ -78,11 +78,11 @@ namespace Gestor_De_Pule.src.Views.Financeiro.FluxoCaixa
                 else
                 {
                     //considero um valor válido 
-                    if (financeiroController is not null && financeiroController.CaixaLocal is not null)
+                    if (financeiroController is not null && financeiroController.Caixa is not null)
                     {
                         //só para teste
                         // financeiroController.CaixaLocal.TotalEmCaixaWithPulePago();
-                        mensagem = financeiroController.CaixaLocal.PagaDisputa(disputaSelecionadaUi, valor);
+                        mensagem = financeiroController.Caixa.PagaDisputa(disputaSelecionadaUi, valor);
                     }
                 }
                 System.Windows.MessageBox.Show(mensagem);

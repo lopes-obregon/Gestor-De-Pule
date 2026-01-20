@@ -2,18 +2,19 @@
 
 using Gestor_De_Pule.src.Controllers;
 using System.Globalization;
+using System.Printing;
 
 namespace Gestor_De_Pule.src.Views.Financeiro.Taxa
 {
     public partial class FormCadastroDeTaxaEAtt : Form
     {
 
-
+        private FinanceiroController _financeiroController = new FinanceiroController();
         public FormCadastroDeTaxaEAtt()
         {
             InitializeComponent();
-            FinanceiroController.InitCaixa();
-            var caixa = FinanceiroController.Caixa;
+            _financeiroController.InitCaixa();
+            var caixa = _financeiroController.Caixa;
             if (caixa != null)
                 labelTaxaAtual.Text = "Taxa Atual: " + caixa.Taxa.ToString("P");
         }
@@ -28,14 +29,14 @@ namespace Gestor_De_Pule.src.Views.Financeiro.Taxa
             else
             {
                 novoValorTaxa = novoValorTaxa / 100;
-                FinanceiroController.SaveOrAttTaxa(novoValorTaxa);
+                _financeiroController.SaveOrAttTaxa(novoValorTaxa);
                 AtualizarTaxaLabel();
             }
         }
 
         private void AtualizarTaxaLabel()
         {
-            var caixa = FinanceiroController.Caixa;
+            var caixa = _financeiroController.Caixa;
             if (caixa is not null)
                 labelTaxaAtual.Text = "Taxa Atual: " + caixa.Taxa.ToString("P");
             numericUpDown1.Value = 0.00m;

@@ -1,56 +1,47 @@
 ﻿
 using Gestor_De_Pule.src.Models;
+using Gestor_De_Pule.src.Persistencias;
 
 namespace Gestor_De_Pule.src.Controllers
 {
      internal  class FinanceiroController
     {
-        public static  Caixa? Caixa {  set; get; } = null;
-        public Caixa? CaixaLocal { set; get; } = null;
+        public   Caixa? Caixa {  set; get; } = null;
+        private CaixaRepository _caixaRepository = new CaixaRepository();
         public FinanceiroController() 
         {
            
         }
-        internal static void InitCaixa()
+        /// <summary>
+        /// Init caixa in instance
+        /// </summary>
+        internal  void InitCaixa()
         {
            if(Caixa is null)
             {
-                var caixaDb = Caixa.GetCaixa();
+                var caixaDb = _caixaRepository.GetCaixa();
                 if (caixaDb is not null)
                     Caixa = (Caixa?)caixaDb;
             }
 
         }
-
-        internal static void LoadCaixaInit()
+        /// <summary>
+        /// carrega no caixa o primeiro caixa aberto;
+        /// </summary>
+        internal  void LoadCaixaInit()
         {
             if (Caixa is null)
-                Caixa = Caixa.LoadInit();
+                Caixa = _caixaRepository.LoadInit();
         }
-        internal void LoadCaixaLocal()
-        {
-            if(CaixaLocal is null)
-            {
-                CaixaLocal = Caixa.LoadInit();
-            }
-        }
-        internal static void LoadCaixa()
-        {
-            if(Caixa is null)
-            {
-                Caixa = Caixa.Load();
-            }
-            else
-            {
-                Caixa = Caixa.Load(Caixa.Id);
-            }
-        }
+        
+       
 
-        internal static void SaveOrAttTaxa(decimal taxa)
+        internal  void SaveOrAttTaxa(decimal taxa)
         {
             if(Caixa is not null && Caixa.Taxa != taxa){
                 Caixa.Taxa = taxa;
-                Caixa.save();
+                //Caixa.save();
+                _caixaRepository.Save(Caixa);
             }
         }
 

@@ -82,5 +82,63 @@ namespace Gestor_De_Pule.src.Persistencias
             catch (Exception ex){ sucess =  false; Log.Error(ex, "Algo de erado para associar o caixa com disputa!"); }
             return sucess;
         }
+        /// <summary>
+        /// Carrega o caixa que está aberto;
+        /// </summary>
+        /// <returns></returns>
+        internal  Caixa? LoadInit()
+        {
+            
+            Caixa caixa = null;
+            try
+            {
+                var caixaDb = _db.Caixas.Include(cai => cai.Disputs).ThenInclude(dis => dis.Pules).FirstOrDefault(cai => cai.Open == IsOpen.Open);
+                if (caixaDb != null)
+                {
+                    caixa = caixaDb;
+                }
+            }
+            catch (Exception ex) { return caixa; Log.Error(ex, "Erro ao iniciar o caixa"); }
+            return caixa;
+        }
+
+        internal void Save(Caixa caixa)
+        {
+            
+            try
+            {
+                //melhor forma para rastrear o caixa
+                var CaixaDb = _db.Caixas.FirstOrDefault(cai => cai.Id == caixa.Id);
+                if (CaixaDb != null)
+                {
+                    //atualiza para o valor atual
+                    CaixaDb.Taxa = caixa.Taxa;
+                    _db.Caixas.Update(CaixaDb);
+                }
+                else
+                {
+                    var caixaDb = _db.Caixas.OrderByDescending(c => c.Id).FirstOrDefault();
+                    if (caixaDb is not null)
+                    {
+                        //pega o saldo do anterior e acresenta no novo caixa;
+                        caixa.TotalEmCaixa = caixaDb.TotalEmCaixa;
+                    }
+                    if (caixa.DateOpen is null)
+                    {
+                        caixa.DateOpen = DateTime.Now;
+                    }
+                    if (caixa.Open is null)
+                    {
+                        caixa.Open = IsOpen.Open;
+                    }
+                    //novo caixa sendo criado.
+                    _db.Caixas.Add(caixa);
+
+                }
+                _db.SaveChanges();
+            }
+            catch (Exception ex){ return; Log.Error(ex, "Erro ao salvar o caixa {Id}", caixa.Id); }
+        }
+
     }
 }
