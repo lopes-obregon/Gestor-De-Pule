@@ -67,7 +67,8 @@ namespace Gestor_De_Pule.src.Views.Pule
             {
                 var puleSelecionado = listViewPules.SelectedItem;
                 String mensagem = String.Empty;
-                mensagem = PuleController.RemovePule(puleSelecionado);
+                //mensagem = PuleController.RemovePule(puleSelecionado);
+                mensagem = _puleController.RemovePule(puleSelecionado);
                 System.Windows.MessageBox.Show(mensagem);
             }
             UpdateListViewPules();
