@@ -9,8 +9,10 @@ namespace Gestor_De_Pule.src.Views.Pule
     /// </summary>
     public partial class WindowPuleCadastrados : Window
     {
+        private PuleController _puleController;
         public WindowPuleCadastrados()
         {
+            _puleController = new ();
             InitializeComponent();
             
             UpdateListViewPules();
@@ -18,15 +20,21 @@ namespace Gestor_De_Pule.src.Views.Pule
 
         private void UpdateListViewPules()
         {
-            PuleController.LoadPules();
-            PuleController.LoadAnimais();
+            //PuleController.LoadPules();
+            _puleController.LoadPules();
+            _puleController.LoadAnimais();
+            //PuleController.LoadAnimais();
             listViewPules.ItemsSource = null;
-            if (PuleController.Pules is not null && PuleController.Pules.Count > 0)
-                listViewPules.ItemsSource = PuleController.Pules;
+            //if (PuleController.Pules is not null && PuleController.Pules.Count > 0)
+            if (_puleController.Pules is not null && _puleController.Pules.Count > 0)
+                listViewPules.ItemsSource = _puleController.Pules;
+                //listViewPules.ItemsSource = PuleController.Pules;
             listViewPules.Items.Refresh();
-            if(PuleController.Animals is not null && PuleController.Animals.Count > 0)
+            //if(PuleController.Animals is not null && PuleController.Animals.Count > 0)
+            if(_puleController.Animals is not null && _puleController.Animals.Count > 0)
             {
-                var animaisMaisApostados = PuleController.Animals.OrderByDescending(a=>a.Pules.Count).ToList();
+                //var animaisMaisApostados = PuleController.Animals.OrderByDescending(a=>a.Pules.Count).ToList();
+                var animaisMaisApostados = _puleController.Animals.OrderByDescending(a=>a.Pules.Count).ToList();
                 ListBoxAnimaisMaisApostados.ItemsSource = null;
                 ListBoxAnimaisMaisApostados.ItemsSource = animaisMaisApostados;
             }

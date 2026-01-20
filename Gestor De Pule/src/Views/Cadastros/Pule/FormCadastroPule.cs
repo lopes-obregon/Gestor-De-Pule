@@ -5,8 +5,10 @@ namespace Gestor_De_Pule.src.Views.Pule
 {
     public partial class FormCadastroPule : Form
     {
+        private PuleController _puleController;
         public FormCadastroPule()
         {
+            _puleController = new PuleController();
             InitializeComponent();
             SetComboBox();
         }
@@ -14,10 +16,12 @@ namespace Gestor_De_Pule.src.Views.Pule
         private void SetComboBox()
         {
 
-            PuleController.LoadLists();
-            var animaisCadastrados = PuleController.Animals;
-            var ApostadoresCadastrados = PuleController.Apostadors;
-            var disputasCadastrados = PuleController.Disputas;
+            //PuleController.LoadLists();
+            _puleController.LoadLists();
+            //var animaisCadastrados = PuleController.Animals;
+            var animaisCadastrados = _puleController.Animals;
+            var ApostadoresCadastrados = _puleController.Apostadors;
+            var disputasCadastrados = _puleController.Disputas;
             if (ApostadoresCadastrados is not null)
                 comboBoxApostadores.Items.AddRange(ApostadoresCadastrados.ToArray());
             comboBoxPagamento.DataSource = Enum.GetValues(typeof(Gestor_De_Pule.src.Model.StatusPagamento));
@@ -65,7 +69,8 @@ namespace Gestor_De_Pule.src.Views.Pule
             if (animaisSelecionados.Count < 1)
                 mensagem += "Por Favor Selecione Pelomenos Um Animal Para Apostar ";
             else
-                mensagem = PuleController.CadastrarPule(apostadorSelecionado, pagamento, animaisSelecionados, valor, númeroDoPule, disputaSelecionado);
+                mensagem = _puleController.CadastrarPule(apostadorSelecionado, pagamento, animaisSelecionados, valor, númeroDoPule, disputaSelecionado);
+                //mensagem = PuleController.CadastrarPule(apostadorSelecionado, pagamento, animaisSelecionados, valor, númeroDoPule, disputaSelecionado);
             MessageBox.Show(mensagem);
             //limpeza dos campos
             comboBoxAnimais.SelectedIndex = -1;
@@ -86,7 +91,8 @@ namespace Gestor_De_Pule.src.Views.Pule
             var DisputaSelecionada = comboBoxDisputas.SelectedItem;
             if (DisputaSelecionada is not null)
             {
-                var animais = PuleController.AttComboBoxAnimais(DisputaSelecionada);
+                //var animais = PuleController.AttComboBoxAnimais(DisputaSelecionada);
+                var animais = _puleController.AttComboBoxAnimais(DisputaSelecionada);
                 comboBoxAnimais.Items.Clear();
                 if(animais is not null && animais.Count > 0)
                     comboBoxAnimais.Items.AddRange(animais.ToArray());

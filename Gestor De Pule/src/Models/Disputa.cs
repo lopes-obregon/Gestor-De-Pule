@@ -184,29 +184,7 @@ namespace Gestor_De_Pule.src.Models
         /// Apostador data, filtering out entries with empty or null names.
         /// </summary>
         /// <returns>A list of Disputa objects if any are found; otherwise, null.</returns>
-        internal static List<Disputa>? GetDisputas()
-        {
-           using DataBase db = new DataBase();
-            try
-            {
-                var disputasDb = db.Disputas
-                    .Include(d=> d.ResultadoList)
-                    .ThenInclude(r=> r.Animal)
-                    .Include(d=> d.Pules)
-                    .ThenInclude(p=> p.Apostador)
-                    .Where(d=> !String.IsNullOrEmpty(d.Nome))
-                    .ToList();
-                if(disputasDb is null || disputasDb.Count == 0)
-                {
-                    return null;
-                }
-                else
-                {
-                    return disputasDb;
-                }
-            }
-            catch { return null; }
-        }
+       
         /// <summary>
         /// Adds the current instance to the database if it does not already exist and saves changes.
         /// </summary>

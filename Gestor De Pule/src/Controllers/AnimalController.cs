@@ -7,8 +7,8 @@ namespace Gestor_De_Pule.src.Controllers
     {
       
        public  List<Animal> Animals { get; private set; } = new List<Animal>();
-        public  Animal? Animal { get; private set; } = new();
-        private AnimalRepository _repository {  get; set; } = new AnimalRepository();
+        public Animal? Animal { get; private set; } = new();
+        private AnimalRepository _repository { get; set; } = new AnimalRepository();
         internal  void LoadAnimais()
         {
             

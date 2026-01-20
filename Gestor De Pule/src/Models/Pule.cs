@@ -98,97 +98,9 @@ namespace Gestor_De_Pule.src.Model
 
         }
 
-        internal static bool Remove(Pule puleSelecionado)
-        {
-            using DataBase db = new DataBase();
-            try
-            {
-                if(puleSelecionado is not null)
-                {
-                    db.Pules.Attach(puleSelecionado);
-                    foreach(var animal in puleSelecionado.Animais)
-                    {
-                        if(animal is not null)
-                        {
-                            db.Animals.Attach(animal);
-                            if(animal.Pules.Any(p => p.Id == puleSelecionado.Id))
-                            {
+        
 
-                                animal.Pules.Remove(puleSelecionado);
-                                db.Animals.Update(animal);
-                            }
-                        }
-                    }
-                    puleSelecionado.Animais.Clear();
-                    db.Pules.Remove(puleSelecionado );
-                    db.SaveChanges();
-                    return true;
-                }
-            }catch { return false; }
-            return false;
-        }
-
-        internal static  bool Update(Pule pule, List<Animal> novosAnimais, bool isEqual)
-        {
-            using DataBase db = new DataBase();
-            try
-            {
-                if (pule is not null)
-                {
-                    db.Pules.Attach(pule);
-          
-                    //peque ajuste para mapear os dados novamente
-                    
-                        if(pule.Apostador is not null)
-                        {
-                            db.Apostadors.Attach(pule.Apostador);
-                        }
-                        if(pule.Animais is not null)
-                        {
-                            foreach(var aniamal in pule.Animais)
-                            {
-                                if(aniamal is not null)
-                                {
-                                    db.Animals.Attach(aniamal);
-                                }
-                            }
-                        }
-                    if (!isEqual)
-                    {
-                        //remove as associações do banco 
-                        foreach (var animal in pule.Animais)
-                        {
-                            if(animal is not null)
-                            {
-                                db.Animals.Attach(animal);
-                                if(animal.Pules.Any(p => p.Id == pule.Id))
-                                {
-                                    animal.Pules.Remove(pule);
-                                    db.Animals.Update(animal);
-                                }
-                            }
-                        }
-                        //faz novas associações.
-                        foreach(var animal in novosAnimais)
-                        {
-                            if(animal is not null)
-                            {
-                                db.Animals.Attach(animal);
-                                animal.Pules.Add(pule);
-                                db.Animals.Update(animal);
-                            }
-                        }
-                        pule.Animais = novosAnimais;
-                    }  
-                        //marca apenas o pule que alterei
-                        //db.Entry(pule).State = EntityState.Modified;
-                    
-                    db.Pules.Update(pule);
-                }
-                    db.SaveChanges();
-                return true;
-            }catch { return false; }
-        }
+      
         
         internal String AnimaisToString()
         {
@@ -206,83 +118,9 @@ namespace Gestor_De_Pule.src.Model
             }
             return nomeAnimal;
         }
-        //Salva apenas o pule
-        internal static bool SavePule(Pule pule)
-        {
-            using DataBase db = new DataBase();
-            try
-            {
-                if( pule is not null)
-                {
-                    db.Pules.Add(pule);
-                    db.SaveChanges();
-                    return true;
-                }
-            }catch { return false; }
-            return false;
-        }
+        
 
-        internal bool Associete(Apostador? apostadorSelecionado, List<Animal> animais, Models.Disputa? disputaSelecionado)
-        {
-            using DataBase db = new DataBase();
-            try
-            {
-                if(apostadorSelecionado is not null)
-                {
-                    //db.Apostadors.Attach(apostadorSelecionado);
-                    apostadorSelecionado = db.Apostadors.FirstOrDefault(a => a.Id == apostadorSelecionado.Id);
-                    if(apostadorSelecionado != null){
-                        apostadorSelecionado.Pules.Add(this);
-                        this._apostador = apostadorSelecionado;
-                         db.Apostadors.Update(apostadorSelecionado);
-                    }
-                }
-                //um ajuste de rastreio do ef core
-                /*foreach(Animal animal in animais)
-                {
-                    if(animal is not null )
-                        db.Animals.Attach(animal);
-                }*/
-                if(this._animais is not null)
-                    this._animais.Clear();
-                else
-                    this._animais = new List<Animal>();
-                if (animais is not null && animais.Count > 0)
-                {
-                    foreach (var ani in animais)
-                    {
-                        if (ani is not null)
-                        {
-                            var animal = db.Animals.Find(ani.Id);
-                            if (animal != null)
-                            {
-                                animal.Pules.Add(this);
-                                db.Animals.Update(animal);
-                                this._animais.Add(animal);
-                            }
-                        }
-                    }
-
-                }
-
-                if(disputaSelecionado is not null)
-                {
-                    var disputaDb = db.Disputas
-                        .Include(d=> d.Pules)
-                        .Include(d=>d.ResultadoList)
-                        .FirstOrDefault(d=> d.Id == disputaSelecionado.Id);
-                    if(disputaDb is not null)
-                    {
-                        disputaDb.Pules.Add(this);
-                        db.Disputas.Update(disputaDb);
-                        this.Disputa = disputaDb;
-                    }
-                }
-                db.Pules.Update(this);
-                db.SaveChanges();
-                return true;
-            }catch { return false; }
-        }
+       
         public override string ToString()
         {
             return Número.ToString();

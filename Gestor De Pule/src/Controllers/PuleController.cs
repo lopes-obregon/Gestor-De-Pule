@@ -1,5 +1,6 @@
 ﻿using Gestor_De_Pule.src.Model;
 using Gestor_De_Pule.src.Models;
+using Gestor_De_Pule.src.Persistencias;
 
 namespace Gestor_De_Pule.src.Controllers
 {
@@ -9,23 +10,35 @@ namespace Gestor_De_Pule.src.Controllers
 
       
 
-        static public List<Apostador>? Apostadors { get; private set; }
-        static public List<Animal>? Animals { get; private set; }
-        static public List<Pule>? Pules { get; private set; }
+        public List<Apostador>? Apostadors { get; private set; }
+        public List<Animal>? Animals { get; private set; }
+        public List<Pule>? Pules { get; private set; }
         static public Pule? Pule { get; private set; }
         public Pule? PuleLocal { get; private set; } = null;
-        static public List<Disputa>? Disputas { get; private set; } = null;
+        public List<Disputa>? Disputas { get; private set; } = null;
         public List<Apostador> ApostadorsLocal { get; private set; }
         public List<Animal> AnimalsLocal { get; private set; }
         public List<Disputa>? DisputasLocal { get; private set; }
         private Caixa? Caixa { get; set; } = null;
+        //Controllers
+        private AnimalController _animalController = new();
+        private ApostadorController _apostadorController = new();
+        //------------------------------------------------------------//
+        //Repository
+        private DisputaRepository _disputaRepository = new DisputaRepository();
+        private PuleRepository _puleRepository = new PuleRepository();
 
+        /// <summary>
+        /// Constructor com pule selecionado pela ui
+        /// </summary>
+        /// <param name="puleSelecionadoUi"></param>
         public PuleController(object puleSelecionadoUi)
         {
             PuleLocal = puleSelecionadoUi as Pule;
             Caixa = (Caixa?)Caixa.GetCaixa();
         }
-        internal static List<Animal>? AttComboBoxAnimais(object disputaSelecionadaUi)
+        public PuleController() { }
+        internal  List<Animal>? AttComboBoxAnimais(object disputaSelecionadaUi)
         {
             Disputa? disputaSelecionada = disputaSelecionadaUi as Disputa;
             List<Animal>? animaisSelecionados = null;
@@ -44,7 +57,7 @@ namespace Gestor_De_Pule.src.Controllers
             return animaisSelecionados;
         }
 
-        internal static string CadastrarPule(object? apostadorSelecionadoUi, object? pagamentoUi, ListBox.ObjectCollection animaisSelecionadosUi, float valor, int númeroDoPule, object? disputaSelecionadoUi)
+        internal  string CadastrarPule(object? apostadorSelecionadoUi, object? pagamentoUi, ListBox.ObjectCollection animaisSelecionadosUi, float valor, int númeroDoPule, object? disputaSelecionadoUi)
         {
            Apostador? apostadorUi =apostadorSelecionadoUi as Apostador;
             Apostador? apostadorSelecionado = null;
@@ -71,8 +84,9 @@ namespace Gestor_De_Pule.src.Controllers
                 animais = Animals.Where(a => animalIds.Contains(a.Id)).ToList();
             pule = new Pule(null, pagamento, null, valor, númeroDoPule);
             //sucess = Pule.Save(pule);
-            sucess = Pule.SavePule(pule);
-            sucess = pule.Associete(apostadorSelecionado, animais, disputaSelecionado);
+            sucess = _puleRepository.SavePule(pule);
+            //sucess = pule.Associete(apostadorSelecionado, animais, disputaSelecionado);
+            sucess = _puleRepository.Associete(apostadorSelecionado, animais, disputaSelecionado , pule);
 
             if (sucess)
                 return "Pule Cadastrado Com Sucesso!";
@@ -85,19 +99,26 @@ namespace Gestor_De_Pule.src.Controllers
             return Enum.GetValues(typeof(StatusPagamento)).Cast<StatusPagamento>().ToList();
         }
 
-        internal static void LoadAnimais()
+        internal  void LoadAnimais()
         {
-            AnimalController.LoadAnimais();
-            Animals = AnimalController.Animals.ToList();
+            //AnimalController.LoadAnimais();
+            _animalController.LoadAnimais();
+            Animals = _animalController.Animals.ToList();
+            //Animals = AnimalController.Animals.ToList();
         }
 
-        internal static void LoadLists()
+        internal  void LoadLists()
         {
-            Disputas = Disputa.GetDisputas();
-            AnimalController.LoadAnimais();
-            ApostadorController.LoadApostadores();
-            Apostadors = ApostadorController.Apostadors.ToList();
-            Animals = AnimalController.Animals.ToList();
+            //Disputas = Disputa.GetDisputas();
+            Disputas = _disputaRepository.GetDisputas();
+            //AnimalController.LoadAnimais();
+            _animalController.LoadAnimais();
+            //ApostadorController.LoadApostadores();
+            _apostadorController.LoadApostadores();
+            //Apostadors = ApostadorController.Apostadors.ToList();
+            Apostadors = _apostadorController.Apostadors.ToList();
+            //Animals = AnimalController.Animals.ToList();
+            Animals = _animalController.Animals.ToList();
             
         }
         internal  void LoadListsLocal()
@@ -118,19 +139,20 @@ namespace Gestor_De_Pule.src.Controllers
             }
         }
 
-        internal static void LoadPules()
+        internal  void LoadPules()
         {
             Pules = new List<Pule>();
             Pules = Pule.ReadPules();
         }
 
-        internal static string RemovePule(object puleSelecionadoUi)
+        internal  string RemovePule(object puleSelecionadoUi)
         {
             bool sucess = false;
             Pule? puleSelecionado = puleSelecionadoUi as Pule;
             if(puleSelecionado is not null)
             {
-                sucess = Pule.Remove(puleSelecionado);
+               // sucess = Pule.Remove(puleSelecionado);
+                sucess = _puleRepository.Remove(puleSelecionado);
                 if (sucess) return "Pule Removido Com Sucesso!";
                 else return "Erro ao Remover O Pule!";
             }
@@ -164,7 +186,8 @@ namespace Gestor_De_Pule.src.Controllers
                     .OrderBy(a => a)
                     .SequenceEqual(animais.Select(a => a.Id).OrderBy(x => x));
                 
-               sucess =  Pule.Update(PuleLocal, animais, isEqual);
+              //sucess =  Pule.Update(PuleLocal, animais, isEqual);
+               sucess =  _puleRepository.Update(PuleLocal, animais, isEqual);
                 if(sucess)
                 {
                    if(Caixa is not null)

@@ -290,5 +290,30 @@ namespace Gestor_De_Pule.src.Persistencias
                 return disputaDb;
 
         }
+
+        internal List<Disputa>? GetDisputas()
+        {
+           
+            try
+            {
+                var disputasDb = _dataBase.Disputas
+                    .Include(d => d.ResultadoList)
+                    .ThenInclude(r => r.Animal)
+                    .Include(d => d.Pules)
+                    .ThenInclude(p => p.Apostador)
+                    .Where(d => !String.IsNullOrEmpty(d.Nome))
+                    .ToList();
+                if (disputasDb is null || disputasDb.Count == 0)
+                {
+                    return null;
+                }
+                else
+                {
+                    return disputasDb;
+                }
+            }
+            catch (Exception ex) { return null; Log.Error(ex, "Error ao obter Disputas"); }
+        
+    }
     }
 }
