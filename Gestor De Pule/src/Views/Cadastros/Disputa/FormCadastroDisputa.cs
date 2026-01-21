@@ -25,7 +25,7 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
         /// <summary>
         /// Closes the current form.
         /// </summary>
-        private void CancelarCadastro()
+        private void CancelarCadastro(object sender, EventArgs e)
         {
             this.Close();
         }
@@ -72,7 +72,7 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
         /// indicating the result. The input fields are cleared after registration.</remarks>
         /// <param name="sender">The source of the event, typically a button.</param>
         /// <param name="e">The event data associated with the click event.</param>
-        private void CadastrarDisputa()
+        private void CadastrarDisputa(object sender, EventArgs e)
         {
             string nomeDisputa = String.Empty;
             DateTime? date = null;

@@ -36,7 +36,8 @@ namespace Gestor_De_Pule.src.Views.Pule
         {
 
             //PuleController.LoadLists();
-            controller.LoadListsLocal();
+           // controller.LoadListsLocal();
+            controller.LoadLists();
             //var animaisCadastrados = PuleController.Animals;
             var animaisCadastrados = controller.AnimalsLocal;
             //var ApostadoresCadastrados = PuleController.Apostadors;

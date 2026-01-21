@@ -18,7 +18,20 @@ namespace Gestor_De_Pule.src.Persistencias
             var path = Environment.GetFolderPath(folder);
             Dbpath = System.IO.Path.Join(path, "pule.db");
         }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlite($"Data Source={Dbpath}");
+
+        public DataBase(DbContextOptions options) : base(options)
+        {
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlite($"Data Source={Dbpath}");
+
+            }
+        } 
        
         
     }

@@ -72,46 +72,7 @@ namespace Gestor_De_Pule.src.Models
             }
             return contadorAnimais;
         }
-        /// <summary>
-        /// Updates the tempo for a specific animal in the current dispute.
-        /// </summary>
-        /// <remarks>This method updates the tempo for the specified animal in the current dispute if the
-        /// animal's name matches and the result is found in the database. Changes are saved to the database upon
-        /// successful update.</remarks>
-        /// <param name="animalNome">The name of the animal whose tempo is to be updated. Must match the name of an existing animal in the
-        /// dispute.</param>
-        /// <param name="tempoUi">The new tempo value to set for the animal. Represents the time duration to be updated.</param>
-        /// <param name="resUi">The result object containing the animal and dispute information. Must not be null and should correspond to
-        /// an existing result in the database.</param>
-        internal void UpdateTempo(object animalNome, TimeSpan tempoUi, Resultado resUi)
-        {
-           // string? animalNomeStr = animalNome.ToString();
-            using DataBase db = new DataBase();
-            try
-            {
-                var disputaDb = db.Disputas
-                    .Include(dis => dis.ResultadoList)
-                    .ThenInclude(res => res.Animal)
-                    .FirstOrDefault(dis=> dis.Id == Id);
-                if(disputaDb is not null)
-                {
-                    var resultadoDb = db.Resultados
-                        .Include(res => res.Animal)
-                        .Include(res => res.Disputa)
-                        .FirstOrDefault(res => res.Id == resUi.Id && res.Disputa.Id == Id);
-                    if (resultadoDb is not null)
-                    {
-                        if (resultadoDb.Animal.isAnimalMesmoNome(animalNome))
-                        {
-                            resultadoDb.Tempo = tempoUi;
-                            db.Resultados.Update(resultadoDb);
-                        }
-                    }
-                    db.SaveChanges();
-                }
-            }
-            catch (Exception ex) { }
-        }
+       
         /// <summary>
         /// Updates the positions of animals in ResultadoList by fetching the latest results, sorting them by time, and
         /// assigning sequential positions.
@@ -209,30 +170,7 @@ namespace Gestor_De_Pule.src.Models
             }
             catch { return false; }
         }
-        /// <summary>
-        /// Reloads a Disputa entity from the database, including related entities.
-        /// </summary>
-        /// <param name="disputa">The Disputa instance to reload.</param>
-        /// <returns>The reloaded Disputa entity with related data, or null if not found.</returns>
-        internal static Disputa? Reload(Disputa disputa)
-        {
-            using DataBase db = new DataBase();
-            try
-            {
-                if(disputa is not null)
-                {
-                    var disputaDb = db.Disputas.Include(dis => dis.Pules)
-                        .ThenInclude(pu => pu.Animais).Include(dis => dis.Caixa).Include(dis => dis.ResultadoList)
-                        .ThenInclude(res => res.Animal).Include(dis => dis.Pules).ThenInclude(pu => pu.Apostador).FirstOrDefault(dis => dis.Id == disputa.Id);
-                    if(disputaDb != null)
-                    {
-                        return disputaDb;
-
-                    }
-                }
-                return null;
-            }catch { return null; }
-        }
+       
         /// <summary>
         /// Retrieves the name of the winning animal from the results list.
         /// </summary>

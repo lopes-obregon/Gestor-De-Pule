@@ -33,7 +33,7 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Apostador
         /// information and their associated bets. If no bettor is selected or no bets are found, the report fields are
         /// reset to default values.</remarks>
         
-        private void GerarRelatório()
+        private void GerarRelatório(object sender, EventArgs e)
         {
 
             listViewApostadores.Items.Clear();
@@ -73,7 +73,7 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Apostador
 
         }
 
-        private void ImprimirRelaTório()
+        private void ImprimirRelaTório(object sender, EventArgs e)
         {
             var apostadorSelecionadoUi = comboBoxApostadores.SelectedItem;
             string totalDePules = labelTotalDePules.Text;
@@ -84,7 +84,7 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Apostador
                 _apostadorController.LoadPulesDoApostador();
 
             }
-            if(RelatórioApostadorController.Apostador is not null)
+            if(_apostadorController.Apostador is not null)
             {
                 if (String.IsNullOrEmpty(totalDePules))
                 {

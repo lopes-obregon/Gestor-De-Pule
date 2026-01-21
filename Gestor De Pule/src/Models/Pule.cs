@@ -13,12 +13,11 @@ namespace Gestor_De_Pule.src.Model
         }
      internal class Pule
     {
-        //menbros
-        private int _id;
-        private Apostador? _apostador = new();
-        private StatusPagamento _statusPagamento;
-        private DateTime _date = DateTime.Now;
-        private List<Animal>? _animais = new();
+        public int Id { get; set; }
+        public Apostador? Apostador { get; set; }
+        public StatusPagamento StatusPagamento { get; set; }
+        public DateTime Date { get; set; }
+        public List<Animal>? Animais { get; set; }
         public Disputa? Disputa { get; set; }
         public int Número { get; set; }
         public float Valor {  get; set; }
@@ -31,20 +30,16 @@ namespace Gestor_De_Pule.src.Model
         public Pule(Apostador? apostador, StatusPagamento pagamento, List<Animal>? animais, float valor, int númeroDoPule)
         {
             Apostador = apostador;
-            _statusPagamento = pagamento;
-            _date = DateTime.Now;
-            _animais = animais;
+            StatusPagamento = pagamento;
+            Date = DateTime.Now;
+            Animais = animais;
             Valor = valor;
             Número = númeroDoPule;
         }
 
         //sett gett métodos
 
-        public int Id { get { return _id; } set { _id = value; } }
-        public Apostador? Apostador { get { return _apostador; } set { _apostador = value; } }
-        public StatusPagamento StatusPagamento { get { return _statusPagamento; } set { _statusPagamento = value; } }
-        public DateTime Date { get { return _date; } set { _date = value; } }
-        public List<Animal>? Animais { get { return _animais; } set { _animais = value; } }
+       
 
        
 

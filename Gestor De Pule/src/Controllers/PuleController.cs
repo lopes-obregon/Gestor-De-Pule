@@ -30,6 +30,7 @@ namespace Gestor_De_Pule.src.Controllers
         //Repository
         private DisputaRepository _disputaRepository = new DisputaRepository();
         private PuleRepository _puleRepository = new PuleRepository();
+        private CaixaRepository _caixaRepository = new();
 
         /// <summary>
         /// Constructor com pule selecionado pela ui
@@ -38,7 +39,7 @@ namespace Gestor_De_Pule.src.Controllers
         public PuleController(object puleSelecionadoUi)
         {
             PuleLocal = puleSelecionadoUi as Pule;
-            Caixa = (Caixa?)Caixa.GetCaixa();
+            Caixa = (Caixa?)_caixaRepository.GetCaixa();
         }
         public PuleController() { }
         internal  List<Animal>? AttComboBoxAnimais(object disputaSelecionadaUi)
@@ -124,15 +125,8 @@ namespace Gestor_De_Pule.src.Controllers
             Animals = _animalController.Animals.ToList();
             
         }
-        internal  void LoadListsLocal()
-        {
-            DisputasLocal = Disputa.GetDisputas();
-            AnimalController.LoadAnimais();
-            ApostadorController.LoadApostadores();
-            ApostadorsLocal = ApostadorController.Apostadors.ToList();
-            AnimalsLocal = AnimalController.Animals.ToList();
-
-        }
+        
+        
         internal static void LoadPule(object puleSelecionadoUi)
         {
             Pule? puleSelecionado = puleSelecionadoUi as Pule;

@@ -84,9 +84,11 @@ namespace Gestor_De_Pule.src.Controllers
         internal void LoadPulesDoApostador()
         {
             var pules = _puleController.Pules;
-            if(pules is not null &&  pules.Count > 0) {
+            if (pules is not null && pules.Count > 0)
+            {
                 if (Apostador is not null)
                     _puleController.PulesApostador = pules.Where(p => p.Apostador != null && p.Apostador.Id == Apostador.Id).ToList();
+            }
         }
 
     }

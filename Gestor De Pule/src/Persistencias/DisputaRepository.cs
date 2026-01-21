@@ -320,6 +320,55 @@ namespace Gestor_De_Pule.src.Persistencias
         
     }
 
-       
+        internal void UpdateTempo(object animalNome, TimeSpan tempoUi, Resultado resUi, Disputa disputa)
+        {
+            // string? animalNomeStr = animalNome.ToString();
+            
+            try
+            {
+                var disputaDb = _dataBase.Disputas
+                    .Include(dis => dis.ResultadoList)
+                    .ThenInclude(res => res.Animal)
+                    .FirstOrDefault(dis => dis.Id == disputa.Id);
+                if (disputaDb is not null)
+                {
+                    var resultadoDb = _dataBase.Resultados
+                        .Include(res => res.Animal)
+                        .Include(res => res.Disputa)
+                        .FirstOrDefault(res => res.Id == resUi.Id && res.Disputa.Id == disputa.Id);
+                    if (resultadoDb is not null)
+                    {
+                        if (resultadoDb.Animal.isAnimalMesmoNome(animalNome))
+                        {
+                            resultadoDb.Tempo = tempoUi;
+                            _dataBase.Resultados.Update(resultadoDb);
+                        }
+                    }
+                    _dataBase.SaveChanges();
+                }
+            }
+            catch (Exception ex) { Log.Error(ex, "Erro ao atualizar a disputa com tempo"); }
+        }
+
+        internal Disputa? Reload(Disputa disputa)
+        {
+            
+            try
+            {
+                if (disputa is not null)
+                {
+                    var disputaDb = _dataBase.Disputas.Include(dis => dis.Pules)
+                        .ThenInclude(pu => pu.Animais).Include(dis => dis.Caixa).Include(dis => dis.ResultadoList)
+                        .ThenInclude(res => res.Animal).Include(dis => dis.Pules).ThenInclude(pu => pu.Apostador).FirstOrDefault(dis => dis.Id == disputa.Id);
+                    if (disputaDb != null)
+                    {
+                        return disputaDb;
+
+                    }
+                }
+                return null;
+            }
+            catch(Exception ex) { return null;  Log.Error(ex, "Erro ao carregar disputa da memória"); }
+        }
     }
 }

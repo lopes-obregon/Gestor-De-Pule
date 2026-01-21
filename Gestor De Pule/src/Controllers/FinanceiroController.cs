@@ -45,12 +45,13 @@ namespace Gestor_De_Pule.src.Controllers
             }
         }
 
-        internal static void OpenNewCaixa()
+        internal  void OpenNewCaixa()
         {
             Caixa caixa = new Caixa();
             caixa.Open = Caixa.IsOpen.Open;
             caixa.DateOpen = DateTime.Now;
-            caixa.save();
+            //caixa.save();
+            _caixaRepository.Save(caixa);
 
             Caixa = caixa;
         }

@@ -54,7 +54,7 @@ namespace Gestor_De_Pule.src.Persistencias
             {
                 var disputaDb = _db.Disputas
                     .FirstOrDefault(d => d.Id == disputa.Id);
-                var caixaDb = _db.Caixas.Include(caixa => caixa.Disputs).FirstOrDefault(caixa => caixa.Id == this.Id);
+                var caixaDb = _db.Caixas.Include(caixa => caixa.Disputs).FirstOrDefault(caix => caix.Id == caixa.Id);
                 if (disputaDb != null)
                 {
                     disputaDb.Caixa = caixa;

@@ -1,13 +1,4 @@
 ﻿using Gestor_De_Pule.src.Controllers;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
 {
@@ -31,7 +22,7 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
         {
             //string mensagem = DisputaController.LoadDisputa(itemSelecionadoUi);
             string mensagem = _disputaController.LoadDisputa(itemSelecionadoUi);
-            MessageBox.Show(mensagem);
+            System.Windows.Forms.MessageBox.Show(mensagem);
             var disputa = _disputaController.Disputa;
             if (disputa != null)
             {
@@ -119,16 +110,16 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
        /// <summary>
        /// Atualiza os dados da disputa;
        /// </summary>
-        private void AtualizarDados()
+        private void AtualizarDados(object sender, EventArgs e)
         {
             string nomeDisputa = String.Empty;
             DateTime ? date = null;
             string mensagem = String.Empty;
-            if (String.IsNullOrEmpty(textBoxNomeDaDisputa.Text)) MessageBox.Show("Por vafor Insira um nome para disputa!");
+            if (String.IsNullOrEmpty(textBoxNomeDaDisputa.Text)) System.Windows.Forms.MessageBox.Show("Por vafor Insira um nome para disputa!");
             else { date = dateTimePicker1.Value;
                 nomeDisputa = textBoxNomeDaDisputa.Text;
                 mensagem = _disputaController.AtualizarDados(nomeDisputa, date, listBoxAnimaisToDisputa.Items);
-                MessageBox.Show(mensagem);        
+                System.Windows.Forms.MessageBox.Show(mensagem);        
             }
         }
     }

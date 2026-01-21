@@ -16,6 +16,8 @@ namespace Gestor_De_Pule
 {
     public partial class Main : Form
     {
+        private FinanceiroController _financeiroController = new FinanceiroController();
+        private DisputaController _disputaController = new DisputaController();
         public Main()
         {
             InitializeComponent();
@@ -23,12 +25,13 @@ namespace Gestor_De_Pule
             InitComboBox();
             //this.Dock = DockStyle.Fill;
             //então carrego na memória.
-            FinanceiroController.LoadCaixaInit();
-            var caixa = FinanceiroController.Caixa;
+            //FinanceiroController.LoadCaixaInit();
+            _financeiroController.LoadCaixaInit();
+            var caixa = _financeiroController.Caixa;
             if (caixa is null)
             {
                 //então preciso criar um novo caixa;
-                FinanceiroController.OpenNewCaixa();
+                _financeiroController.OpenNewCaixa();
             }
 
         }
@@ -36,7 +39,8 @@ namespace Gestor_De_Pule
         private void InitComboBox()
         {
             comboBoxDisputas.Items.Clear();
-            var disputasCadastradas = MainController.ListarDisputas();
+            //var disputasCadastradas = MainController.ListarDisputas();
+            var disputasCadastradas = _disputaController.ListarDisputas();
             if (disputasCadastradas is not null)
             {
                 comboBoxDisputas.Items.AddRange(disputasCadastradas.ToArray());
@@ -184,7 +188,8 @@ namespace Gestor_De_Pule
 
         private void SetDataGridDisputa(object disputaSelecionadaUi)
         {
-            var disputaSelecionadoDb = MainController.BuscarDisputa(disputaSelecionadaUi);
+            //var disputaSelecionadoDb = MainController.BuscarDisputa(disputaSelecionadaUi);
+            var disputaSelecionadoDb = _disputaController.BuscarDisputa(disputaSelecionadaUi);
             if (disputaSelecionadoDb is not null)
             {
                 labelDisputaNome.Text = "Disputa:" + disputaSelecionadoDb.Nome;
@@ -202,7 +207,8 @@ namespace Gestor_De_Pule
 
         private void SetDataGridDisputa()
         {
-            var disputaCadastrados = MainController.ListarDisputas();
+            //var disputaCadastrados = MainController.ListarDisputas();
+            var disputaCadastrados = _disputaController.ListarDisputas();
             if (disputaCadastrados is not null)
             {
                 foreach (var disputa in disputaCadastrados)
@@ -229,8 +235,9 @@ namespace Gestor_De_Pule
             var disputaSelecionado = comboBoxDisputas.SelectedItem;
             if (disputaSelecionado is not null)
             {
-                DisputaController.LoadDisputa(disputaSelecionado);
-                var disputa = DisputaController.Disputa;
+               // DisputaController.LoadDisputa(disputaSelecionado);
+               _disputaController.LoadDisputa(disputaSelecionado);
+                var disputa = _disputaController.Disputa;
                 if (disputa is not null)
                 {
                     int quantiaAnimais = disputa.GetNumAnimais();
@@ -255,7 +262,8 @@ namespace Gestor_De_Pule
                                 if (valido)
                                 {
                                     //MainController.SalvarDisputa(tempoStr);
-                                    DisputaController.SalvarDisputa(animal, resultado);
+                                    //DisputaController.SalvarDisputa(animal, resultado);
+                                    _disputaController.SalvarDisputa(animal, resultado);
                                 }
                                 else
                                 {
@@ -288,8 +296,9 @@ namespace Gestor_De_Pule
             if (disputaSelecionado is not null)
 
             {
-                DisputaController.LoadDisputa(disputaSelecionado);
-                var disputa = DisputaController.Disputa;
+                //DisputaController.LoadDisputa(disputaSelecionado);
+                _disputaController.LoadDisputa(disputaSelecionado);
+                var disputa = _disputaController.Disputa;
                 if (disputa is not null)
                 {
                     disputa.ajustarPosiçãoDosAnimais();
@@ -309,12 +318,13 @@ namespace Gestor_De_Pule
 
         private void CalcularPrêmio(object sender, EventArgs e)
         {
-            var disputaMemória = MainController.Disputa;
+            var disputaMemória = _disputaController.Disputa;
 
             if (disputaMemória is not null)
             {
                 //fazer uma atualização com os dados do banco.
-                var disputa = Disputa.Reload(disputaMemória);
+                //var disputa = Disputa.Reload(disputaMemória);
+                var disputa = _disputaController.Reload(disputaMemória);
                 if (disputa is not null)
                 {
                     labelVitória.Text = "Vitória: " + disputa.GetNomeAnimalVencedor();

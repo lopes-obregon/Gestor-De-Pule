@@ -1,6 +1,7 @@
 ﻿using Gestor_De_Pule.src.Model;
 using Gestor_De_Pule.src.Models;
 using Gestor_De_Pule.src.Persistencias;
+using Gestor_De_Pule.src.Service;
 namespace Gestor_De_Pule.src.Controllers
 {
     class DisputaController
@@ -209,7 +210,7 @@ namespace Gestor_De_Pule.src.Controllers
         /// </summary>
         /// <param name="animalUi">The animal object to match and update.</param>
         /// <param name="tempoUi">The new time value to set for the matched animal.</param>
-        internal static void SalvarDisputa(object animalUi, TimeSpan tempoUi)
+        internal  void SalvarDisputa(object animalUi, TimeSpan tempoUi)
         {
 
             if (Disputa is not null)
@@ -225,7 +226,8 @@ namespace Gestor_De_Pule.src.Controllers
                             {
                                 if (res.Tempo != tempoUi)
                                 {
-                                    Disputa.UpdateTempo(animalUi, tempoUi, res);
+                                    //Disputa.UpdateTempo(animalUi, tempoUi, res);
+                                    _disputaRepository.UpdateTempo(animalUi, tempoUi, res, Disputa);
                                 }
                             }
                         }
@@ -308,6 +310,27 @@ namespace Gestor_De_Pule.src.Controllers
 
             }
             else { return false; }
+        }
+
+        internal List<Disputa>? ListarDisputas()
+        {
+            return _disputaRepository.GetDisputas();
+        }
+
+        internal Disputa? BuscarDisputa(object disputaSelecionadaUi)
+        {
+            Disputa? disputaSelecionado = disputaSelecionadaUi as Disputa;
+            if (disputaSelecionado is not null)
+            {
+                Disputa = _disputaRepository.ReadDisputa(disputaSelecionado);
+                return Disputa;
+            }
+            else return null;
+        }
+
+        internal Disputa? Reload(Disputa disputaMemória)
+        {
+            return _disputaRepository.Reload(disputaMemória);
         }
     }
 }

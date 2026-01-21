@@ -8,11 +8,11 @@ namespace Gestor_De_Pule.src.Views
     /// </summary>
     public partial class WindowAnimalCadastrados : Window
     {
-        private AnimalController _controller { get; set; }
+        private AnimalController _controller = new AnimalController();
         public WindowAnimalCadastrados()
         {
             InitializeComponent();
-            _controller = new AnimalController();
+           
            
             AtualizarListViewAnimaisCadastrados();
         }
@@ -46,7 +46,7 @@ namespace Gestor_De_Pule.src.Views
         /// <summary>
         /// Opens a dialog to update the selected animal's data and refreshes the animal list view after changes.
         /// </summary>
-        private void AtualizarDadosAnimal()
+        private void AtualizarDadosAnimal(object sender, RoutedEventArgs e)
         {
             var animalSelecionado = ListViewAnimais.SelectedItem;
             if (animalSelecionado is not null)
@@ -59,7 +59,7 @@ namespace Gestor_De_Pule.src.Views
         /// <summary>
         /// Removes the selected animal from the list after user confirmation and updates the displayed list.
         /// </summary>
-        private void DeleteAnimal()
+        private void DeleteAnimal(object sender, RoutedEventArgs e)
         {
             var AnimalSelecionado = ListViewAnimais.SelectedItem;
             var res = System.Windows.MessageBox.Show("Tem Certeza Que Deseja Remover?", "´Pergunta", System.Windows.MessageBoxButton.YesNoCancel);
