@@ -264,5 +264,21 @@ namespace Gestor_De_Pule.src.Persistencias
             }
             catch(Exception ex) { return false; Log.Error(ex, "Error ao atualizar o Pule {Id}", pule.Id); }
         }
+        /// <summary>
+        /// Retrieves a list of Pule entities from the data source, including related Apostador and Animais entities.
+        /// </summary>
+        /// <returns>A list of Pule objects, or an empty list if an error occurs.</returns>
+        internal  List<Pule> ReadPules()
+        {
+           
+            try
+            {
+                return _data.Pules
+                    .Include(p => p.Apostador)
+                    .Include(p => p.Animais)
+                    .ToList();
+            }
+            catch(Exception ex) { return new List<Pule>();Log.Error(ex, "Erro ao carregas Pules"); }
+        }
     }
 }

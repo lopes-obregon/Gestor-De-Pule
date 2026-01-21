@@ -2,6 +2,7 @@
 using Gestor_De_Pule.src.Persistencias;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,8 @@ namespace Gestor_De_Pule.src.Controllers
         public Apostador? Apostador { get; private set; }
         public List<Apostador> Apostadors { get; private set; }
         private ApostadorRepository _repository = new ApostadorRepository();
+        private PuleController _puleController = new PuleController();
+        public PuleController PuleController {  get { return _puleController; } }
 
         internal  string AtualizarApostador(string nome, string contato)
         {
@@ -34,15 +37,19 @@ namespace Gestor_De_Pule.src.Controllers
         internal  void LoadApostador(object apostadorSelecionadoUi)
         {
             Apostador? apostador = apostadorSelecionadoUi as Apostador;
-
-            Apostador = _repository.Load(apostador);
+            if (Apostadors is null || Apostadors.Count == 0)
+                Apostador = _repository.Load(apostador);
             //Apostador = Apostador.Load(apostador);
+            else
+                if(apostador is not null)
+                    Apostador = Apostadors.Find(ap => ap.Id == apostador.Id);
+
             
         }
 
         internal  void LoadApostadores()
         {
-            Apostadors = Apostador.ReadApostadores();
+            Apostadors = Apostador.ReadApostadores().ToList();
         }
 
         internal  string RemoveApostador(object apostadorSelecionadoUi)
@@ -65,5 +72,22 @@ namespace Gestor_De_Pule.src.Controllers
             if (sucss)  return "Apostador Cadastrado com Sucesso!";
             else return "Falha no Cadastro do Apostador!";
         }
+
+        internal void LoadLists()
+        {
+            LoadApostadores();
+           
+            _puleController.LoadPules();
+           
+        }
+
+        internal void LoadPulesDoApostador()
+        {
+            var pules = _puleController.Pules;
+            if(pules is not null &&  pules.Count > 0) {
+                if (Apostador is not null)
+                    _puleController.PulesApostador = pules.Where(p => p.Apostador != null && p.Apostador.Id == Apostador.Id).ToList();
+        }
+
     }
 }

@@ -46,61 +46,8 @@ namespace Gestor_De_Pule.src.Model
         public DateTime Date { get { return _date; } set { _date = value; } }
         public List<Animal>? Animais { get { return _animais; } set { _animais = value; } }
 
-        internal static List<Pule> ReadPules()
-        {
-            using DataBase db = new DataBase();
-            try
-            {
-                return db.Pules
-                    .Include(p => p.Apostador)
-                    .Include(p => p.Animais)
-                    .ToList();
-            }
-            catch { return new List<Pule>(); }
-        }
+       
 
-        internal static bool Save(Pule pule)
-        {
-            //são sei pq esse método ta dando erro.
-            using DataBase db = new DataBase();
-            try
-            {
-                if(pule is not null)
-                {
-                    
-                    
-                    db.Pules.Add(pule);
-                    db.SaveChanges();
-                   // Apostador? apostador = pule.Apostador;
-                
-                    if (pule.Apostador != null){
-                        
-                        pule.Apostador.Pules.Add(pule);
-                        db.Apostadors.Update(pule.Apostador);
-                    }
-                    foreach(Animal animal in pule.Animais)
-                    {
-                        if(animal is not null)
-                        {
-                           // db.Animals.Attach(animal);
-                            animal.Pules.Add(pule);
-                            db.Animals.Update(animal);
-                        }
-                    }
-
-                   // db.Pules.Add(pule);
-                   db.Pules.Update(pule);
-                }
-                db.SaveChanges();
-                return true;
-            }
-            catch {  return false; }
-
-        }
-
-        
-
-      
         
         internal String AnimaisToString()
         {

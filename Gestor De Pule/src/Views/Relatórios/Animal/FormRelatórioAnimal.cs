@@ -5,6 +5,7 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Animal
 {
     public partial class FormRelatórioAnimal : Form
     {
+        private AnimalController _animalController = new AnimalController();
         public FormRelatórioAnimal()
         {
             InitializeComponent();
@@ -14,8 +15,9 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Animal
         private void InitComboBox()
         {
             comboBoxAnimais.Items.Clear();
-            RelatórioAnimalController.LoadLists();
-            var animais = RelatórioAnimalController.Animals;
+            //RelatórioAnimalController.LoadLists();
+            _animalController.LoadListsAnimalAndPules();
+            var animais = _animalController.Animals;
             if (animais != null)
             {
                 comboBoxAnimais.Items.AddRange(animais.ToArray());
@@ -25,10 +27,10 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Animal
         private void GerarRelatório(object sender, EventArgs e)
         {
             var animalSelecionadoUi = comboBoxAnimais.SelectedItem;
-            RelatórioAnimalController.AnimalSelecionado(animalSelecionadoUi);
+            _animalController.AnimalSelecionado(animalSelecionadoUi);
 
 
-            var animal = RelatórioAnimalController.Animal;
+            var animal = _animalController.Animal;
             if (animal != null)
             {
                 listViewApostadores.Items.Clear();
@@ -39,7 +41,7 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Animal
                 float totalApostado = 0.0f;
                 foreach (var pule in animal.Pules)
                 {
-                    var puleBuscado = RelatórioAnimalController.SearchPule(pule);
+                    var puleBuscado = PuleController.ToPule(_animalController.SearchPule(pule));
                     if (puleBuscado is not null)
                     {
                         if (puleBuscado.Apostador is not null)
@@ -81,12 +83,14 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Animal
                 var animalSelecionadoUi = comboBoxAnimais.SelectedItem;
                 if(animalSelecionadoUi != null)
                 {
-                    RelatórioAnimalController.LoadAnimal(animalSelecionadoUi);
+                    _animalController.LoadAnimal(animalSelecionadoUi);
+                    //RelatórioAnimalController.LoadAnimal(animalSelecionadoUi);
                     
                 }
-                var animal = RelatórioAnimalController.Animal;
-                RelatórioAnimalController.LoadLists();
-                var pules = RelatórioAnimalController.Pules;
+                var animal = _animalController.Animal;
+                _animalController.LoadLists();
+                //RelatórioAnimalController.LoadLists();
+                var pules = _animalController._puleController.Pules;
                 PrintService.PrintAnimal(animal, pules);
             }
         }

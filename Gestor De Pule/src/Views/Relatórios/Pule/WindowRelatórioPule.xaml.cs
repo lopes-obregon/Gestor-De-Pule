@@ -9,6 +9,7 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Pule
     /// </summary>
     public partial class WindowRelatórioPule : Window
     {
+        private PuleController _puleController = new PuleController();
         public WindowRelatórioPule()
         {
             InitializeComponent();
@@ -20,8 +21,10 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Pule
         private void InitComboBox()
         {
             comboBoxPulesCadastrados.Items.Clear();
-            RelatórioPuleController.LoadLists();
-            var pules = RelatórioPuleController.GetAttrNumPule();
+           // RelatórioPuleController.LoadLists();
+            _puleController.LoadPules();
+            //var pules = RelatórioPuleController.GetAttrNumPule();
+            var pules = _puleController.GetAttrNumPule();
             if(pules is not null && pules.Count > 0)
             {
                 comboBoxPulesCadastrados.ItemsSource = pules;
@@ -44,7 +47,7 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Pule
         {
             var puleSelecionadoUi = comboBoxPulesCadastrados.SelectedItem;
             labelNumPule.Content = "Pule Número: "+puleSelecionadoUi;
-            var pules =  RelatórioPuleController.PuleSelecionado(puleSelecionadoUi);
+            var pules =  _puleController.PulesSelecionados(puleSelecionadoUi);
            if(pules is not null && pules.Count > 0)
             {
                 listViewPule.ItemsSource = pules;
@@ -84,7 +87,7 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Pule
             else
             {
                 var puleSelecionadoUi = comboBoxPulesCadastrados.SelectedItem;
-                var pules = RelatórioPuleController.PuleSelecionado(puleSelecionadoUi);
+                var pules = _puleController.PulesSelecionados(puleSelecionadoUi);
                 if (pules == null)
                 {
                     System.Windows.MessageBox.Show("Pule Invalido!");

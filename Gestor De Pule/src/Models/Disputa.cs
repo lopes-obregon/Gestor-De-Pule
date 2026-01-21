@@ -505,29 +505,7 @@ namespace Gestor_De_Pule.src.Models
             catch {  sucess = false; }
             return sucess;
         }
-        /// <summary>
-        /// Retrieves a list of Disputa entities from the local database, including related Caixa, ResultadoList, and
-        /// Pules data.
-        /// </summary>
-        /// <returns>A list of Disputa objects if available; otherwise, null.</returns>
-        internal static List<Disputa>? GetDisputasLocal()
-        {
-            using DataBase db = new DataBase();
-            List<Disputa>? disputas = null;
-            try
-            {
-                var disputasDb = db.Disputas
-                    .Include(dis => dis.Caixa)
-                    .Include(dis => dis.ResultadoList)
-                    .Include(dis=> dis.Pules)
-                    .ToList();
-                if( disputasDb != null  && disputasDb.Count > 0)
-                {
-                    disputas =  disputasDb;
-                }
-            }catch { disputas = null; }
-            return disputas;
-        }
+        
         /// <summary>
         /// Retrieves the associated Apostador for the specified Pule from the database.
         /// </summary>

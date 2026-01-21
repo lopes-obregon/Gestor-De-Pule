@@ -10,17 +10,17 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Disputa
     /// </summary>
     public partial class WindowRelatórioDisputa : Window
     {
-        private DisputaController? Controller { get; set; } = null;
+        private DisputaController? _disputaController  =  new DisputaController();
         public WindowRelatórioDisputa()
         {
             InitializeComponent();
-            Controller = new DisputaController();
+           
             InitComboBox();
         }
 
         private void InitComboBox()
         {
-            var disputas = Controller.DisputasLocal;
+            var disputas = _disputaController.Disputas;
             if (disputas != null)
             {
                 ComboBoxDisputaCadastradas.ItemsSource = disputas;
@@ -33,14 +33,15 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Disputa
         /// <param name="e">The event data.</param>
         private void GerarRelatório(object sender, RoutedEventArgs e)
         {
-            if(Controller is not null)
+            if(_disputaController is not null)
             {
                 var disputaSelecionadaUi = ComboBoxDisputaCadastradas.SelectedItem;
                 if (disputaSelecionadaUi != null)
                 {
-                    Controller.LoadDisputaLocal(disputaSelecionadaUi);
-                   
-                    var disputa = Controller.DisputaLocal;
+                    //_disputaController.LoadDisputaLocal(disputaSelecionadaUi);
+                    _disputaController.LoadDisputa(disputaSelecionadaUi);
+
+                    var disputa = _disputaController.Disputa;
                     if (disputa != null)
                     {
                         //disputa.ReloadPulesApostador();
@@ -84,13 +85,13 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Disputa
         private void ImprirDisputa(object sender, RoutedEventArgs e)
         {
             var disputaSelecionadoUi = ComboBoxDisputaCadastradas.SelectedItem;
-            if (!Controller.IsDisputaValida(disputaSelecionadoUi))
+            if (!_disputaController.IsDisputaValida(disputaSelecionadoUi))
             {
                 System.Windows.MessageBox.Show("Error, Tente Gerar o Relatório Primeiro!");
             }
             else
             {
-                PrintService.PrintRelatórioDisputa(Controller.DisputaLocal);
+                PrintService.PrintRelatórioDisputa(_disputaController.DisputaLocal);
             }
         }
     }

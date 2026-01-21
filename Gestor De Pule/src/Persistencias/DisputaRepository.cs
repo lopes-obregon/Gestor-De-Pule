@@ -290,7 +290,11 @@ namespace Gestor_De_Pule.src.Persistencias
                 return disputaDb;
 
         }
-
+        /// <summary>
+        /// Retrieves a list of Disputa entities from the database, including related ResultadoList, Animal, Pules, and
+        /// Apostador data, filtering out entries with empty or null names.
+        /// </summary>
+        /// <returns>A list of Disputa objects if found; otherwise, null.</returns>
         internal List<Disputa>? GetDisputas()
         {
            
@@ -315,5 +319,7 @@ namespace Gestor_De_Pule.src.Persistencias
             catch (Exception ex) { return null; Log.Error(ex, "Error ao obter Disputas"); }
         
     }
+
+       
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Gestor_De_Pule.src.Model;
 using Gestor_De_Pule.src.Models;
 using Gestor_De_Pule.src.Persistencias;
+using System.Collections;
 
 namespace Gestor_De_Pule.src.Controllers
 {
@@ -20,6 +21,8 @@ namespace Gestor_De_Pule.src.Controllers
         public List<Animal> AnimalsLocal { get; private set; }
         public List<Disputa>? DisputasLocal { get; private set; }
         private Caixa? Caixa { get; set; } = null;
+        public List<Pule> PulesApostador { get; internal set; }
+
         //Controllers
         private AnimalController _animalController = new();
         private ApostadorController _apostadorController = new();
@@ -138,11 +141,13 @@ namespace Gestor_De_Pule.src.Controllers
                 Pule = puleSelecionado;
             }
         }
-
+        /// <summary>
+        /// Loads the list of Pule objects from the repository into the Pules collection.
+        /// </summary>
         internal  void LoadPules()
         {
             Pules = new List<Pule>();
-            Pules = Pule.ReadPules();
+            Pules = _puleRepository.ReadPules().ToList();
         }
 
         internal  string RemovePule(object puleSelecionadoUi)
@@ -206,6 +211,42 @@ namespace Gestor_De_Pule.src.Controllers
                 return "Pule Atualizado Com Sucesso!";
             else
                 return "Erro ao Atualizar o Pule!";
+        }
+
+        internal object? FindPule(Pule pule)
+        {
+            if (Pules is not null && Pules.Count > 0)
+                return Pules.Find(p => p.Id == pule.Id);
+            return null;
+        }
+
+        internal static Pule? ToPule(object? v)
+        {
+            return (Pule?)v;
+        }
+        internal  List<int> GetAttrNumPule()
+        {
+            if (Pules is not null && Pules.Count > 0)
+            {
+                return Pules.Select(p => p.Número)
+                    .Distinct()
+                    .ToList();
+            }
+            return new List<int>();
+        }
+
+        internal List<Pule> PulesSelecionados(object puleSelecionadoUi)
+        {
+            int? puleSelecionado = puleSelecionadoUi as int?;
+            if (puleSelecionado != null)
+            {
+                if (Pules is not null && Pules.Count > 0)
+                {
+                    return Pules.Select(p => p)
+                        .Where(p => p.Número == puleSelecionado).ToList();
+                }
+            }
+            return new List<Pule>();
         }
     }
 }

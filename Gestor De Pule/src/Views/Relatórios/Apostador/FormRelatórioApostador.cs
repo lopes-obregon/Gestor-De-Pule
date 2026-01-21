@@ -6,20 +6,23 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Apostador
 {
     public partial class FormRelatórioApostador : Form
     {
+        private ApostadorController _apostadorController = new ApostadorController();
 
         public FormRelatórioApostador()
         {
             InitializeComponent();
-            RelatórioApostadorController.LoadLists();
-            var controller = RelatórioApostadorController.Apostadors;
-            initComboBox(controller);
+            _apostadorController.LoadLists();
+           // RelatórioApostadorController.LoadLists();
+           
+            initComboBox();
         }
 
-        private void initComboBox(List<Model.Apostador>? controller)
+        private void initComboBox()
         {
             comboBoxApostadores.Items.Clear();
-            if (controller != null)
-                comboBoxApostadores.Items.AddRange(controller.ToArray());
+            var apostadores = _apostadorController.Apostadors;
+            if (apostadores is not  null  && apostadores.Count >  0)
+                comboBoxApostadores.Items.AddRange(_apostadorController.Apostadors.ToArray());
         }
         /// <summary>
         /// Handles the event to generate and display the report for the selected bettor, including their bets and total
@@ -30,22 +33,24 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Apostador
         /// information and their associated bets. If no bettor is selected or no bets are found, the report fields are
         /// reset to default values.</remarks>
         
-        private void GerarRelatório(object sender, EventArgs e)
+        private void GerarRelatório()
         {
 
             listViewApostadores.Items.Clear();
             labelValorTotalApostado.Text = "0";
             labelTotalDePules.Text = "0";
             var apostadorSelecionadoUi = comboBoxApostadores.SelectedItem;
-            RelatórioApostadorController.LoadApostador(apostadorSelecionadoUi);
-            RelatórioApostadorController.LoadPuLesDoApostador();
+            //RelatórioApostadorController.LoadApostador(apostadorSelecionadoUi);
+            _apostadorController.LoadApostador(apostadorSelecionadoUi);
+            //RelatórioApostadorController.LoadPuLesDoApostador();
+            _apostadorController.LoadPulesDoApostador();
             float valorTotalApostado = 0.0f;
-            if (RelatórioApostadorController.Apostador is not null)
+            if (_apostadorController.Apostador is not null)
             {
-                labelApostador.Text = "APOSTADOR: " + RelatórioApostadorController.Apostador.Nome;
-                if (RelatórioApostadorController.Pules is not null && RelatórioApostadorController.Pules.Count > 0)
+                labelApostador.Text = "APOSTADOR: " + _apostadorController.Apostador.Nome;
+                if (_apostadorController.PuleController.PulesApostador is not null && _apostadorController.PuleController.PulesApostador.Count > 0)
                 {
-                    foreach (var pule in RelatórioApostadorController.Pules)
+                    foreach (var pule in _apostadorController.PuleController.PulesApostador)
                     {
                         //dataGridViewPules.Rows.Ad(pule.Número, pule.Date.ToShortDateString(), pule.AnimaisToString(), pule.Valor, pule.StatusPagamento);
                         if (pule is not null)
@@ -60,7 +65,7 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Apostador
 
                         }
                     }
-                    labelTotalDePules.Text = RelatórioApostadorController.Pules.Count.ToString();
+                    labelTotalDePules.Text = _apostadorController.PuleController.PulesApostador.Count.ToString();
                     labelValorTotalApostado.Text = valorTotalApostado.ToString("C");
                 }
 
@@ -68,24 +73,24 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Apostador
 
         }
 
-        private void ImprimirRelaTório(object sender, EventArgs e)
+        private void ImprimirRelaTório()
         {
             var apostadorSelecionadoUi = comboBoxApostadores.SelectedItem;
             string totalDePules = labelTotalDePules.Text;
             string valorTotalApostado = labelValorTotalApostado.Text;
-            if (RelatórioApostadorController.Apostador is null)
+            if (_apostadorController.Apostador is null)
             {
-                RelatórioApostadorController.LoadApostador(apostadorSelecionadoUi);
-                RelatórioApostadorController.LoadPuLesDoApostador();
+                _apostadorController.LoadApostador(apostadorSelecionadoUi);
+                _apostadorController.LoadPulesDoApostador();
 
             }
             if(RelatórioApostadorController.Apostador is not null)
             {
                 if (String.IsNullOrEmpty(totalDePules))
                 {
-                    totalDePules = RelatórioApostadorController.Pules.Count.ToString();
+                    totalDePules = _apostadorController.PuleController.PulesApostador.Count.ToString();
                 }
-                PrintService.PrintRelatórioApostador(RelatórioApostadorController.Apostador, RelatórioApostadorController.Pules, totalDePules, valorTotalApostado);
+                PrintService.PrintRelatórioApostador(_apostadorController.Apostador, _apostadorController.PuleController.PulesApostador, totalDePules, valorTotalApostado);
             }
         }
     }

@@ -1,7 +1,6 @@
 ﻿using Gestor_De_Pule.src.Model;
 using Gestor_De_Pule.src.Models;
 using Gestor_De_Pule.src.Persistencias;
-using Gestor_De_Pule.src.Repository;
 namespace Gestor_De_Pule.src.Controllers
 {
     class DisputaController
@@ -23,7 +22,8 @@ namespace Gestor_De_Pule.src.Controllers
         /// </summary>
         public DisputaController()
         {
-            DisputasLocal = Disputa.GetDisputasLocal();
+            //Disputas = Disputa.GetDisputasLocal();
+            Disputas = _disputaRepository.GetDisputas();
         }
         internal  void AddAnimalRemovido(object animalSelecionadoUi)
         {
