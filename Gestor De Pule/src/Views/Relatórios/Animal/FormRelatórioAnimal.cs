@@ -1,13 +1,13 @@
 ﻿using Gestor_De_Pule.src.Controllers;
 using Gestor_De_Pule.src.Service;
-using System.Windows.Forms.Integration;
 namespace Gestor_De_Pule.src.Views.Relatórios.Animal
 {
     public partial class FormRelatórioAnimal : Form
     {
-        private AnimalController _animalController = new AnimalController();
+        private AnimalController _animalController;
         public FormRelatórioAnimal()
         {
+            _animalController = new AnimalController(new PuleController());
             InitializeComponent();
             InitComboBox();
         }

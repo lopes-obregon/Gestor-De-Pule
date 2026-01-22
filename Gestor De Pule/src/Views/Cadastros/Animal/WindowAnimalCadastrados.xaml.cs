@@ -8,9 +8,10 @@ namespace Gestor_De_Pule.src.Views
     /// </summary>
     public partial class WindowAnimalCadastrados : Window
     {
-        private AnimalController _controller = new AnimalController();
+        private AnimalController _animalController;
         public WindowAnimalCadastrados()
         {
+            _animalController = new AnimalController();
             InitializeComponent();
            
            
@@ -22,11 +23,11 @@ namespace Gestor_De_Pule.src.Views
         private void AtualizarListViewAnimaisCadastrados()
         {
             //AnimalController.LoadAnimais();
-            _controller.LoadAnimais();
+            _animalController.LoadAnimais();
             ListViewAnimais.ItemsSource = null;
 
             // var animaisCadastrados = AnimalController.Animals;
-            var animaisCadastrados = _controller.Animals;
+            var animaisCadastrados = _animalController.Animals;
             if(animaisCadastrados is not null)
                 ListViewAnimais.ItemsSource = animaisCadastrados;
             ListViewAnimais.Items.Refresh();
@@ -67,7 +68,7 @@ namespace Gestor_De_Pule.src.Views
             {
                 string mensagem = "";
                 if (AnimalSelecionado is not null)
-                    mensagem = _controller.DeleteAnimal(AnimalSelecionado);
+                    mensagem = _animalController.DeleteAnimal(AnimalSelecionado);
                     //mensagem = AnimalController.DeleteAnimal(AnimalSelecionado);
                 System.Windows.MessageBox.Show(mensagem);
                 AtualizarListViewAnimaisCadastrados();

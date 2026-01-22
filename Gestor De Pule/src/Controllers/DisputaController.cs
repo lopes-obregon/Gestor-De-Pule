@@ -12,11 +12,11 @@ namespace Gestor_De_Pule.src.Controllers
         public  List<Animal> AnimaisRemovidos { get; private set; } = new List<Animal>();
         public List<Disputa>? DisputasLocal { get; }
         public Disputa DisputaLocal { get; private set; }
-        private DisputaRepository _disputaRepository = new DisputaRepository();
-        private AnimalController _animalController = new ();
-        private AnimalRepository _animalRepository = new();
-        private ResultadoRepository _resultadoRepository = new();
-        private CaixaRepository _caixaRepository = new();
+        private DisputaRepository _disputaRepository ;
+        private AnimalController _animalController;
+        private AnimalRepository _animalRepository;
+        private ResultadoRepository _resultadoRepository ;
+        private CaixaRepository _caixaRepository;
 
         /// <summary>
         /// Initializes a new instance of the DisputaCadastrosController class.
@@ -24,6 +24,7 @@ namespace Gestor_De_Pule.src.Controllers
         public DisputaController()
         {
             //Disputas = Disputa.GetDisputasLocal();
+            _disputaRepository = new DisputaRepository();
             Disputas = _disputaRepository.GetDisputas();
         }
         internal  void AddAnimalRemovido(object animalSelecionadoUi)
@@ -314,7 +315,10 @@ namespace Gestor_De_Pule.src.Controllers
 
         internal List<Disputa>? ListarDisputas()
         {
-            return _disputaRepository.GetDisputas();
+            if(Disputas is not null)
+                return Disputas.ToList();
+            else
+                return _disputaRepository.GetDisputas()?.ToList();
         }
 
         internal Disputa? BuscarDisputa(object disputaSelecionadaUi)

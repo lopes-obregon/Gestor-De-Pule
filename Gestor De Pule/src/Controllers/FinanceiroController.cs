@@ -7,10 +7,10 @@ namespace Gestor_De_Pule.src.Controllers
      internal  class FinanceiroController
     {
         public   Caixa? Caixa {  set; get; } = null;
-        private CaixaRepository _caixaRepository = new CaixaRepository();
+        private CaixaRepository _caixaRepository;
         public FinanceiroController() 
         {
-           
+            _caixaRepository = new CaixaRepository();
         }
         /// <summary>
         /// Init caixa in instance

@@ -10,9 +10,20 @@ namespace Gestor_De_Pule.src.Controllers
        public  List<Animal> Animals { get; private set; } = new List<Animal>();
         public Animal? Animal { get; private set; } = new();
         //repository
-        private AnimalRepository _repository { get; set; } = new AnimalRepository();
+        private AnimalRepository? _repository { get; set; } = null;
         //Controllers
-        public PuleController _puleController { get; private set; } = new PuleController();
+        public PuleController? _puleController { get; private set; } = null;
+        public AnimalController()
+        {
+            _repository = new AnimalRepository();
+            //_puleController = new PuleController();
+        }
+
+        public AnimalController(PuleController puleController)
+        {
+            _puleController = puleController;
+        }
+
         internal  void LoadAnimais()
         {
             

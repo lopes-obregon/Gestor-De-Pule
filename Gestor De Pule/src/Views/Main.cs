@@ -16,10 +16,12 @@ namespace Gestor_De_Pule
 {
     public partial class Main : Form
     {
-        private FinanceiroController _financeiroController = new FinanceiroController();
-        private DisputaController _disputaController = new DisputaController();
+        private FinanceiroController _financeiroController;
+        private DisputaController _disputaController;
         public Main()
         {
+            _financeiroController = new FinanceiroController();
+            _disputaController = new DisputaController();
             InitializeComponent();
             //MainController.LoadLists();
             InitComboBox();
