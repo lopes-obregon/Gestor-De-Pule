@@ -85,47 +85,7 @@ namespace Gestor_De_Pule.src.Models
             throw new NotImplementedException();
         }
 
-        internal void Update(Animal animal)
-        {
-            using DataBase db = new DataBase();
-            try
-            {
-                if(this is not null)
-                {
-                    var resultadoDb = db.Resultados
-                        .Include(res => res.Animal)
-                        .FirstOrDefault(res => res.Id == this.Id);
-                    if(resultadoDb is not null)
-                    {
-                        if(resultadoDb.Animal is null)
-                        {
-                            var animalDb = db.Animals.FirstOrDefault(an => an.Id == animal.Id);
-                            if(animalDb is not null)
-                            {
-                                //já teve uma associação externa
-                                if(this.Animal is not null)
-                                {
-                                    //associação do banco
-                                    if(resultadoDb.Animal is null)
-                                    {
-                                        //quer dizer que não fiz a associação a inda
-                                        resultadoDb.Animal = animalDb;
-                                        animalDb.Resultados.Add(resultadoDb);
-                                        this.Animal = resultadoDb.Animal;
-                                        db.Resultados.Update(resultadoDb);
-                                        db.Animals.Update(animalDb);
-                                    }
-                                }
-                                   
-
-                            }
-                        }
-                    }
-                    db.SaveChanges();
-                }
-            }
-            catch { return; }
-        }
+    
 
         internal void ReloadAnimal()
         {

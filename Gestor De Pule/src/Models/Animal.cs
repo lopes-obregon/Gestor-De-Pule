@@ -108,5 +108,18 @@ namespace Gestor_De_Pule.src.Model
 
             } catch { return null; }
         }
+        /// <summary>
+        /// Associates the specified Resultado with the current object if it is not already present.
+        /// </summary>
+        /// <param name="resultado">The Resultado instance to associate.</param>
+        internal void Associete(Resultado resultado)
+        {
+            if (this.Resultados is null)
+                this.Resultados = new List<Resultado> { resultado };
+            else
+               if(!this.Resultados.Any(res => res.Id == resultado.Id))
+                //se não tiver adiciona
+                    this.Resultados.Add(resultado);
+        }
     }
 }

@@ -8,11 +8,11 @@ namespace Gestor_De_Pule.src.Persistencias
 {
     internal class AnimalRepository
     {
-        private readonly DataBase _db = new();
-        
+        private readonly DataBase _db;
+
         public AnimalRepository() { 
             
-            //_db = new DataBase();
+            _db = new DataBase();
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.File(
                 "logs/log.txt",
@@ -23,6 +23,15 @@ namespace Gestor_De_Pule.src.Persistencias
                 )
                 .CreateLogger();
         
+        }
+        public AnimalRepository(DataBase dataBase)
+        {
+            _db = dataBase;
+        }
+
+        public AnimalRepository(object data)
+        {
+            _db = (DataBase)data;
         }
 
         internal Animal? Consultar(Animal? animalSelecionado)
@@ -104,7 +113,11 @@ namespace Gestor_De_Pule.src.Persistencias
             }
                 return success;
         }
-
+        /// <summary>
+        /// Updates the specified animal in the database.
+        /// </summary>
+        /// <param name="animal">The animal entity to update.</param>
+        /// <returns>True if the update was successful; otherwise, false.</returns>
         internal bool Update(Animal? animal)
         {
             bool sucess = false;

@@ -7,8 +7,9 @@ namespace Gestor_De_Pule.src.Persistencias
 {
     internal class CaixaRepository
     {
-        private readonly DataBase _db = new DataBase();
+        private readonly DataBase _db;
         public CaixaRepository() {
+            _db = new DataBase();
             Log.Logger = new LoggerConfiguration()
                .WriteTo.File(
                "logs/log.txt",
@@ -20,6 +21,12 @@ namespace Gestor_De_Pule.src.Persistencias
                .CreateLogger();
 
         }
+
+        public CaixaRepository(object data)
+        {
+            _db = (DataBase)data;
+        }
+
         /// <summary>
         /// Retrieves the currently open Caixa from the database, including its associated Disputs, or returns a new
         /// Caixa if none are open.
@@ -52,32 +59,32 @@ namespace Gestor_De_Pule.src.Persistencias
             bool sucess  = false;
             try
             {
-                var disputaDb = _db.Disputas
-                    .FirstOrDefault(d => d.Id == disputa.Id);
-                var caixaDb = _db.Caixas.Include(caixa => caixa.Disputs).FirstOrDefault(caix => caix.Id == caixa.Id);
-                if (disputaDb != null)
+
+
+
+                if (caixa.Disputs is null)
                 {
-                    disputaDb.Caixa = caixa;
-                    if (caixaDb is not null)
-                    {
-                        if (caixaDb.Disputs is null)
-                        {
-                            caixaDb.Disputs = new List<Disputa>();
+                    caixa.Disputs = new List<Disputa>();
 
-                        }
-                        else
-                        {
-                            caixaDb.Disputs.Add(disputaDb);
-                            _db.Caixas.Update(caixaDb);
-                            _db.Disputas.Update(disputaDb);
-
-
-                        }
-
-                    }
                 }
+                else
+                {
+                    if (!caixa.Disputs.Any(dis => dis.Id == disputa.Id))
+                    {
+                        caixa.Disputs.Add(disputa);
+                    }
+                    if(_db.Entry(caixa).State == EntityState.Modified)
+                        _db.Caixas.Update(caixa);
+                    if(_db.Entry(disputa).State == EntityState.Modified)
+                        _db.Disputas.Update(disputa);
+
+
+                }
+
+
+
                 _db.SaveChanges();
-                sucess =  true;
+                sucess = true;
             }
             catch (Exception ex){ sucess =  false; Log.Error(ex, "Algo de erado para associar o caixa com disputa!"); }
             return sucess;

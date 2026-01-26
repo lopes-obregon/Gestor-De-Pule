@@ -41,9 +41,14 @@
             tableLayoutPanel3 = new TableLayoutPanel();
             button1 = new Button();
             button2 = new Button();
+            tableLayoutPanel4 = new TableLayoutPanel();
+            label5 = new Label();
+            numericUpDownQuantidadeRodadas = new NumericUpDown();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
+            tableLayoutPanel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownQuantidadeRodadas).BeginInit();
             SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -186,11 +191,43 @@
             button2.UseVisualStyleBackColor = true;
             button2.Click += CancelarCadastro;
             // 
+            // tableLayoutPanel4
+            // 
+            tableLayoutPanel4.ColumnCount = 2;
+            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 42.67101F));
+            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 57.32899F));
+            tableLayoutPanel4.Controls.Add(label5, 0, 0);
+            tableLayoutPanel4.Controls.Add(numericUpDownQuantidadeRodadas, 1, 0);
+            tableLayoutPanel4.Location = new Point(296, 12);
+            tableLayoutPanel4.Name = "tableLayoutPanel4";
+            tableLayoutPanel4.RowCount = 1;
+            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel4.Size = new Size(255, 26);
+            tableLayoutPanel4.TabIndex = 3;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(3, 0);
+            label5.Name = "label5";
+            label5.Size = new Size(99, 15);
+            label5.TabIndex = 0;
+            label5.Text = "Quantas Rodadas";
+            // 
+            // numericUpDownQuantidadeRodadas
+            // 
+            numericUpDownQuantidadeRodadas.Location = new Point(111, 3);
+            numericUpDownQuantidadeRodadas.Name = "numericUpDownQuantidadeRodadas";
+            numericUpDownQuantidadeRodadas.Size = new Size(120, 23);
+            numericUpDownQuantidadeRodadas.TabIndex = 2;
+            numericUpDownQuantidadeRodadas.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            // 
             // FormCadastroDisputa
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(472, 408);
+            ClientSize = new Size(723, 408);
+            Controls.Add(tableLayoutPanel4);
             Controls.Add(tableLayoutPanel3);
             Controls.Add(tableLayoutPanel2);
             Controls.Add(tableLayoutPanel1);
@@ -201,6 +238,9 @@
             tableLayoutPanel2.ResumeLayout(false);
             tableLayoutPanel2.PerformLayout();
             tableLayoutPanel3.ResumeLayout(false);
+            tableLayoutPanel4.ResumeLayout(false);
+            tableLayoutPanel4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownQuantidadeRodadas).EndInit();
             ResumeLayout(false);
         }
 
@@ -219,5 +259,8 @@
         private TableLayoutPanel tableLayoutPanel3;
         private Button button1;
         private Button button2;
+        private TableLayoutPanel tableLayoutPanel4;
+        private Label label5;
+        private NumericUpDown numericUpDownQuantidadeRodadas;
     }
 }

@@ -7,8 +7,7 @@ namespace Gestor_De_Pule.src.Models
 {
      internal class Disputa
     {
-        private string nomeDisputa;
-        private DateTime dateTime;
+       
 
         public int Id { get; set; }
         public DateTime DataEHora { get; set; } = new DateTime();
@@ -18,6 +17,7 @@ namespace Gestor_De_Pule.src.Models
         public Caixa? Caixa { get; set; }
         public decimal ? TotalPago { get; set; }
         public StatusPagamento Pagamento { get; set; }
+        public List<Rodada>? Rodadas { get; set; }
         /// <summary>
         /// Initializes a new instance of the Disputa class.
         /// </summary>
@@ -33,7 +33,10 @@ namespace Gestor_De_Pule.src.Models
             Id = 0;
             DataEHora = dataEHora;
             Nome = nome;
-            ResultadoList.Add(resultados);
+            if (ResultadoList is null)
+                ResultadoList = new List<Resultado> { resultados };
+            else
+                ResultadoList.Add(resultados);
             Pagamento = StatusPagamento.Pendente;
         }
         /// <summary>
@@ -465,6 +468,23 @@ namespace Gestor_De_Pule.src.Models
             }
             catch { return apostador; }
             return apostador;
+        }
+        /// <summary>
+        /// Associates the specified Resultado with the current object if it is not already present in the
+        /// ResultadoList.
+        /// </summary>
+        /// <param name="resultado">The Resultado instance to associate.</param>
+        internal void Associete(Resultado resultado)
+        {
+            if (this.ResultadoList is null)
+                this.ResultadoList = new List<Resultado>();
+            else
+            {
+                if (!this.ResultadoList.Any(res => res.Id == resultado.Id))
+                {
+                    this.ResultadoList.Add(resultado);
+                }
+            }
         }
     }
 }

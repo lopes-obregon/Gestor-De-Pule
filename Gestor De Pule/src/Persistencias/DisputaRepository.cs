@@ -7,9 +7,10 @@ namespace Gestor_De_Pule.src.Persistencias
 {
     class DisputaRepository
     {
-        private DataBase _dataBase = new();
+        private DataBase _dataBase;
         public DisputaRepository()
         {
+            _dataBase = new DataBase();
             Log.Logger = new LoggerConfiguration()
                .WriteTo.File(
                "logs/log.txt",
@@ -20,6 +21,13 @@ namespace Gestor_De_Pule.src.Persistencias
                )
                .CreateLogger();
         }
+
+        public DisputaRepository(DataBase data)
+        {
+            
+            _dataBase = data;
+        }
+
         internal static Disputa? Exist(string nomeDisputa)
         {
             using var db = new DataBase();
@@ -98,26 +106,27 @@ namespace Gestor_De_Pule.src.Persistencias
         /// <param name="disputa">The <see cref="Disputa"/> object to be saved. Cannot be null.</param>
         /// <returns><see langword="true"/> if the <see cref="Disputa"/> was successfully saved; otherwise, <see
         /// langword="false"/>.</returns>
-        internal static bool Save(Disputa disputa)
+        internal  bool Save(Disputa disputa)
         {
-            using DataBase db = new DataBase();
+            
             try
             {
                 if(disputa is not null)
                 {
-                   
-                    foreach(Resultado resultado in disputa.ResultadoList)
-                    {
-                        Animal animal = resultado.Animal;
-                        //verifica se o animal existe no banco de dados
-                        var local = db.Animals.Local.FirstOrDefault(a=> a.Id == animal.Id);
-                        if (local != null)
-                            resultado.Animal = local; //usa o rastreado;
-                        else
-                            db.Animals.Attach(animal); //anexa como existente
+                   if(disputa.ResultadoList != null && disputa.ResultadoList.Count > 0){
+                        foreach (Resultado resultado in disputa.ResultadoList)
+                        {
+                            Animal animal = resultado.Animal;
+                            //verifica se o animal existe no banco de dados
+                            var local = _dataBase.Animals.Local.FirstOrDefault(a => a.Id == animal.Id);
+                            if (local != null)
+                                resultado.Animal = local; //usa o rastreado;
+                            else
+                                _dataBase.Animals.Attach(animal); //anexa como existente
+                        }
                     }
-                    db.Disputas.Add(disputa);
-                    db.SaveChanges();
+                    _dataBase.Disputas.Add(disputa);
+                    _dataBase.SaveChanges();
                     return true;
                 }
             }
@@ -369,6 +378,21 @@ namespace Gestor_De_Pule.src.Persistencias
                 return null;
             }
             catch(Exception ex) { return null;  Log.Error(ex, "Erro ao carregar disputa da memória"); }
+        }
+
+        internal bool UpdateDisputa(Disputa disputa)
+        {
+            bool sucess = false;
+           if(this is not null)
+            {
+                try
+                {
+                    _dataBase.Disputas.Update(disputa);
+                    _dataBase.SaveChanges();
+                    sucess = true;
+                }catch(Exception ex) { Log.Error(ex, $"Erro ao atualizar a disputa {disputa.Id} - {disputa.Nome}"); }
+            }
+           return sucess;
         }
     }
 }

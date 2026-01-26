@@ -1,4 +1,5 @@
-﻿using Gestor_De_Pule.src.Models;
+﻿using Gestor_De_Pule.src.Model;
+using Gestor_De_Pule.src.Models;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -6,8 +7,9 @@ namespace Gestor_De_Pule.src.Persistencias
 {
     class ResultadoRepository
     {
-        private DataBase _db = new DataBase();
+        private DataBase _db;
         public ResultadoRepository() {
+            _db = new DataBase();
             Log.Logger = new LoggerConfiguration()
                .WriteTo.File(
                "logs/log.txt",
@@ -19,17 +21,43 @@ namespace Gestor_De_Pule.src.Persistencias
                .CreateLogger();
 
         }
-        public static bool Save(Resultado resultado)
+
+        public ResultadoRepository(object data)
         {
-            using DataBase db = new DataBase();
+            _db = (DataBase)data;
+        }
+        /// <summary>
+        /// Saves the specified Resultado entity to the database.
+        /// </summary>
+        /// <param name="resultado">The Resultado entity to be saved.</param>
+        /// <returns>True if the entity was saved successfully; otherwise, false.</returns>
+        public bool Save(Resultado resultado)
+        {
+            bool sucess = false;
+            try
+            {
+                if (_db is not null)
+                {
+                    _db.Resultados.Add(resultado);
+                    _db.SaveChanges();
+                    sucess = true;
+                }
+
+            }
+            catch (Exception ex) { Log.Error(ex, $"Erro ao salvar o Resultado {resultado.Id}"); }
+            return sucess;
+        }
+        public  bool SaveWithAnimal(Resultado resultado)
+        {
+            
             try
             {
                 if(resultado is not null)
                 {
-                    var animalDb = db.Animals
+                    var animalDb = _db.Animals
                         .Include(a=>a.Resultados)
                         .FirstOrDefault(a=> a.Id == resultado.Animal.Id);
-                    var resultadoDb = db.Resultados.Include(res=>res.Animal).FirstOrDefault(res=>res.Id == resultado.Id);
+                    var resultadoDb = _db.Resultados.Include(res => res.Animal).FirstOrDefault(res => res.Id == resultado.Id);
 
                     if (animalDb is not null && resultadoDb is not null)
                     {
@@ -37,15 +65,15 @@ namespace Gestor_De_Pule.src.Persistencias
                         {
                             //resultado.Animal = animalDb;
                             resultadoDb.Animal = animalDb;
-                            db.Resultados.Add(resultadoDb);
-                            db.SaveChanges();
+                            _db.Resultados.Add(resultadoDb);
+                            _db.SaveChanges();
                             return true;
                         }
                         //resultado.Animal = db.Animals.Find(resultado.Animal.Id);
                     }
                 }
             }
-            catch {  return false; }
+            catch (Exception ex){  return false; Log.Error(ex, $"Erro ao Salvar o resulado {resultado.Id}"); }
             return false;
         }
 
@@ -126,6 +154,21 @@ namespace Gestor_De_Pule.src.Persistencias
                 sucess =  true;
             }catch (Exception ex){ sucess =  false; Log.Error(ex, "Error no Resultado {Id} e Disputa {Id}", resultado?.Id, disputa?.Id); }
             return sucess;
+        }
+
+        internal void Update(Resultado resultado, Animal animal)
+        {
+            try
+            {
+                if (this is not null)
+                {
+
+                    _db.Resultados.Update(resultado);
+                    _db.Animals.Update(animal);
+                    _db.SaveChanges();
+                }
+            }
+            catch (Exception ex){ return; Log.Error(ex, "Erro ao Atualizar o Resultado {Id}", resultado.Id); }
         }
     }
 }

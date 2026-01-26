@@ -7,6 +7,7 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
         public FormCadastroDisputa()
         {
             InitializeComponent();
+            _controller.InitAnimalController();
             InitComboBoxs();
         }
         /// <summary>
@@ -79,6 +80,8 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
             nomeDisputa = textBoxNomeDaDisputa.Text;
             string mensagem = String.Empty;
             date =  DateTime.Parse(dateTimePicker1.Text);
+            int quantidadeRodadas =(int) numericUpDownQuantidadeRodadas.Value;
+            _controller.InitRodadasController();
             if (String.IsNullOrEmpty(nomeDisputa))
             {
                 MessageBox.Show("Precisa colocar um nome para a disputa!");
@@ -90,7 +93,10 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
             else
             {
                 //mensagem = DisputaController.Cadastrar(nomeDisputa, date, listBoxAnimaisToDisputa.Items);
-                mensagem = _controller.Cadastrar(nomeDisputa, date, listBoxAnimaisToDisputa.Items);
+                if(quantidadeRodadas > 1)
+                    mensagem = _controller.Cadastrar(nomeDisputa, date, listBoxAnimaisToDisputa.Items, quantidadeRodadas);
+                else
+                    mensagem = _controller.Cadastrar(nomeDisputa, date, listBoxAnimaisToDisputa.Items);
                 MessageBox.Show(mensagem);
                 //limpa os dados
                 textBoxNomeDaDisputa.Text = String.Empty;

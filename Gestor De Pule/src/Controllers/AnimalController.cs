@@ -10,25 +10,30 @@ namespace Gestor_De_Pule.src.Controllers
        public  List<Animal> Animals { get; private set; } = new List<Animal>();
         public Animal? Animal { get; private set; } = new();
         //repository
-        private AnimalRepository? _repository { get; set; } = null;
+        public AnimalRepository Repository { get; private set; }
         //Controllers
         public PuleController? _puleController { get; private set; } = null;
+        
         public AnimalController()
         {
-            _repository = new AnimalRepository();
+            Repository = new AnimalRepository();
             //_puleController = new PuleController();
         }
-
+        public AnimalController(object data)
+        {
+            Repository  = new AnimalRepository(data);
+        }
         public AnimalController(PuleController puleController)
         {
             _puleController = puleController;
+            Repository = new AnimalRepository();
         }
 
         internal  void LoadAnimais()
         {
             
             
-                Animals = _repository.ReadAnimals().ToList();
+                Animals = Repository.ReadAnimals().ToList();
             
         }
 
@@ -37,7 +42,8 @@ namespace Gestor_De_Pule.src.Controllers
             bool sucess = false;
             Animal animal = new Animal(número, nome, proprietário,treinador, jockey, cidade);
             //sucess = Animal.Save(animal);
-            sucess = _repository.Save(animal);
+            if(Repository is not null)
+                sucess = Repository.Save(animal);
             if (sucess)
                 return $"Animal {animal.Nome} Salvo com sucesso!";
             else
@@ -51,7 +57,7 @@ namespace Gestor_De_Pule.src.Controllers
             {
                 animalSelecionado = animalSelecionadoUi as Animal;
                 //Animal? animalConsultado = Animal.Consultar(animalSelecionado);
-                Animal? animalConsultado = _repository.Consultar(animalSelecionado);
+                Animal? animalConsultado = Repository.Consultar(animalSelecionado);
                 if (animalConsultado is not null) Animal = animalConsultado;
                 else Animal = null;
             }
@@ -77,7 +83,7 @@ namespace Gestor_De_Pule.src.Controllers
                 else
                     return "Precisa mudar algum dado!";
                 //sucess = Animal.Update(Animal);
-                sucess = _repository.Update(Animal);
+                sucess = Repository.Update(Animal);
                 if (sucess)
                     return "Atualização realizado com sucesso!";
                 else
@@ -93,7 +99,7 @@ namespace Gestor_De_Pule.src.Controllers
             Animal? animal = animalSelecionadoUi as Animal;
             bool sucess = false;
             if (animal is not null)
-                sucess = _repository.Delete(animal);
+                sucess = Repository.Delete(animal);
                 //sucess = Animal.Delete(animal);
             if (sucess) return "Removido Com Sucesso!";
             else return "Erro ao Remover!";
