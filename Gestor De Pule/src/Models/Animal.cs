@@ -117,9 +117,11 @@ namespace Gestor_De_Pule.src.Model
             if (this.Resultados is null)
                 this.Resultados = new List<Resultado> { resultado };
             else
-               if(!this.Resultados.Any(res => res.Id == resultado.Id))
+               if(!this.Resultados.Contains(resultado))
                 //se não tiver adiciona
                     this.Resultados.Add(resultado);
+            if(resultado.Animal is null)
+                resultado.Animal = this;
         }
     }
 }

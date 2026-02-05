@@ -1,5 +1,6 @@
 ﻿using Gestor_De_Pule.src.Model;
 using Gestor_De_Pule.src.Models;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 namespace Gestor_De_Pule.src.Persistencias
@@ -24,7 +25,19 @@ namespace Gestor_De_Pule.src.Persistencias
         {
             _dataBase = (DataBase)data;
         }
-    
+
+        internal void AddContext(Rodada? rodada)
+        {
+            try
+
+            {
+
+                //adiciona ao contexto
+                if (rodada is not null)
+                    _dataBase.Rodas.Add(rodada);
+            }
+            catch (Exception ex) { Log.Error(ex, $"Erro ao adicionar ao contexto a rodada {rodada?.Id}"); }
+        }
 
         internal bool Save(Rodada? rodada)
         {
@@ -43,6 +56,40 @@ namespace Gestor_De_Pule.src.Persistencias
                 Log.Error(ex, "Erro ao cadastrar as Rodadas!");
             }
             return sucess;
+        }
+
+        internal void Update(Rodada rodada, Disputa disputa)
+        {
+            try
+            {
+                //garantir o rastreio do ef
+                var disputaRastreada = _dataBase.Disputas.Local.FirstOrDefault(dis => dis.Id == disputa.Id);
+                    if(disputaRastreada == null)
+                        disputaRastreada = _dataBase.Disputas.Include(dis=> dis.ResultadoList).First(dis=> dis.Id == disputa.Id);
+                if(! Object.ReferenceEquals(disputa, disputaRastreada) ){
+                    //disputa = disputaRastreada;
+                    _dataBase.Entry(disputaRastreada).State = EntityState.Detached;
+                    _dataBase.Disputas.Attach(disputa);
+                }
+                var rodadaRastreada = _dataBase.Rodas.Local.FirstOrDefault(rod => rod.Id == rodada.Id) ?? _dataBase.Rodas.First(dis => dis.Id == rodada.Id);
+                if (! Object.ReferenceEquals(rodadaRastreada, rodada))
+                    rodada = rodadaRastreada;
+                if(rodada.ResultadoDestaRodada is null)
+                {
+                    rodada.ResultadoDestaRodada = new List<Resultado>();
+                    if(disputa.ResultadoList is not null)
+                        rodada.ResultadoDestaRodada.AddRange(disputa.ResultadoList);
+                }
+                else
+                {
+                    if(disputa.ResultadoList != null)
+                        rodada.ResultadoDestaRodada.AddRange(disputa.ResultadoList);
+                }
+                _dataBase.SaveChanges();
+            }catch (Exception ex)
+            {
+                Log.Error(ex, $"Erro ao atualizar a rodada {rodada.Id}");
+            }
         }
     }
 }

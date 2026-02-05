@@ -56,37 +56,46 @@ namespace Gestor_De_Pule.src.Persistencias
         /// <returns>True if the operation succeeds; otherwise, false.</returns>
         internal bool SaveWithDisputa(Disputa disputa, Caixa caixa)
         {
-            bool sucess  = false;
+            bool sucess = false;
+
             try
             {
+                // garante que disputa é a instância rastreada
+                var disputaRastreada = _db.Disputas.Local
+                    .FirstOrDefault(d => d.Id == disputa.Id)
+                    ?? _db.Disputas.Find(disputa.Id);
 
+                disputa = disputaRastreada;
 
+                // garante que caixa também é a instância rastreada
+                var caixaRastreada = _db.Caixas.Local
+                    .FirstOrDefault(c => c.Id == caixa.Id)
+                    ?? _db.Caixas.Find(caixa.Id);
+
+                caixa = caixaRastreada;
 
                 if (caixa.Disputs is null)
                 {
                     caixa.Disputs = new List<Disputa>();
-
                 }
-                else
+
+                // só adiciona se não existir
+                if (!caixa.Disputs.Any(dis => dis.Id == disputa.Id))
                 {
-                    if (!caixa.Disputs.Any(dis => dis.Id == disputa.Id))
-                    {
-                        caixa.Disputs.Add(disputa);
-                    }
-                    if(_db.Entry(caixa).State == EntityState.Modified)
-                        _db.Caixas.Update(caixa);
-                    if(_db.Entry(disputa).State == EntityState.Modified)
-                        _db.Disputas.Update(disputa);
-
-
+                    caixa.Disputs.Add(disputa);
                 }
 
-
-
+                // não precisa chamar Update manualmente se já estão rastreados
+                // o EF já sabe que houve mudança na coleção
                 _db.SaveChanges();
                 sucess = true;
             }
-            catch (Exception ex){ sucess =  false; Log.Error(ex, "Algo de erado para associar o caixa com disputa!"); }
+            catch (Exception ex)
+            {
+                sucess = false;
+                Log.Error(ex, "Erro ao associar o caixa com disputa!");
+            }
+
             return sucess;
         }
         /// <summary>

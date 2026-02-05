@@ -295,5 +295,15 @@ namespace Gestor_De_Pule.src.Models
             }catch { sucss = false; }
             return sucss;
         }
+
+        internal void Associete(Disputa? disputa)
+        {
+            if (this.Disputs is null && disputa is not null)
+                this.Disputs = new List<Disputa>() { disputa };
+            else
+                if(disputa is not null && Disputs is not null)
+                    if(!Disputs.Contains(disputa))
+                        this.Disputs?.Add(disputa);
+        }
     }
 }

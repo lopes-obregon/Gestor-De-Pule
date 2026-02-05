@@ -476,15 +476,21 @@ namespace Gestor_De_Pule.src.Models
         /// <param name="resultado">The Resultado instance to associate.</param>
         internal void Associete(Resultado resultado)
         {
-            if (this.ResultadoList is null)
-                this.ResultadoList = new List<Resultado>();
+            if (this.ResultadoList is null){
+                this.ResultadoList = new List<Resultado> { resultado };
+               
+            }
+
             else
             {
-                if (!this.ResultadoList.Any(res => res.Id == resultado.Id))
+
+                if (!this.ResultadoList.Contains(resultado))
                 {
                     this.ResultadoList.Add(resultado);
                 }
             }
         }
+
+       
     }
 }

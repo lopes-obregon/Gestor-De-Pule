@@ -8,6 +8,7 @@ namespace Gestor_De_Pule.src.Persistencias
     class DisputaRepository
     {
         private DataBase _dataBase;
+       // public DataBase DataBase { get { return _dataBase; } }
         public DisputaRepository()
         {
             _dataBase = new DataBase();
@@ -43,26 +44,30 @@ namespace Gestor_De_Pule.src.Persistencias
             try
             {
                 if (disputaSelecionado == null) return null;
-                return _dataBase.Disputas
-                    .Include(d => d.ResultadoList)
-                    .ThenInclude(res=> res.Animal)
-                    .FirstOrDefault(dis=> dis.Id == disputaSelecionado.Id);
+                
+                bool isTracked = _dataBase.ChangeTracker.Entries<Disputa>().Any(e => e.Entity == disputaSelecionado); //verifica se está rastreado
+                if(isTracked) return disputaSelecionado;
+                else
+                    return _dataBase.Disputas
+                        .Include(d => d.ResultadoList)
+                        .ThenInclude(res=> res.Animal)
+                        .FirstOrDefault(dis=> dis.Id == disputaSelecionado.Id);
                 
             }
             catch { return null; }
         }
 
-        internal  List<Disputa> ReadDisputas()
+        internal  List<Disputa>? ReadDisputas()
         {
-            using DataBase db = new DataBase();
+            
             try
             {
-                return db.Disputas
+                return _dataBase.Disputas
                     .Include(d => d.ResultadoList)
-                    .Where(dis=> !string.IsNullOrEmpty(dis.Nome))
+                    //.Where(dis=> !string.IsNullOrEmpty(dis.Nome))
                     .ToList();
             }
-            catch { return new List<Disputa>(); }
+            catch { return null; }
         }
         /// <summary>
         /// Remove uma disputa que foi selecionado na Ui
@@ -106,33 +111,7 @@ namespace Gestor_De_Pule.src.Persistencias
         /// <param name="disputa">The <see cref="Disputa"/> object to be saved. Cannot be null.</param>
         /// <returns><see langword="true"/> if the <see cref="Disputa"/> was successfully saved; otherwise, <see
         /// langword="false"/>.</returns>
-        internal  bool Save(Disputa disputa)
-        {
-            
-            try
-            {
-                if(disputa is not null)
-                {
-                   if(disputa.ResultadoList != null && disputa.ResultadoList.Count > 0){
-                        foreach (Resultado resultado in disputa.ResultadoList)
-                        {
-                            Animal animal = resultado.Animal;
-                            //verifica se o animal existe no banco de dados
-                            var local = _dataBase.Animals.Local.FirstOrDefault(a => a.Id == animal.Id);
-                            if (local != null)
-                                resultado.Animal = local; //usa o rastreado;
-                            else
-                                _dataBase.Animals.Attach(animal); //anexa como existente
-                        }
-                    }
-                    _dataBase.Disputas.Add(disputa);
-                    _dataBase.SaveChanges();
-                    return true;
-                }
-            }
-            catch { return false; }
-            return false;
-        }
+   
 
         internal  bool  UpdateDisputa(Disputa disputa, List<Animal> animaisSelecionadosUi)
         {
@@ -288,16 +267,19 @@ namespace Gestor_De_Pule.src.Persistencias
         /// </summary>
         /// <param name="nomeDisputa"></param>
         /// <returns></returns>
-        internal  Disputa? isCreate(string nomeDisputa)
+        internal Disputa? isCreate(string nomeDisputa)
         {
-            Disputa? disputaDb;
-            
-            disputaDb = _dataBase.Disputas.FirstOrDefault(dis => dis.Nome == nomeDisputa);
-            if (disputaDb == null)
-                return null;
-            else
+            // tenta pegar do Local (já rastreado)
+            var disputaDb = _dataBase.Disputas.Local
+                .FirstOrDefault(dis => dis.Nome == nomeDisputa);
+
+            if (disputaDb != null)
                 return disputaDb;
 
+            // se não está no Local, busca no banco
+            return _dataBase.Disputas
+                .Include(dis => dis.ResultadoList)
+                .FirstOrDefault(dis => dis.Nome == nomeDisputa);
         }
         /// <summary>
         /// Retrieves a list of Disputa entities from the database, including related ResultadoList, Animal, Pules, and
@@ -387,12 +369,124 @@ namespace Gestor_De_Pule.src.Persistencias
             {
                 try
                 {
-                    _dataBase.Disputas.Update(disputa);
+                    //ajuste de rastreamento
+                    foreach(var resultado in disputa.ResultadoList)
+                    {
+                        if(resultado is not null)
+                        {
+                            if(resultado.Animal is not null)
+                            {
+                                var animalMemória = _dataBase.Animals.Local.FirstOrDefault(a => a.Id == resultado.Animal.Id)  ?? _dataBase.Animals.Find(resultado.Animal.Id);
+                                //verifica se está em memória a instancia
+                                if (animalMemória != null)
+                                {
+                                    if(!ReferenceEquals(animalMemória, resultado.Animal))
+                                    {
+                                        //subistituir pelo objeto já rastreado
+                                        resultado.Animal = animalMemória;
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+
                     _dataBase.SaveChanges();
                     sucess = true;
+
                 }catch(Exception ex) { Log.Error(ex, $"Erro ao atualizar a disputa {disputa.Id} - {disputa.Nome}"); }
             }
            return sucess;
+        }
+        /// <summary>
+        /// Adds a Disputa entity to the database context if it is not null.
+        /// </summary>
+        /// <param name="disputa">The Disputa entity to add to the context.</param>
+        internal void AddContext(Disputa? disputa)
+        {
+            try
+            {
+                if (disputa is not null)
+                    _dataBase.Disputas.Add(disputa);
+            }catch(Exception ex) { Log.Error(ex, $"Erro ao adicionar ao contexto a disputa: {disputa?.Id} - {disputa?.Nome}"); }
+        }
+
+        internal bool Save(Disputa? disputa)
+        {
+            bool sucess = false;
+            try
+            {
+                var entry = _dataBase.Entry(disputa);
+                Console.WriteLine(entry.State);
+               // CheckForDuplicates(disputa);
+                _dataBase.SaveChanges();
+                sucess = true;
+            }catch (Exception ex) { Log.Error(ex, $"Erro ao salvar A disputa"); }
+            return sucess;
+
+        }
+
+        private void CheckForDuplicates(Disputa? disputa)
+        {
+            var duplicatas = _dataBase.ChangeTracker.Entries<Disputa>()
+    .GroupBy(e => e.Entity.Id)
+    .Where(g => g.Count() > 1)
+    .ToList();
+
+            foreach (var grupo in duplicatas)
+            {
+                Console.WriteLine($"Disputa duplicada Id={grupo.Key}, Count={grupo.Count()}");
+
+                foreach (var entry in grupo)
+                {
+                    Console.WriteLine($" -> Ref={entry.Entity.GetHashCode()}, State={entry.State}");
+                }
+            }
+        }
+
+        internal void CheckDuplicate()
+        {
+            var duplicatas = _dataBase.ChangeTracker.Entries<Disputa>()
+    .GroupBy(e => e.Entity.Id)
+    .Where(g => g.Count() > 1);
+
+            foreach (var grupo in duplicatas)
+            {
+                Console.WriteLine($"⚠️ Disputa duplicada Id={grupo.Key}, Count={grupo.Count()}");
+                foreach (var entry in grupo)
+                {
+                    Console.WriteLine($" -> Ref={entry.Entity.GetHashCode()}, State={entry.State}");
+                }
+            }
+        }
+
+        internal object? GetByAnimalId(int id)
+        {
+            try
+            {
+                return _dataBase.Animals.Find(id);
+            }
+            catch (Exception ex) { Log.Error(ex, $"Erro ao consultar o animal {id}"); }
+            return null;
+        }
+
+        internal void AddContext(Resultado resultado)
+        {
+            try
+            {
+                _dataBase.Resultados.Add(resultado);
+            }catch(Exception ex) { Log.Error(ex, $"Erro ao adiconar ao contexto o resultado {resultado.Id}"); }
+        }
+
+        internal bool Save()
+        {
+            bool sucess = false;
+            try
+            {
+                _dataBase.SaveChanges();
+                sucess = true;
+            }catch(Exception ex) { Log.Error(ex, $"Eo ao aplicar as alterações geral"); }
+            return sucess;
         }
     }
 }

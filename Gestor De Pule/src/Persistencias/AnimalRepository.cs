@@ -33,6 +33,13 @@ namespace Gestor_De_Pule.src.Persistencias
         {
             _db = (DataBase)data;
         }
+        /// <summary>
+        /// Disposes of the underlying database resource.
+        /// </summary>
+        internal void Clear()
+        {
+            _db.Dispose();
+        }
 
         internal Animal? Consultar(Animal? animalSelecionado)
         {
@@ -43,7 +50,13 @@ namespace Gestor_De_Pule.src.Persistencias
                 try
                 {
                     if (animalSelecionado is not null)
-                        animal = _db.Animals.Find(animalSelecionado.Id);
+                    {
+                        var animalEmMemória = _db.Animals.Local.FirstOrDefault(a=> a.Id == animalSelecionado.Id);
+                        if (animalEmMemória is null)
+                            animal = _db.Animals.Find(animalSelecionado.Id);
+                        else
+                            animal = animalEmMemória;
+                    }
 
                 }
                 catch (Exception ex)
@@ -51,6 +64,7 @@ namespace Gestor_De_Pule.src.Persistencias
                     Log.Error(ex, "Erro ao consultar o Animal: {Id} -  {Nome}", animalSelecionado.Id, animalSelecionado.Nome);
                 }
             }
+
             return animal;
         }
 
@@ -72,6 +86,21 @@ namespace Gestor_De_Pule.src.Persistencias
                 
             }
             return sucess;
+        }
+
+        internal Animal? IsTracked(Animal animalUi)
+        {
+            try
+            {
+                bool isTracked = _db.ChangeTracker.Entries<Animal>()
+                    .Any(e => e.Entity == animalUi);
+                if (isTracked)
+                    return animalUi;
+                else
+                    return _db.Animals.Find(animalUi.Id);
+            }
+            catch (Exception ex) { Log.Error(ex, $"Erro ao tentar encontrar {animalUi.Id} -  {animalUi.Nome}"); }
+            return null;
         }
 
         internal List<Animal> ReadAnimals()
@@ -124,10 +153,22 @@ namespace Gestor_De_Pule.src.Persistencias
             if(animal is not null)
             {
                 try
+
                 {
-                    _db.Animals.Update(animal);
-                    _db.SaveChanges();
-                    sucess = true;
+                    var entry = _db.Entry(animal);
+                    if(entry.State == EntityState.Modified)
+                    {
+                        _db.SaveChanges();
+                        sucess = true;
+
+                    }
+                    else if (_db.ChangeTracker.Entries<Resultado>().Any(entry=> entry.State == EntityState.Modified))
+                    {
+                        _db.SaveChanges();
+                        sucess = true;
+                    }
+                    
+                    
 
                 }catch(Exception ex)
                 {

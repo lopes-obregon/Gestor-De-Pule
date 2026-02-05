@@ -7,7 +7,7 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
         public FormCadastroDisputa()
         {
             InitializeComponent();
-            _controller.InitAnimalController();
+            //_controller.InitAnimalController();
             InitComboBoxs();
         }
         /// <summary>
@@ -28,6 +28,7 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
         /// </summary>
         private void CancelarCadastro(object sender, EventArgs e)
         {
+            _controller.Clear();
             this.Close();
         }
         /// <summary>
@@ -79,30 +80,34 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
             DateTime? date = null;
             nomeDisputa = textBoxNomeDaDisputa.Text;
             string mensagem = String.Empty;
-            date =  DateTime.Parse(dateTimePicker1.Text);
-            int quantidadeRodadas =(int) numericUpDownQuantidadeRodadas.Value;
-            _controller.InitRodadasController();
+            date = DateTime.Parse(dateTimePicker1.Text);
+            int quantidadeRodadas = (int)numericUpDownQuantidadeRodadas.Value;
+            //_controller.InitRodadasController();
             if (String.IsNullOrEmpty(nomeDisputa))
             {
                 MessageBox.Show("Precisa colocar um nome para a disputa!");
             }
-            if(listBoxAnimaisToDisputa.Items.Count == 0)
+            if (listBoxAnimaisToDisputa.Items.Count == 0)
             {
                 MessageBox.Show("Precisa colocar Pelomenos um ou mais animais para essa disputa!");
             }
             else
             {
                 //mensagem = DisputaController.Cadastrar(nomeDisputa, date, listBoxAnimaisToDisputa.Items);
-                if(quantidadeRodadas > 1)
-                    mensagem = _controller.Cadastrar(nomeDisputa, date, listBoxAnimaisToDisputa.Items, quantidadeRodadas);
-                else
-                    mensagem = _controller.Cadastrar(nomeDisputa, date, listBoxAnimaisToDisputa.Items);
+
+                mensagem = _controller.Cadastrar(nomeDisputa, date, listBoxAnimaisToDisputa.Items, quantidadeRodadas);
+
                 MessageBox.Show(mensagem);
                 //limpa os dados
                 textBoxNomeDaDisputa.Text = String.Empty;
                 dateTimePicker1.Text = String.Empty;
                 listBoxAnimaisToDisputa.Items.Clear();
             }
+        }
+
+        private void FromClosed(object sender, FormClosedEventArgs e)
+        {
+            _controller.Clear();
         }
     }
 }

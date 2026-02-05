@@ -1,16 +1,12 @@
 ﻿using Gestor_De_Pule.src.Model;
 using Gestor_De_Pule.src.Persistencias;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Gestor_De_Pule.src.Models
 {
     internal class Resultado
     {
+      
         public int Id { get; set; }
         public Disputa? Disputa { get; set; } = null;
         public Animal? Animal { get; set; } = null;

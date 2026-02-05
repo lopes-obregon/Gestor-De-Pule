@@ -20,5 +20,9 @@ namespace Gestor_De_Pule.src.Controllers
         {
             _caixaRepository = new CaixaRepository(data);
         }
+        public CaixaController() { 
+            _caixaRepository = new CaixaRepository();
+        
+        }
     }
 }

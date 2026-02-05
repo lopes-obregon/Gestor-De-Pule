@@ -110,13 +110,19 @@ namespace Gestor_De_Pule.src.Persistencias
             
             try
             {
-                if (resultado is not null)
-                {
-                    _db.Resultados.Update(resultado);
-                    _db.SaveChanges();
-                    sucess =  true;
-                }
-            }catch(Exception ex) { sucess =  false; Log.Error(ex, "Erro no resultado Id", resultado.Id); }
+                var entry = _db.Entry(resultado);
+                    if(entry.State == EntityState.Modified)
+                    {
+                        _db.Resultados.Update(resultado);
+                        _db.SaveChanges();
+                        sucess = true;
+
+
+                    }
+                
+                    
+                
+            }catch(Exception ex) { sucess =  false; Log.Error(ex, "Erro no resultado {Id}", resultado.Id); }
             return sucess;
         }
 
@@ -169,6 +175,39 @@ namespace Gestor_De_Pule.src.Persistencias
                 }
             }
             catch (Exception ex){ return; Log.Error(ex, "Erro ao Atualizar o Resultado {Id}", resultado.Id); }
+        }
+
+        internal Resultado Load(Resultado resultado)
+        {
+            Resultado resultado1 = new Resultado();
+            try
+            {
+                if(this is not null)
+                {
+                    var resultadoEmMemória = _db.Resultados.Local.First(res=> res.Id == resultado.Id);
+                    if(resultadoEmMemória is null)
+                    {
+                        var resultadoDb = _db.Resultados.First(res => res.Id == resultado.Id);
+                        resultado1 = resultadoDb;
+                    }
+                    else
+                    {
+                        resultado1 = resultadoEmMemória;
+                    }
+                }
+            }catch(Exception ex) { Log.Error(ex, $"Erro ao tentar carregar o Resultado {resultado.Id}"); }
+            return resultado1;
+        }
+
+        internal void AddContext(Resultado resultado)
+        {
+            try
+            {
+                if(this is not null)
+                {
+                    _db.Resultados.Add(resultado);
+                }
+            }catch(Exception ex) { Log.Error(ex, $"erro ao adicionar ao contexto o resultado"); }
         }
     }
 }

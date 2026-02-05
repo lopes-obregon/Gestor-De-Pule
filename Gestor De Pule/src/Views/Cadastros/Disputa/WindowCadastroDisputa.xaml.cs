@@ -9,7 +9,7 @@ namespace Gestor_De_Pule.src.Views.Cadastros
     /// </summary>
     public partial class WindowCadastroDisputa : Window
     {
-        private DisputaController _controller = new DisputaController();
+        private DisputaController _controller;
         public WindowCadastroDisputa()
         {
             InitializeComponent();
@@ -18,9 +18,11 @@ namespace Gestor_De_Pule.src.Views.Cadastros
 
         private void InitList()
         {
+            _controller = new DisputaController();
             // DisputaController.();
             _controller.LoadListDisputa();
             var disputas = _controller.Disputas;
+            listViewDisputaCadastrados.ItemsSource = null;
             //var disputas = DisputaController.Disputas;
             if (disputas != null) listViewDisputaCadastrados.ItemsSource = disputas;
         }
@@ -29,8 +31,13 @@ namespace Gestor_De_Pule.src.Views.Cadastros
         {
             var form = new FormCadastroDisputa();
             form.ShowDialog();
+           
+            //ReloadList();
             InitList();
+            
         }
+
+     
 
         private void AtualizarDisputaSelecionado(object sender, RoutedEventArgs e)
         {

@@ -20,5 +20,14 @@ namespace Gestor_De_Pule.src.Controllers
         {
            Rodada = new Rodada(disputa,  quantidadeRodadas, pules, resultadoList);
         }
+
+        internal void NovaRodada(int quantidadeRodadas)
+        {
+            if(quantidadeRodadas > 1)
+            {
+                Rodada = new Rodada(quantidadeRodadas);
+                RodadaRepository.AddContext(Rodada);
+            }
+        }
     }
 }

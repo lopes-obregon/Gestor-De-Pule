@@ -233,6 +233,7 @@
             Controls.Add(tableLayoutPanel1);
             Name = "FormCadastroDisputa";
             Text = "Cadastro Disputa";
+            FormClosed += FromClosed;
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
             tableLayoutPanel2.ResumeLayout(false);
