@@ -1,15 +1,54 @@
 ﻿using Gestor_De_Pule.src.Controllers;
 namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
 {
-    public partial class FormCadastroDisputa : Form
+    public partial class FormDisputa : Form
     {
         private DisputaController _controller = new DisputaController();
-        public FormCadastroDisputa()
+        private bool _isAtt = false;
+        public FormDisputa()
         {
             InitializeComponent();
             //_controller.InitAnimalController();
             InitComboBoxs();
         }
+        public FormDisputa(object disputaUi)
+        {
+            InitializeComponent();
+            this.Text = "Atualizar Disputa";
+            InitComboBoxs();
+            _controller.LoadDisputa(disputaUi);
+            SetItens();
+            _isAtt = true;
+
+        }
+
+        private void SetItens()
+        {
+            var disputa = _controller.Disputa;
+            if (disputa != null)
+            {
+                textBoxNomeDaDisputa.Text = disputa.Nome;
+                dateTimePicker1.Value = disputa.DataEHora;
+
+                if(disputa.ResultadoList is not null )
+                    {
+                    var list = disputa.ResultadoList.Select(_ => _.Animal).ToArray();
+
+                   if(list != null)
+                    {
+                        listBoxAnimaisToDisputa.Items.AddRange(list.Cast<object>().ToArray());
+                    }
+                    
+                }
+                
+            }
+            var rodada = _controller.RodadaController.Rodada;
+            if(rodada != null)
+            {
+                numericUpDownQuantidadeRodadas.Value = rodada.Nrodadas;
+            }
+        }
+
         /// <summary>
         /// Initializes the combo box with a list of registered animals by loading data from the controller and adding
         /// the animals to the combo box items.
@@ -61,7 +100,12 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
             if (list != null)
                 if (list.SelectedItem != null)
                 {
-                    list.Items.Remove(list.SelectedItem);
+                    if (_isAtt) {
+                        _controller.RemoveAnimalDisputa(list.SelectedItem);
+                        list.Items.Remove(list.SelectedItem); 
+                    }
+
+                    else list.Items.Remove(list.SelectedItem);
                 }
         }
         /// <summary>
@@ -94,8 +138,10 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
             else
             {
                 //mensagem = DisputaController.Cadastrar(nomeDisputa, date, listBoxAnimaisToDisputa.Items);
-
-                mensagem = _controller.Cadastrar(nomeDisputa, date, listBoxAnimaisToDisputa.Items, quantidadeRodadas);
+                if (_isAtt)
+                    mensagem = _controller.AtualizarDados(nomeDisputa, date, listBoxAnimaisToDisputa.Items , quantidadeRodadas);
+                else
+                    mensagem = _controller.Cadastrar(nomeDisputa, date, listBoxAnimaisToDisputa.Items, quantidadeRodadas);
 
                 MessageBox.Show(mensagem);
                 //limpa os dados

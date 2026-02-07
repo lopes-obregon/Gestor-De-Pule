@@ -39,6 +39,42 @@ namespace Gestor_De_Pule.src.Persistencias
             catch (Exception ex) { Log.Error(ex, $"Erro ao adicionar ao contexto a rodada {rodada?.Id}"); }
         }
 
+        internal Rodada? isTrack(Rodada? rodada)
+        {
+            Rodada? rodada1 = null;
+            try
+            {
+                if(rodada is not null)
+                {
+                    var isTrack = _dataBase.ChangeTracker.Entries<Rodada>().Any(e => e.Entity == rodada);
+                    if (isTrack)
+                        rodada1 =  rodada;
+                    else
+                        rodada1 =  _dataBase.Rodas.FirstOrDefault(rod => rod.Id == rodada.Id);
+                }
+            }catch (Exception ex)
+            {
+                Log.Error(ex, $"Erro ao carregar a rodada {rodada?.Id}");
+            }
+            return rodada1;
+        }
+
+        internal Rodada? Load(int idDisputa)
+        {
+            Rodada? rodada = null;
+            try
+            {
+                var rodadaTrack = _dataBase.Rodas
+                    .Include(rod => rod.Disputa)
+                    .Include(rod => rod.ResultadoDestaRodada)
+                    .FirstOrDefault(rod => rod.Disputa.Id == idDisputa);
+                if (rodadaTrack is  not null)
+                    rodada = rodadaTrack;
+                
+            }catch(Exception ex) { Log.Error(ex, $"Erro ao buscar a rodada com o id de disputa {idDisputa}"); }
+            return rodada;
+        }
+
         internal bool Save(Rodada? rodada)
         {
             bool sucess = false;

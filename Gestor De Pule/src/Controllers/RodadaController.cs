@@ -29,5 +29,15 @@ namespace Gestor_De_Pule.src.Controllers
                 RodadaRepository.AddContext(Rodada);
             }
         }
+
+        internal void LoadRodada(int idDisputa)
+        {
+            Rodada = RodadaRepository.Load(idDisputa);
+        }
+
+        internal void Track()
+        {
+            Rodada = RodadaRepository.isTrack(Rodada);
+        }
     }
 }

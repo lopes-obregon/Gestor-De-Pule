@@ -209,5 +209,7 @@ namespace Gestor_De_Pule.src.Persistencias
                 }
             }catch(Exception ex) { Log.Error(ex, $"erro ao adicionar ao contexto o resultado"); }
         }
+
+        
     }
 }

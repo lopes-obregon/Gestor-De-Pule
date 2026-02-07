@@ -29,7 +29,7 @@ namespace Gestor_De_Pule.src.Views.Cadastros
 
         private void FormCadastroDisputa(object sender, RoutedEventArgs e)
         {
-            var form = new FormCadastroDisputa();
+            var form = new FormDisputa();
             form.ShowDialog();
            
             //ReloadList();
@@ -42,7 +42,8 @@ namespace Gestor_De_Pule.src.Views.Cadastros
         private void AtualizarDisputaSelecionado(object sender, RoutedEventArgs e)
         {
             var itemSelecionadoUi = listViewDisputaCadastrados.SelectedItem;
-            var form = new FormAtualizarDisputaCadastrado(itemSelecionadoUi);
+           // var form = new FormAtualizarDisputaCadastrado(itemSelecionadoUi);
+            var form = new FormDisputa(itemSelecionadoUi);
             form.ShowDialog();
             InitList();
         }

@@ -1,4 +1,5 @@
 ﻿using Gestor_De_Pule.src.Model;
+using Gestor_De_Pule.src.Models;
 using Gestor_De_Pule.src.Persistencias;
 using System.Data;
 
@@ -129,16 +130,8 @@ namespace Gestor_De_Pule.src.Controllers
             Animal? animalSelecionado = animalSelecionadoUi as Animal;
             if (animalSelecionado != null)
             {
-                if (Animal is not null)
-                {
-                    //verificar se é o mesmo animal
-                    //se for diferente temos que dar o load no animal 
-                    if (Animal.Id != animalSelecionado.Id)
-                    {
-                        Animal = Animal.GetAnimal(animalSelecionado);
-                    }
-
-                }
+                Animal? TrackAnimal = Repository.IsTracked(animalSelecionado);
+                Animal = TrackAnimal;
             }
         }
 
@@ -149,6 +142,14 @@ namespace Gestor_De_Pule.src.Controllers
             
             _puleController.LoadPules();
             
+        }
+
+        internal void LoadListsResultado()
+        {
+            if(Animal is not null)
+            {
+                Animal.Resultados = Repository.LoadResultados(Animal);
+            }
         }
     }
 }

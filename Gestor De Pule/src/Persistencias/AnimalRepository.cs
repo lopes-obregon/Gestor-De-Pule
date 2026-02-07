@@ -97,10 +97,25 @@ namespace Gestor_De_Pule.src.Persistencias
                 if (isTracked)
                     return animalUi;
                 else
-                    return _db.Animals.Find(animalUi.Id);
+                    return _db.Animals.Include(an=>an.Resultados).ThenInclude(res=> res.Disputa).FirstOrDefault(an=> an.Id == animalUi.Id);
             }
             catch (Exception ex) { Log.Error(ex, $"Erro ao tentar encontrar {animalUi.Id} -  {animalUi.Nome}"); }
             return null;
+        }
+
+        internal List<Resultado> LoadResultados(Animal animal)
+        {
+            List<Resultado> resultados = new();
+            try
+            {
+                var animalDb = _db.Animals.Include(_ => _.Resultados).FirstOrDefault(_ => _.Id == animal.Id);
+                if (animalDb != null)
+                    resultados = animalDb.Resultados;
+            }catch (Exception ex)
+            {
+                Log.Error(ex, $"erro ao carregar os resultados do animal: {animal.Id} - {animal.Nome}");
+            }
+            return resultados;
         }
 
         internal List<Animal> ReadAnimals()
@@ -112,6 +127,7 @@ namespace Gestor_De_Pule.src.Persistencias
                 {
                     animals = _db.Animals.Include(a => a.Pules)
                         .Include(a => a.Resultados)
+                        .ThenInclude(res=> res.Disputa)
                         .ToList();
 
                 }

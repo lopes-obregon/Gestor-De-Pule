@@ -19,7 +19,7 @@ namespace Gestor_De_Pule.src.Controllers
         private Repository _repository;
         //controllers externos
         private AnimalController _animalController;
-        private RodadaController _rodadaController;
+        public RodadaController RodadaController { get; private set; }
         private CaixaController _caixaController;
         private ResultadoController _resultadoController;
         /// <summary>
@@ -31,7 +31,7 @@ namespace Gestor_De_Pule.src.Controllers
             // _resultadoRepository = new ResultadoRepository(data);
             _animalController = new AnimalController(data);
             _caixaController = new CaixaController(data);
-            _rodadaController = new RodadaController(data);
+            RodadaController = new RodadaController(data);
             _resultadoController = new ResultadoController(data);
 
         }
@@ -43,7 +43,7 @@ namespace Gestor_De_Pule.src.Controllers
             DisputaRepository = new DisputaRepository(_repository.GetDataBase());
             Disputas = DisputaRepository.GetDisputas();
 
-            _rodadaController = new RodadaController(_repository.GetDataBase());
+            RodadaController = new RodadaController(_repository.GetDataBase());
             _animalController = new AnimalController(_repository.GetDataBase());
             _resultadoController = new ResultadoController(_repository.GetDataBase());
             _caixaController = new CaixaController(_repository.GetDataBase());
@@ -60,11 +60,23 @@ namespace Gestor_De_Pule.src.Controllers
 
         }
 
-        internal string AtualizarDados(string nomeDisputa, DateTime? date, ListBox.ObjectCollection items)
+        internal string AtualizarDados(string nomeDisputa, DateTime? date, ListBox.ObjectCollection items, int quantidadeRodadas)
         {
             bool sucess = false;
             List<Animal>? animaisSelecionadosUi = items.Cast<Animal>().ToList();
             List<Animal>? animaisSelecionados = null;
+            if (Animals is null)
+            {
+                if (_animalController is not null)
+                {
+                    _animalController.LoadAnimais();
+                    Animals = _animalController.Animals;
+                }
+                else
+                { return "Erro Ao Carregar animais!"; }
+            }
+
+
             if (Disputa is not null)
             {
                 Disputa.Nome = nomeDisputa;
@@ -76,9 +88,45 @@ namespace Gestor_De_Pule.src.Controllers
                 {
                     var idsAnimalSelecionadoUi = animaisSelecionadosUi.Select(a => a.Id).ToList();
                     animaisSelecionados = Animals.Where(a => idsAnimalSelecionadoUi.Contains(a.Id)).ToList();
+                    //percorrer os a lista de resultado para ver se tem algum animal novo caso tenha deve ser adicionado.
+                    var animaisSemDisputa = animaisSelecionados.Where(an => !an.Resultados.Any(res => res.Disputa?.Id == Disputa.Id)).ToList();
+                    //pego esses animais sem disputa e crio seus resultado para esse disputa
+                    foreach (var animalSemDisputa in animaisSemDisputa)
+                    {
+                        if (animalSemDisputa != null)
+                        {
+                            var animal = _animalController.Repository.IsTracked(animalSemDisputa);
+                            if (animal != null)
+                            {
+                                //criamos o resultado para essa disputa
+                                _resultadoController.NovoResultado();
+                                var resultado = _resultadoController.Resultado;
+                                if (resultado is not null)
+                                {
+                                    animal.Associete(resultado);
+                                    if (resultado.Disputa == null)
+                                        resultado.Disputa = Disputa;
+                                    Disputa.ResultadoList?.Add(resultado);
+                                }
+
+                            }
+                        }
+
+                    }
+
                 }
+                if (quantidadeRodadas > 1)
+                {
+
+                    RodadaController.Track();
+                    //constando que a rodada ja foi rastreada
+                    var rodada = RodadaController.Rodada;
+                    if (rodada != null)
+                        rodada.ResultadoDestaRodada = Disputa.ResultadoList;
+                }
+
                 //sucess = DisputaRepository.UpdateDisputa(Disputa, animaisSelecionadosUi, AnimaisRemovidos);
-                sucess = DisputaRepository.UpdateDisputa(Disputa, animaisSelecionadosUi, AnimaisRemovidos);
+                sucess = DisputaRepository.Save();
                 if (sucess) return "Disputa Atualizado com sucesso!";
                 else return "Erro ao Atualizar a Disputa!";
 
@@ -191,6 +239,10 @@ namespace Gestor_De_Pule.src.Controllers
                 sucess = true;
                 if (Disputa == null) sucess = false;
 
+                if (sucess)
+                    RodadaController.LoadRodada(Disputa.Id);
+                //_resultadoController.LoadResultado(Disputa.Id);
+
             }
             if (sucess == false) return "Erro Ao carregar a disputa!";
             else return "Disputa Carregado com Sucesso!";
@@ -200,7 +252,7 @@ namespace Gestor_De_Pule.src.Controllers
         /// </summary>
         internal void LoadListDisputa()
         {
-            if(DisputaRepository is not null)
+            if (DisputaRepository is not null)
                 Disputas = DisputaRepository.ReadDisputas();
             //Disputas = DisputaRepository.ReadDisputas();
         }
@@ -449,10 +501,10 @@ namespace Gestor_De_Pule.src.Controllers
                 }
                 if (quantidadeRodadas > 1)
                 {
-                    if (_rodadaController.Rodada is null)
-                        _rodadaController.NovaRodada(quantidadeRodadas);
+                    if (RodadaController.Rodada is null)
+                        RodadaController.NovaRodada(quantidadeRodadas);
 
-                    var rodada = _rodadaController.Rodada;
+                    var rodada = RodadaController.Rodada;
                     if (rodada is not null)
                     {
                         if (rodada.Nrodadas == 0)
@@ -503,5 +555,40 @@ namespace Gestor_De_Pule.src.Controllers
 
             }
         }
+
+        internal void RemoveAnimalDisputa(object selectedItem)
+        {
+            //animal carregado;
+            _animalController.LoadAnimal(selectedItem);
+            var animal = _animalController.Animal;
+            if (animal != null)
+            {
+                if (animal.Resultados is null)
+                {
+                    _animalController.LoadListsResultado();
+                    animal.Resultados = _animalController.Animal.Resultados;
+                }
+                if (animal.Resultados.Count > 0)
+                {
+                    var resultado = animal.Resultados.FirstOrDefault(_ => _.Disputa?.Id == Disputa?.Id);
+
+                    if (resultado is not null)
+                    {
+                        if (Disputa is not null && Disputa.ResultadoList is not null && Disputa.ResultadoList.Count > 0)
+                        {
+
+
+                            resultado.Disputa = null;
+                            Disputa.ResultadoList.Remove(resultado);
+
+                            //animal.Resultados.Remove(resultado);
+                        }
+
+                    }
+                }
+            }
+        }
     }
 }
+    
+
