@@ -277,7 +277,37 @@ namespace Gestor_De_Pule.src.Controllers
             bool sucess = false;
             if (disputaSelecionado is not null)
             {
-                sucess = DisputaRepository.Remove(disputaSelecionado);
+                //rastreio
+                Disputa = DisputaRepository?.Track(disputaSelecionado);
+               
+                if(Disputa is not null)
+                {
+                    RodadaController.LoadRodada(Disputa.Id);
+                    var rodada = RodadaController.Rodada;
+
+                    Disputa.RemoveResultados();
+                    Disputa.RemovePules();
+                    if (Disputa.Caixa is null || _caixaController.Caixa is null)
+                    {
+                        _caixaController.LoadCaixa();
+                        Disputa.Caixa = _caixaController.Caixa;
+                    }
+                    if (Disputa.Caixa.Disputs is null)
+                        Disputa.Caixa.Disputs =  _caixaController.GetCaixaRepository().LoadDisputs(Disputa.Caixa);
+                    Disputa.RemoveFromCaixa();
+                    if(rodada is not null)
+                    {
+                        if(rodada.Disputa is null)
+                            rodada.Disputa = RodadaController.RodadaRepository.LoadDisputs(rodada);
+                        if(rodada.Disputa is not null)
+                        {
+                            rodada.Disputa = null;
+                        }
+                    }
+                   
+
+                        sucess = DisputaRepository.Remove(Disputa);
+                }
             }
             if (sucess) return true;
             else return false;

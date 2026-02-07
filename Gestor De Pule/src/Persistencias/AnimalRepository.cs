@@ -87,7 +87,12 @@ namespace Gestor_De_Pule.src.Persistencias
             }
             return sucess;
         }
-
+        /// <summary>
+        /// Returns the tracked Animal entity if it is being tracked; otherwise, retrieves the Animal from the database
+        /// including related Resultados and Disputa entities.
+        /// </summary>
+        /// <param name="animalUi">The Animal entity to check for tracking.</param>
+        /// <returns>The tracked Animal entity, the entity from the database if not tracked, or null if not found or on error.</returns>
         internal Animal? IsTracked(Animal animalUi)
         {
             try

@@ -75,6 +75,23 @@ namespace Gestor_De_Pule.src.Persistencias
             return rodada;
         }
 
+        internal Disputa? LoadDisputs(Rodada rodada)
+        {
+        Disputa? disputa = null;
+            try
+            {
+                var rodadaDb = _dataBase.Rodas.Include(rod => rod.Disputa).FirstOrDefault(rod => rod.Id == rodada.Id);
+                if (rodadaDb is not null && rodadaDb.Disputa is not null)
+                {
+                    disputa = rodadaDb.Disputa;
+                }
+            }catch(Exception ex)
+            {
+                Log.Error(ex, $"Erro ao carregar a disputa da rodada {rodada.Id}");
+            }
+            return disputa;
+        }
+
         internal bool Save(Rodada? rodada)
         {
             bool sucess = false;

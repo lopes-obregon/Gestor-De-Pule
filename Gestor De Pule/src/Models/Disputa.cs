@@ -5,9 +5,9 @@ using System.Diagnostics;
 
 namespace Gestor_De_Pule.src.Models
 {
-     internal class Disputa
+    internal class Disputa
     {
-       
+
 
         public int Id { get; set; }
         public DateTime DataEHora { get; set; } = new DateTime();
@@ -15,7 +15,7 @@ namespace Gestor_De_Pule.src.Models
         public List<Resultado>? ResultadoList { get; set; }
         public List<Pule>? Pules { get; set; }
         public Caixa? Caixa { get; set; }
-        public decimal ? TotalPago { get; set; }
+        public decimal? TotalPago { get; set; }
         public StatusPagamento Pagamento { get; set; }
         public List<Rodada>? Rodadas { get; set; }
         /// <summary>
@@ -28,7 +28,7 @@ namespace Gestor_De_Pule.src.Models
         /// <param name="nome">The name of the dispute.</param>
         /// <param name="dataEHora">The date and time of the dispute.</param>
         /// <param name="resultados">The result to add to the dispute.</param>
-        public Disputa(string nome,  DateTime dataEHora,Resultado resultados)
+        public Disputa(string nome, DateTime dataEHora, Resultado resultados)
         {
             Id = 0;
             DataEHora = dataEHora;
@@ -50,7 +50,7 @@ namespace Gestor_De_Pule.src.Models
             this.DataEHora = dateTime;
         }
 
-       
+
         /// <summary>
         /// Returns a string that represents the current object.
         /// </summary>
@@ -68,14 +68,14 @@ namespace Gestor_De_Pule.src.Models
             int contadorAnimais = 0;
             foreach (var resultado in ResultadoList)
             {
-                if(resultado != null)
+                if (resultado != null)
                 {
-                    if(resultado.Disputa.Id == Id) contadorAnimais++;
+                    if (resultado.Disputa.Id == Id) contadorAnimais++;
                 }
             }
             return contadorAnimais;
         }
-       
+
         /// <summary>
         /// Updates the positions of animals in ResultadoList by fetching the latest results, sorting them by time, and
         /// assigning sequential positions.
@@ -98,11 +98,12 @@ namespace Gestor_De_Pule.src.Models
                 }
             }
             //agora vamos organizar as posição pelo tempo
-           // resultadoList.Sort(); //ORDENA DO MENOR PARA O MAIOR;
-           resultadoList = resultadoList.OrderBy(res=> res.Tempo).ToList();
+            // resultadoList.Sort(); //ORDENA DO MENOR PARA O MAIOR;
+            resultadoList = resultadoList.OrderBy(res => res.Tempo).ToList();
             byte pos = 0;
-            foreach (var resultado in resultadoList) { 
-                if(resultado is not null)
+            foreach (var resultado in resultadoList)
+            {
+                if (resultado is not null)
                 {
                     resultado.Posição = ++pos;
                 }
@@ -148,7 +149,7 @@ namespace Gestor_De_Pule.src.Models
         /// Apostador data, filtering out entries with empty or null names.
         /// </summary>
         /// <returns>A list of Disputa objects if any are found; otherwise, null.</returns>
-       
+
         /// <summary>
         /// Adds the current instance to the database if it does not already exist and saves changes.
         /// </summary>
@@ -158,10 +159,10 @@ namespace Gestor_De_Pule.src.Models
             using DataBase db = new DataBase();
             try
             {
-                if(this is not null)
+                if (this is not null)
                 {
                     var disputaDb = db.Disputas.FirstOrDefault(dis => dis.Id == this.Id);
-                    if(disputaDb is null)
+                    if (disputaDb is null)
                     {
                         //quer dizer que não existe essa disputa a inda
                         db.Disputas.Add(this);
@@ -173,25 +174,25 @@ namespace Gestor_De_Pule.src.Models
             }
             catch { return false; }
         }
-       
+
         /// <summary>
         /// Retrieves the name of the winning animal from the results list.
         /// </summary>
         /// <returns>The name of the animal in first position, or "Animal Não encontrado!" if not found.</returns>
         internal string GetNomeAnimalVencedor()
         {
-            if(ResultadoList is not null &&  ResultadoList.Count > 0)
+            if (ResultadoList is not null && ResultadoList.Count > 0)
             {
-                foreach(var resultado in ResultadoList)
+                foreach (var resultado in ResultadoList)
                 {
-                    if(resultado is not null)
+                    if (resultado is not null)
                     {
-                        if(resultado.Posição == 1)
+                        if (resultado.Posição == 1)
                         {
-                            if(resultado.Animal != null && !String.IsNullOrEmpty(resultado.Animal.Nome))
+                            if (resultado.Animal != null && !String.IsNullOrEmpty(resultado.Animal.Nome))
                             {
                                 return resultado.Animal.Nome;
-                            } 
+                            }
                         }
                     }
                 }
@@ -207,7 +208,7 @@ namespace Gestor_De_Pule.src.Models
             //contar e retornar a quantidade de ganhadores de pules ganhadores.
             int idAnimalVencedor = GetIdAnimalVencedor();
             int cntGanhadores = 0;
-            if(idAnimalVencedor > -1)
+            if (idAnimalVencedor > -1)
             {
                 if (Pules is not null && Pules.Count > 0)
                 {
@@ -261,7 +262,7 @@ namespace Gestor_De_Pule.src.Models
             int quantidadeDePulesVencedores = CntTotalGanhadoresPules();
             decimal totalArrecadado = 0.00m;
             decimal valorTaxa = 0.00m;
-            decimal prêmioLiquido = 0.00m; 
+            decimal prêmioLiquido = 0.00m;
             if (Pules is not null && Pules.Count > 0)
             {
                 foreach (var pule in Pules)
@@ -296,13 +297,14 @@ namespace Gestor_De_Pule.src.Models
             {
                 if (disputa is not null)
                 {
-                    disputaDb = db.Disputas.Include(dis => dis.Pules).ThenInclude(pu=>pu.Animais).Include(dis=> dis.Caixa).FirstOrDefault(dis => dis.Id == disputa.Id);
+                    disputaDb = db.Disputas.Include(dis => dis.Pules).ThenInclude(pu => pu.Animais).Include(dis => dis.Caixa).FirstOrDefault(dis => dis.Id == disputa.Id);
                     if (disputaDb is not null)
                         return disputaDb;
                 }
-             
-                   
-            }catch { return disputaDb; }
+
+
+            }
+            catch { return disputaDb; }
             return disputaDb;
         }
         /// <summary>
@@ -312,11 +314,11 @@ namespace Gestor_De_Pule.src.Models
         internal float GetTotalArrecadado()
         {
             float totalArrecadado = 0;
-            if(Pules is not null && Pules.Count > 0)
+            if (Pules is not null && Pules.Count > 0)
             {
-                foreach(var pule in Pules)
+                foreach (var pule in Pules)
                 {
-                    if(pule is not null)
+                    if (pule is not null)
                     {
                         totalArrecadado += pule.Valor;
                     }
@@ -331,9 +333,9 @@ namespace Gestor_De_Pule.src.Models
         internal float GetTaxaToFloat()
         {
             float taxa = 0;
-            if(Caixa is not null)
+            if (Caixa is not null)
             {
-                taxa = (float) Caixa.Taxa;
+                taxa = (float)Caixa.Taxa;
             }
             return taxa;
         }
@@ -346,16 +348,16 @@ namespace Gestor_De_Pule.src.Models
         internal float GetTotalAnimal(List<Animal> animais)
         {
             float totalAnimal = 0;
-            if(animais is not null)
+            if (animais is not null)
             {
                 var animal = animais.First();
-                if(Pules is not null && Pules.Count > 0)
+                if (Pules is not null && Pules.Count > 0)
                 {
                     foreach (var pule in Pules)
                     {
-                        if(pule is not null && pule.Animais is not null)
+                        if (pule is not null && pule.Animais is not null)
                         {
-                            if(pule.Animais.First().Id == animal.Id)
+                            if (pule.Animais.First().Id == animal.Id)
                             {
                                 totalAnimal += pule.Valor;
                             }
@@ -383,11 +385,11 @@ namespace Gestor_De_Pule.src.Models
         internal decimal GetTotalValorPule()
         {
             decimal total = 0;
-            if(Pules is not null && Pules.Count > 0)
+            if (Pules is not null && Pules.Count > 0)
             {
-                foreach(var pule in Pules)
+                foreach (var pule in Pules)
                 {
-                    if(pule is not null)
+                    if (pule is not null)
                     {
                         total += (decimal)pule.Valor;
                     }
@@ -402,13 +404,13 @@ namespace Gestor_De_Pule.src.Models
         internal decimal PulesPagos()
         {
             decimal total = decimal.Zero;
-            if(Pules is not null)
+            if (Pules is not null)
             {
-                foreach( var pule in Pules)
+                foreach (var pule in Pules)
                 {
-                    if(pule is not null)
+                    if (pule is not null)
                     {
-                        if(pule.StatusPagamento == StatusPagamento.Pago)
+                        if (pule.StatusPagamento == StatusPagamento.Pago)
                         {
                             total += (decimal)pule.Valor;
                         }
@@ -435,7 +437,7 @@ namespace Gestor_De_Pule.src.Models
                     db.SaveChanges();
                     sucess = true;
                 }*/
-                if(this != null)
+                if (this != null)
                 {
                     db.Attach(this);
                     db.Disputas.Update(this);
@@ -443,10 +445,10 @@ namespace Gestor_De_Pule.src.Models
                     sucess = true;
                 }
             }
-            catch {  sucess = false; }
+            catch { sucess = false; }
             return sucess;
         }
-        
+
         /// <summary>
         /// Retrieves the associated Apostador for the specified Pule from the database.
         /// </summary>
@@ -461,7 +463,7 @@ namespace Gestor_De_Pule.src.Models
                 var puleDb = db.Pules
                     .Include(p => p.Apostador)
                     .FirstOrDefault(p => p.Id == pule.Id);
-                if(puleDb is not null)
+                if (puleDb is not null)
                 {
                     apostador = puleDb.Apostador;
                 }
@@ -476,9 +478,10 @@ namespace Gestor_De_Pule.src.Models
         /// <param name="resultado">The Resultado instance to associate.</param>
         internal void Associete(Resultado resultado)
         {
-            if (this.ResultadoList is null){
+            if (this.ResultadoList is null)
+            {
                 this.ResultadoList = new List<Resultado> { resultado };
-               
+
             }
 
             else
@@ -490,7 +493,53 @@ namespace Gestor_De_Pule.src.Models
                 }
             }
         }
+        /// <summary>
+        /// Removes all resultados from the ResultadoList and clears their association with the current disputa.
+        /// </summary>
+        internal void RemoveResultados()
+        {
+            var resultados = this.ResultadoList;
+            if (resultados != null)
+            {
+                foreach (var resultado in resultados)
+                {
+                    if (resultado is not null)
+                    {
+                        resultado.Disputa = null;
+                        this.ResultadoList?.Remove(resultado);
 
-       
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// Removes all non-null pule objects from the Pules collection and clears their Disputa references.
+        /// </summary>
+        internal void RemovePules()
+        {
+            if (this.Pules != null)
+            {
+                foreach (var pule in this.Pules)
+                {
+                    if (pule is not null)
+                    {
+                        pule.Disputa = null;
+                        this.Pules?.Remove(pule);
+
+                    }
+                }
+            }
+        }
+
+        internal void RemoveFromCaixa()
+        {
+            if (this.Caixa != null)
+            {
+
+                this.Caixa?.Disputs?.Remove(this);
+                this.Caixa = null;
+
+            }
+        }
     }
-}
+ }

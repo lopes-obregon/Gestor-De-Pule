@@ -155,6 +155,25 @@ namespace Gestor_De_Pule.src.Persistencias
             }
             catch (Exception ex){ return; Log.Error(ex, "Erro ao salvar o caixa {Id}", caixa.Id); }
         }
-
+        /// <summary>
+        /// Retrieves the list of disputes associated with the specified cash register.
+        /// </summary>
+        /// <param name="caixa">The cash register whose disputes are to be loaded.</param>
+        /// <returns>A list of disputes for the given cash register, or null if not found.</returns>
+        internal List<Disputa>? LoadDisputs(Caixa caixa)
+        {
+            List<Disputa>? disputas = null;
+            try
+            {
+                var caixaDb = _db.Caixas.Include(cai => cai.Disputs).FirstOrDefault(_ => _.Id == caixa.Id);
+                if (caixaDb is not null)
+                    disputas = caixaDb.Disputs.ToList();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"Erro ao adicionar disputas ao caixa: {caixa.Id}");
+            }
+            return disputas;
+        }
     }
 }

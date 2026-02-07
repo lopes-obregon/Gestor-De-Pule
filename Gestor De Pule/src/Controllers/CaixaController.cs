@@ -6,6 +6,7 @@ namespace Gestor_De_Pule.src.Controllers
     {
         private CaixaRepository _caixaRepository;
         public CaixaRepository GetCaixaRepository() {  return _caixaRepository; }
+        public Caixa Caixa {  get;  private set; }
 
         internal void NovoCaixa()
         {
@@ -23,6 +24,11 @@ namespace Gestor_De_Pule.src.Controllers
         public CaixaController() { 
             _caixaRepository = new CaixaRepository();
         
+        }
+        public void LoadCaixa()
+        {
+            if (Caixa is null)
+                Caixa = _caixaRepository.GetCaixa();
         }
     }
 }

@@ -76,34 +76,31 @@ namespace Gestor_De_Pule.src.Persistencias
         /// <returns></returns>
         internal  bool Remove(Disputa disputaSelecionado)
         {
+            bool sucess = false;
             
             try
             {
-                var disputaDb = _dataBase.Disputas
-                    .Include(d => d.ResultadoList)
-                    .ThenInclude(res => res.Animal)
-                    .FirstOrDefault(d=> d.Id ==  disputaSelecionado.Id);
-                if (disputaDb != null)
+                bool isTrack = _dataBase.ChangeTracker.Entries<Disputa>().Any(e=> e.Entity == disputaSelecionado);
+                if (isTrack)
                 {
-                    foreach (var resultado in disputaDb.ResultadoList.ToList()) //tolist cópia segura
-                    {
-                        if (resultado is not null)
-                        {
-                            //tira a associação dos dados para essa disputa selecionado;
-                            if (resultado.Disputa.Id == disputaSelecionado.Id)
-                            {
-                                resultado.Disputa = new();//remove associação   
-                                _dataBase.Resultados.Update(resultado);
-                                _dataBase.SaveChanges();
-                            }
-                        }
-                    }
-                    _dataBase.Disputas.Remove(disputaDb);
-                    _dataBase.SaveChanges();
+                    _dataBase.Disputas.Remove(disputaSelecionado);
+
                 }
-                return true;
+                else
+                {
+                    var disputaDb = _dataBase.Disputas.FirstOrDefault(_ => _.Id == disputaSelecionado.Id);
+                    if (disputaDb != null)
+                    {
+                        _dataBase.Disputas.Remove(disputaDb);
+                    }
+
+                }
+                
+                    _dataBase.SaveChanges();
+                    sucess = true;
             }
-            catch (Exception ex){ return false;  Log.Error(ex, "Error ao Remor a disputa!"); }
+            catch (Exception ex){ Log.Error(ex, "Error ao Remor a disputa!"); }
+            return sucess;
         }
         /// <summary>
         /// Saves the specified <see cref="Disputa"/> instance to the database.
@@ -487,6 +484,37 @@ namespace Gestor_De_Pule.src.Persistencias
                 sucess = true;
             }catch(Exception ex) { Log.Error(ex, $"Eo ao aplicar as alterações geral"); }
             return sucess;
+        }
+    /// <summary>
+    /// Retrieves a tracked Disputa entity from the context or loads it with related data if not already tracked.
+    /// </summary>
+    /// <param name="disputa">The Disputa entity to track or retrieve.</param>
+    /// <returns>The tracked Disputa entity, or null if not found.</returns>
+        internal Disputa? Track(Disputa? disputa)
+        {
+            Disputa? disputa1 = null;
+            try
+            {
+                bool isTrack = _dataBase.ChangeTracker.Entries<Disputa>().Any(e => e.Entity == disputa);
+                if (isTrack)
+                {
+                    disputa1 = disputa;
+                }
+                else
+                {
+                    disputa1 = _dataBase.Disputas
+                        .Include(_=> _.Caixa)
+                        .Include(_=> _.Pules)
+                        .Include(_=> _.ResultadoList)
+                        .Include(_=> _.Rodadas)
+                        .FirstOrDefault(_=> _.Id == disputa.Id);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"Erro ao carregar a disputa: {disputa?.Id} - {disputa?.Nome}");
+            }
+            return disputa1;
         }
     }
 }
