@@ -14,7 +14,7 @@ namespace Gestor_De_Pule.src.Persistencias
     class PuleRepository
     {
         private readonly DataBase _data;
-       
+  
 
         public PuleRepository()
         {
@@ -29,10 +29,19 @@ namespace Gestor_De_Pule.src.Persistencias
                 
         }
 
-        public PuleRepository(DataBase data)
+        public PuleRepository(object data)
         {
-            _data = data;
+            _data =(DataBase) data;
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.File("logs/log.txt",
+                rollingInterval: RollingInterval.Day,
+                retainedFileCountLimit: 7,
+                fileSizeLimitBytes: 10_000_000,
+                rollOnFileSizeLimit: true)
+                .CreateLogger();
         }
+
+      
 
         /// <summary>
         /// Buscar pule por IDS

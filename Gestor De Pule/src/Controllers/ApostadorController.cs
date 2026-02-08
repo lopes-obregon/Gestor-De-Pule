@@ -13,10 +13,19 @@ namespace Gestor_De_Pule.src.Controllers
     {
         public Apostador? Apostador { get; private set; }
         public List<Apostador> Apostadors { get; private set; }
-        private ApostadorRepository _repository = new ApostadorRepository();
-        private PuleController _puleController = new PuleController();
+       //controllers
+        private Repository _repository;
+        private ApostadorRepository _apostadorRepository;
+        private PuleController _puleController;
         public PuleController PuleController {  get { return _puleController; } }
+        public ApostadorController()
+        {
+            _repository = new Repository();
+            _apostadorRepository = new ApostadorRepository(_repository.GetDataBase());
+            _puleController = new PuleController(_repository.GetDataBase());
+            Apostadors = new List<Apostador>();
 
+        }
         internal  string AtualizarApostador(string nome, string contato)
         {
             bool sucess = false;
@@ -25,7 +34,7 @@ namespace Gestor_De_Pule.src.Controllers
                 {
                     Apostador.Contato = contato;
                     //sucess = Apostador.Update(Apostador);
-                    sucess = _repository.Update(Apostador);
+                    sucess = _apostadorRepository.Update(Apostador);
                     if (sucess) return "Contato Atualizado Com Sucesso!";
                     else return "Erro ao Atualizar o Contato!";
                 }
@@ -38,7 +47,7 @@ namespace Gestor_De_Pule.src.Controllers
         {
             Apostador? apostador = apostadorSelecionadoUi as Apostador;
             if (Apostadors is null || Apostadors.Count == 0)
-                Apostador = _repository.Load(apostador);
+                Apostador = _apostadorRepository.Load(apostador);
             //Apostador = Apostador.Load(apostador);
             else
                 if(apostador is not null)
@@ -49,7 +58,9 @@ namespace Gestor_De_Pule.src.Controllers
 
         internal  void LoadApostadores()
         {
-            Apostadors = Apostador.ReadApostadores().ToList();
+            if (Apostadors is null || Apostadors.Count == 0)
+                Apostadors = _apostadorRepository.ReadApostadores();
+            //Apostadors = Apostador.ReadApostadores().ToList();
         }
 
         internal  string RemoveApostador(object apostadorSelecionadoUi)
@@ -57,7 +68,7 @@ namespace Gestor_De_Pule.src.Controllers
             Apostador? apostador = apostadorSelecionadoUi as Apostador;
             bool sucess = false;
             if(apostador is not null)
-                sucess = _repository.Remove(apostador);
+                sucess = _apostadorRepository.Remove(apostador);
                 //sucess = Apostador.Remove(apostador);
             if (sucess) return $"Apostador {apostador?.Nome ?? ""} Removido com Sucesso";
             else return $"Erro ao Remover o Apostador {apostador?.Nome} !";
@@ -67,7 +78,7 @@ namespace Gestor_De_Pule.src.Controllers
         {
             bool sucss = false;
             Apostador? apostador = new Apostador(nome, contato);
-            sucss = _repository.Save(apostador);
+            sucss = _apostadorRepository.Save(apostador);
             //sucss = Apostador.Save(apostador);
             if (sucss)  return "Apostador Cadastrado com Sucesso!";
             else return "Falha no Cadastro do Apostador!";

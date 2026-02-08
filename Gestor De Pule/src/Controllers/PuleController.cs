@@ -24,22 +24,23 @@ namespace Gestor_De_Pule.src.Controllers
         public List<Pule> PulesApostador { get; internal set; }
 
         //Controllers
-        private AnimalController _animalController = new();
-        private ApostadorController _apostadorController = new();
+        private AnimalController _animalController;
+        private ApostadorController _apostadorController;
         //------------------------------------------------------------//
         //Repository
-        private DisputaRepository _disputaRepository = new DisputaRepository();
-        private PuleRepository _puleRepository = new PuleRepository();
-        private CaixaRepository _caixaRepository = new();
+        private PuleRepository _puleRepository;
+        /*private DisputaRepository _disputaRepository = new DisputaRepository();
+        private CaixaRepository _caixaRepository = new();*/
 
         /// <summary>
         /// Constructor com pule selecionado pela ui
         /// </summary>
         /// <param name="puleSelecionadoUi"></param>
-        public PuleController(object puleSelecionadoUi)
+        public PuleController(object context)
         {
-            PuleLocal = puleSelecionadoUi as Pule;
-            Caixa = (Caixa?)_caixaRepository.GetCaixa();
+            _puleRepository = new(context);
+            //PuleLocal = puleSelecionadoUi as Pule;
+           // Caixa = (Caixa?)_caixaRepository.GetCaixa();
         }
         public PuleController() { }
         internal  List<Animal>? AttComboBoxAnimais(object disputaSelecionadaUi)
@@ -114,7 +115,7 @@ namespace Gestor_De_Pule.src.Controllers
         internal  void LoadLists()
         {
             //Disputas = Disputa.GetDisputas();
-            Disputas = _disputaRepository.GetDisputas();
+           // Disputas = _disputaRepository.GetDisputas();
             //AnimalController.LoadAnimais();
             _animalController.LoadAnimais();
             //ApostadorController.LoadApostadores();

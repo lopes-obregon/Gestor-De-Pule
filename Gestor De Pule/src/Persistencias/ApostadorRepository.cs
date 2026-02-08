@@ -1,4 +1,5 @@
 ﻿using Gestor_De_Pule.src.Model;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 namespace Gestor_De_Pule.src.Persistencias
@@ -20,6 +21,20 @@ namespace Gestor_De_Pule.src.Persistencias
                 .CreateLogger();
         }
 
+        public ApostadorRepository(DataBase dataBase)
+        {
+            _dataBase = dataBase;
+            Log.Logger = new LoggerConfiguration()
+               .WriteTo.File(
+               "logs/log.txt",
+               rollingInterval: RollingInterval.Day, //cria um arquivo por dia
+               retainedFileCountLimit: 7,//mantem 7 arquivos
+               fileSizeLimitBytes: 10_000_000,//limite de 10 mb
+               rollOnFileSizeLimit: true //cria novo arquivo quando chegar o limite
+               )
+               .CreateLogger();
+        }
+
         internal Apostador? Load(Apostador? apostador)
         {
             Apostador? apostadorDb = null;
@@ -35,6 +50,24 @@ namespace Gestor_De_Pule.src.Persistencias
                 }
             }
            return apostadorDb;
+        }
+
+        internal List<Apostador> ReadApostadores()
+        {
+            List<Apostador> apostadors = new();
+            try
+            {
+                var apostadoresDb = _dataBase.Apostadors.Include(a => a.Pules).ToList();
+                if(apostadoresDb is not null)
+                {
+                    apostadors = apostadoresDb;
+                }
+            }
+            catch(Exception ex)
+            {
+                Log.Error(ex, $"Erro ao carregar os apostadores");
+            }
+            return apostadors;
         }
 
         internal bool Remove(Apostador apostador)
