@@ -1,6 +1,6 @@
 ﻿namespace Gestor_De_Pule.src.Views.Apostador
 {
-    partial class FormCadastro
+    partial class FormApostador
     {
         /// <summary>
         /// Required designer variable.
@@ -118,15 +118,16 @@
             flowLayoutPanel1.Size = new Size(200, 100);
             flowLayoutPanel1.TabIndex = 3;
             // 
-            // FormCadastro
+            // FormApostador
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(222, 239);
             Controls.Add(flowLayoutPanel1);
             Controls.Add(tableLayoutPanel1);
-            Name = "FormCadastro";
+            Name = "FormApostador";
             Text = "Cadastro";
+            FormClosed += DisposeController;
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
             flowLayoutPanel1.ResumeLayout(false);

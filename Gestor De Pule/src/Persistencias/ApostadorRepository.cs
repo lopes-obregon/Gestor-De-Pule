@@ -34,6 +34,42 @@ namespace Gestor_De_Pule.src.Persistencias
                )
                .CreateLogger();
         }
+        /// <summary>
+        /// Checks if the specified Apostador instance is being tracked by the database context and returns the tracked
+        /// entity or retrieves it from the database.
+        /// </summary>
+        /// <param name="apostadorUi">The Apostador instance to check for tracking in the database context.</param>
+        /// <returns>The tracked Apostador entity if found; otherwise, the entity retrieved from the database or null.</returns>
+        internal Apostador? isTrack(Apostador? apostadorUi)
+        {
+            Apostador? apostador = apostadorUi;
+            try
+            {
+                bool isTrack = _dataBase.ChangeTracker.Entries<Apostador>().Any(e => e.Entity == apostador);
+                if (isTrack)
+                {
+                    return apostador;
+                }
+                else
+                {
+                    if (apostador != null)
+                    {
+                        apostador = _dataBase.Apostadors.FirstOrDefault(_ => _.Id == apostador.Id);
+                    }
+                    else
+                    {
+                        apostador = null;
+                    }
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"Erro ao carregar o Apostador {apostadorUi?.Id}");
+            }
+            return apostador;
+        }
 
         internal Apostador? Load(Apostador? apostador)
         {
@@ -57,7 +93,7 @@ namespace Gestor_De_Pule.src.Persistencias
             List<Apostador> apostadors = new();
             try
             {
-                var apostadoresDb = _dataBase.Apostadors.Include(a => a.Pules).ToList();
+                var apostadoresDb = _dataBase.Apostadors.Include(a => a.Pules).Where(a => !String.IsNullOrEmpty(a.Nome)).ToList();
                 if(apostadoresDb is not null)
                 {
                     apostadors = apostadoresDb;
@@ -99,6 +135,26 @@ namespace Gestor_De_Pule.src.Persistencias
                 Log.Error(ex, "Erro ao salvar o Apostador: {Nome}", apostador.Nome);
             }
             return sucess;
+        }
+        /// <summary>
+        /// Attempts to save changes to the database.
+        /// </summary>
+        /// <returns>True if the operation succeeds; otherwise, false.</returns>
+        internal bool? Save()
+        {
+            bool sucess = false;
+            try
+            {
+                _dataBase.SaveChanges();
+                sucess = true;
+
+            }
+            catch (Exception ex) {
+
+                Log.Error(ex, "Erro ao salvar o apostador");
+            }
+            return sucess;
+            
         }
 
         internal bool Update(Apostador apostador)

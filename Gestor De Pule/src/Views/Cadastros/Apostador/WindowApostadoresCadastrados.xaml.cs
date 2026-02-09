@@ -11,7 +11,7 @@ namespace Gestor_De_Pule.src.Views.Apostador
         public WindowApostadoresCadastrados()
         {
             InitializeComponent();
-            _controller = new ApostadorController();
+             _controller = new ApostadorController();
             UpdateListViewApostadoresCadastrados();
         }
 
@@ -26,20 +26,36 @@ namespace Gestor_De_Pule.src.Views.Apostador
                 ListViewApostadores.ItemsSource = apostadoresCadastrados;
             ListViewApostadores.Items.Refresh();
         }
-
+        /// <summary>
+        /// Opens the apostador registration form, disposes and reinitializes the controller, and updates the list of
+        /// registered apostadores.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data.</param>
         private void CadastrarApostador(object sender, RoutedEventArgs e)
         {
-            var cadastroApostador = new FormCadastro();
+            _controller.Dispose();
+            var cadastroApostador = new FormApostador();
             cadastroApostador.ShowDialog();
+            _controller = new ApostadorController();
             UpdateListViewApostadoresCadastrados();
         }
-
+        /// <summary>
+        /// Handles the update process for a selected bettor, disposing the current controller, opening the edit form,
+        /// and refreshing the list view with updated data.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data.</param>
         private void WindowsUpdateApostador(object sender, RoutedEventArgs e)
         {
             var apostadorSelecionado = ListViewApostadores.SelectedItem;
-            var alterarApostador = new FormAlterarApostador(apostadorSelecionado);
+            //fecha o contexto atual
+            _controller.Dispose();
+            var alterarApostador = new FormApostador(apostadorSelecionado);
             if (alterarApostador is not null)
                 alterarApostador.ShowDialog();
+            //e abre o novo contexto atualizado
+            _controller = new ApostadorController();
             UpdateListViewApostadoresCadastrados();
         }
 
