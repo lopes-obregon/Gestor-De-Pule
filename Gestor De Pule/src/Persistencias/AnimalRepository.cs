@@ -87,6 +87,23 @@ namespace Gestor_De_Pule.src.Persistencias
             }
             return sucess;
         }
+
+        internal List<Pule> GetPules(Animal animal)
+        {
+            List<Pule> pules = new();
+            try
+            {
+                var animalDb = _db.Animals.Include(a => a.Pules).FirstOrDefault(a => a.Id == a.Id);
+                if (animalDb is not null)
+                    pules = animalDb.Pules;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"Erro ao carregar os pules do animal {animal.Id} - {animal.Nome}");
+            }
+            return pules;
+        }
+
         /// <summary>
         /// Returns the tracked Animal entity if it is being tracked; otherwise, retrieves the Animal from the database
         /// including related Resultados and Disputa entities.
@@ -102,7 +119,8 @@ namespace Gestor_De_Pule.src.Persistencias
                 if (isTracked)
                     return animalUi;
                 else
-                    return _db.Animals.Include(an=>an.Resultados).ThenInclude(res=> res.Disputa).FirstOrDefault(an=> an.Id == animalUi.Id);
+                    return _db.Animals.Include(an=>an.Resultados).ThenInclude(res=> res.Disputa)
+                        .Include(an=>an.Pules).FirstOrDefault(an=> an.Id == animalUi.Id);
             }
             catch (Exception ex) { Log.Error(ex, $"Erro ao tentar encontrar {animalUi.Id} -  {animalUi.Nome}"); }
             return null;
@@ -130,9 +148,7 @@ namespace Gestor_De_Pule.src.Persistencias
             {
                 if (_db is not null)
                 {
-                    animals = _db.Animals.Include(a => a.Pules)
-                        .Include(a => a.Resultados)
-                        .ThenInclude(res=> res.Disputa)
+                    animals = _db.Animals
                         .ToList();
 
                 }

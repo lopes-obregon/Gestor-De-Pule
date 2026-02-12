@@ -1,6 +1,7 @@
 ﻿using Gestor_De_Pule.src.Model;
 using Gestor_De_Pule.src.Models;
 using Gestor_De_Pule.src.Persistencias;
+using Microsoft.EntityFrameworkCore;
 using System.Collections;
 
 namespace Gestor_De_Pule.src.Controllers
@@ -12,23 +13,25 @@ namespace Gestor_De_Pule.src.Controllers
       
 
         public List<Apostador>? Apostadors { get; private set; }
-        public List<Animal>? Animals { get; private set; }
+       
         public List<Pule>? Pules { get; private set; }
         static public Pule? Pule { get; private set; }
         public Pule? PuleLocal { get; private set; } = null;
-        public List<Disputa>? Disputas { get; private set; } = null;
+       
         public List<Apostador> ApostadorsLocal { get; private set; }
         public List<Animal> AnimalsLocal { get; private set; }
-        public List<Disputa>? DisputasLocal { get; private set; }
+       
         private Caixa? Caixa { get; set; } = null;
         public List<Pule> PulesApostador { get; internal set; }
 
         //Controllers
-        private AnimalController _animalController;
-        private ApostadorController _apostadorController;
+        public AnimalController AnimalController { get; private set; }
+        public ApostadorController ApostadorController { get; private set; }
+        public DisputaController DisputaController { get; private set; }
         //------------------------------------------------------------//
         //Repository
         private PuleRepository _puleRepository;
+        private Repository _repository;
         /*private DisputaRepository _disputaRepository = new DisputaRepository();
         private CaixaRepository _caixaRepository = new();*/
 
@@ -42,7 +45,17 @@ namespace Gestor_De_Pule.src.Controllers
             //PuleLocal = puleSelecionadoUi as Pule;
            // Caixa = (Caixa?)_caixaRepository.GetCaixa();
         }
-        public PuleController() { }
+        public PuleController() {
+            _repository = new Repository();
+            var context = _repository.GetDataBase();
+            if (context is not null)
+            {
+                _puleRepository = new PuleRepository(context);
+                AnimalController = new AnimalController(context);
+                DisputaController = new(context);
+                ApostadorController = new ApostadorController(context);
+            }
+        }
         internal  List<Animal>? AttComboBoxAnimais(object disputaSelecionadaUi)
         {
             Disputa? disputaSelecionada = disputaSelecionadaUi as Disputa;
@@ -64,39 +77,67 @@ namespace Gestor_De_Pule.src.Controllers
 
         internal  string CadastrarPule(object? apostadorSelecionadoUi, object? pagamentoUi, ListBox.ObjectCollection animaisSelecionadosUi, float valor, int númeroDoPule, object? disputaSelecionadoUi)
         {
-           Apostador? apostadorUi =apostadorSelecionadoUi as Apostador;
-            Apostador? apostadorSelecionado = null;
+            //ApostadorController.LoadApostador(apostadorSelecionadoUi);
             StatusPagamento pagamento;
             List<Animal>? animaisUi = animaisSelecionadosUi.Cast<Animal>().ToList();
-            Pule? pule =null;
+            //Pule? pule =null;
             List<Animal>? animais = new List<Animal>();
-            Disputa? disputaUi = disputaSelecionadoUi as Disputa;
-            Disputa? disputaSelecionado = null;
+            //DisputaController.LoadDisputa(disputaSelecionadoUi);
             bool sucess = false;
             if (pagamentoUi is StatusPagamento status)
                 pagamento = status;
             else
                 pagamento = StatusPagamento.Pendente;
 
-            if (apostadorUi is not null)
-                apostadorSelecionado = Apostadors.Find(a => a.Id == apostadorUi.Id);
+            //if (apostadorUi is not null)
+              //  apostadorSelecionado = ApostadorController.FindApostador(apostadorUi);
+                //apostadorSelecionado = Apostadors.Find(a => a.Id == apostadorUi.Id);
             //pule = new Pule(apostadorSelecionado, pagamento, animais, valor);
             //remap dos animais
-            if (disputaUi is not null && Disputas is not null)
-                disputaSelecionado = Disputas.Find(d => d.Id == disputaUi.Id);
+           
+                //disputaSelecionado = Disputas.Find(d => d.Id == disputaUi.Id);
             var animalIds = animaisUi.Select(a => a.Id).ToHashSet();   
             if(animaisUi is not null && animaisUi.Count > 0)
-                animais = Animals.Where(a => animalIds.Contains(a.Id)).ToList();
-            pule = new Pule(null, pagamento, null, valor, númeroDoPule);
-            //sucess = Pule.Save(pule);
-            sucess = _puleRepository.SavePule(pule);
-            //sucess = pule.Associete(apostadorSelecionado, animais, disputaSelecionado);
-            sucess = _puleRepository.Associete(apostadorSelecionado, animais, disputaSelecionado , pule);
+                animais = AnimalController.Animals.Where(a => animalIds.Contains(a.Id)).ToList();
+            //animais = Animals.Where(a => animalIds.Contains(a.Id)).ToList();
 
+            NovoPule(pagamento, animais, valor, númeroDoPule);
+            //pule = new Pule(apostadorSelecionado, pagamento, null, valor, númeroDoPule);
+            //pule = new Pule(null, pagamento, null, valor, númeroDoPule);
+            //sucess = Pule.Save(pule);
+            //sucess = _puleRepository.SavePule(pule);
+            sucess = false;
+            //sucess = pule.Associete(apostadorSelecionado, animais, disputaSelecionado);
+            //sucess = _puleRepository.Associete(apostadorSelecionado, animais, disputaSelecionado , pule);
+            
+            
+           
+            //sucess = _puleRepository.Save();
+            if(Pule is not null)
+                sucess = _puleRepository.SavePule(Pule);
             if (sucess)
                 return "Pule Cadastrado Com Sucesso!";
             else return "Algo Deu Errado No Cadastro Do Pule!";
 
+        }
+
+        private void NovoPule(StatusPagamento pagamento, List<Animal> animais, float valor, int númeroDoPule)
+        {
+            var apostador = ApostadorController.Apostador;
+            var disputa = DisputaController.Disputa;
+            if(apostador is not null){
+                //apostador = ApostadorController.IsTrack(apostador);
+                if(disputa is not null){
+                    _repository.AttachApostador(apostador);
+                    _repository.AttachDisputa(disputa);
+                    Pule = new(apostador,disputa, pagamento, new List<Animal>(), valor, númeroDoPule);
+                    foreach (var animal in animais)
+                    {
+                        Pule.Animais?.Add(animal);
+                    }
+                }
+               
+            }
         }
 
         internal static List<StatusPagamento>? GetStatusPagamento()
@@ -107,8 +148,8 @@ namespace Gestor_De_Pule.src.Controllers
         internal  void LoadAnimais()
         {
             //AnimalController.LoadAnimais();
-            _animalController.LoadAnimais();
-            Animals = _animalController.Animals.ToList();
+            AnimalController.LoadAnimais();
+            //Animals = _animalController.Animals.ToList();
             //Animals = AnimalController.Animals.ToList();
         }
 
@@ -117,13 +158,13 @@ namespace Gestor_De_Pule.src.Controllers
             //Disputas = Disputa.GetDisputas();
            // Disputas = _disputaRepository.GetDisputas();
             //AnimalController.LoadAnimais();
-            _animalController.LoadAnimais();
+            AnimalController.LoadAnimais();
             //ApostadorController.LoadApostadores();
-            _apostadorController.LoadApostadores();
+            ApostadorController.LoadApostadores();
             //Apostadors = ApostadorController.Apostadors.ToList();
-            Apostadors = _apostadorController.Apostadors.ToList();
+            Apostadors = ApostadorController.Apostadors.ToList();
             //Animals = AnimalController.Animals.ToList();
-            Animals = _animalController.Animals.ToList();
+           // Animals = AnimalController.Animals.ToList();
             
         }
         
@@ -242,6 +283,37 @@ namespace Gestor_De_Pule.src.Controllers
                 }
             }
             return new List<Pule>();
+        }
+
+        internal void Dispose()
+        {
+            _repository.GetDataBase().Dispose();
+        }
+        /// <summary>
+        /// Initializes the apostador controller if necessary and loads apostadores from the database.
+        /// </summary>
+        internal void LoadApostadors()
+        {
+            ApostadorController.LoadApostadores();
+
+        }
+
+        internal void LoadDisputs()
+        {
+            if(DisputaController is null)
+                DisputaController = new DisputaController(_repository.GetDataBase());
+            DisputaController.LoadDisputs();
+        }
+
+      
+
+        internal void Load(object puleSelecionado)
+        {
+            Pule? pule = puleSelecionado as Pule;
+            if (pule != null)
+            {
+                Pule = _puleRepository.IsTrack(pule);
+            }
         }
     }
 }

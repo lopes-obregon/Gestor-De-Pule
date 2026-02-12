@@ -1,6 +1,6 @@
 ﻿namespace Gestor_De_Pule.src.Views.Pule
 {
-    partial class FormCadastroPule
+    partial class FormPule
     {
         /// <summary>
         /// Required designer variable.
@@ -31,14 +31,14 @@
             tableLayoutPanel1 = new TableLayoutPanel();
             numericUpDownValorPule = new NumericUpDown();
             label5 = new Label();
+            comboBoxPagamento = new ComboBox();
+            label2 = new Label();
             label4 = new Label();
             listBoxAnimaisSelecionados = new ListBox();
             comboBoxAnimais = new ComboBox();
             comboBoxApostadores = new ComboBox();
             label3 = new Label();
-            label2 = new Label();
             label1 = new Label();
-            comboBoxPagamento = new ComboBox();
             label6 = new Label();
             numericUpDownNúmeroPule = new NumericUpDown();
             label7 = new Label();
@@ -102,6 +102,23 @@
             label5.TabIndex = 3;
             label5.Text = "Valor Do Pule R$";
             // 
+            // comboBoxPagamento
+            // 
+            comboBoxPagamento.FormattingEnabled = true;
+            comboBoxPagamento.Location = new Point(138, 351);
+            comboBoxPagamento.Name = "comboBoxPagamento";
+            comboBoxPagamento.Size = new Size(121, 23);
+            comboBoxPagamento.TabIndex = 1;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(3, 348);
+            label2.Name = "label2";
+            label2.Size = new Size(68, 15);
+            label2.TabIndex = 2;
+            label2.Text = "Pagamento";
+            // 
             // label4
             // 
             label4.AutoSize = true;
@@ -136,6 +153,7 @@
             comboBoxApostadores.Name = "comboBoxApostadores";
             comboBoxApostadores.Size = new Size(121, 23);
             comboBoxApostadores.TabIndex = 1;
+            comboBoxApostadores.SelectedIndexChanged += SetApostador;
             // 
             // label3
             // 
@@ -146,15 +164,6 @@
             label3.TabIndex = 3;
             label3.Text = "Animais";
             // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(3, 348);
-            label2.Name = "label2";
-            label2.Size = new Size(68, 15);
-            label2.TabIndex = 2;
-            label2.Text = "Pagamento";
-            // 
             // label1
             // 
             label1.AutoSize = true;
@@ -163,14 +172,6 @@
             label1.Size = new Size(62, 15);
             label1.TabIndex = 4;
             label1.Text = "Apostador";
-            // 
-            // comboBoxPagamento
-            // 
-            comboBoxPagamento.FormattingEnabled = true;
-            comboBoxPagamento.Location = new Point(138, 351);
-            comboBoxPagamento.Name = "comboBoxPagamento";
-            comboBoxPagamento.Size = new Size(121, 23);
-            comboBoxPagamento.TabIndex = 1;
             // 
             // label6
             // 
@@ -236,14 +237,14 @@
             button2.UseVisualStyleBackColor = true;
             button2.Click += FecharCadastros;
             // 
-            // FormCadastroPule
+            // FormPule
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(294, 607);
             Controls.Add(flowLayoutPanel1);
             Controls.Add(tableLayoutPanel1);
-            Name = "FormCadastroPule";
+            Name = "FormPule";
             Text = "Cadastro Do Pule";
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();

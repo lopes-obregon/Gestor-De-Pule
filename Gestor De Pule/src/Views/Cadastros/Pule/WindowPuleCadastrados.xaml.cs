@@ -22,19 +22,21 @@ namespace Gestor_De_Pule.src.Views.Pule
         {
             //PuleController.LoadPules();
             _puleController.LoadPules();
-            _puleController.LoadAnimais();
+           _puleController.LoadAnimais();
             //PuleController.LoadAnimais();
             listViewPules.ItemsSource = null;
             //if (PuleController.Pules is not null && PuleController.Pules.Count > 0)
-            if (_puleController.Pules is not null && _puleController.Pules.Count > 0)
-                listViewPules.ItemsSource = _puleController.Pules;
+            var pules = _puleController.Pules;
+            if (pules is not null && pules.Count > 0)
+                listViewPules.ItemsSource = pules;
                 //listViewPules.ItemsSource = PuleController.Pules;
             listViewPules.Items.Refresh();
             //if(PuleController.Animals is not null && PuleController.Animals.Count > 0)
-            if(_puleController.Animals is not null && _puleController.Animals.Count > 0)
+            var animais = _puleController.AnimalController.Animals.ToList();
+            if(animais is not null && animais.Count > 0)
             {
                 //var animaisMaisApostados = PuleController.Animals.OrderByDescending(a=>a.Pules.Count).ToList();
-                var animaisMaisApostados = _puleController.Animals.OrderByDescending(a=>a.Pules.Count).ToList();
+                var animaisMaisApostados = animais.OrderByDescending(a=>a.Pules.Count).ToList();
                 ListBoxAnimaisMaisApostados.ItemsSource = null;
                 ListBoxAnimaisMaisApostados.ItemsSource = animaisMaisApostados;
             }
@@ -42,8 +44,10 @@ namespace Gestor_De_Pule.src.Views.Pule
 
         private void CadastrarPule(object sender, RoutedEventArgs e)
         {
-            var form = new FormCadastroPule();
+            _puleController.Dispose();
+            var form = new FormPule();
             form.ShowDialog();
+            _puleController = new();
             UpdateListViewPules();
         }
 
@@ -52,8 +56,10 @@ namespace Gestor_De_Pule.src.Views.Pule
             var puleSelecionado = listViewPules.SelectedItem;
             if (puleSelecionado != null)
             {
-                var form = new FormAtualizarPule(puleSelecionado);
+                _puleController.Dispose();
+                var form = new FormPule(puleSelecionado);
                 form.ShowDialog();
+                _puleController = new();//refaz o contexto com dados atualizados
                 UpdateListViewPules();
             }
             else

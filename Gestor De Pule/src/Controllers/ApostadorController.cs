@@ -143,6 +143,17 @@ namespace Gestor_De_Pule.src.Controllers
                     _puleController.PulesApostador = pules.Where(p => p.Apostador != null && p.Apostador.Id == Apostador.Id).ToList();
             }
         }
+
+        internal List<Pule> LoadPulesDoApostador(Apostador apostador)
+        {
+            var pules = Apostador?.Pules;
+            if(pules is not null && pules.Count == 0)
+                pules = _apostadorRepository.GetPules(apostador.Id);
+            if (pules is null)
+                return new List<Pule>();
+            else
+                return pules;
+        }
         /// <summary>
         /// Releases resources used by the underlying database connection.
         /// </summary>
@@ -180,6 +191,31 @@ namespace Gestor_De_Pule.src.Controllers
                 mensagem = "Erro ao Atualizar o apostador:" + nome;
             }
             return mensagem;
+        }
+
+        internal Apostador? FindApostador(Apostador apostadorUi)
+        {
+            Apostador? apostador = null;
+            if (Apostadors is null || Apostadors.Count == 0)
+                Apostadors = _apostadorRepository.GetApostadores();
+           
+            apostador = Apostadors?.Find(a=> a.Id == apostadorUi.Id);
+            return apostador;
+        }
+
+        internal Apostador? IsTrack(Apostador apostadorUi)
+        {
+            Apostador? apostdor = null;
+            apostdor = _apostadorRepository.isTrack(apostadorUi);
+            return apostdor;
+        }
+        internal Apostador? IsTrack(object? apostadorUi)
+        {
+            Apostador? apostadorTrack = apostadorUi as Apostador;
+            Apostador? apostdor = null;
+
+            apostdor = _apostadorRepository.isTrack(apostadorTrack);
+            return apostdor;
         }
     }
 }

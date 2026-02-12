@@ -56,7 +56,10 @@ namespace Gestor_De_Pule.src.Persistencias
             }
             catch { return null; }
         }
-
+        /// <summary>
+        /// Retrieves a list of Disputa entities from the database, including their associated ResultadoList.
+        /// </summary>
+        /// <returns>A list of Disputa objects, or null if an error occurs.</returns>
         internal  List<Disputa>? ReadDisputas()
         {
             

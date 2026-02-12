@@ -170,12 +170,14 @@ namespace Gestor_De_Pule.src.Persistencias
             {
                 if (pule is not null)
                 {
+                    
                     _data.Pules.Add(pule);
+                    
                     _data.SaveChanges();
                     return true;
                 }
             }
-            catch (Exception ex){ return false; Log.Error(ex, "Erro ao cadastrar o Pule {Id}", pule.Id); }
+            catch (Exception ex){ Log.Error(ex, "Erro ao cadastrar o Pule {Id}", pule.Id); return false; }
             return false;
         }
         /// <summary>
@@ -296,7 +298,45 @@ namespace Gestor_De_Pule.src.Persistencias
                     .Include(p => p.Animais)
                     .ToList();
             }
-            catch(Exception ex) { return new List<Pule>();Log.Error(ex, "Erro ao carregas Pules"); }
+            catch(Exception ex) {
+                Log.Error(ex, "Erro ao carregas Pules");
+                return new List<Pule>(); }
+        }
+
+        internal Pule? IsTrack(Pule pule)
+        {
+            Pule? pule1 = null;
+            try
+            {
+                bool isTrack = _data.ChangeTracker.Entries<Pule>().Any(e => e.Entity == pule);
+                if (isTrack)
+                    pule1 = pule;
+                else
+                    pule1 = _data.Pules.Include(p => p.Apostador)
+                        .Include(p => p.Animais)
+                        .Include(p => p.Disputa)
+                        .FirstOrDefault(p => p.Id == pule.Id);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"Erro ao carregar o pule {pule.Id}");
+            }
+            return pule1;
+        }
+
+        internal bool Save()
+        {
+            bool sucess = false;
+            try
+            {
+                _data.SaveChanges();
+                sucess = true;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"Erro ao salvar o pule");
+            }
+            return sucess;
         }
     }
 }

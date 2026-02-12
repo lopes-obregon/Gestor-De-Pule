@@ -27,9 +27,10 @@ namespace Gestor_De_Pule.src.Model
         //construct
         public Pule() { }
 
-        public Pule(Apostador? apostador, StatusPagamento pagamento, List<Animal>? animais, float valor, int númeroDoPule)
+        public Pule(Apostador? apostador, Disputa disputa, StatusPagamento pagamento, List<Animal>? animais, float valor, int númeroDoPule)
         {
             Apostador = apostador;
+            Disputa = disputa;
             StatusPagamento = pagamento;
             Date = DateTime.Now;
             Animais = animais;

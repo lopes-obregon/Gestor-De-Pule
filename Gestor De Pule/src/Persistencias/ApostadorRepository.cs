@@ -34,6 +34,40 @@ namespace Gestor_De_Pule.src.Persistencias
                )
                .CreateLogger();
         }
+
+        internal List<Apostador>? GetApostadores()
+        {
+            List<Apostador> apostadors = null;
+            try
+            {
+                apostadors = _dataBase.Apostadors.Include(a => a.Pules).ToList();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Erro ao carregar os apostadores!");
+            }
+            return apostadors;
+        }
+
+        internal List<Pule> GetPules(int? id)
+        {
+            List<Pule> pules = new();
+            try
+            {
+                if (id is not null)
+                {
+                    var apostador = _dataBase.Apostadors.Include(a => a.Pules).FirstOrDefault(a => a.Id == id);
+                    if (apostador != null)
+                        pules = apostador.Pules;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"Erro ao carregar os pules do apostador com id{id}");
+            }
+            return pules;
+        }
+
         /// <summary>
         /// Checks if the specified Apostador instance is being tracked by the database context and returns the tracked
         /// entity or retrieves it from the database.
@@ -93,7 +127,7 @@ namespace Gestor_De_Pule.src.Persistencias
             List<Apostador> apostadors = new();
             try
             {
-                var apostadoresDb = _dataBase.Apostadors.Include(a => a.Pules).Where(a => !String.IsNullOrEmpty(a.Nome)).ToList();
+                var apostadoresDb = _dataBase.Apostadors.Where(a => !String.IsNullOrEmpty(a.Nome)).ToList();
                 if(apostadoresDb is not null)
                 {
                     apostadors = apostadoresDb;

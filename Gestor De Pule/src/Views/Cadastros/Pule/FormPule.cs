@@ -3,28 +3,42 @@
 
 namespace Gestor_De_Pule.src.Views.Pule
 {
-    public partial class FormCadastroPule : Form
+    public partial class FormPule : Form
     {
         private PuleController _puleController;
-        public FormCadastroPule()
+        private bool isAtt = false;
+        public FormPule()
         {
             _puleController = new PuleController();
             InitializeComponent();
             SetComboBox();
         }
 
+        public FormPule(object puleSelecionado)
+        {
+            isAtt = true;
+            _puleController = new PuleController();
+            Text = "Atualizar Pule";
+            InitializeComponent();
+            SetComboBox();
+            _puleController.Load(puleSelecionado);
+        }
+
         private void SetComboBox()
         {
 
             //PuleController.LoadLists();
-            _puleController.LoadLists();
+            //_puleController.LoadLists();
+            _puleController.AnimalController.LoadAnimais();
+            _puleController.ApostadorController.LoadApostadores();
+            _puleController.DisputaController.LoadListDisputa();
             //var animaisCadastrados = PuleController.Animals;
-            var animaisCadastrados = _puleController.Animals;
-            var ApostadoresCadastrados = _puleController.Apostadors;
-            var disputasCadastrados = _puleController.Disputas;
+            var animaisCadastrados = _puleController.AnimalController.Animals;
+            var ApostadoresCadastrados = _puleController.ApostadorController.Apostadors;
+            var disputasCadastrados = _puleController.DisputaController.Disputas;
             if (ApostadoresCadastrados is not null)
                 comboBoxApostadores.Items.AddRange(ApostadoresCadastrados.ToArray());
-            comboBoxPagamento.DataSource = Enum.GetValues(typeof(Gestor_De_Pule.src.Model.StatusPagamento));
+            comboBoxPagamento.DataSource = Enum.GetValues(typeof(Model.StatusPagamento));
             if (animaisCadastrados is not null)
                 comboBoxAnimais.Items.AddRange(animaisCadastrados.ToArray());
             if (disputasCadastrados is not null)
@@ -70,7 +84,7 @@ namespace Gestor_De_Pule.src.Views.Pule
                 mensagem += "Por Favor Selecione Pelomenos Um Animal Para Apostar ";
             else
                 mensagem = _puleController.CadastrarPule(apostadorSelecionado, pagamento, animaisSelecionados, valor, númeroDoPule, disputaSelecionado);
-                //mensagem = PuleController.CadastrarPule(apostadorSelecionado, pagamento, animaisSelecionados, valor, númeroDoPule, disputaSelecionado);
+            //mensagem = PuleController.CadastrarPule(apostadorSelecionado, pagamento, animaisSelecionados, valor, númeroDoPule, disputaSelecionado);
             MessageBox.Show(mensagem);
             //limpeza dos campos
             comboBoxAnimais.SelectedIndex = -1;
@@ -94,10 +108,18 @@ namespace Gestor_De_Pule.src.Views.Pule
                 //var animais = PuleController.AttComboBoxAnimais(DisputaSelecionada);
                 var animais = _puleController.AttComboBoxAnimais(DisputaSelecionada);
                 comboBoxAnimais.Items.Clear();
-                if(animais is not null && animais.Count > 0)
+                if (animais is not null && animais.Count > 0)
                     comboBoxAnimais.Items.AddRange(animais.ToArray());
+                _puleController.DisputaController.LoadDisputa(DisputaSelecionada);
             }
 
+        }
+
+        private void SetApostador(object sender, EventArgs e)
+        {
+            var apostadorSelecionado = comboBoxApostadores.SelectedItem;
+            if(apostadorSelecionado is not null)
+                _puleController.ApostadorController.LoadApostador(apostadorSelecionado);
         }
     }
 }

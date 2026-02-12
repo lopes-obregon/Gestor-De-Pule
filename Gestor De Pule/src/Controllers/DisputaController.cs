@@ -95,7 +95,7 @@ namespace Gestor_De_Pule.src.Controllers
                     {
                         if (animalSemDisputa != null)
                         {
-                            var animal = _animalController.Repository.IsTracked(animalSemDisputa);
+                            var animal = _animalController.IsTracked(animalSemDisputa);
                             if (animal != null)
                             {
                                 //criamos o resultado para essa disputa
@@ -495,7 +495,7 @@ namespace Gestor_De_Pule.src.Controllers
                     //var resultado = new Resultado(animal);
                     //var animal = _animalController.Repository.Consultar(animalUi);
                     //var animal = DisputaRepository.DataBase.Animals.Find(animalUi.Id);
-                    var animal = _animalController.Repository.IsTracked(animalUi);
+                    var animal = _animalController.IsTracked(animalUi);
                     if (animal is not null)
                     {
                         var resultado = new Resultado();
@@ -617,6 +617,20 @@ namespace Gestor_De_Pule.src.Controllers
                     }
                 }
             }
+        }
+
+        internal void LoadDisputs()
+        {
+            Disputas = DisputaRepository.GetDisputas();
+        }
+
+        internal Disputa? FindDisputa(Disputa disputaUi)
+        {
+            Disputa? disputa = null;
+            if (Disputas is null || Disputas.Count == 0)
+                Disputas = DisputaRepository.ReadDisputas();
+            disputa = Disputas?.Find(d=> d.Id == disputaUi.Id);
+            return disputa;
         }
     }
 }

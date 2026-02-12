@@ -1,4 +1,6 @@
-﻿using Serilog;
+﻿using Gestor_De_Pule.src.Model;
+using Gestor_De_Pule.src.Models;
+using Serilog;
 
 namespace Gestor_De_Pule.src.Persistencias
 {
@@ -24,5 +26,22 @@ namespace Gestor_De_Pule.src.Persistencias
         }
         //consulta no banco ou rastreia
         public DataBase GetDataBase() { return _context; }
+
+        /// <summary>
+        /// Attaches an Apostador entity to the current data context.
+        /// </summary>
+        /// <param name="apostador">The Apostador entity to attach.</param>
+        internal void AttachApostador(Apostador apostador)
+        {
+            _context.Apostadors.Attach(apostador);
+        }
+        /// <summary>
+        /// Attaches a Disputa entity to the current database context.
+        /// </summary>
+        /// <param name="disputa">The Disputa entity to attach.</param>
+        internal void AttachDisputa(Disputa disputa)
+        {
+            _context.Disputas.Attach(disputa);
+        }
     }
 }
