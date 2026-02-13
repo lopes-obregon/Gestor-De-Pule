@@ -18,10 +18,62 @@ namespace Gestor_De_Pule.src.Views.Pule
         {
             isAtt = true;
             _puleController = new PuleController();
-            Text = "Atualizar Pule";
             InitializeComponent();
             SetComboBox();
-            _puleController.Load(puleSelecionado);
+            Text = "Atualizar Pule";
+            _puleController.LoadFull(puleSelecionado);
+            SetComponent();
+        }
+
+        private void SetComponent()
+        {
+            comboBoxApostadores.Enabled = false;
+            var itemsComboBoxApostadores = comboBoxApostadores.Items;
+            if (itemsComboBoxApostadores != null)
+            {
+                foreach (var item in itemsComboBoxApostadores)
+                {
+                    if (item is not null)
+                    {
+                        if (_puleController.ApostadorController.IsEquals(item))
+                        {
+                            //se for verdadeiro 
+                            comboBoxApostadores.SelectedItem = item;
+                        }
+                    }
+                }
+            }
+            //set disputa combobox
+            comboBoxDisputas.Enabled = false;
+            var itemsCoboBoxDisputas = comboBoxDisputas.Items;
+            if(itemsCoboBoxDisputas != null)
+            {
+                foreach(var item in itemsCoboBoxDisputas)
+                {
+                    if (item is not null)
+                    {
+                        if (_puleController.DisputaController.IsEquals(item))
+                        {
+                            comboBoxDisputas.SelectedItem = item;
+                        }
+                    }
+                }
+            }
+            var pule = _puleController.Pule;
+            if(pule != null){
+
+                var animaisPule = pule.Animais;
+                if (animaisPule is not null)
+                {
+                    foreach (var animal in animaisPule)
+                    {
+                        listBoxAnimaisSelecionados.Items.Add(animal);
+                    }
+                }
+                numericUpDownValorPule.Value = (decimal)pule.Valor;
+                numericUpDownNúmeroPule.Value = pule.Número;
+                comboBoxPagamento.SelectedItem = pule.StatusPagamento;
+            }
         }
 
         private void SetComboBox()
@@ -82,8 +134,17 @@ namespace Gestor_De_Pule.src.Views.Pule
                 mensagem += "Por Favor Seleciona Uma Forma De Pagamento ";
             if (animaisSelecionados.Count < 1)
                 mensagem += "Por Favor Selecione Pelomenos Um Animal Para Apostar ";
-            else
-                mensagem = _puleController.CadastrarPule(apostadorSelecionado, pagamento, animaisSelecionados, valor, númeroDoPule, disputaSelecionado);
+            else{
+                if (isAtt)
+                {
+                    mensagem = _puleController.Update(animaisSelecionados, pagamento, valor, númeroDoPule);
+                }
+                else
+                {
+                    mensagem = _puleController.CadastrarPule(apostadorSelecionado, pagamento, animaisSelecionados, valor, númeroDoPule, disputaSelecionado);
+
+                }
+            }
             //mensagem = PuleController.CadastrarPule(apostadorSelecionado, pagamento, animaisSelecionados, valor, númeroDoPule, disputaSelecionado);
             MessageBox.Show(mensagem);
             //limpeza dos campos

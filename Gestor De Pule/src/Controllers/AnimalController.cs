@@ -170,5 +170,13 @@ namespace Gestor_De_Pule.src.Controllers
                 return pules.ToList();
 
         }
+        /// <summary>
+        /// Loads animals from the repository based on the selected items and assigns them to the Animals property.
+        /// </summary>
+        /// <param name="animaisSelecionados">The collection of selected animal items to load.</param>
+        internal void LoadAnimais(ListBox.ObjectCollection animaisSelecionados)
+        {
+            Animals = _animalRepository.LoadAnimais(animaisSelecionados);
+        }
     }
 }

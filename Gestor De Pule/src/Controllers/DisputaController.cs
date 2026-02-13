@@ -632,6 +632,19 @@ namespace Gestor_De_Pule.src.Controllers
             disputa = Disputas?.Find(d=> d.Id == disputaUi.Id);
             return disputa;
         }
+
+        internal bool IsEquals(object item)
+        {
+            Disputa? disputaUi = item as Disputa;
+            bool equals = false;
+            if(disputaUi is not null && Disputa is not null)
+            {
+                if(Disputa.Id == disputaUi.Id)
+                    equals =  true;
+                
+            }
+            return equals;
+        }
     }
 }
     

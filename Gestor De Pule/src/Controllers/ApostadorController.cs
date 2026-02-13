@@ -217,5 +217,20 @@ namespace Gestor_De_Pule.src.Controllers
             apostdor = _apostadorRepository.isTrack(apostadorTrack);
             return apostdor;
         }
+
+        internal bool IsEquals(object item)
+        {
+            Apostador? apostadorUi = item as Apostador;
+            bool equals = false;
+            if (apostadorUi != null)
+            {
+                if (Apostador is not null)
+                {
+                    if (Apostador.Id == apostadorUi.Id) equals = true;
+
+                }
+            }
+            return equals;
+        }
     }
 }

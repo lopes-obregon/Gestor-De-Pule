@@ -126,6 +126,41 @@ namespace Gestor_De_Pule.src.Persistencias
             return null;
         }
 
+        internal List<Animal> LoadAnimais(ListBox.ObjectCollection animaisSelecionados)
+        {
+            var animaisUi = animaisSelecionados.Cast<Animal>().ToList();
+            var animaisTrack = new List<Animal>();
+            if(animaisUi is not null && animaisUi.Count > 0)
+            {
+                try
+                {
+                    foreach(var animal in animaisUi)
+                    {
+                        var entry = _db.ChangeTracker.Entries<Animal>().FirstOrDefault(e => e.Entity.Id == animal.Id);
+                        if(entry != null)
+                        {
+                            //já rastreado
+                            animaisTrack.Add(entry.Entity);
+                        }
+                        else
+                        {
+                            //não temos rastreo devemos procurar no banco
+                            var animalDb = _db.Animals.Find(animal.Id);
+                            if(animalDb != null)
+                            {
+                                animaisTrack.Add(animalDb);
+                            }
+                        }
+                    }
+                    return animaisTrack;
+                }catch (Exception ex)
+                {
+                    Log.Error(ex, $"Erro ao localizar animais");
+                }
+            }
+                return animaisTrack;
+        }
+
         internal List<Resultado> LoadResultados(Animal animal)
         {
             List<Resultado> resultados = new();

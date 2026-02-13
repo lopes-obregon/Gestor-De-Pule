@@ -8,26 +8,16 @@ namespace Gestor_De_Pule.src.Controllers
 {
     internal class PuleController
     {
-        
-
-      
-
-        public List<Apostador>? Apostadors { get; private set; }
-       
         public List<Pule>? Pules { get; private set; }
-        static public Pule? Pule { get; private set; }
-        public Pule? PuleLocal { get; private set; } = null;
+        public Pule? Pule { get; private set; }
        
-        public List<Apostador> ApostadorsLocal { get; private set; }
-        public List<Animal> AnimalsLocal { get; private set; }
-       
-        private Caixa? Caixa { get; set; } = null;
         public List<Pule> PulesApostador { get; internal set; }
 
         //Controllers
         public AnimalController AnimalController { get; private set; }
         public ApostadorController ApostadorController { get; private set; }
         public DisputaController DisputaController { get; private set; }
+        private CaixaController _caixaController;
         //------------------------------------------------------------//
         //Repository
         private PuleRepository _puleRepository;
@@ -54,6 +44,7 @@ namespace Gestor_De_Pule.src.Controllers
                 AnimalController = new AnimalController(context);
                 DisputaController = new(context);
                 ApostadorController = new ApostadorController(context);
+                _caixaController = new CaixaController(context);
             }
         }
         internal  List<Animal>? AttComboBoxAnimais(object disputaSelecionadaUi)
@@ -162,14 +153,14 @@ namespace Gestor_De_Pule.src.Controllers
             //ApostadorController.LoadApostadores();
             ApostadorController.LoadApostadores();
             //Apostadors = ApostadorController.Apostadors.ToList();
-            Apostadors = ApostadorController.Apostadors.ToList();
+            //Apostadors = ApostadorController.Apostadors.ToList();
             //Animals = AnimalController.Animals.ToList();
            // Animals = AnimalController.Animals.ToList();
             
         }
         
         
-        internal static void LoadPule(object puleSelecionadoUi)
+        internal  void LoadPule(object puleSelecionadoUi)
         {
             Pule? puleSelecionado = puleSelecionadoUi as Pule;
             if(puleSelecionado is not null)
@@ -202,52 +193,7 @@ namespace Gestor_De_Pule.src.Controllers
 
         
 
-        internal  string UpdateData(object? apostadorUi, object? pagamentoUi, ListBox.ObjectCollection animaisUi)
-        {
-            Apostador? apostadorSelecionado = apostadorUi as Apostador;
-            StatusPagamento pagamento = StatusPagamento.Pendente;
-            List<Animal>? animais = animaisUi.Cast<Animal>().ToList();
-            bool sucess = false;
-            if(pagamentoUi is StatusPagamento status)
-            {
-                pagamento = status;
-            }
-            if (PuleLocal is not null)
-            {
-                //não pode mudar o apostador apenas status de pagamento e 
-                //animais apostados
-                //se for do pule igual a pendente ele recebe mesmo se atualizou
-                if (PuleLocal.StatusPagamento.Equals(StatusPagamento.Pendente))
-                {
-                    PuleLocal.StatusPagamento = pagamento;
-                }
-                //verificar se são os mesmo animais
-                bool isEqual = PuleLocal.Animais
-                    .Select(a => a.Id)
-                    .OrderBy(a => a)
-                    .SequenceEqual(animais.Select(a => a.Id).OrderBy(x => x));
-                
-              //sucess =  Pule.Update(PuleLocal, animais, isEqual);
-               sucess =  _puleRepository.Update(PuleLocal, animais, isEqual);
-                if(sucess)
-                {
-                   if(Caixa is not null)
-                    {
-                        Caixa.TotalEmCaixa += (decimal)PuleLocal.Valor;
-                        sucess = Caixa.Update();
-                    }
-                    else
-                        sucess = false;
-
-                }
-            }
-            else
-                sucess = false;
-            if (sucess)
-                return "Pule Atualizado Com Sucesso!";
-            else
-                return "Erro ao Atualizar o Pule!";
-        }
+       
 
         internal object? FindPule(Pule pule)
         {
@@ -298,15 +244,13 @@ namespace Gestor_De_Pule.src.Controllers
 
         }
 
-        internal void LoadDisputs()
-        {
-            if(DisputaController is null)
-                DisputaController = new DisputaController(_repository.GetDataBase());
-            DisputaController.LoadDisputs();
-        }
+   
 
       
-
+        /// <summary>
+        /// Loads the specified Pule object and updates the Pule property using the repository.
+        /// </summary>
+        /// <param name="puleSelecionado">The Pule object to be loaded.</param>
         internal void Load(object puleSelecionado)
         {
             Pule? pule = puleSelecionado as Pule;
@@ -314,6 +258,81 @@ namespace Gestor_De_Pule.src.Controllers
             {
                 Pule = _puleRepository.IsTrack(pule);
             }
+        }
+        /// <summary>
+        /// Loads the specified pule along with its associated apostador and disputa data.
+        /// </summary>
+        /// <param name="puleSelecionado">The selected pule object to load.</param>
+        internal void LoadFull(object puleSelecionado)
+        {
+            Load(puleSelecionado);
+            if( Pule is not null)
+            {
+                if(Pule.Apostador is not null)
+                {
+                    ApostadorController.LoadApostador(Pule.Apostador);
+
+                }
+                if(Pule.Disputa is not null)
+                {
+                    DisputaController.LoadDisputa(Pule.Disputa);
+                }
+
+            }
+
+        }
+        /// <summary>
+        /// Updates the current 'Pule' with the selected animals, payment status, value, and number.
+        /// </summary>
+        /// <param name="animaisSelecionados">Collection of selected animals to associate with the 'Pule'.</param>
+        /// <param name="pagamento">Payment status object to update the 'Pule'.</param>
+        /// <param name="valor">New value to set for the 'Pule'.</param>
+        /// <param name="númeroDoPule">New number to assign to the 'Pule'.</param>
+        /// <returns>A success or error message indicating the result of the update operation.</returns>
+        internal string Update(ListBox.ObjectCollection animaisSelecionados, object? pagamento, float valor, int númeroDoPule)
+        {
+            bool sucess = false;
+            AnimalController.LoadAnimais(animaisSelecionados);
+            _caixaController.LoadCaixa();
+            var caixa = _caixaController.Caixa;
+            var animais = AnimalController.Animals;
+            var pule = Pule;
+            if(pule is not null){
+                pule.Animais?.Clear();
+                foreach(var animal in animais)
+                {
+                    if(animal is not null)
+                    {
+                        pule.Animais?.Add(animal);
+                    }
+                }
+                    if (valor != pule.Valor)
+                    {
+                        pule.Valor = valor;
+                    }
+                    if(númeroDoPule != pule.Número)
+                {
+                    pule.Número = númeroDoPule;
+                }
+                if (pagamento is  StatusPagamento status)
+                {
+                    
+                    if (pule.StatusPagamento != status)
+                    {
+                        pule.StatusPagamento = status;
+                    }
+                }
+                if(caixa is not null)
+                {
+                    if(pule.StatusPagamento == StatusPagamento.Pago)
+                        caixa.TotalEmCaixa += (decimal) pule.Valor;
+                }
+                sucess = _puleRepository.Save();
+                if (sucess) return "Sucesso ao Atualizar O Pule!";
+            }
+            
+            return "Erro ao Atualizar o Pule!";
+            
         }
     }
 }
