@@ -430,7 +430,7 @@ namespace Gestor_De_Pule.src.Controllers
         internal Disputa? BuscarDisputa(object disputaSelecionadaUi)
         {
             Disputa? disputaSelecionado = disputaSelecionadaUi as Disputa;
-            if (disputaSelecionado is not null)
+            if (disputaSelecionado is not null && disputaSelecionado.Id != Disputa?.Id)
             {
                 Disputa = DisputaRepository.ReadDisputa(disputaSelecionado);
                 return Disputa;
@@ -644,6 +644,17 @@ namespace Gestor_De_Pule.src.Controllers
                 
             }
             return equals;
+        }
+
+        internal void LoadRodada()
+        {
+            if(Disputa is not null)
+            {
+                if(Disputa.Rodadas is null)
+                {
+                    Disputa.Rodadas = DisputaRepository?.LoadRodadas(Disputa);
+                }
+            }
         }
     }
 }

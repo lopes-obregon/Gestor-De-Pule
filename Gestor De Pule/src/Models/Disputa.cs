@@ -541,5 +541,71 @@ namespace Gestor_De_Pule.src.Models
 
             }
         }
+
+        internal void ajustarPosiçãoDosAnimais(object? tempoAnimal1, object? tempoAnimal2)
+        {
+            string? tempo1Str = tempoAnimal1?.ToString()?.Replace(',', '.');
+            string? tempo2Str = tempoAnimal2?.ToString()?.Replace(',', '.');
+            var rodadas = Rodadas;
+            if (rodadas is null || rodadas.Count == 0)
+            {
+                if (!String.IsNullOrEmpty(tempo1Str) && !String.IsNullOrEmpty(tempo2Str))
+                {
+                    if (TimeSpan.TryParse(tempo1Str, out TimeSpan tempo1) && TimeSpan.TryParse(tempo2Str, out TimeSpan tempo2))
+                    {
+                        //if(tempo1 < tempo2) {
+                        var resultados = this.ResultadoList;
+                        if (resultados != null)
+                        {
+                            var resultado = resultados[0];
+                            if (resultado is not null)
+                            {
+                                if (tempo1 < tempo2)
+                                {
+                                    resultado.Posição = 1;
+                                    resultados[1].Posição = 2;
+                                }
+                                else
+                                {
+                                    {
+                                        resultado.Posição = 2;
+                                        resultados[1].Posição = 1;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (!String.IsNullOrEmpty(tempo1Str) && !String.IsNullOrEmpty(tempo2Str))
+                {
+                    if (TimeSpan.TryParse(tempo1Str, out TimeSpan tempo1) && TimeSpan.TryParse(tempo2Str, out TimeSpan tempo2))
+                    {
+                        foreach (var rodada in rodadas)
+                        {
+                            if (rodada is not null)
+                            {
+                                var resultados = rodada.ResultadoDestaRodada;
+                                if (resultados is not null)
+                                {
+                                    if (tempo1 < tempo2)
+                                    {
+                                        resultados[0].Posição = 1;
+                                        resultados[1].Posição = 2;
+                                    }
+                                    else
+                                    {
+                                        resultados[0].Posição = 2;
+                                        resultados[1].Posição = 1;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
- }
+}

@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             menuStrip1 = new MenuStrip();
             arquivoToolStripMenuItem1 = new ToolStripMenuItem();
             sairToolStripMenuItem = new ToolStripMenuItem();
@@ -42,6 +42,7 @@
             apostadorToolStripMenuItem1 = new ToolStripMenuItem();
             animalToolStripMenuItem1 = new ToolStripMenuItem();
             puleToolStripMenuItem1 = new ToolStripMenuItem();
+            disputaToolStripMenuItem1 = new ToolStripMenuItem();
             financeiroToolStripMenuItem = new ToolStripMenuItem();
             fluxoDeCaixaToolStripMenuItem = new ToolStripMenuItem();
             taxaToolStripMenuItem = new ToolStripMenuItem();
@@ -53,11 +54,14 @@
             flowLayoutPanelButtons = new FlowLayoutPanel();
             button1 = new Button();
             tableLayoutPanel1 = new TableLayoutPanel();
-            labelDisputaNome = new Label();
+            tabControl = new TabControl();
+            tabPage1 = new TabPage();
             dataGridViewDisputas = new DataGridView();
             ColumnAnimalNome = new DataGridViewTextBoxColumn();
             ColumnPosição = new DataGridViewTextBoxColumn();
             ColumnTempo = new DataGridViewTextBoxColumn();
+            tabPage2 = new TabPage();
+            labelDisputaNome = new Label();
             windowCadastroDisputaBindingSource = new BindingSource(components);
             button2 = new Button();
             button3 = new Button();
@@ -67,11 +71,12 @@
             labelVitória = new Label();
             labelTotalGanhadores = new Label();
             labelPagamentoPorPule = new Label();
-            disputaToolStripMenuItem1 = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             tableLayoutPanelFiltrosSelect.SuspendLayout();
             flowLayoutPanelButtons.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
+            tabControl.SuspendLayout();
+            tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewDisputas).BeginInit();
             ((System.ComponentModel.ISupportInitialize)windowCadastroDisputaBindingSource).BeginInit();
             flowLayoutPanel1.SuspendLayout();
@@ -146,23 +151,30 @@
             // apostadorToolStripMenuItem1
             // 
             apostadorToolStripMenuItem1.Name = "apostadorToolStripMenuItem1";
-            apostadorToolStripMenuItem1.Size = new Size(180, 22);
+            apostadorToolStripMenuItem1.Size = new Size(129, 22);
             apostadorToolStripMenuItem1.Text = "Apostador";
             apostadorToolStripMenuItem1.Click += ApostadorWindow;
             // 
             // animalToolStripMenuItem1
             // 
             animalToolStripMenuItem1.Name = "animalToolStripMenuItem1";
-            animalToolStripMenuItem1.Size = new Size(180, 22);
+            animalToolStripMenuItem1.Size = new Size(129, 22);
             animalToolStripMenuItem1.Text = "Animal";
             animalToolStripMenuItem1.Click += AnimalForm;
             // 
             // puleToolStripMenuItem1
             // 
             puleToolStripMenuItem1.Name = "puleToolStripMenuItem1";
-            puleToolStripMenuItem1.Size = new Size(180, 22);
+            puleToolStripMenuItem1.Size = new Size(129, 22);
             puleToolStripMenuItem1.Text = "Pule";
             puleToolStripMenuItem1.Click += WindowRelatórioPule;
+            // 
+            // disputaToolStripMenuItem1
+            // 
+            disputaToolStripMenuItem1.Name = "disputaToolStripMenuItem1";
+            disputaToolStripMenuItem1.Size = new Size(129, 22);
+            disputaToolStripMenuItem1.Text = "Disputa";
+            disputaToolStripMenuItem1.Click += RelatórioDisputa;
             // 
             // financeiroToolStripMenuItem
             // 
@@ -260,8 +272,8 @@
             tableLayoutPanel1.ColumnCount = 1;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.Controls.Add(tabControl, 0, 1);
             tableLayoutPanel1.Controls.Add(labelDisputaNome, 0, 0);
-            tableLayoutPanel1.Controls.Add(dataGridViewDisputas, 0, 1);
             tableLayoutPanel1.Location = new Point(12, 145);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 2;
@@ -270,20 +282,32 @@
             tableLayoutPanel1.Size = new Size(646, 305);
             tableLayoutPanel1.TabIndex = 3;
             // 
-            // labelDisputaNome
+            // tabControl
             // 
-            labelDisputaNome.AutoSize = true;
-            labelDisputaNome.Location = new Point(3, 0);
-            labelDisputaNome.Name = "labelDisputaNome";
-            labelDisputaNome.Size = new Size(105, 15);
-            labelDisputaNome.TabIndex = 0;
-            labelDisputaNome.Text = "labelDisputaNome";
+            tabControl.Controls.Add(tabPage1);
+            tabControl.Controls.Add(tabPage2);
+            tabControl.Location = new Point(3, 34);
+            tabControl.Name = "tabControl";
+            tabControl.SelectedIndex = 0;
+            tabControl.Size = new Size(640, 268);
+            tabControl.TabIndex = 8;
+            // 
+            // tabPage1
+            // 
+            tabPage1.Controls.Add(dataGridViewDisputas);
+            tabPage1.Location = new Point(4, 24);
+            tabPage1.Name = "tabPage1";
+            tabPage1.Padding = new Padding(3);
+            tabPage1.Size = new Size(632, 240);
+            tabPage1.TabIndex = 0;
+            tabPage1.Text = "tabPage1";
+            tabPage1.UseVisualStyleBackColor = true;
             // 
             // dataGridViewDisputas
             // 
             dataGridViewDisputas.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewDisputas.Columns.AddRange(new DataGridViewColumn[] { ColumnAnimalNome, ColumnPosição, ColumnTempo });
-            dataGridViewDisputas.Location = new Point(3, 34);
+            dataGridViewDisputas.Location = new Point(6, 0);
             dataGridViewDisputas.Name = "dataGridViewDisputas";
             dataGridViewDisputas.Size = new Size(640, 268);
             dataGridViewDisputas.TabIndex = 1;
@@ -302,11 +326,30 @@
             // 
             // ColumnTempo
             // 
-            dataGridViewCellStyle2.Format = "hh\\:mm\\:ss\\,ff";
-            dataGridViewCellStyle2.NullValue = null;
-            ColumnTempo.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Format = "hh\\:mm\\:ss\\,ff";
+            dataGridViewCellStyle1.NullValue = null;
+            ColumnTempo.DefaultCellStyle = dataGridViewCellStyle1;
             ColumnTempo.HeaderText = "Tempo";
             ColumnTempo.Name = "ColumnTempo";
+            // 
+            // tabPage2
+            // 
+            tabPage2.Location = new Point(4, 24);
+            tabPage2.Name = "tabPage2";
+            tabPage2.Padding = new Padding(3);
+            tabPage2.Size = new Size(632, 240);
+            tabPage2.TabIndex = 1;
+            tabPage2.Text = "tabPage2";
+            tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // labelDisputaNome
+            // 
+            labelDisputaNome.AutoSize = true;
+            labelDisputaNome.Location = new Point(3, 0);
+            labelDisputaNome.Name = "labelDisputaNome";
+            labelDisputaNome.Size = new Size(105, 15);
+            labelDisputaNome.TabIndex = 0;
+            labelDisputaNome.Text = "labelDisputaNome";
             // 
             // windowCadastroDisputaBindingSource
             // 
@@ -396,13 +439,6 @@
             labelPagamentoPorPule.TabIndex = 2;
             labelPagamentoPorPule.Text = "Pagamento Por Pule";
             // 
-            // disputaToolStripMenuItem1
-            // 
-            disputaToolStripMenuItem1.Name = "disputaToolStripMenuItem1";
-            disputaToolStripMenuItem1.Size = new Size(180, 22);
-            disputaToolStripMenuItem1.Text = "Disputa";
-            disputaToolStripMenuItem1.Click += RelatórioDisputa;
-            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -424,6 +460,8 @@
             flowLayoutPanelButtons.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
+            tabControl.ResumeLayout(false);
+            tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridViewDisputas).EndInit();
             ((System.ComponentModel.ISupportInitialize)windowCadastroDisputaBindingSource).EndInit();
             flowLayoutPanel1.ResumeLayout(false);
@@ -474,5 +512,8 @@
         private Label labelPagamentoPorPule;
         private Button button4;
         private ToolStripMenuItem disputaToolStripMenuItem1;
+        private TabControl tabControl;
+        private TabPage tabPage1;
+        private TabPage tabPage2;
     }
 }

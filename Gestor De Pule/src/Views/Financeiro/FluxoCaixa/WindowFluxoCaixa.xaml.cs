@@ -13,12 +13,12 @@ namespace Gestor_De_Pule.src.Views.Financeiro.FluxoCaixa
         public WindowFluxoCaixa()
         {
             InitializeComponent();
-            _financeiroController = new FinanceiroController();
             Init();
         }
 
         private void Init()
         {
+            _financeiroController = new FinanceiroController();
             //FinanceiroController.LoadCaixaInit();
             LabelFluxoDeCaixa.Content = "FlUXO DE CAIXA - DATA: " + DateTime.Now.ToString("dd/MM/yyyy");
             if(_financeiroController is not null)
@@ -89,7 +89,8 @@ namespace Gestor_De_Pule.src.Views.Financeiro.FluxoCaixa
 
         private void PagarDisputa(object sender, RoutedEventArgs e)
         {
-            WindowPagamentoDeDisputa window = new WindowPagamentoDeDisputa(_financeiroController);
+            _financeiroController?.Dispose();
+            WindowPagamentoDeDisputa window = new WindowPagamentoDeDisputa();
             window.ShowDialog();
             Init();
         }

@@ -8,9 +8,13 @@ namespace Gestor_De_Pule.src.Controllers
     {
         public   Caixa? Caixa {  set; get; } = null;
         private CaixaRepository _caixaRepository;
+        private Repository _repository;
         public FinanceiroController() 
         {
-            _caixaRepository = new CaixaRepository();
+            _repository = new Repository();
+            var db = _repository.GetDataBase();
+            _caixaRepository = new CaixaRepository(db);
+            Caixa = _caixaRepository.GetCaixa();
         }
         /// <summary>
         /// Init caixa in instance
@@ -41,7 +45,8 @@ namespace Gestor_De_Pule.src.Controllers
             if(Caixa is not null && Caixa.Taxa != taxa){
                 Caixa.Taxa = taxa;
                 //Caixa.save();
-                _caixaRepository.Save(Caixa);
+                _caixaRepository.Save();
+               // _caixaRepository.Save(Caixa);
             }
         }
 
@@ -55,7 +60,12 @@ namespace Gestor_De_Pule.src.Controllers
 
             Caixa = caixa;
         }
-
-        
+        /// <summary>
+        /// 
+        /// </summary>
+        internal void Dispose()
+        {
+            _repository.GetDataBase().Dispose();
+        }
     }
 }

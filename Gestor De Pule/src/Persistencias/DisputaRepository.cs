@@ -519,5 +519,23 @@ namespace Gestor_De_Pule.src.Persistencias
             }
             return disputa1;
         }
+
+        internal List<Rodada>? LoadRodadas(Disputa disputa)
+        {
+            List<Rodada> rodadas = null;
+            try
+            {
+                var disputaDb = _dataBase.Disputas.Include(_ => _.Rodadas)
+                    
+                    .FirstOrDefault(_ => _.Id == disputa.Id);
+                if (disputaDb is not null && disputaDb.Rodadas is not null)
+                    rodadas = disputaDb.Rodadas;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"Erro ao carregar as rodadas da disputa {disputa.Id}");
+            }
+            return rodadas;
+        }
     }
 }

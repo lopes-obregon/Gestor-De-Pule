@@ -175,5 +175,13 @@ namespace Gestor_De_Pule.src.Persistencias
             }
             return disputas;
         }
+
+        internal void Save()
+        {
+            try
+            {
+                _db.SaveChanges();
+            }catch(Exception ex){ Log.Error(ex, "Erro ao atualizar ou salvar os dados do caixa!"); }
+        }
     }
 }

@@ -1,18 +1,7 @@
 ﻿using Gestor_De_Pule.src.Controllers;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Gestor_De_Pule.src.Views.Financeiro.FluxoCaixa
 {
@@ -21,29 +10,31 @@ namespace Gestor_De_Pule.src.Views.Financeiro.FluxoCaixa
     /// </summary>
     public partial class WindowPagamentoDeDisputa : Window
     {
-        private  FinanceiroController? financeiroController = null;
+        private  FinanceiroController? _financeiroController = null;
         public WindowPagamentoDeDisputa()
         {
             InitializeComponent();
-            financeiroController = new FinanceiroController();
+            
             initCampos();
 
         }
 
         public WindowPagamentoDeDisputa(object? financeiroController)
         {
-            this.financeiroController = financeiroController as FinanceiroController;
+            this._financeiroController = financeiroController as FinanceiroController;
             InitializeComponent();
             initCampos();
         }
 
         private void initCampos()
         {
+            _financeiroController = new FinanceiroController();
+            
 
-                //financeiroController.LoadCaixaLocal();
-            if(financeiroController is not null && financeiroController.Caixa is not null && financeiroController.Caixa.Disputs is not null)
+            //financeiroController.LoadCaixaLocal();
+            if (_financeiroController is not null && _financeiroController.Caixa is not null && _financeiroController.Caixa.Disputs is not null)
             {
-                var disputas = financeiroController.Caixa.DisputsNãoPagos();
+                var disputas = _financeiroController.Caixa.DisputsNãoPagos();
                 if (disputas != null)
                 {
 
@@ -78,11 +69,11 @@ namespace Gestor_De_Pule.src.Views.Financeiro.FluxoCaixa
                 else
                 {
                     //considero um valor válido 
-                    if (financeiroController is not null && financeiroController.Caixa is not null)
+                    if (_financeiroController is not null && _financeiroController.Caixa is not null)
                     {
                         //só para teste
                         // financeiroController.CaixaLocal.TotalEmCaixaWithPulePago();
-                        mensagem = financeiroController.Caixa.PagaDisputa(disputaSelecionadaUi, valor);
+                        mensagem = _financeiroController.Caixa.PagaDisputa(disputaSelecionadaUi, valor);
                     }
                 }
                 System.Windows.MessageBox.Show(mensagem);
@@ -96,6 +87,8 @@ namespace Gestor_De_Pule.src.Views.Financeiro.FluxoCaixa
 
         private void Sair(object sender, RoutedEventArgs e)
         {
+            _financeiroController?.Dispose();
+
             this.Close();
         }
     }
