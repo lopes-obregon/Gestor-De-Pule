@@ -3,6 +3,7 @@ using System;
 using Gestor_De_Pule.src.Persistencias;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gestor_De_Pule.Migrations
 {
     [DbContext(typeof(DataBase))]
-    partial class DataBaseModelSnapshot : ModelSnapshot
+    [Migration("20260220233543_resultadoDisputaId")]
+    partial class resultadoDisputaId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.10");
@@ -184,7 +187,7 @@ namespace Gestor_De_Pule.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("AnimalId")
+                    b.Property<int?>("AnimalId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("DisputaId")
@@ -217,9 +220,6 @@ namespace Gestor_De_Pule.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("DisputaId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("IdDisputa")
                         .HasColumnType("INTEGER");
 
                     b.Property<byte>("Nrodadas")
@@ -279,9 +279,7 @@ namespace Gestor_De_Pule.Migrations
                 {
                     b.HasOne("Gestor_De_Pule.src.Model.Animal", "Animal")
                         .WithMany("Resultados")
-                        .HasForeignKey("AnimalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AnimalId");
 
                     b.HasOne("Gestor_De_Pule.src.Models.Disputa", "Disputa")
                         .WithMany("ResultadoList")

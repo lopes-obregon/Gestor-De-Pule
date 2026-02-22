@@ -49,8 +49,8 @@ namespace Gestor_De_Pule.src.Persistencias
                 if(isTracked) return disputaSelecionado;
                 else
                     return _dataBase.Disputas
-                        .Include(d => d.ResultadoList)
-                        .ThenInclude(res=> res.Animal)
+                        .Include(d => d.Rodadas)
+                        .ThenInclude(rod=> rod.ResultadoDestaRodada)
                         .FirstOrDefault(dis=> dis.Id == disputaSelecionado.Id);
                 
             }
@@ -292,10 +292,10 @@ namespace Gestor_De_Pule.src.Persistencias
             try
             {
                 var disputasDb = _dataBase.Disputas
-                    .Include(d => d.ResultadoList)
-                    .ThenInclude(r => r.Animal)
-                    .Include(d => d.Pules)
-                    .ThenInclude(p => p.Apostador)
+                    //.Include(d => d.ResultadoList)
+                    //.ThenInclude(r => r.Animal)
+                    //.Include(d => d.Pules)
+                    //.ThenInclude(p => p.Apostador)
                     .Where(d => !String.IsNullOrEmpty(d.Nome))
                     .ToList();
                 if (disputasDb is null || disputasDb.Count == 0)
@@ -469,7 +469,10 @@ namespace Gestor_De_Pule.src.Persistencias
             catch (Exception ex) { Log.Error(ex, $"Erro ao consultar o animal {id}"); }
             return null;
         }
-
+        /// <summary>
+        /// add a new resultado in the context
+        /// </summary>
+        /// <param name="resultado"></param>
         internal void AddContext(Resultado resultado)
         {
             try
@@ -526,6 +529,7 @@ namespace Gestor_De_Pule.src.Persistencias
             try
             {
                 var disputaDb = _dataBase.Disputas.Include(_ => _.Rodadas)
+                    .ThenInclude(rod=> rod.ResultadoDestaRodada)
                     
                     .FirstOrDefault(_ => _.Id == disputa.Id);
                 if (disputaDb is not null && disputaDb.Rodadas is not null)
@@ -536,6 +540,60 @@ namespace Gestor_De_Pule.src.Persistencias
                 Log.Error(ex, $"Erro ao carregar as rodadas da disputa {disputa.Id}");
             }
             return rodadas;
+        }
+
+        internal List<Pule>? LoadPules(Disputa disputa)
+        {
+            List<Pule?> pules = null;
+            try
+            {
+                var DisputaDb = _dataBase.Disputas.Include(_ => _.Pules).FirstOrDefault(dis => dis.Id == disputa.Id);
+                if (DisputaDb is not null)
+                    pules = DisputaDb.Pules;
+            }catch(Exception ex)
+            {
+                Log.Error(ex, $"Erro ao encontar os pules da disputa {disputa.Id} - {disputa.Nome}");
+            }
+            return pules;
+        }
+        /// <summary>
+        /// Load disputa especifica por id e com suas Rodadas;
+        /// </summary>
+        /// <param name="idDisputa"></param>
+        /// <returns></returns>
+        internal Disputa? ReadDisputa(int idDisputa)
+        {
+            Disputa? disputa = null;
+            try
+            {
+                var disputaTrack = _dataBase.ChangeTracker.Entries<Disputa>()
+                    .Select(e => e.Entity)
+                    .FirstOrDefault(d => d.Id == idDisputa);
+                if (disputaTrack is not null)
+                    disputa = disputaTrack;
+                else
+                {
+                    var disputaDb = _dataBase.Disputas.Include(d=> d.Rodadas).FirstOrDefault(d => d.Id == idDisputa);
+                    if (disputaDb is not null)
+                        disputa = disputaDb;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"Erro ao tentar carregar a disputa com id {idDisputa}");
+            }
+            return disputa;
+        }
+
+        internal void AddContext(Rodada novaRodada)
+        {
+            try
+            {
+                _dataBase.Rodas.Add(novaRodada);
+            }catch(Exception ex)
+            {
+                Log.Error(ex, $"Erro ao adicionar a Rodada {novaRodada.Id} ao contexto");
+            }
         }
     }
 }

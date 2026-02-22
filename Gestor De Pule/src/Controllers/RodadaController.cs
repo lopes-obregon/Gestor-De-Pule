@@ -23,21 +23,34 @@ namespace Gestor_De_Pule.src.Controllers
 
         internal void NovaRodada(int quantidadeRodadas)
         {
-            if(quantidadeRodadas > 1)
+            if(quantidadeRodadas > 0)
             {
                 Rodada = new Rodada(quantidadeRodadas);
                 RodadaRepository.AddContext(Rodada);
             }
         }
-
+        /// <summary>
+        /// Carrega a rodada com base no id da disputa
+        /// </summary>
+        /// <param name="idDisputa"></param>
         internal void LoadRodada(int idDisputa)
         {
             Rodada = RodadaRepository.Load(idDisputa);
         }
-
+        /// <summary>
+        /// Seta Rodada com o Track do context
+        /// </summary>
         internal void Track()
         {
             Rodada = RodadaRepository.isTrack(Rodada);
+        }
+
+      
+        //gera nova rodada sem parametros
+        internal void NovaRodada()
+        {
+            Rodada = new();
+            RodadaRepository.AddContext(Rodada);
         }
     }
 }

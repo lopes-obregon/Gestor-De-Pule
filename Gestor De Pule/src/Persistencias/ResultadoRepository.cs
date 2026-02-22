@@ -209,7 +209,35 @@ namespace Gestor_De_Pule.src.Persistencias
                 }
             }catch(Exception ex) { Log.Error(ex, $"erro ao adicionar ao contexto o resultado"); }
         }
-
-        
+        /// <summary>
+        /// Lê do track caso não estiver do banco faz a leitura.
+        /// </summary>
+        /// <returns>A list resultados</returns>
+        internal List<Resultado>? ReadResultados()
+        {
+            List<Resultado> resultados = new List<Resultado>();
+            try
+            {
+                var track = _db.ChangeTracker.Entries<Resultado>()
+                    .Select(e => e.Entity).ToList();
+                if (track is not null && track.Count > 0)
+                    resultados = track.ToList();
+                else
+                {
+                    resultados = _db.Resultados.ToList();
+                }
+            }catch (Exception ex)
+            {
+                Log.Error(ex, $"Erro ao carregar os resultados");
+            }
+            return resultados;
+        }
+        /// <summary>
+        /// Dispose context;
+        /// </summary>
+        internal void Clear()
+        {
+            _db.Dispose();
+        }
     }
 }

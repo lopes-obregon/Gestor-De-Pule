@@ -8,7 +8,9 @@ namespace Gestor_De_Pule.src.Models
     {
       
         public int Id { get; set; }
+        public int DisputaId { get; internal set; }
         public Disputa? Disputa { get; set; } = null;
+        public int AnimalId { get; set; }
         public Animal? Animal { get; set; } = null;
         public TimeSpan Tempo { get; set; } = new TimeSpan();
         public byte Posição { get; set; }

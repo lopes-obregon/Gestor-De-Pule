@@ -5,11 +5,30 @@ namespace Gestor_De_Pule.src.Models
     internal class Rodada
     {
         private int _quantidadeRodadas;
-
+        /// <summary>
+        /// id do pule
+        /// </summary>
         public int Id { get; set; }
+        /// <summary>
+        /// Id de disputa
+        /// </summary>
+        public int IdDisputa {  get; set; }
+        /// <summary>
+        /// Navegate
+        /// </summary>
         public Disputa? Disputa { get; set; }
+        /// <summary>
+        /// Nº rodada referente
+        /// </summary>
         public byte Nrodadas { get; set; }
+        /// <summary>
+        ///     List dos pules da rodada referente
+        /// </summary>
         public List<Pule>? PulesDestaRodada { get; set; }
+        /**
+         * Variavel antiga que contia os resultados, agora com a classe rodada Ela fica livre, podendo armazenar os melhores resultados da disputa.
+         * 
+         * **/
         public List<Resultado>? ResultadoDestaRodada {get; set;}
         public Rodada() { }
 

@@ -29,9 +29,12 @@ namespace Gestor_De_Pule.src.Controllers
             _puleController = puleController;
             _animalRepository = new AnimalRepository();
         }
-
+        /// <summary>
+        /// Load in Animals list animals
+        /// </summary>
         internal  void LoadAnimais()
         {
+            if(Animals is null || Animals.Count == 0) 
             
             
                 Animals = _animalRepository.ReadAnimals().ToList();
@@ -58,7 +61,8 @@ namespace Gestor_De_Pule.src.Controllers
             {
                 animalSelecionado = animalSelecionadoUi as Animal;
                 //Animal? animalConsultado = Animal.Consultar(animalSelecionado);
-                Animal? animalConsultado = _animalRepository.Consultar(animalSelecionado);
+                //Animal? animalConsultado = _animalRepository.Consultar(animalSelecionado);
+                Animal? animalConsultado = Animals.FirstOrDefault(_ => _.Id == animalSelecionado?.Id) ?? _animalRepository.Consultar(animalSelecionado);
                 if (animalConsultado is not null) Animal = animalConsultado;
                 else Animal = null;
             }
@@ -177,6 +181,35 @@ namespace Gestor_De_Pule.src.Controllers
         internal void LoadAnimais(ListBox.ObjectCollection animaisSelecionados)
         {
             Animals = _animalRepository.LoadAnimais(animaisSelecionados);
+        }
+
+        internal void LoadAnimalWithListResultado(object selectedItem)
+        {
+            Animal? animal = selectedItem as Animal;
+            Animal = _animalRepository.LoadAnimalWithResultado(animal);
+        }
+        /// <summary>
+        /// Dispose Context;
+        /// </summary>
+        internal void Clear()
+        {
+            _animalRepository.Clear();
+        }
+        /// <summary>
+        /// Pega os items de uma lista faz um cast para animal e devolve como uma lista
+        /// </summary>
+        /// <param name="items"></param>
+        /// <returns>inteiro list </returns>
+        internal List<int> GetListId(ListBox.ObjectCollection items)
+        {
+            List<int> animals = new ();
+            List<Animal>? animals1 = items.Cast<Animal>().ToList();
+            if (animals1 != null)
+            {
+                animals = animals1.Select(a=> a.Id).ToList();
+            }
+            return animals;
+           
         }
     }
 }

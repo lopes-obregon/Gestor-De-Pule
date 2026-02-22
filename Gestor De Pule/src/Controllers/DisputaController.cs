@@ -18,10 +18,12 @@ namespace Gestor_De_Pule.src.Controllers
         //private RodadaRepository _rodadaRepository;
         private Repository _repository;
         //controllers externos
+        
         private AnimalController _animalController;
         public RodadaController RodadaController { get; private set; }
         private CaixaController _caixaController;
-        private ResultadoController _resultadoController;
+        public ResultadoController ResultadoController { get; }
+        private PuleController _puleController;
         /// <summary>
         /// Initializes a new instance of the DisputaCadastrosController class.
         /// </summary>
@@ -32,7 +34,7 @@ namespace Gestor_De_Pule.src.Controllers
             _animalController = new AnimalController(data);
             _caixaController = new CaixaController(data);
             RodadaController = new RodadaController(data);
-            _resultadoController = new ResultadoController(data);
+            ResultadoController = new ResultadoController(data);
 
         }
         public DisputaController()
@@ -45,9 +47,16 @@ namespace Gestor_De_Pule.src.Controllers
 
             RodadaController = new RodadaController(_repository.GetDataBase());
             _animalController = new AnimalController(_repository.GetDataBase());
-            _resultadoController = new ResultadoController(_repository.GetDataBase());
+            ResultadoController = new ResultadoController(_repository.GetDataBase());
             _caixaController = new CaixaController(_repository.GetDataBase());
+            _puleController = new PuleController(_repository.GetDataBase());
 
+        }
+        public DisputaController(bool isNew)
+        {
+            _repository = new Repository();
+            
+            DisputaRepository = new DisputaRepository(_repository.GetDataBase());
         }
         internal void AddAnimalRemovido(object animalSelecionadoUi)
         {
@@ -63,8 +72,12 @@ namespace Gestor_De_Pule.src.Controllers
         internal string AtualizarDados(string nomeDisputa, DateTime? date, ListBox.ObjectCollection items, int quantidadeRodadas)
         {
             bool sucess = false;
+            int i = 0;
             List<Animal>? animaisSelecionadosUi = items.Cast<Animal>().ToList();
             List<Animal>? animaisSelecionados = null;
+            RodadaController.Track();
+            //constando que a rodada ja foi rastreada
+            var rodada = RodadaController.Rodada;
             if (Animals is null)
             {
                 if (_animalController is not null)
@@ -91,39 +104,46 @@ namespace Gestor_De_Pule.src.Controllers
                     //percorrer os a lista de resultado para ver se tem algum animal novo caso tenha deve ser adicionado.
                     var animaisSemDisputa = animaisSelecionados.Where(an => !an.Resultados.Any(res => res.Disputa?.Id == Disputa.Id)).ToList();
                     //pego esses animais sem disputa e crio seus resultado para esse disputa
-                    foreach (var animalSemDisputa in animaisSemDisputa)
+                    if (Disputa.Rodadas is null)
+                        Disputa.Rodadas = DisputaRepository.LoadRodadas(Disputa).ToList();
+                    while(i < quantidadeRodadas)
                     {
-                        if (animalSemDisputa != null)
+                        var rodadaDisputa = Disputa.Rodadas[i];
+                        if(rodadaDisputa is not null)
                         {
-                            var animal = _animalController.IsTracked(animalSemDisputa);
-                            if (animal != null)
+                            if(animaisSemDisputa is not null)
                             {
-                                //criamos o resultado para essa disputa
-                                _resultadoController.NovoResultado();
-                                var resultado = _resultadoController.Resultado;
-                                if (resultado is not null)
-                                {
-                                    animal.Associete(resultado);
-                                    if (resultado.Disputa == null)
-                                        resultado.Disputa = Disputa;
-                                    Disputa.ResultadoList?.Add(resultado);
-                                }
-
+                                rodadaDisputa.ResultadoDestaRodada.RemoveAll(res=> !animaisSemDisputa.Any(a=>a.Id ==  res.Animal.Id));
                             }
                         }
+                        foreach (var animalSemDisputa in animaisSemDisputa)
+                        {
+                            if (animalSemDisputa != null)
+                            {
+                                var animal = _animalController.IsTracked(animalSemDisputa);
+                                if (animal != null)
+                                {
+                                    //criamos o resultado para essa disputa
+                                    ResultadoController.NovoResultado();
+                                    var resultado = ResultadoController.Resultado;
+                                    if (resultado is not null)
+                                    {
+                                        animal.Associete(resultado);
+                                        if (resultado.Disputa == null)
+                                            resultado.Disputa = Disputa;
+                                        // Disputa.ResultadoList?.Add(resultado);
+                                        rodadaDisputa.ResultadoDestaRodada.Add(resultado);
+                                    }
 
+                                }
+                            }
+
+                        }
+                        i++;
                     }
 
                 }
-                if (quantidadeRodadas > 1)
-                {
-
-                    RodadaController.Track();
-                    //constando que a rodada ja foi rastreada
-                    var rodada = RodadaController.Rodada;
-                    if (rodada != null)
-                        rodada.ResultadoDestaRodada = Disputa.ResultadoList;
-                }
+             
 
                 //sucess = DisputaRepository.UpdateDisputa(Disputa, animaisSelecionadosUi, AnimaisRemovidos);
                 sucess = DisputaRepository.Save();
@@ -231,7 +251,22 @@ namespace Gestor_De_Pule.src.Controllers
         {
             bool sucess = false;
             Disputa? disputaSelecionado = itemSelecionadoUi as Disputa;
-            if (disputaSelecionado == null) sucess = false;
+            int idDisputa = (int)itemSelecionadoUi;
+            if (disputaSelecionado == null)
+            {
+                //pode ser um id do tipo int
+                //carregar disputa por id
+                if (Disputas.Count > 0){
+                    Disputa = Disputas.FirstOrDefault(d => d.Id == idDisputa); 
+                    sucess = true;
+                }
+                else
+                    {
+                    Disputa = DisputaRepository?.ReadDisputa(idDisputa); 
+                    sucess = true; 
+                }
+                if (Disputa == null) sucess = false;
+            }
             else
             {
                 //Disputa = DisputaRepository.ReadDisputa(disputaSelecionado);
@@ -239,8 +274,8 @@ namespace Gestor_De_Pule.src.Controllers
                 sucess = true;
                 if (Disputa == null) sucess = false;
 
-                if (sucess)
-                    RodadaController.LoadRodada(Disputa.Id);
+               /* if (sucess)
+                    RodadaController.LoadRodada(Disputa.Id);*/
                 //_resultadoController.LoadResultado(Disputa.Id);
 
             }
@@ -424,11 +459,15 @@ namespace Gestor_De_Pule.src.Controllers
             if (Disputas is not null)
                 return Disputas.ToList();
             else
-                return DisputaRepository.GetDisputas()?.ToList();
+            {
+                Disputas = DisputaRepository.GetDisputas()?.ToList();
+                return Disputas?.ToList();
+            }
         }
 
         internal Disputa? BuscarDisputa(object disputaSelecionadaUi)
         {
+            
             Disputa? disputaSelecionado = disputaSelecionadaUi as Disputa;
             if (disputaSelecionado is not null && disputaSelecionado.Id != Disputa?.Id)
             {
@@ -451,6 +490,7 @@ namespace Gestor_De_Pule.src.Controllers
 
         internal string Cadastrar(string nomeDisputa, DateTime? date, ListBox.ObjectCollection items, int quantidadeRodadas)
         {
+            int i = 0;
             if (String.IsNullOrEmpty(nomeDisputa))
             {
                 return "Precisa De Um Nome Para Disputa!";
@@ -476,7 +516,10 @@ namespace Gestor_De_Pule.src.Controllers
                 }
 
 
+                
+                    
 
+                
                 var caixa = _caixaController.GetCaixaRepository().GetCaixa();
                 if (Disputa is null)
                 {
@@ -487,64 +530,78 @@ namespace Gestor_De_Pule.src.Controllers
                         DisputaRepository.AddContext(Disputa);
                     }
                 }
-                foreach (var animalUi in animaisSelecionados)
-                {
-                    if (animalUi is null)
-                        continue;
-
-                    //var resultado = new Resultado(animal);
-                    //var animal = _animalController.Repository.Consultar(animalUi);
-                    //var animal = DisputaRepository.DataBase.Animals.Find(animalUi.Id);
-                    var animal = _animalController.IsTracked(animalUi);
-                    if (animal is not null)
+               
+                
+                    //Para cada nova rodada devemos criar novas disputas.
+                    while (i < quantidadeRodadas)
                     {
-                        var resultado = new Resultado();
-                        //adiciona ao contexto
-                        //_resultadoController.ResultadoRepository.AddContext(resultado);
-                        //DisputaRepository.AddContext(resultado);
-
-                        animal.Associete(resultado);
-                        //resultado.Animal = animal;
-
-                        Disputa.Associete(resultado);
-                        resultado.Disputa = Disputa;
-                        //DisputaRepository.CheckDuplicate();
-                        if (resultado.Disputa is null)
-                            resultado.Disputa = Disputa;
-                        if (Disputa.Caixa is null)
-                            Disputa.Caixa = caixa;
-
-                        if (caixa is not null)
-                            caixa.Associete(Disputa);
-
-
-                        //sucess = _rodadaController.RodadaRepository.Save(rodada);
-                        //rodada.Associete(Disputa.ResultadoList);
-                        //_rodadaController.RodadaRepository.Update(rodada, Disputa);
-
-
-                    }
-
-
-
-
-                }
-                if (quantidadeRodadas > 1)
-                {
-                    if (RodadaController.Rodada is null)
                         RodadaController.NovaRodada(quantidadeRodadas);
+                        var rodada = RodadaController.Rodada;
+                        if (rodada is not null)
+                        {
+                            if (rodada.Nrodadas == 0)
+                                rodada.Nrodadas = (byte)quantidadeRodadas;
+                            if (rodada.Disputa == null)
+                                rodada.Disputa = Disputa;
 
-                    var rodada = RodadaController.Rodada;
-                    if (rodada is not null)
-                    {
-                        if (rodada.Nrodadas == 0)
-                            rodada.Nrodadas = (byte)quantidadeRodadas;
-                        if (rodada.Disputa == null)
-                            rodada.Disputa = Disputa;
-                        rodada?.Associete(Disputa.ResultadoList);
+                            foreach (var animalUi in animaisSelecionados)
+                            {
+                                if (animalUi is null)
+                                    continue;
 
+                                //var resultado = new Resultado(animal);
+                                //var animal = _animalController.Repository.Consultar(animalUi);
+                                //var animal = DisputaRepository.DataBase.Animals.Find(animalUi.Id);
+                                var animal = _animalController.IsTracked(animalUi);
+                                if (animal is not null)
+                                {
+                                    var resultado = new Resultado();
+                                    //adiciona ao contexto
+                                    //_resultadoController.ResultadoRepository.AddContext(resultado);
+                                    //DisputaRepository.AddContext(resultado);
+
+                                    animal.Associete(resultado);
+                                    //resultado.Animal = animal;
+                                    if (rodada.ResultadoDestaRodada is null)
+                                        rodada.ResultadoDestaRodada = new();
+                                    rodada.ResultadoDestaRodada.Add(resultado);
+                                    //Disputa.Associete(resultado);
+                                    resultado.Disputa = Disputa;
+                                    //DisputaRepository.CheckDuplicate();
+                                    if (resultado.Disputa is null)
+                                        resultado.Disputa = Disputa;
+                                    if (Disputa.Caixa is null)
+                                        Disputa.Caixa = caixa;
+
+                                    if (caixa is not null)
+                                        caixa.Associete(Disputa);
+
+
+                                    //sucess = _rodadaController.RodadaRepository.Save(rodada);
+                                    //rodada.Associete(Disputa.ResultadoList);
+                                    //_rodadaController.RodadaRepository.Update(rodada, Disputa);
+
+
+                                }
+                            }
+                            if (Disputa.Rodadas is null)
+                                Disputa.Rodadas = new();
+                            //verificar se já foi atribuida por algum motivo nas rodadas
+                            if(!Disputa.Rodadas.Any(rod => Object.ReferenceEquals(rod, rodada)))
+                                Disputa.Rodadas.Add(rodada); //caso for diferentes ele adiciona caso contrario não faz nada
+
+                        }
+                        i++;
                     }
-                }
+                        
+
+
+
+
+                    
+
+                
+               
                 sucess = DisputaRepository.Save();
                 if (!sucess)
                     return "Erro ao salvar A Disputa";
@@ -655,6 +712,107 @@ namespace Gestor_De_Pule.src.Controllers
                     Disputa.Rodadas = DisputaRepository?.LoadRodadas(Disputa);
                 }
             }
+        }
+
+        internal void LoadCaixa()
+        {
+            if (_caixaController.Caixa is null)
+                _caixaController.LoadCaixa();
+            Disputa.Caixa =  _caixaController.Caixa;
+        }
+
+        internal void loadPules()
+        {
+            //Disputa.Pules = DisputaRepository.LoadPules(Disputa);
+            var pules = Disputa.Pules;
+            
+            if(pules is  null || pules.Count() == 0)
+            {
+                _puleController.LoadPules();
+                var pulesCarregador = _puleController.Pules.Where(pu => pu.Disputa?.Id == Disputa.Id).ToList();
+                if (pulesCarregador is not null)
+                    pules = pulesCarregador;
+                
+            }
+            Disputa.Pules = pules;
+        }
+
+        internal string SalvarDisputa()
+        {
+            bool sucss = false;
+            sucss = DisputaRepository.Save();
+            if (sucss)
+                return $"Disputa {Disputa?.Nome} Salva com Sucesso!";
+            else
+                return $"Erro ao salvar a disputa {Disputa?.Nome} Salva com Sucesso!";
+        }
+        /// <summary>
+        /// Returns the repository instance used by this controller.
+        /// </summary>
+        /// <returns> The Repository instance.</returns>
+        internal Repository GetContext()
+        {
+            return _repository;
+        }
+        /// <summary>
+        /// Updata disputa and save context
+        /// </summary>
+        /// <param name="nomeDisputa"></param>
+        /// <param name="date"></param>
+        /// <param name="idsAnimais"></param>
+        /// <param name="quantidadeRodadas"></param>
+        /// <returns></returns>
+        internal string AtualizarDados(string nomeDisputa, DateTime? date, List<int> idsAnimais, int quantidadeRodadas)
+        {
+            var disputa = Disputa;
+            int nRodada = Disputa?.Rodadas?.Count ?? 0;
+            bool sucss = false;
+            string mensagem = String.Empty;
+            if(disputa != null)
+            {
+                if(!String.IsNullOrEmpty(nomeDisputa))
+                    if(!String.Equals(nomeDisputa, disputa.Nome))//se são diferentes
+                        disputa.Nome = nomeDisputa;
+                if (date != null)
+                    if (!disputa.DataEHora.Equals(date))
+                        disputa.DataEHora = (DateTime)date; // se data diferente troca
+                if(disputa.GetNMaiorRodada() < quantidadeRodadas)//considerando que a disputa a inda ta com as rodadas antigas;
+                {
+                    //devo criar as rodadas
+                    while(nRodada < quantidadeRodadas)
+                    {
+                        Rodada novaRodada = new Rodada();
+                        DisputaRepository?.AddContext(novaRodada);
+                        novaRodada.IdDisputa = disputa.Id;
+                        novaRodada.Nrodadas = (byte) (1 + nRodada);
+                        foreach(int animalId  in idsAnimais)
+                        {
+                            Resultado novoResultado = new Resultado();
+                            DisputaRepository?.AddContext(novoResultado);
+
+                            novoResultado.DisputaId = disputa.Id;
+                            novoResultado.AnimalId = animalId;
+                            if (novaRodada.ResultadoDestaRodada is null)
+                                novaRodada.ResultadoDestaRodada = new();
+                            if(!novaRodada.ResultadoDestaRodada.Contains(novoResultado))
+                                novaRodada.ResultadoDestaRodada.Add(novoResultado);
+                        }
+                        if(disputa.Rodadas is null)
+                            disputa.Rodadas = new();
+                        if(!disputa.Rodadas.Contains(novaRodada))
+                            disputa.Rodadas.Add(novaRodada);
+                        nRodada++;
+
+                        
+                    }
+                }
+                sucss = DisputaRepository?.Save() ?? false;
+            }
+            if (sucss)
+                mensagem = "Disputa Atualizada com sucesso!";
+            else
+                mensagem = "Erro Ao atualizar a disputa!";
+            return mensagem;
         }
     }
 }

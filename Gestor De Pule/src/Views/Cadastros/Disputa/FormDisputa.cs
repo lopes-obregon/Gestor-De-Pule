@@ -3,20 +3,28 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
 {
     public partial class FormDisputa : Form
     {
-        private DisputaController _controller = new DisputaController();
+        private DisputaController _controllerDisputa = new DisputaController(true);
+        private AnimalController _animController;
+        private ResultadoController _resultadoController;
         private bool _isAtt = false;
         public FormDisputa()
         {
             InitializeComponent();
             //_controller.InitAnimalController();
+            var context = _controllerDisputa.GetContext();
+            _animController = new AnimalController(context);
             InitComboBoxs();
         }
         public FormDisputa(object disputaUi)
         {
+            var context = _controllerDisputa.GetContext().GetDataBase();
+            _animController = new AnimalController(context);
+            _resultadoController = new ResultadoController(context);
             InitializeComponent();
             this.Text = "Atualizar Disputa";
+            int disputaId = int.Parse(disputaUi.ToString());
+            _controllerDisputa.LoadDisputa(disputaId);
             InitComboBoxs();
-            _controller.LoadDisputa(disputaUi);
             SetItens();
             _isAtt = true;
 
@@ -24,29 +32,33 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
 
         private void SetItens()
         {
-            var disputa = _controller.Disputa;
+            var disputa = _controllerDisputa.Disputa;
             if (disputa != null)
             {
                 textBoxNomeDaDisputa.Text = disputa.Nome;
                 dateTimePicker1.Value = disputa.DataEHora;
-
-                if(disputa.ResultadoList is not null )
+                disputa.ResultadoList = null;//limpar o lixo
+                numericUpDownQuantidadeRodadas.Value = disputa.GetNMaiorRodada();
+                if(disputa.Rodadas is not null )
                     {
-                    var list = disputa.ResultadoList.Select(_ => _.Animal).ToArray();
 
-                   if(list != null)
+                    //var list = disputa.ResultadoList.Select(_ => _.Animal).ToArray();
+                    //var list = disputa.Rodadas.SelectMany(rod => rod.ResultadoDestaRodada).Select(res => res.Animal);
+                    _resultadoController.LoadResultados();
+                    _animController.LoadAnimais();
+                    var listAnimalId = _resultadoController.Resultados.Where(res => res.DisputaId == disputa.Id).Select(res => res.AnimalId).ToList();
+                    var listAnimal = _animController.Animals.Where(a => listAnimalId.Contains(a.Id)).ToList();
+                   if(listAnimal != null)
                     {
-                        listBoxAnimaisToDisputa.Items.AddRange(list.Cast<object>().ToArray());
+                        listBoxAnimaisToDisputa.Items.AddRange(listAnimal.Cast<object>().ToArray());
+                        listBoxAnimaisToDisputa.DisplayMember = "Nome";
+                        listBoxAnimaisToDisputa.ValueMember = "Id";
                     }
                     
                 }
                 
             }
-            var rodada = _controller.RodadaController.Rodada;
-            if(rodada != null)
-            {
-                numericUpDownQuantidadeRodadas.Value = rodada.Nrodadas;
-            }
+            
         }
 
         /// <summary>
@@ -56,8 +68,9 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
         private void InitComboBoxs()
         {
             //DisputaController.LoadLists();
-            _controller.LoadLists();
-            var animais = _controller.Animals;
+            //_controllerDisputa.LoadLists();
+            _animController.LoadAnimais();
+            var animais = _animController.Animals;
             if (animais != null && animais.Count > 0)
                 comboBoxAnimaisCadastrados.Items.AddRange(animais.ToArray());
 
@@ -67,7 +80,7 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
         /// </summary>
         private void CancelarCadastro(object sender, EventArgs e)
         {
-            _controller.Clear();
+            _controllerDisputa.Clear();
             this.Close();
         }
         /// <summary>
@@ -78,12 +91,38 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
         private void AnimalToLisBoxAnimais(object sender, EventArgs e)
         {
             ComboBox? combo = sender as ComboBox;
+            int i = 0;
 
             if (combo != null)
                 if (combo.SelectedItem != null)
                 {
                     var animalSelecionadoUi = combo.SelectedItem;
-                    listBoxAnimaisToDisputa.Items.Add(animalSelecionadoUi);
+                    if(animalSelecionadoUi is not null)
+                    {
+                        _animController.AnimalSelecionado(animalSelecionadoUi);
+                        var animal = _animController.Animal;
+                        var disputa = _controllerDisputa.Disputa;
+                        if(disputa is not null && _isAtt)
+                        {
+                            //baseado na rodada antiga
+                            while(i < disputa.GetNMaiorRodada())
+                            {
+                                _resultadoController.NovoResultado();
+                                var resultado = _resultadoController.Resultado;
+                                if(resultado is not null)
+                                {
+                                    resultado.Animal = animal;
+                                    disputa.AddNewResultadoInRodada(resultado, i);
+                                }
+                                i++;
+
+                            }
+
+                        }
+                        
+                        listBoxAnimaisToDisputa.Items.Add(animalSelecionadoUi);
+
+                    }
 
                 }
         }
@@ -100,8 +139,33 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
             if (list != null)
                 if (list.SelectedItem != null)
                 {
+                    
                     if (_isAtt) {
-                        _controller.RemoveAnimalDisputa(list.SelectedItem);
+                        var animalSelecionado = list.SelectedItem;
+                       // _animController.LoadAnimalWithListResultado(list.SelectedItem);
+                        //var animal = _animController.Animal;
+                        var disputa = _controllerDisputa.Disputa;
+                        
+                        if (animalSelecionado != null)
+                        {
+                            if(disputa != null)
+                            {
+                                _animController.AnimalSelecionado(animalSelecionado);
+                                //var resultado = animal.Resultados.FirstOrDefault(_ => _.Disputa?.Id == disputa.Id);
+                                var resultados = _resultadoController.Resultados?.Where(res => res.AnimalId == _animController.Animal?.Id && res.DisputaId == disputa.Id).ToList();
+                                if(resultados != null)
+                                {
+                                    foreach (var resultado in resultados)
+                                    {
+                                        resultado.Disputa = null;
+                                        //disputa.RemoveResultado(resultado);
+                                        disputa.RemoveResultadoRodada(resultado);
+
+                                    }
+                                }
+                            }
+                        }
+                       // _controller.RemoveAnimalDisputa(animal);
                         list.Items.Remove(list.SelectedItem); 
                     }
 
@@ -126,6 +190,7 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
             string mensagem = String.Empty;
             date = DateTime.Parse(dateTimePicker1.Text);
             int quantidadeRodadas = (int)numericUpDownQuantidadeRodadas.Value;
+            var idsAnimais = _animController.GetListId(listBoxAnimaisToDisputa.Items);
             //_controller.InitRodadasController();
             if (String.IsNullOrEmpty(nomeDisputa))
             {
@@ -139,9 +204,10 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
             {
                 //mensagem = DisputaController.Cadastrar(nomeDisputa, date, listBoxAnimaisToDisputa.Items);
                 if (_isAtt)
-                    mensagem = _controller.AtualizarDados(nomeDisputa, date, listBoxAnimaisToDisputa.Items , quantidadeRodadas);
+                    //passar uma lista com o id dos animais
+                    mensagem = _controllerDisputa.AtualizarDados(nomeDisputa, date, idsAnimais, quantidadeRodadas);
                 else
-                    mensagem = _controller.Cadastrar(nomeDisputa, date, listBoxAnimaisToDisputa.Items, quantidadeRodadas);
+                    mensagem = _controllerDisputa.Cadastrar(nomeDisputa, date, listBoxAnimaisToDisputa.Items, quantidadeRodadas);
 
                 MessageBox.Show(mensagem);
                 //limpa os dados
@@ -153,7 +219,9 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
 
         private void FromClosed(object sender, FormClosedEventArgs e)
         {
-            _controller.Clear();
+            _controllerDisputa.Clear();
+            _animController.Clear();
+            _resultadoController.Clear();
         }
     }
 }

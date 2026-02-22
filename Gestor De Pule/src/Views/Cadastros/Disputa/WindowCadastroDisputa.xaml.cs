@@ -20,7 +20,7 @@ namespace Gestor_De_Pule.src.Views.Cadastros
         {
             _controller = new DisputaController();
             // DisputaController.();
-            _controller.LoadListDisputa();
+            _controller.LoadDisputs();
             var disputas = _controller.Disputas;
             listViewDisputaCadastrados.ItemsSource = null;
             //var disputas = DisputaController.Disputas;
@@ -41,7 +41,7 @@ namespace Gestor_De_Pule.src.Views.Cadastros
 
         private void AtualizarDisputaSelecionado(object sender, RoutedEventArgs e)
         {
-            var itemSelecionadoUi = listViewDisputaCadastrados.SelectedItem;
+            var itemSelecionadoUi = listViewDisputaCadastrados.SelectedValue;
            // var form = new FormAtualizarDisputaCadastrado(itemSelecionadoUi);
             var form = new FormDisputa(itemSelecionadoUi);
             form.ShowDialog();

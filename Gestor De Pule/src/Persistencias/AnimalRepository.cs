@@ -1,6 +1,7 @@
 ﻿
 using Gestor_De_Pule.src.Model;
 using Gestor_De_Pule.src.Models;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -161,6 +162,25 @@ namespace Gestor_De_Pule.src.Persistencias
                 return animaisTrack;
         }
 
+        internal Animal? LoadAnimalWithResultado(Animal? animal)
+        {
+            Animal? animal1 = null;
+            try
+            {
+                if(animal is not null)
+                {
+                    var db = _db.Animals.Include(an => an.Resultados).FirstOrDefault(a => a.Id == animal.Id);
+                    if (db != null)
+                        animal1 = db;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"Erro ao carregar o animal {animal.Id} - {animal.Nome}");
+            }
+            return animal1;
+        }
+
         internal List<Resultado> LoadResultados(Animal animal)
         {
             List<Resultado> resultados = new();
@@ -183,9 +203,16 @@ namespace Gestor_De_Pule.src.Persistencias
             {
                 if (_db is not null)
                 {
-                    animals = _db.Animals
-                        .ToList();
+                    var track = _db.ChangeTracker.Entries<Animal>().Select(e=> e.Entity).ToList();
+                    if(track is not null && track.Count > 0)
+                        animals = track.ToList();
+                    else
+                    {
+                        animals = _db.Animals
+                            .ToList();
 
+                        
+                    }
                 }
             }
             catch (Exception ex)

@@ -71,6 +71,7 @@
             labelVitória = new Label();
             labelTotalGanhadores = new Label();
             labelPagamentoPorPule = new Label();
+            button5 = new Button();
             menuStrip1.SuspendLayout();
             tableLayoutPanelFiltrosSelect.SuspendLayout();
             flowLayoutPanelButtons.SuspendLayout();
@@ -88,7 +89,7 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { arquivoToolStripMenuItem1, arquivoToolStripMenuItem, relatóriosToolStripMenuItem, financeiroToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(933, 24);
+            menuStrip1.Size = new Size(1093, 24);
             menuStrip1.TabIndex = 0;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -380,6 +381,7 @@
             flowLayoutPanel1.Controls.Add(button2);
             flowLayoutPanel1.Controls.Add(button3);
             flowLayoutPanel1.Controls.Add(button4);
+            flowLayoutPanel1.Controls.Add(button5);
             flowLayoutPanel1.Location = new Point(192, 481);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
             flowLayoutPanel1.Size = new Size(244, 100);
@@ -409,7 +411,7 @@
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 129F));
-            tableLayoutPanel2.Size = new Size(200, 208);
+            tableLayoutPanel2.Size = new Size(372, 208);
             tableLayoutPanel2.TabIndex = 7;
             // 
             // labelVitória
@@ -439,11 +441,21 @@
             labelPagamentoPorPule.TabIndex = 2;
             labelPagamentoPorPule.Text = "Pagamento Por Pule";
             // 
+            // button5
+            // 
+            button5.Location = new Point(127, 32);
+            button5.Name = "button5";
+            button5.Size = new Size(96, 23);
+            button5.TabIndex = 7;
+            button5.Text = "Nova Rodada";
+            button5.UseVisualStyleBackColor = true;
+            button5.Click += NovaRodada;
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(933, 593);
+            ClientSize = new Size(1093, 593);
             Controls.Add(tableLayoutPanel2);
             Controls.Add(flowLayoutPanel1);
             Controls.Add(tableLayoutPanel1);
@@ -515,5 +527,6 @@
         private TabControl tabControl;
         private TabPage tabPage1;
         private TabPage tabPage2;
+        private Button button5;
     }
 }

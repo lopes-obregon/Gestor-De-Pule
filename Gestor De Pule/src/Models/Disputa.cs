@@ -181,24 +181,56 @@ namespace Gestor_De_Pule.src.Models
         /// <returns>The name of the animal in first position, or "Animal Não encontrado!" if not found.</returns>
         internal string GetNomeAnimalVencedor()
         {
-            if (ResultadoList is not null && ResultadoList.Count > 0)
-            {
-                foreach (var resultado in ResultadoList)
+            string mensagem = String.Empty;
+            if(Rodadas is null || Rodadas.Count == 0){
+                if (ResultadoList is not null && ResultadoList.Count > 0)
                 {
-                    if (resultado is not null)
+                    foreach (var resultado in ResultadoList)
                     {
-                        if (resultado.Posição == 1)
+                        if (resultado is not null)
                         {
-                            if (resultado.Animal != null && !String.IsNullOrEmpty(resultado.Animal.Nome))
+                            if (resultado.Posição == 1)
                             {
-                                return resultado.Animal.Nome;
+                                if (resultado.Animal != null && !String.IsNullOrEmpty(resultado.Animal.Nome))
+                                {
+                                    return resultado.Animal.Nome;
+                                }
                             }
                         }
                     }
                 }
+                else
+                {
+                    mensagem  = "Animal Não encontrado!";
+                }
+                
             }
-            return "Animal Não encontrado!";
+            else
+            {
+                var vencedorList1 = ResultadoList?.FirstOrDefault(r=> r.Posição==1);
+                var vencedorRodadas = Rodadas.SelectMany(r => r.ResultadoDestaRodada)
+                    .Where(res => res.Posição == 1)
+                    .GroupBy(res => res.Animal.Nome)
+                    .Select(g => new { Nome = g.Key, Vitórias = g.Count() })
+                    .OrderByDescending(x => x.Vitórias)
+                    .First();
+               
+                if (vencedorList1 is not null && vencedorRodadas is not null)
+                    if (String.Equals(vencedorList1.Animal.Nome, vencedorRodadas.Nome, StringComparison.OrdinalIgnoreCase))
+                        mensagem = vencedorRodadas.Nome;
+                    else
+                        mensagem = $"Vencedor da Primeira Rodada {vencedorList1?.Animal.Nome} e Vencedor das Outras Rodadas {vencedorRodadas.Nome}";
+                else
+                    mensagem = "Erro ao calcular a posição";
+
+            }
+            return mensagem;
         }
+
+       
+
+       
+
         /// <summary>
         /// Counts and returns the number of winning bets where the first animal matches the winning animal.
         /// </summary>
@@ -259,12 +291,21 @@ namespace Gestor_De_Pule.src.Models
         /// is not possible.</returns>
         internal string PagamentoPorPule()
         {
-            int quantidadeDePulesVencedores = CntTotalGanhadoresPules();
+            //int quantidadeDePulesVencedores = CntTotalGanhadoresPules();
+            int quantidadeDePulesVencedores = 0;
             decimal totalArrecadado = 0.00m;
             decimal valorTaxa = 0.00m;
             decimal prêmioLiquido = 0.00m;
+            var caixa = Caixa;
+            var resultadoAnimalVencedorList1 = this.ResultadoList.FirstOrDefault(an=> an.Posição==1);
             if (Pules is not null && Pules.Count > 0)
             {
+                if(resultadoAnimalVencedorList1 is not null)
+                {
+                    quantidadeDePulesVencedores = Pules.SelectMany(p => p.Animais)
+                        .Where(an => an.Id == resultadoAnimalVencedorList1?.Animal?.Id).Count();
+
+                }
                 foreach (var pule in Pules)
                 {
                     if (pule is not null)
@@ -542,12 +583,12 @@ namespace Gestor_De_Pule.src.Models
             }
         }
 
-        internal void ajustarPosiçãoDosAnimais(object? tempoAnimal1, object? tempoAnimal2)
+        internal void ajustarPosiçãoDosAnimais(object? tempoAnimal1, object? tempoAnimal2, bool isResultados= false)
         {
             string? tempo1Str = tempoAnimal1?.ToString()?.Replace(',', '.');
             string? tempo2Str = tempoAnimal2?.ToString()?.Replace(',', '.');
             var rodadas = Rodadas;
-            if (rodadas is null || rodadas.Count == 0)
+            if (isResultados | rodadas is null || rodadas.Count == 0)
             {
                 if (!String.IsNullOrEmpty(tempo1Str) && !String.IsNullOrEmpty(tempo2Str))
                 {
@@ -557,22 +598,20 @@ namespace Gestor_De_Pule.src.Models
                         var resultados = this.ResultadoList;
                         if (resultados != null)
                         {
-                            var resultado = resultados[0];
-                            if (resultado is not null)
-                            {
+                            
                                 if (tempo1 < tempo2)
                                 {
-                                    resultado.Posição = 1;
+                                    resultados[0].Posição = 1;
                                     resultados[1].Posição = 2;
                                 }
                                 else
                                 {
                                     {
-                                        resultado.Posição = 2;
+                                        resultados[0].Posição = 2;
                                         resultados[1].Posição = 1;
                                     }
                                 }
-                            }
+                            
                         }
                     }
                 }
@@ -604,6 +643,101 @@ namespace Gestor_De_Pule.src.Models
                             }
                         }
                     }
+                }
+            }
+        }
+
+        internal string CntTotalGanhadoresPulesToLists()
+        {
+            string mensagem = String.Empty;
+            int cntVencedoresList1 = this.ResultadoList
+                .Count(res => res.Posição == 1);
+            int cntVencedorList2 = this.Rodadas.SelectMany(r => r.ResultadoDestaRodada)
+                .Count(res => res.Posição == 1);
+            mensagem = $"Rodada 1: {cntVencedoresList1} Ganhador , Demais Rodadas {cntVencedorList2} Ganhador(es)";
+            return mensagem;
+
+        }
+
+        internal bool RodadasInResultadosIsNull()
+        {
+            bool isNull = false;
+            if (Rodadas is not null && Rodadas.Count > 0)
+            {
+                foreach (var rodada in Rodadas)
+                {
+                    if (rodada is not null)
+                    {
+                        if (rodada.ResultadoDestaRodada is null)
+                            isNull = true;
+                    }
+                }
+            }
+            else
+            {
+                isNull = true;
+            }
+            return isNull;
+        }
+        /// <summary>
+        /// Returns the maximum Nrodadas value from the Rodadas collection.
+        /// </summary>
+        /// <returns>The highest Nrodadas value, or 0 if none.</returns>
+        internal decimal GetNMaiorRodada()
+        {
+            int maior = 0;
+            if(Rodadas is not null)
+            {
+                maior = Rodadas.Max(rod => rod.Nrodadas);
+            }
+            return maior;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="resultado"></param>
+        internal void RemoveResultado(Resultado resultado)
+        {
+            if(Rodadas is not null)
+            {
+                foreach(var rodada in Rodadas)
+                {
+                    if(rodada is not null && rodada.ResultadoDestaRodada is not null)
+                    {
+                        rodada.ResultadoDestaRodada.Remove(resultado);
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// Remove resultado da rodada
+        /// </summary>
+        /// <param name="resultado"></param>
+        internal void RemoveResultadoRodada(Resultado resultado)
+        {
+            if(Rodadas?.Count > 0)
+            {
+               foreach(var rodada in Rodadas)
+                {
+                    if(rodada is not null && rodada.ResultadoDestaRodada?.Count > 0)
+                    {
+                        rodada.ResultadoDestaRodada.Remove(resultado);
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// Adiciona apartir do index o resultado na rodada
+        /// </summary>
+        /// <param name="resultado"></param>
+        /// <param name="index"></param>
+        internal void AddNewResultadoInRodada(Resultado resultado, int index)
+        {
+            if(Rodadas is not null && Rodadas.Count > 0)
+            {
+                if(index < GetNMaiorRodada())
+                {
+                    Rodadas[index].ResultadoDestaRodada?.Add(resultado);
                 }
             }
         }
