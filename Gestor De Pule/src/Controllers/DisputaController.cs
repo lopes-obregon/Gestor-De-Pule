@@ -806,7 +806,31 @@ namespace Gestor_De_Pule.src.Controllers
                         
                     }
                 }
-                sucss = DisputaRepository?.Save() ?? false;
+                else if(disputa.GetNMaiorRodada() > quantidadeRodadas)
+               
+                {
+                    //se diminui a quantidade de rodadas
+                    while(disputa.Rodadas?.Count > quantidadeRodadas)
+                    {
+                        var rodada = disputa.Rodadas.Last();
+                        if(rodada is not null)
+                        {
+                            rodada.Disputa = null;
+                            if(rodada.ResultadoDestaRodada is not null)
+                            {
+                                foreach (var resultado in rodada.ResultadoDestaRodada)
+                                {
+                                    if(resultado is not null)
+                                    {
+                                        resultado.Disputa = null;
+                                    }
+                                }
+                            }
+                            disputa.Rodadas.Remove(rodada);
+                        }
+                    }
+                }
+                    sucss = DisputaRepository?.Save() ?? false;
             }
             if (sucss)
                 mensagem = "Disputa Atualizada com sucesso!";

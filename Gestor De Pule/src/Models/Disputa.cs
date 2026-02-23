@@ -741,5 +741,19 @@ namespace Gestor_De_Pule.src.Models
                 }
             }
         }
+
+        internal void AddNewResultadoInRodada(Resultado resultado)
+        {
+            if(Rodadas is not null && Rodadas?.Count > 0)
+            {
+                foreach(var rodada in Rodadas)
+                {
+                    if(rodada is not null && rodada.ResultadoDestaRodada is not null)
+                    {
+                        rodada.ResultadoDestaRodada.Add(resultado);
+                    }
+                }
+            }
+        }
     }
 }

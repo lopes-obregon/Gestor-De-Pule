@@ -112,6 +112,8 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
                                 if(resultado is not null)
                                 {
                                     resultado.Animal = animal;
+                                    resultado.Disputa = disputa;
+                                    
                                     disputa.AddNewResultadoInRodada(resultado, i);
                                 }
                                 i++;

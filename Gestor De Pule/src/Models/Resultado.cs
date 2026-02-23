@@ -6,11 +6,25 @@ namespace Gestor_De_Pule.src.Models
 {
     internal class Resultado
     {
-      
+      /// <summary>
+      /// Id resultado
+      /// </summary>
         public int Id { get; set; }
+        /// <summary>
+        /// Id -Disputa, get, set
+        /// </summary>
         public int DisputaId { get; internal set; }
+        /// <summary>
+        /// Disputa navegate, get,set
+        /// </summary>
         public Disputa? Disputa { get; set; } = null;
+        /// <summary>
+        /// Id -Animal, get, set
+        /// </summary>
         public int AnimalId { get; set; }
+        /// <summary>
+        /// Animal Navegate, get,set
+        /// </summary>
         public Animal? Animal { get; set; } = null;
         public TimeSpan Tempo { get; set; } = new TimeSpan();
         public byte Posição { get; set; }
