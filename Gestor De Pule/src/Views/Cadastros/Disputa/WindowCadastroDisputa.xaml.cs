@@ -10,10 +10,13 @@ namespace Gestor_De_Pule.src.Views.Cadastros
     public partial class WindowCadastroDisputa : Window
     {
         private DisputaController _controller;
+        private CaixaController _caixaController;
         public WindowCadastroDisputa()
         {
             InitializeComponent();
             InitList();
+            var context = _controller.GetContext();
+            _caixaController = new CaixaController(context.GetDataBase());
         }
 
         private void InitList()
@@ -51,14 +54,24 @@ namespace Gestor_De_Pule.src.Views.Cadastros
         private void ExcluirDisputa(object sender, RoutedEventArgs e)
         {
             var disputaSelecionadoUi = listViewDisputaCadastrados.SelectedItem;
-            if(disputaSelecionadoUi is not null)
+            bool sucess = false;
+            int id = 0;
+            if (disputaSelecionadoUi is not null)
             {
 
                 var resposta = System.Windows.MessageBox.Show("Deseja Realmente Remover ?", "Pergunta", MessageBoxButton.YesNoCancel);
                 if(resposta == MessageBoxResult.Yes)
                 {
-                    bool sucess = false;
-                    sucess = _controller.RemoveDisuptaSelecionado(disputaSelecionadoUi);
+                    
+                    id = Models.Disputa.ObjectToDisputaGetId(disputaSelecionadoUi);
+                    _controller.LoadDisputa(id);
+                    var disputa = _controller.Disputa;
+                    if (disputa != null)
+                    {
+                        _caixaController.LoadCaixaWithDisput(disputa.Id);
+                        sucess = _caixaController.RemoveDisput(disputa.Id);
+                        sucess = _controller.RemoveDisuptaSelecionado(disputa);
+                    }
                     if (sucess) System.Windows.MessageBox.Show("Disputa Removida com Sucesso!");
                     else
                         System.Windows.MessageBox.Show("Desculpe houve algum problema para Remover a disputa!");

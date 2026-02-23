@@ -183,5 +183,32 @@ namespace Gestor_De_Pule.src.Persistencias
                 _db.SaveChanges();
             }catch(Exception ex){ Log.Error(ex, "Erro ao atualizar ou salvar os dados do caixa!"); }
         }
+
+        internal Caixa? GetCaixaWithDisput(int id)
+        {
+            Caixa? caixa = null;
+            try
+            {
+                var track = _db.ChangeTracker.Entries<Caixa>().Select(e => e.Entity).FirstOrDefault(caixa => caixa.Open == IsOpen.Open);
+                if (track is not null)
+                    caixa = track;
+                else
+                {
+                    var db = _db.Caixas.Where(_ => _.Open == IsOpen.Open).Select(c => new Caixa()
+                    {
+                        Id = c.Id,
+                        TotalEmCaixa = c.TotalEmCaixa,
+                        Taxa = c.Taxa,
+                        Disputs = c.Disputs.Where(d => d.Id == id).ToList()
+                    }).FirstOrDefault();
+                    if (db is not null)
+                        caixa = db;
+                }
+            }catch(Exception ex)
+            {
+                Log.Error(ex, $"Erro ao Carregar o caixa para a disputa {id}");
+            }
+            return caixa;
+        }
     }
 }

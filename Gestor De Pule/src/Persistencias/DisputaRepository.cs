@@ -595,5 +595,22 @@ namespace Gestor_De_Pule.src.Persistencias
                 Log.Error(ex, $"Erro ao adicionar a Rodada {novaRodada.Id} ao contexto");
             }
         }
+
+        internal List<Rodada>? GetRodadas(int id)
+        {
+            List<Rodada>? ret = null;
+            try
+            {
+                var db = _dataBase.Disputas.Include(d => d.Rodadas).ThenInclude(rod=> rod.ResultadoDestaRodada).FirstOrDefault(d => d.Id == id);
+                if (db is not null)
+                    ret = db.Rodadas;
+
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"Erro ao carregar as rodadas de disputa {id}");
+            }
+            return ret;
+        }
     }
 }

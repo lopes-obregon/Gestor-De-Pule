@@ -755,5 +755,52 @@ namespace Gestor_De_Pule.src.Models
                 }
             }
         }
+        /// <summary>
+        /// Remove rodadas in list Rodadas
+        /// </summary>
+        internal void RemoveRodadas()
+        {
+            var rodadas = Rodadas;
+            if (rodadas is not null)
+            {
+                foreach (var rodada in rodadas)
+                {
+                    if (rodada is not null)
+                    {
+                        rodada.Disputa = null;
+
+                        if (rodada.ResultadoDestaRodada is not null)
+                        {
+                            foreach (var resultado in rodada.ResultadoDestaRodada)
+                            {
+                                if (resultado is not null)
+                                {
+                                    resultado.Disputa = null;
+
+                                }
+                            }
+                        }
+                        rodadas.Remove(rodada);
+                        if (rodadas.Count == 0)
+                            break;
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// Cast in object to disputs and return id
+        /// </summary>
+        /// <param name="disputaSelecionadoUi"></param>
+        /// <returns>id disput</returns>
+        internal static int ObjectToDisputaGetId(object disputaSelecionadoUi)
+        {
+            Disputa? disputa = disputaSelecionadoUi as Disputa;
+            int id = 0;
+            if( disputa != null)
+            {
+                id = disputa.Id;
+            }
+            return id;
+        }
     }
 }
