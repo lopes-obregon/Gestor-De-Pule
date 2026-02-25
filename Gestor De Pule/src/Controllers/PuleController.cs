@@ -92,7 +92,7 @@ namespace Gestor_De_Pule.src.Controllers
                 animais = AnimalController.Animals.Where(a => animalIds.Contains(a.Id)).ToList();
             //animais = Animals.Where(a => animalIds.Contains(a.Id)).ToList();
 
-            NovoPule(pagamento, animais, valor, númeroDoPule);
+            NovoPule(pagamento, animais, (decimal)valor, númeroDoPule);
             //pule = new Pule(apostadorSelecionado, pagamento, null, valor, númeroDoPule);
             //pule = new Pule(null, pagamento, null, valor, númeroDoPule);
             //sucess = Pule.Save(pule);
@@ -112,7 +112,7 @@ namespace Gestor_De_Pule.src.Controllers
 
         }
 
-        private void NovoPule(StatusPagamento pagamento, List<Animal> animais, float valor, int númeroDoPule)
+        private void NovoPule(StatusPagamento pagamento, List<Animal> animais, decimal valor, int númeroDoPule)
         {
             var apostador = ApostadorController.Apostador;
             var disputa = DisputaController.Disputa;
@@ -289,7 +289,7 @@ namespace Gestor_De_Pule.src.Controllers
         /// <param name="valor">New value to set for the 'Pule'.</param>
         /// <param name="númeroDoPule">New number to assign to the 'Pule'.</param>
         /// <returns>A success or error message indicating the result of the update operation.</returns>
-        internal string Update(ListBox.ObjectCollection animaisSelecionados, object? pagamento, float valor, int númeroDoPule)
+        internal string Update(ListBox.ObjectCollection animaisSelecionados, object? pagamento, decimal valor, int númeroDoPule)
         {
             bool sucess = false;
             AnimalController.LoadAnimais(animaisSelecionados);
@@ -333,6 +333,45 @@ namespace Gestor_De_Pule.src.Controllers
             
             return "Erro ao Atualizar o Pule!";
             
+        }
+
+        internal string Update(List<Animal> animais, object? pagamento, float valor, int númeroDoPule, int rodada)
+        {
+            throw new NotImplementedException();
+        }
+        /// <summary>
+        /// Gera novo pule
+        /// </summary>
+        /// <param name="apostadorSelecionado"></param>
+        /// <param name="pagamento"></param>
+        /// <param name="animaisSelecionados"></param>
+        /// <param name="valor"></param>
+        /// <param name="númeroDoPule"></param>
+        /// <param name="disputaSelecionado"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        internal void NovoPule(int apostadorSelecionado, object? pagamentoUi, List<Animal> animaisSelecionados, decimal valor, int númeroDoPule, int disputaSelecionado)
+        {
+            StatusPagamento pagamento;
+            if(pagamentoUi != null && Enum.TryParse(pagamentoUi.ToString(), out StatusPagamento result))
+            {
+                pagamento = result;
+            }
+            else
+            {
+                pagamento = StatusPagamento.Pendente;
+            }
+            Pule = new Pule(apostadorSelecionado, disputaSelecionado, pagamento, animaisSelecionados, valor, númeroDoPule);
+            _puleRepository.AddContext(Pule);
+
+        }
+
+        internal string SaveInContext()
+        {
+           bool sucess = false;
+           sucess  = _puleRepository.Save();
+            if (sucess)
+                return "Sucesso ao Salvar os Dados no contexto!";
+            else return "Erro ao Salvar os Dados no contexto!";
         }
     }
 }

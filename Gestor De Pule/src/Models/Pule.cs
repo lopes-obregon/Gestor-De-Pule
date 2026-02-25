@@ -13,21 +13,47 @@ namespace Gestor_De_Pule.src.Model
         }
      internal class Pule
     {
+        /// <summary>
+        /// Pule id
+        /// </summary>
         public int Id { get; set; }
+        /// <summary>
+        /// Id Apostador
+        /// </summary>
+        int ApostadorId { get; set; }
+        /// <summary>
+        /// Navegate Apostador
+        /// </summary>
         public Apostador? Apostador { get; set; }
+        /// <summary>
+        /// sustatus pagamento 
+        /// </summary>
         public StatusPagamento StatusPagamento { get; set; }
+        /// <summary>
+        /// Dia que foi criado
+        /// </summary>
         public DateTime Date { get; set; }
+        /// <summary>
+        /// Navegate Animais
+        /// </summary>
         public List<Animal>? Animais { get; set; }
+        /// <summary>
+        /// Id Disputa
+        /// </summary>
+        int DisputaId { get; set; }
+        /// <summary>
+        /// Disputa navegate
+        /// </summary>
         public Disputa? Disputa { get; set; }
         public int Número { get; set; }
-        public float Valor {  get; set; }
+        public decimal Valor {  get; set; }
         //Propriedade para chamar no listVew
         public string NomeAnimais => (string)AnimaisToString();
         public string ValorFormatado => Valor.ToString("C2");
         //construct
         public Pule() { }
 
-        public Pule(Apostador? apostador, Disputa disputa, StatusPagamento pagamento, List<Animal>? animais, float valor, int númeroDoPule)
+        public Pule(Apostador? apostador, Disputa disputa, StatusPagamento pagamento, List<Animal>? animais, decimal valor, int númeroDoPule)
         {
             Apostador = apostador;
             Disputa = disputa;
@@ -36,6 +62,16 @@ namespace Gestor_De_Pule.src.Model
             Animais = animais;
             Valor = valor;
             Número = númeroDoPule;
+        }
+
+        public Pule(int apostadorId, int disputaId, StatusPagamento pagamento, List<Animal>? animais, decimal valor, int númeroDoPule)
+        {
+            this.ApostadorId = apostadorId;
+            this.DisputaId = disputaId;
+            this.StatusPagamento = pagamento;
+            this.Animais = animais;
+            this.Valor = valor;
+            this.Número = númeroDoPule;
         }
 
         //sett gett métodos

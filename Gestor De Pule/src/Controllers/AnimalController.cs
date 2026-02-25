@@ -211,5 +211,22 @@ namespace Gestor_De_Pule.src.Controllers
             return animals;
            
         }
+
+     
+        /// <summary>
+        /// objets To animals in memory
+        /// </summary>
+        /// <param name="animaisSelecionados"></param>
+        /// <returns>List animals or new list</returns>
+        internal List<Animal> GetAnimals(ListBox.ObjectCollection animaisSelecionados)
+        {
+            var animais = animaisSelecionados.Cast<Animal>().ToList();
+            List<Animal> animals = new List<Animal>();
+            if(animais != null && animais.Count > 0)
+            {
+                animals = Animals.Where(a => animais.Any(an=> an.Id == a.Id)).ToList();
+            }
+            return animals;
+        }
     }
 }

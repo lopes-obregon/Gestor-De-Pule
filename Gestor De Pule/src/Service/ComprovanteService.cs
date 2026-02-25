@@ -12,9 +12,9 @@ namespace Gestor_De_Pule.src.Service
         {
            // var puleSelecionados = Pule.ToPules(puleSelecionadosUi);
             var puleSelecionados = PuleService.ObterPulesSelecionados(puleSelecionadosUi);
-            float projeção = 0;
-            float totalArrecadado = 0;
-            float valorTaxa = 0;
+            decimal projeção = 0.0m;
+            decimal totalArrecadado = 0;
+            decimal valorTaxa = 0;
             int indicieAtual = 0;
             PrintDocument printDocument = new PrintDocument();
             if (puleSelecionados != null && puleSelecionados.Count > 0)
@@ -62,7 +62,7 @@ namespace Gestor_De_Pule.src.Service
                             if(disputa is not null)
                             { 
                                 totalArrecadado = disputa.GetTotalArrecadado();
-                                valorTaxa = totalArrecadado * disputa.GetTaxaToFloat();
+                                valorTaxa = totalArrecadado * ((decimal)disputa.GetTaxaToFloat());
                                 projeção = totalArrecadado + pule.Valor - valorTaxa;
                                 projeção /= disputa.GetTotalAnimal(pule.Animais) + pule.Valor;
                                 projeção *= pule.Valor;

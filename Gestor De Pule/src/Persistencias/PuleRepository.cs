@@ -338,5 +338,21 @@ namespace Gestor_De_Pule.src.Persistencias
             }
             return sucess;
         }
+        /// <summary>
+        /// Add context pule
+        /// </summary>
+        /// <param name="pule"></param>
+        internal void AddContext(Pule pule)
+        {
+            try
+            {
+                _data.Pules.Add(pule);
+
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"Erro ao Adicionar o pule {pule.Id} ao contexto!");
+            }
+        }
     }
 }

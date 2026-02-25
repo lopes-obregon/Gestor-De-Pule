@@ -11,7 +11,6 @@ namespace Gestor_De_Pule.src.Controllers
         public Disputa? Disputa { get; private set; } = null;
         public List<Disputa> Disputas { get; private set; } = new List<Disputa>();
         public List<Animal> AnimaisRemovidos { get; private set; } = new List<Animal>();
-        public List<Disputa>? DisputasLocal { get; }
         public Disputa DisputaLocal { get; private set; }
         public DisputaRepository? DisputaRepository { get; private set; }
         //private CaixaRepository _caixaRepository;
@@ -250,8 +249,18 @@ namespace Gestor_De_Pule.src.Controllers
         internal string LoadDisputa(object itemSelecionadoUi)
         {
             bool sucess = false;
-            Disputa? disputaSelecionado = itemSelecionadoUi as Disputa;
-            int idDisputa = (int)itemSelecionadoUi;
+            int idDisputa = 0;
+            Disputa? disputaSelecionado = null;
+            try
+            {
+                idDisputa = (int)itemSelecionadoUi;
+
+            }
+            catch (InvalidCastException ex)
+            {
+               
+                disputaSelecionado = itemSelecionadoUi as Disputa;
+            }
             if (disputaSelecionado == null)
             {
                 //pode ser um id do tipo int
@@ -380,51 +389,7 @@ namespace Gestor_De_Pule.src.Controllers
             else
                 return animal;
         }
-        /// <summary>
-        /// Loads the local dispute data based on the selected UI object and ensures that bettors with invalid IDs are
-        /// reloaded.
-        /// </summary>
-        /// <param name="disputaSelecionadaUi">The selected dispute object from the UI.</param>
-        internal void LoadDisputaLocal(object disputaSelecionadaUi)
-        {
-            Disputa? disputaSelecionado = disputaSelecionadaUi as Disputa;
-            if (disputaSelecionado != null)
-                if (DisputasLocal is not null && DisputasLocal.Count > 0)
-                    DisputaLocal = DisputasLocal.FirstOrDefault(dis => dis.Id == disputaSelecionado.Id);
-            //verificar o apostador se tiver id 0 quer dizer que houve erro para carregar no pule
-            if (DisputasLocal is not null)
-            {
-                if (DisputaLocal.Pules is not null && DisputaLocal.Pules.Count > 0)
-                {
-                    foreach (var pule in DisputaLocal.Pules)
-                    {
-                        if (pule is not null)
-                        {
-                            if (pule.Apostador is not null && pule.Apostador.Id == 0)
-                            {
-                                //se for zero houve erro no carregamento do apostador, precisamos carregar novamente
-                                //pule.Apostador = Disputa.ReloadPule(pule);
-                                pule.ReloadApostador();
-                            }
-                        }
-                    }
-                }
-                if (DisputaLocal.ResultadoList.Count > 0)
-                {
-                    foreach (var resultado in DisputaLocal.ResultadoList)
-                    {
-                        if (resultado is not null)
-                        {
-                            if (resultado.Animal is null)
-                            {
-                                resultado.ReloadAnimal();
-                            }
-                        }
-                    }
-                }
-
-            }
-        }
+    
 
         internal bool IsDisputaValida(object disputaSelecionadoUi)
         {
@@ -692,7 +657,9 @@ namespace Gestor_De_Pule.src.Controllers
             }
             return equals;
         }
-
+        /// <summary>
+        /// Load Rodada if null
+        /// </summary>
         internal void LoadRodada()
         {
             if(Disputa is not null)

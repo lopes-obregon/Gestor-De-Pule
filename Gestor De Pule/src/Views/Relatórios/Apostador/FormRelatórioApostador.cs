@@ -44,7 +44,7 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Apostador
             _apostadorController.LoadApostador(apostadorSelecionadoUi);
             //RelatórioApostadorController.LoadPuLesDoApostador();
             _apostadorController.LoadPulesDoApostador();
-            float valorTotalApostado = 0.0f;
+            decimal valorTotalApostado = 0.0m;
             if (_apostadorController.Apostador is not null)
             {
                 labelApostador.Text = "APOSTADOR: " + _apostadorController.Apostador.Nome;

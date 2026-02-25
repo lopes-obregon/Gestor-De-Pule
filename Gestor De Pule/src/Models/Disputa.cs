@@ -12,6 +12,9 @@ namespace Gestor_De_Pule.src.Models
         public int Id { get; set; }
         public DateTime DataEHora { get; set; } = new DateTime();
         public string Nome { get; set; } = String.Empty;
+        /// <summary>
+        /// Por algum motivo está vindo com os animais associado as rodadas. Use como resumo ou o que preferir;
+        /// </summary>
         public List<Resultado>? ResultadoList { get; set; }
         public List<Pule>? Pules { get; set; }
         public Caixa? Caixa { get; set; }
@@ -352,9 +355,9 @@ namespace Gestor_De_Pule.src.Models
         /// Calculates the total amount collected by summing the 'Valor' of all non-null 'Pules' in the collection.
         /// </summary>
         /// <returns>The total collected amount as a float.</returns>
-        internal float GetTotalArrecadado()
+        internal decimal GetTotalArrecadado()
         {
-            float totalArrecadado = 0;
+            decimal totalArrecadado = 0;
             if (Pules is not null && Pules.Count > 0)
             {
                 foreach (var pule in Pules)
@@ -386,9 +389,9 @@ namespace Gestor_De_Pule.src.Models
         /// </summary>
         /// <param name="animais">A list of Animal objects to match against entries in 'Pules'.</param>
         /// <returns>The total value for the matching animal, or 0 if no matches are found.</returns>
-        internal float GetTotalAnimal(List<Animal> animais)
+        internal decimal GetTotalAnimal(List<Animal> animais)
         {
-            float totalAnimal = 0;
+            decimal totalAnimal = 0.0m;
             if (animais is not null)
             {
                 var animal = animais.First();
@@ -801,6 +804,30 @@ namespace Gestor_De_Pule.src.Models
                 id = disputa.Id;
             }
             return id;
+        }
+        /// <summary>
+        /// Add pule in rodada specifica
+        /// </summary>
+        /// <param name="nRodada"></param>
+        /// <param name="pule"></param>
+        internal void SetPulesRodada(int nRodada, Pule pule)
+        {
+            if(Rodadas is not null && Rodadas.Count > 0)
+            {
+                var rodada = Rodadas[nRodada - 1];
+                if (rodada != null)
+                {
+
+                    if (rodada.PulesDestaRodada is null)
+                    {
+                        rodada.PulesDestaRodada = new();
+                    }
+
+                    rodada.PulesDestaRodada.Add(pule);
+                }
+
+                
+            }
         }
     }
 }

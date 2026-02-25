@@ -38,7 +38,7 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Animal
                 labelAnimalNome.Text = $"{animal.Número} - {animal.Nome}";
                 labelTotalPules.Text = $"Total De Pules {animal.Pules.Count}";
                 int totalApostador = 0;
-                float totalApostado = 0.0f;
+                decimal totalApostado = 0.0m;
                 foreach (var pule in animal.Pules)
                 {
                     var puleBuscado = PuleController.ToPule(_animalController.SearchPule(pule));

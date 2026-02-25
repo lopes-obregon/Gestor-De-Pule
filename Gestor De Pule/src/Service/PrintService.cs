@@ -17,7 +17,7 @@ namespace Gestor_De_Pule.src.Service
         {
             PrintDocument printDocument = new PrintDocument();
             int pageLinha = 80, pageColuna = 20, cntTotalPule =0, cntTotalApostadores =0;
-            float cntTotalApostado = 0.0f;
+            decimal cntTotalApostado = 0.0m;
             Font font = new Font("Arial", 12);
             if (animal is null)
             {

@@ -52,7 +52,7 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Pule
             {
                 listViewPule.ItemsSource = pules;
                 labelTotalPule.Content = "Total De Pules: "+pules.Count;
-                float totalApostado = 0.0f;
+                decimal totalApostado = 0.0m;
                 int totalPagos = 0;
                 int totalPedente = 0;
                 foreach (var pule in pules)

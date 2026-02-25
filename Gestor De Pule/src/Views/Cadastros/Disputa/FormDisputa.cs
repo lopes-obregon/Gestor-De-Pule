@@ -12,7 +12,8 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
             InitializeComponent();
             //_controller.InitAnimalController();
             var context = _controllerDisputa.GetContext();
-            _animController = new AnimalController(context);
+            _animController = new AnimalController(context.GetDataBase());
+            _resultadoController = new ResultadoController(context.GetDataBase());
             InitComboBoxs();
         }
         public FormDisputa(object disputaUi)
@@ -223,7 +224,7 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
         {
             _controllerDisputa.Clear();
             _animController.Clear();
-            _resultadoController.Clear();
+            _resultadoController?.Clear();
         }
     }
 }
