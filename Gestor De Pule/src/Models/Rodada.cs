@@ -1,10 +1,10 @@
-﻿using Gestor_De_Pule.src.Model;
+﻿using Gestor_De_Pule.Migrations;
+using Gestor_De_Pule.src.Model;
 
 namespace Gestor_De_Pule.src.Models
 {
     internal class Rodada
     {
-        private int _quantidadeRodadas;
         /// <summary>
         /// id do pule
         /// </summary>
@@ -42,7 +42,17 @@ namespace Gestor_De_Pule.src.Models
 
         public Rodada(int quantidadeRodadas)
         {
-            _quantidadeRodadas = quantidadeRodadas;
+            Nrodadas = (byte)quantidadeRodadas;
+        }
+
+        public Rodada(Disputa disputa)
+        {
+            Disputa = disputa;
+        }
+
+        public Rodada(Disputa disputa, int nRodada) : this(disputa)
+        {
+            Nrodadas = (byte)nRodada;
         }
 
         internal void Associete(List<Resultado>? resultadoList)

@@ -1,4 +1,5 @@
-﻿using Gestor_De_Pule.src.Models;
+﻿using Gestor_De_Pule.src.Model;
+using Gestor_De_Pule.src.Models;
 using Gestor_De_Pule.src.Persistencias;
 
 namespace Gestor_De_Pule.src.Controllers
@@ -16,11 +17,12 @@ namespace Gestor_De_Pule.src.Controllers
         }
         public ResultadoController() { ResultadoRepository = new ResultadoRepository();}
 
-        internal void NovoResultado()
+        internal Resultado NovoResultado()
         {
             Resultado = new Resultado();
             ResultadoRepository.AddContext(Resultado);
             Resultados.Add(Resultado);
+            return Resultado;
             
         }
 
@@ -40,6 +42,20 @@ namespace Gestor_De_Pule.src.Controllers
         internal void Clear()
         {
             ResultadoRepository.Clear();
+        }
+
+        internal Resultado NovoResultado(Disputa disputa, Animal animal)
+        {
+            Resultado = new(disputa, animal);
+            ResultadoRepository.AddContext(Resultado);
+            return Resultado;
+        }
+
+        internal Resultado NovoResultado(Disputa disputa, Animal animal, Rodada rodada)
+        {
+            Resultado = new(disputa, animal, rodada);
+            ResultadoRepository.AddContext(Resultado);
+            return Resultado;
         }
     }
 }

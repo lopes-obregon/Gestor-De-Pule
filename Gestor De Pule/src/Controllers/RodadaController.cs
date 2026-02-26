@@ -47,10 +47,34 @@ namespace Gestor_De_Pule.src.Controllers
 
       
         //gera nova rodada sem parametros
-        internal void NovaRodada()
+        internal Rodada NovaRodada()
         {
             Rodada = new();
             RodadaRepository.AddContext(Rodada);
+            Rodada.ResultadoDestaRodada = new();
+            return Rodada;
+        }
+
+        internal Rodada NovaRodada(Disputa disputa)
+        {
+            Rodada = new(disputa);
+            RodadaRepository.AddContext(Rodada);
+            //Rodada.ResultadoDestaRodada = new();
+            return Rodada;
+        }
+        /// <summary>
+        /// Dispose Data base
+        /// </summary>
+        internal void Clear()
+        {
+            RodadaRepository?.Clear();
+        }
+
+        internal Rodada NovaRodada(Disputa disputa, int nRodada)
+        {
+            Rodada = new(disputa, nRodada);
+            RodadaRepository.AddContext(Rodada);
+            return Rodada;
         }
     }
 }

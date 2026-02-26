@@ -26,6 +26,14 @@ namespace Gestor_De_Pule.src.Models
         /// Animal Navegate, get,set
         /// </summary>
         public Animal? Animal { get; set; } = null;
+        /// <summary>
+        /// Id da rodada;
+        /// </summary>
+        public int RodadaId {  get; set; }
+        /// <summary>
+        /// Rodada nagegate
+        /// </summary>
+        public Rodada Rodada { get; }
         public TimeSpan Tempo { get; set; } = new TimeSpan();
         public byte Posição { get; set; }
 
@@ -34,6 +42,17 @@ namespace Gestor_De_Pule.src.Models
         public Resultado(Animal animal)
         {
             Animal = animal;
+        }
+
+        public Resultado(Disputa disputa, Animal animal) : this(animal)
+        {
+            Disputa = disputa;
+            //Animal = animal;
+        }
+
+        public Resultado(Disputa disputa, Animal animal, Rodada rodada) : this(disputa, animal)
+        {
+            Rodada = rodada;
         }
 
         internal static Resultado? BuscarResultado(Resultado resultadoUi)

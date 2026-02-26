@@ -43,6 +43,10 @@ namespace Gestor_De_Pule.src.Persistencias
                     var caixaDb = _db.Caixas.Include(caix => caix.Disputs).FirstOrDefault(caix => caix.Open == IsOpen.Open);
                     if (caixaDb != null)
                         caixa =  caixaDb;
+                    else
+                    {
+                        _db.Caixas.Add(caixa);
+                    }
                 }
                 
             }

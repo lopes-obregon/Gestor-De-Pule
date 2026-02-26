@@ -6,6 +6,8 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
         private DisputaController _controllerDisputa = new DisputaController(true);
         private AnimalController _animController;
         private ResultadoController _resultadoController;
+        private RodadaController _rdadaController;
+        private CaixaController _caixaController;
         private bool _isAtt = false;
         public FormDisputa()
         {
@@ -14,6 +16,9 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
             var context = _controllerDisputa.GetContext();
             _animController = new AnimalController(context.GetDataBase());
             _resultadoController = new ResultadoController(context.GetDataBase());
+            _rdadaController = new RodadaController(context.GetDataBase());
+            _caixaController = new CaixaController(context.GetDataBase());
+            _caixaController.LoadCaixa();
             InitComboBoxs();
         }
         public FormDisputa(object disputaUi)
@@ -100,7 +105,7 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
                     var animalSelecionadoUi = combo.SelectedItem;
                     if(animalSelecionadoUi is not null)
                     {
-                        _animController.AnimalSelecionado(animalSelecionadoUi);
+                        /*_animController.AnimalSelecionado(animalSelecionadoUi);
                         var animal = _animController.Animal;
                         var disputa = _controllerDisputa.Disputa;
                         if(disputa is not null && _isAtt)
@@ -121,7 +126,7 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
 
                             }
 
-                        }
+                        }*/
                         
                         listBoxAnimaisToDisputa.Items.Add(animalSelecionadoUi);
 
@@ -147,7 +152,7 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
                         var animalSelecionado = list.SelectedItem;
                        // _animController.LoadAnimalWithListResultado(list.SelectedItem);
                         //var animal = _animController.Animal;
-                        var disputa = _controllerDisputa.Disputa;
+                       /* var disputa = _controllerDisputa.Disputa;
                         
                         if (animalSelecionado != null)
                         {
@@ -167,7 +172,7 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
                                     }
                                 }
                             }
-                        }
+                        }*/
                        // _controller.RemoveAnimalDisputa(animal);
                         list.Items.Remove(list.SelectedItem); 
                     }
@@ -194,6 +199,7 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
             date = DateTime.Parse(dateTimePicker1.Text);
             int quantidadeRodadas = (int)numericUpDownQuantidadeRodadas.Value;
             var idsAnimais = _animController.GetListId(listBoxAnimaisToDisputa.Items);
+            int i = 0;
             //_controller.InitRodadasController();
             if (String.IsNullOrEmpty(nomeDisputa))
             {
@@ -210,7 +216,48 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
                     //passar uma lista com o id dos animais
                     mensagem = _controllerDisputa.AtualizarDados(nomeDisputa, date, idsAnimais, quantidadeRodadas);
                 else
-                    mensagem = _controllerDisputa.Cadastrar(nomeDisputa, date, listBoxAnimaisToDisputa.Items, quantidadeRodadas);
+                {
+                    var caixa = _caixaController.Caixa;
+                    if (caixa != null)
+                    {
+                        var disputa = _controllerDisputa.NovaDisputa(nomeDisputa, date, caixa);
+
+                        if (disputa != null)
+                        {
+                            if (disputa.Rodadas is null)
+                            {
+                                disputa.Rodadas = new();
+                            }
+                            var animais = _animController.Animals.Where(a => idsAnimais.Any(id => id == a.Id)).ToList();
+                            while (i < quantidadeRodadas)
+                            {
+
+                                var rodada = _rdadaController.NovaRodada(disputa, i+1);
+                                if(rodada != null)
+                                {
+                                    foreach(var animal in animais)
+                                    {
+                                        if(animal is not null)
+                                        {
+                                            var resultado = _resultadoController.NovoResultado(disputa,  animal, rodada);
+                                            if(resultado != null)
+                                            {
+                                                if(rodada.ResultadoDestaRodada is null)
+                                                    rodada.ResultadoDestaRodada = new();
+                                                rodada.ResultadoDestaRodada.Add(resultado);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                i++;
+                            }
+                        }
+                    }
+                   
+                    mensagem = _controllerDisputa.SaveContext();
+                }
+                   //mensagem = _controllerDisputa.Cadastrar(nomeDisputa, date, listBoxAnimaisToDisputa.Items, quantidadeRodadas);
 
                 MessageBox.Show(mensagem);
                 //limpa os dados
@@ -225,6 +272,7 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
             _controllerDisputa.Clear();
             _animController.Clear();
             _resultadoController?.Clear();
+            _rdadaController?.Clear();
         }
     }
 }

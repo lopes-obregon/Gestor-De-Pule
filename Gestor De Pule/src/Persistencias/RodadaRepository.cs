@@ -38,6 +38,13 @@ namespace Gestor_De_Pule.src.Persistencias
             }
             catch (Exception ex) { Log.Error(ex, $"Erro ao adicionar ao contexto a rodada {rodada?.Id}"); }
         }
+        /// <summary>
+        /// Dispose database
+        /// </summary>
+        internal void Clear()
+        {
+            _dataBase.Dispose();
+        }
 
         internal Rodada? isTrack(Rodada? rodada)
         {

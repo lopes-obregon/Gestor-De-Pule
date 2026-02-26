@@ -22,6 +22,10 @@ namespace Gestor_De_Pule.src.Controllers
         //Repository
         private PuleRepository _puleRepository;
         private Repository _repository;
+        /// <summary>
+        /// Return context database
+        /// </summary>
+        public Repository Repository { get { return _repository; } }
         /*private DisputaRepository _disputaRepository = new DisputaRepository();
         private CaixaRepository _caixaRepository = new();*/
 
@@ -111,7 +115,13 @@ namespace Gestor_De_Pule.src.Controllers
             else return "Algo Deu Errado No Cadastro Do Pule!";
 
         }
-
+        /// <summary>
+        /// Registra o novo pule
+        /// </summary>
+        /// <param name="pagamento"></param>
+        /// <param name="animais"></param>
+        /// <param name="valor"></param>
+        /// <param name="númeroDoPule"></param>
         private void NovoPule(StatusPagamento pagamento, List<Animal> animais, decimal valor, int númeroDoPule)
         {
             var apostador = ApostadorController.Apostador;
@@ -130,36 +140,6 @@ namespace Gestor_De_Pule.src.Controllers
                
             }
         }
-
-        internal static List<StatusPagamento>? GetStatusPagamento()
-        {
-            return Enum.GetValues(typeof(StatusPagamento)).Cast<StatusPagamento>().ToList();
-        }
-
-        internal  void LoadAnimais()
-        {
-            //AnimalController.LoadAnimais();
-            AnimalController.LoadAnimais();
-            //Animals = _animalController.Animals.ToList();
-            //Animals = AnimalController.Animals.ToList();
-        }
-
-        internal  void LoadLists()
-        {
-            //Disputas = Disputa.GetDisputas();
-           // Disputas = _disputaRepository.GetDisputas();
-            //AnimalController.LoadAnimais();
-            AnimalController.LoadAnimais();
-            //ApostadorController.LoadApostadores();
-            ApostadorController.LoadApostadores();
-            //Apostadors = ApostadorController.Apostadors.ToList();
-            //Apostadors = ApostadorController.Apostadors.ToList();
-            //Animals = AnimalController.Animals.ToList();
-           // Animals = AnimalController.Animals.ToList();
-            
-        }
-        
-        
         internal  void LoadPule(object puleSelecionadoUi)
         {
             Pule? puleSelecionado = puleSelecionadoUi as Pule;

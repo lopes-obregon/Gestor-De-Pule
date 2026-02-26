@@ -795,6 +795,26 @@ namespace Gestor_De_Pule.src.Controllers
                 mensagem = "Erro Ao atualizar a disputa!";
             return mensagem;
         }
+        /// <summary>
+        /// Nova Disputa
+        /// </summary>
+        /// <param name="nomeDisputa"></param>
+        /// <param name="date"></param>
+     
+        internal Disputa NovaDisputa(string nomeDisputa, DateTime? date, Caixa caixa)
+        {
+            Disputa = new Disputa(nomeDisputa, date, caixa);
+            DisputaRepository?.AddContext(Disputa);
+            return Disputa;
+        }
+
+        internal string SaveContext()
+        {
+            bool sucss = false;
+            sucss = DisputaRepository.Save();
+            if (sucss) return "Disputa Salva com sucesso!";
+            else return "Desculpe Algo deu errado !";
+        }
     }
 }
     

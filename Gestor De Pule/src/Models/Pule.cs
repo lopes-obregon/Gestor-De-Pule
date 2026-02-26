@@ -20,7 +20,7 @@ namespace Gestor_De_Pule.src.Model
         /// <summary>
         /// Id Apostador
         /// </summary>
-        int ApostadorId { get; set; }
+        public int ApostadorId { get; set; }
         /// <summary>
         /// Navegate Apostador
         /// </summary>
@@ -40,7 +40,7 @@ namespace Gestor_De_Pule.src.Model
         /// <summary>
         /// Id Disputa
         /// </summary>
-        int DisputaId { get; set; }
+        public int DisputaId { get; set; }
         /// <summary>
         /// Disputa navegate
         /// </summary>

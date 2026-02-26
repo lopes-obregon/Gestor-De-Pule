@@ -10,9 +10,14 @@ namespace Gestor_De_Pule.src.Views.Pule
     public partial class WindowPuleCadastrados : Window
     {
         private PuleController _puleController;
+        private AnimalController _animController;
+        private ApostadorController _apostadorController;
         public WindowPuleCadastrados()
         {
             _puleController = new ();
+            var context = _puleController.Repository;
+            _animController = new AnimalController(context.GetDataBase());
+            _apostadorController = new ApostadorController(context.GetDataBase());
             InitializeComponent();
             
             UpdateListViewPules();
@@ -22,7 +27,10 @@ namespace Gestor_De_Pule.src.Views.Pule
         {
             //PuleController.LoadPules();
             _puleController.LoadPules();
-           _puleController.LoadAnimais();
+            _animController.LoadAnimais();
+            _apostadorController.LoadApostadores();
+            AjusteNavegatePuleApostador();
+           //_puleController.LoadAnimais();
             //PuleController.LoadAnimais();
             listViewPules.ItemsSource = null;
             //if (PuleController.Pules is not null && PuleController.Pules.Count > 0)
@@ -39,6 +47,25 @@ namespace Gestor_De_Pule.src.Views.Pule
                 var animaisMaisApostados = animais.OrderByDescending(a=>a.Pules.Count).ToList();
                 ListBoxAnimaisMaisApostados.ItemsSource = null;
                 ListBoxAnimaisMaisApostados.ItemsSource = animaisMaisApostados;
+            }
+        }
+
+        private void AjusteNavegatePuleApostador()
+        {
+            var pules = _puleController.Pules;
+            var apostadores = _apostadorController.Apostadors;
+            if( apostadores is not null && apostadores.Count > 0)
+            {
+                if(pules is not null && pules.Count > 0)
+                {
+                    foreach (var pule in pules)
+                    {
+                        if (pule is not null)
+                        {
+                            pule.Apostador = apostadores.FirstOrDefault(a => a.Id == pule.ApostadorId);
+                        }
+                    }
+                }
             }
         }
 

@@ -8,7 +8,9 @@ namespace Gestor_De_Pule.src.Models
     internal class Disputa
     {
 
-
+        /// <summary>
+        /// id disputa
+        /// </summary>
         public int Id { get; set; }
         public DateTime DataEHora { get; set; } = new DateTime();
         public string Nome { get; set; } = String.Empty;
@@ -16,7 +18,14 @@ namespace Gestor_De_Pule.src.Models
         /// Por algum motivo está vindo com os animais associado as rodadas. Use como resumo ou o que preferir;
         /// </summary>
         public List<Resultado>? ResultadoList { get; set; }
+        /// <summary>
+        /// Navegate
+        /// </summary>
         public List<Pule>? Pules { get; set; }
+        /// <summary>
+        /// Id caixa
+        /// </summary>
+        public int CaixaId { get; set; }
         public Caixa? Caixa { get; set; }
         public decimal? TotalPago { get; set; }
         public StatusPagamento Pagamento { get; set; }
@@ -47,10 +56,25 @@ namespace Gestor_De_Pule.src.Models
         /// </summary>
         /// <param name="nome">The name of the dispute.</param>
         /// <param name="dateTime">The date and time of the dispute.</param>
-        public Disputa(string nome, DateTime dateTime)
+        public Disputa(string nome)
         {
             this.Nome = nome;
-            this.DataEHora = dateTime;
+           
+        }
+
+        public Disputa(string nomeDisputa, DateTime? date):this(nomeDisputa)
+        {
+           
+
+            DataEHora = date ?? DateTime.Now;
+            
+           
+
+
+        }
+        public Disputa(string nomeDisputa, DateTime? date, Caixa caixa) :this(nomeDisputa, date)
+        {
+            Caixa = caixa;
         }
 
 
