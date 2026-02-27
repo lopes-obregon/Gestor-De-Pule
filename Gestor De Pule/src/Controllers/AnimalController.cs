@@ -1,6 +1,7 @@
 ﻿using Gestor_De_Pule.src.Model;
 using Gestor_De_Pule.src.Models;
 using Gestor_De_Pule.src.Persistencias;
+using Gestor_De_Pule.src.Service;
 using System.Data;
 
 namespace Gestor_De_Pule.src.Controllers
@@ -14,7 +15,7 @@ namespace Gestor_De_Pule.src.Controllers
         private AnimalRepository _animalRepository { get;  set; }
         //Controllers
         public PuleController? _puleController { get; private set; } = null;
-        
+        private AnimalService _animalService { get; set; }
         public AnimalController()
         {
             _animalRepository = new AnimalRepository();
@@ -23,6 +24,7 @@ namespace Gestor_De_Pule.src.Controllers
         public AnimalController(object data)
         {
             _animalRepository  = new AnimalRepository(data);
+            _animalService = new AnimalService(data);
         }
         public AnimalController(PuleController puleController)
         {
@@ -227,6 +229,38 @@ namespace Gestor_De_Pule.src.Controllers
                 animals = Animals.Where(a => animais.Any(an=> an.Id == a.Id)).ToList();
             }
             return animals;
+        }
+        /// <summary>
+        /// Load animals with pules
+        /// </summary>
+        internal void LoadAnimaisWithPules()
+        {
+            Animals = _animalService.LoadAnimaisWithPules();
+        }
+        /// <summary>
+        /// Pesquisa no cache caso não tenha vai verificar no banco
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Lista de animais que estão linkado com o pule</returns>
+        internal List<Animal> GetAnimalsByIdPule(int id)
+        {
+            List<Animal> animais = new();
+            if(Animals != null)
+                try
+                {
+                    animais =  Animals.Where(a=> a.Pules.Any(pu=> pu.Id == id)).ToList();
+
+                }
+                catch (ArgumentNullException)
+                {
+                    animais = _animalService.GetAnimalsByIdPule(id);
+
+                }
+            
+            if (animais is null)
+                animais = new List<Animal>();
+            Animals = animais.Cast<Animal>().ToList();
+            return animais;
         }
     }
 }

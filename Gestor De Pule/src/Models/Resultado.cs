@@ -13,7 +13,7 @@ namespace Gestor_De_Pule.src.Models
         /// <summary>
         /// Id -Disputa, get, set
         /// </summary>
-        public int DisputaId { get; internal set; }
+        public int? DisputaId { get; internal set; }
         /// <summary>
         /// Disputa navegate, get,set
         /// </summary>

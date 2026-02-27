@@ -46,6 +46,34 @@ namespace Gestor_De_Pule.src.Persistencias
             _dataBase.Dispose();
         }
 
+        internal Rodada? GetById(int? rodadaId)
+        {
+            Rodada? rodada = null;
+            if (rodadaId != null)
+            {
+                try
+                {
+                    var track = _dataBase.ChangeTracker.Entries<Rodada>().Select(e => e.Entity).FirstOrDefault(r => r.Id == rodadaId);
+                    if (track != null)
+                    {
+                        rodada = track;
+                    }
+                    else
+                    {
+                        var db = _dataBase.Rodas.FirstOrDefault(r => r.Id == rodadaId);
+                        if(db != null)
+                        {
+                            rodada = db;
+                        }
+                    }
+                }catch(Exception ex)
+                {
+                    Log.Error(ex, $"Erro ao tentar carregar a rodada");
+                }
+            }
+            return rodada;
+        }
+
         internal Rodada? isTrack(Rodada? rodada)
         {
             Rodada? rodada1 = null;

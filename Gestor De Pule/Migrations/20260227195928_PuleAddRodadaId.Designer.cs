@@ -3,6 +3,7 @@ using System;
 using Gestor_De_Pule.src.Persistencias;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gestor_De_Pule.Migrations
 {
     [DbContext(typeof(DataBase))]
-    partial class DataBaseModelSnapshot : ModelSnapshot
+    [Migration("20260227195928_PuleAddRodadaId")]
+    partial class PuleAddRodadaId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.10");
@@ -103,7 +106,7 @@ namespace Gestor_De_Pule.Migrations
                     b.Property<int>("Número")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("RodadaId")
+                    b.Property<int>("RodadaId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("StatusPagamento")
@@ -260,7 +263,9 @@ namespace Gestor_De_Pule.Migrations
 
                     b.HasOne("Gestor_De_Pule.src.Models.Rodada", "Rodada")
                         .WithMany("PulesDestaRodada")
-                        .HasForeignKey("RodadaId");
+                        .HasForeignKey("RodadaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Apostador");
 

@@ -50,6 +50,14 @@ namespace Gestor_De_Pule.src.Model
         //Propriedade para chamar no listVew
         public string NomeAnimais => (string)AnimaisToString();
         public string ValorFormatado => Valor.ToString("C2");
+        /// <summary>
+        /// Rodada id
+        /// </summary>
+        public int? RodadaId { get; set; }
+        /// <summary>
+        /// Rodada navegate
+        /// </summary>
+        public Rodada? Rodada { get; set; }
         //construct
         public Pule() { }
 
@@ -72,6 +80,7 @@ namespace Gestor_De_Pule.src.Model
             this.Animais = animais;
             this.Valor = valor;
             this.Número = númeroDoPule;
+            Date = DateTime.Now;
         }
 
         //sett gett métodos
@@ -175,6 +184,18 @@ namespace Gestor_De_Pule.src.Model
                 }
             }
             catch { this.Apostador = null;}
+        }
+        /// <summary>
+        /// verifica se o item fornecido é um apostador e verifica se os ids são iguais
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns>true or false</returns>
+        internal bool IsEqualsApostador(object item)
+        {
+            Apostador? apostador = (Apostador?)item;
+            if(apostador != null)
+                if(ApostadorId == apostador.Id) return true;
+            return false;
         }
     }
 }

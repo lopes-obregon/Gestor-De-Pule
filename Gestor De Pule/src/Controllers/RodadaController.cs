@@ -1,16 +1,26 @@
 ﻿using Gestor_De_Pule.src.Model;
 using Gestor_De_Pule.src.Models;
 using Gestor_De_Pule.src.Persistencias;
+using Gestor_De_Pule.src.Service;
 
 namespace Gestor_De_Pule.src.Controllers
 {
     internal class RodadaController
     {
+        /// <summary>
+        /// Rodada cache
+        /// </summary>
         public Rodada? Rodada { get; private set; }
+        /// <summary>
+        /// List cache Rodadas
+        /// </summary>
+        public List<Rodada> Rodadas { get; private set; }
         public RodadaRepository RodadaRepository { get; private set; }
+        public RodadaService _rodaService { get; private set; }
         public RodadaController(object data)
         {
             RodadaRepository = new RodadaRepository(data);
+            _rodaService = new(data);
         }
         public RodadaController()
         {
@@ -79,6 +89,30 @@ namespace Gestor_De_Pule.src.Controllers
         {
             Rodada = new(disputa, nRodada);
             RodadaRepository.AddContext(Rodada);
+            return Rodada;
+        }
+        /// <summary>
+        /// set a Rodada in cache
+        /// </summary>
+        /// <param name="rodadaId"></param>
+        /// <returns>O id da rodada pesquisada</returns>
+        internal Rodada? GetById(int? rodadaId)
+        {
+
+            if(Rodadas is not null)
+            {
+                if(rodadaId is not  null)
+                    Rodada = Rodadas.FirstOrDefault(r => r.Id == rodadaId);
+            }
+            else if (Rodada != null)
+            {
+                if(Rodada.Id != rodadaId)
+                    Rodada = _rodaService.GetById(rodadaId);
+            }
+            else
+            {
+                Rodada = _rodaService.GetById(rodadaId);
+            }
             return Rodada;
         }
     }

@@ -615,5 +615,27 @@ namespace Gestor_De_Pule.src.Persistencias
             }
             return ret;
         }
+
+        internal Disputa? GetById(int idDisputa)
+        {
+            Disputa? disputa = null;
+            try
+            {
+                var track = _dataBase.ChangeTracker.Entries<Disputa>().Select(e => e.Entity).FirstOrDefault(d => d.Id == idDisputa);
+                if (track is not null)
+                    disputa = track;
+                else
+                {
+                    var disputaDb = _dataBase.Disputas.FirstOrDefault(d => d.Id == idDisputa);
+                    if (disputaDb is not null)
+                        disputa = disputaDb;
+                }
+            }
+            catch(Exception ex)
+            {
+                Log.Error(ex, $"Erro ao carregar a disputa id {idDisputa}");
+            }
+            return disputa;
+        }
     }
 }

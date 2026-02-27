@@ -354,5 +354,22 @@ namespace Gestor_De_Pule.src.Persistencias
                 Log.Error(ex, $"Erro ao Adicionar o pule {pule.Id} ao contexto!");
             }
         }
+        /// <summary>
+        /// get pule by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>pule or null</returns>
+        internal Pule? GetPuleById(int id)
+        {
+            try
+            {
+                return _data.Pules.FirstOrDefault(p => p.Id == id);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"Erro ao carregar o pule {id}");
+            }
+            return null;
+        }
     }
 }

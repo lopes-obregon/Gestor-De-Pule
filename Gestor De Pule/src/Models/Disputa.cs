@@ -874,5 +874,21 @@ namespace Gestor_De_Pule.src.Models
             //se retornar true significa que houve mudança
             return mudou;
         }
+        /// <summary>
+        /// Verifica se é a mesma disputa
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns>True para disputa igual ou False para disputa diferente</returns>
+        internal bool IsEquals(object item)
+        {
+            Disputa? disputa = item as Disputa;
+            bool isMesmo = false;
+            if(disputa != null)
+            {
+                if(disputa.Id == Id)
+                    isMesmo = true;
+            }
+            return isMesmo;
+        }
     }
 }

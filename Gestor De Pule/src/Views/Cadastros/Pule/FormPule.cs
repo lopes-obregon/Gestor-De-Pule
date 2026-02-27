@@ -10,14 +10,11 @@ namespace Gestor_De_Pule.src.Views.Pule
         private DisputaController _disputaController;
         private AnimalController _animalController;
         private ApostadorController _apostadorController;
+        private RodadaController _rodadaController;
         private bool isAtt = false;
         public FormPule()
         {
-            _disputaController = new DisputaController();
-            var context = _disputaController.GetContext();
-            _puleController = new PuleController(context.GetDataBase());
-            _animalController = new AnimalController(context.GetDataBase());
-            _apostadorController = new ApostadorController(context.GetDataBase());
+            InitControlles();
             InitializeComponent();
             SetComboBox();
             
@@ -26,25 +23,47 @@ namespace Gestor_De_Pule.src.Views.Pule
         public FormPule(object puleSelecionado)
         {
             isAtt = true;
-            _puleController = new PuleController();
+            InitControlles();
             InitializeComponent();
             SetComboBox();
             Text = "Atualizar Pule";
-            _puleController.LoadFull(puleSelecionado);
+            //_puleController.LoadFull(puleSelecionado);
+            _puleController?.PulesSelecionado(puleSelecionado);
+            var pule = _puleController?.Pule;
+            if (pule != null)
+            {
+                _disputaController?.LoadDisputa(pule.DisputaId);
+            }
             SetComponent();
         }
-
+        /// <summary>
+        /// Inicializa os controllers
+        /// </summary>
+        private void InitControlles()
+        {
+            _disputaController = new DisputaController();
+            var context = _disputaController.GetContext();
+            _puleController = new PuleController(context.GetDataBase());
+            _animalController = new AnimalController(context.GetDataBase());
+            _apostadorController = new ApostadorController(context.GetDataBase());
+            _rodadaController = new RodadaController(context.GetDataBase());
+        }
+        /// <summary>
+        /// Seta os combox com os dados em memória
+        /// </summary>
         private void SetComponent()
         {
             comboBoxApostadores.Enabled = false;
             var itemsComboBoxApostadores = comboBoxApostadores.Items;
-            if (itemsComboBoxApostadores != null)
+            var pule = _puleController.Pule;
+            if (itemsComboBoxApostadores != null && pule != null)
             {
                 foreach (var item in itemsComboBoxApostadores)
                 {
                     if (item is not null)
                     {
-                        if (_puleController.ApostadorController.IsEquals(item))
+                        //if (_puleController.ApostadorController.IsEquals(item))
+                        if (pule.IsEqualsApostador(item))
                         {
                             //se for verdadeiro 
                             comboBoxApostadores.SelectedItem = item;
@@ -55,24 +74,26 @@ namespace Gestor_De_Pule.src.Views.Pule
             //set disputa combobox
             comboBoxDisputas.Enabled = false;
             var itemsCoboBoxDisputas = comboBoxDisputas.Items;
+            var disputa = _disputaController.Disputa;
             if (itemsCoboBoxDisputas != null)
             {
                 foreach (var item in itemsCoboBoxDisputas)
                 {
                     if (item is not null)
                     {
-                        if (_puleController.DisputaController.IsEquals(item))
+                        //if (_puleController.DisputaController.IsEquals(item))
+                        if (disputa != null && disputa.IsEquals(item))
                         {
                             comboBoxDisputas.SelectedItem = item;
                         }
                     }
                 }
             }
-            var pule = _puleController.Pule;
+            //var pule = _puleController.Pule;
             if (pule != null)
             {
 
-                var animaisPule = pule.Animais;
+                var animaisPule = _animalController.GetAnimalsByIdPule(pule.Id);
                 if (animaisPule is not null)
                 {
                     foreach (var animal in animaisPule)
@@ -80,9 +101,15 @@ namespace Gestor_De_Pule.src.Views.Pule
                         listBoxAnimaisSelecionados.Items.Add(animal);
                     }
                 }
-                numericUpDownValorPule.Value = (decimal)pule.Valor;
+                numericUpDownValorPule.Value = pule.Valor;
                 numericUpDownNúmeroPule.Value = pule.Número;
                 comboBoxPagamento.SelectedItem = pule.StatusPagamento;
+                var rodada = _rodadaController.GetById(pule.RodadaId);
+                if (rodada is not null)
+                {
+                    numericUpDownNRodada.Value = rodada.Nrodadas;
+
+                }
             }
         }
         /// <summary>

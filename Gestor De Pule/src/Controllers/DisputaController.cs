@@ -275,7 +275,8 @@ namespace Gestor_De_Pule.src.Controllers
                 }
                 else
                     {
-                    Disputa = DisputaRepository?.ReadDisputa(idDisputa); 
+                    //Disputa = DisputaRepository?.ReadDisputa(idDisputa); 
+                    Disputa = _disputaService.GetById(idDisputa);
                     sucess = true; 
                 }
                 if (Disputa == null) sucess = false;

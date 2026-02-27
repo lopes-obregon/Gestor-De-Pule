@@ -127,6 +127,17 @@ namespace Gestor_De_Pule.src.Service
             return mensagem;
         }
         /// <summary>
+        /// Lê do banco a disputa
+        /// </summary>
+        /// <param name="idDisputa"></param>
+        /// <returns>Disputa ou null se não encontrar a disputa</returns>
+        internal Disputa? GetById(int idDisputa)
+        {
+            var disputa = _disputaRepository.GetById(idDisputa);
+            return disputa;
+        }
+
+        /// <summary>
         /// Veja qual animal foi removido e ajusta a relação
         /// </summary>
         /// <param name="disputa"></param>

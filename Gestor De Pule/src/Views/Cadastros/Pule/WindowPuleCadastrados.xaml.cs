@@ -19,7 +19,7 @@ namespace Gestor_De_Pule.src.Views.Pule
             _animController = new AnimalController(context.GetDataBase());
             _apostadorController = new ApostadorController(context.GetDataBase());
             InitializeComponent();
-            
+            listViewPules.SelectedValuePath = "Id";
             UpdateListViewPules();
         }
 
@@ -27,7 +27,8 @@ namespace Gestor_De_Pule.src.Views.Pule
         {
             //PuleController.LoadPules();
             _puleController.LoadPules();
-            _animController.LoadAnimais();
+            //_animController.LoadAnimais();
+            _animController.LoadAnimaisWithPules();
             _apostadorController.LoadApostadores();
             AjusteNavegatePuleApostador();
            //_puleController.LoadAnimais();
@@ -40,7 +41,7 @@ namespace Gestor_De_Pule.src.Views.Pule
                 //listViewPules.ItemsSource = PuleController.Pules;
             listViewPules.Items.Refresh();
             //if(PuleController.Animals is not null && PuleController.Animals.Count > 0)
-            var animais = _puleController.AnimalController.Animals.ToList();
+            var animais = _animController.Animals.ToList();
             if(animais is not null && animais.Count > 0)
             {
                 //var animaisMaisApostados = PuleController.Animals.OrderByDescending(a=>a.Pules.Count).ToList();
@@ -80,7 +81,7 @@ namespace Gestor_De_Pule.src.Views.Pule
 
         private void FormAtualizarPule(object sender, RoutedEventArgs e)
         {
-            var puleSelecionado = listViewPules.SelectedItem;
+            var puleSelecionado = listViewPules.SelectedValue;
             if (puleSelecionado != null)
             {
                 _puleController.Dispose();

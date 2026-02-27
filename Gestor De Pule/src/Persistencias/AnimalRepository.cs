@@ -88,6 +88,38 @@ namespace Gestor_De_Pule.src.Persistencias
             }
             return sucess;
         }
+        /// <summary>
+        /// verifica em track se tem rastreado os animais, caso não tenha pesquisa no banco.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>List de animais</returns>
+        internal List<Animal>? GetAnimalsByIdPule(int id)
+        {
+            List<Animal> animals = null;
+            try
+            {
+                var track = _db.ChangeTracker.Entries<Animal>().Select(e => e.Entity).Where(a => a.Pules.Any(pu => pu.Id == id)).ToList();
+                if (track is not null)
+                    animals = track;
+                else
+                {
+                    var db = _db.Animals.Where(a => a.Pules.Any(pu => pu.Id == id)).ToList();
+                    if (db is not null && db.Count > 0)
+                        animals = db;
+                }
+            }
+            catch (ArgumentNullException)
+            {
+                var db = _db.Animals.Where(a => a.Pules.Any(pu => pu.Id == id)).ToList();
+                if (db is not null && db.Count > 0)
+                    animals = db;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"Erro ao tentar carregar os animais relacionado ao pule de id {id}");
+            }
+            return animals;
+        }
 
         internal List<Pule> GetPules(Animal animal)
         {
@@ -160,6 +192,25 @@ namespace Gestor_De_Pule.src.Persistencias
                 }
             }
                 return animaisTrack;
+        }
+        /// <summary>
+        /// Load animais with pules
+        /// </summary>
+        /// <returns>List animal with pules</returns>
+        internal List<Animal> LoadAnimaisWithPules()
+        {
+            List<Animal> animals = new List<Animal>();
+            try
+            {
+                var animais = _db.Animals.Include(a => a.Pules).ToList();
+                if (animais != null)
+                    animals = animais;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Erro ao tentar carregar os animais!");
+            }
+            return animals;
         }
 
         internal Animal? LoadAnimalWithResultado(Animal? animal)

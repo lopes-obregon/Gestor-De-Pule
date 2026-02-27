@@ -1,6 +1,7 @@
 ﻿using Gestor_De_Pule.src.Model;
 using Gestor_De_Pule.src.Models;
 using Gestor_De_Pule.src.Persistencias;
+using Gestor_De_Pule.src.Service;
 using Microsoft.EntityFrameworkCore;
 using System.Collections;
 
@@ -26,6 +27,7 @@ namespace Gestor_De_Pule.src.Controllers
         /// Return context database
         /// </summary>
         public Repository Repository { get { return _repository; } }
+        private PuleService _puleService;
         /*private DisputaRepository _disputaRepository = new DisputaRepository();
         private CaixaRepository _caixaRepository = new();*/
 
@@ -36,6 +38,7 @@ namespace Gestor_De_Pule.src.Controllers
         public PuleController(object context)
         {
             _puleRepository = new(context);
+            _puleService = new(context);
             //PuleLocal = puleSelecionadoUi as Pule;
            // Caixa = (Caixa?)_caixaRepository.GetCaixa();
         }
@@ -352,6 +355,20 @@ namespace Gestor_De_Pule.src.Controllers
             if (sucess)
                 return "Sucesso ao Salvar os Dados no contexto!";
             else return "Erro ao Salvar os Dados no contexto!";
+        }
+        /// <summary>
+        /// Seta  o pule selecionado
+        /// </summary>
+        /// <param name="puleSelecionado"></param>
+        /// <returns>Pule Selecionado e convertido</returns>
+      
+        internal Pule? PulesSelecionado(object puleSelecionado)
+        {
+            int id = (int) puleSelecionado;
+            Pule = Pules?.FirstOrDefault(p => p.Id == id);
+            if(Pule == null)
+                Pule = _puleService.GetById(id);
+            return Pule;
         }
     }
 }
