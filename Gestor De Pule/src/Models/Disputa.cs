@@ -853,5 +853,26 @@ namespace Gestor_De_Pule.src.Models
                 
             }
         }
+        /// <summary>
+        /// Verifica se houve mudança
+        /// </summary>
+        /// <param name="idsAnimais"></param>
+        /// <returns>bool true para houve mudança e false para que a lista continua a mesma</returns>
+        internal bool MudouAnimalRodada(List<int> idsAnimais)
+        {
+            bool mudou = false;
+            if(Rodadas is not null)
+            {
+                foreach(var rodada in Rodadas)
+                {
+                    if(rodada is not null)
+                    {
+                        mudou = idsAnimais.Any(id => !rodada.ResultadoDestaRodada.Any(res => res.AnimalId == id));
+                    }
+                }
+            }
+            //se retornar true significa que houve mudança
+            return mudou;
+        }
     }
 }

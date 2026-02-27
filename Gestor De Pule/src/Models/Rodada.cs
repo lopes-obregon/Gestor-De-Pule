@@ -12,7 +12,7 @@ namespace Gestor_De_Pule.src.Models
         /// <summary>
         /// Id de disputa
         /// </summary>
-        public int IdDisputa {  get; set; }
+        public int DisputaId {  get; set; }
         /// <summary>
         /// Navegate
         /// </summary>

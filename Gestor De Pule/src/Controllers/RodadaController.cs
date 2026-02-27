@@ -69,7 +69,12 @@ namespace Gestor_De_Pule.src.Controllers
         {
             RodadaRepository?.Clear();
         }
-
+        /// <summary>
+        /// New Rodada
+        /// </summary>
+        /// <param name="disputa"></param>
+        /// <param name="nRodada"></param>
+        /// <returns>Instancia de rodada</returns>
         internal Rodada NovaRodada(Disputa disputa, int nRodada)
         {
             Rodada = new(disputa, nRodada);

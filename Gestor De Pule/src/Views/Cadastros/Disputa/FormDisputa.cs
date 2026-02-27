@@ -214,7 +214,11 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
                 //mensagem = DisputaController.Cadastrar(nomeDisputa, date, listBoxAnimaisToDisputa.Items);
                 if (_isAtt)
                     //passar uma lista com o id dos animais
-                    mensagem = _controllerDisputa.AtualizarDados(nomeDisputa, date, idsAnimais, quantidadeRodadas);
+                    
+                { 
+                    //ajustar os elementos 
+                    mensagem = _controllerDisputa.AtualizarDados(nomeDisputa, date, idsAnimais, quantidadeRodadas); 
+                }
                 else
                 {
                     var caixa = _caixaController.Caixa;

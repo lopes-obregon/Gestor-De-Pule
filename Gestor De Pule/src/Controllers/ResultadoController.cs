@@ -50,7 +50,13 @@ namespace Gestor_De_Pule.src.Controllers
             ResultadoRepository.AddContext(Resultado);
             return Resultado;
         }
-
+        /// <summary>
+        /// Procedimento que seta em Resultado a nova instancia
+        /// </summary>
+        /// <param name="disputa"></param>
+        /// <param name="animal"></param>
+        /// <param name="rodada"></param>
+        /// <returns>Object Resultado</returns>
         internal Resultado NovoResultado(Disputa disputa, Animal animal, Rodada rodada)
         {
             Resultado = new(disputa, animal, rodada);

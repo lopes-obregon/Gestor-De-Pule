@@ -480,7 +480,10 @@ namespace Gestor_De_Pule.src.Persistencias
                 _dataBase.Resultados.Add(resultado);
             }catch(Exception ex) { Log.Error(ex, $"Erro ao adiconar ao contexto o resultado {resultado.Id}"); }
         }
-
+        /// <summary>
+        /// Salva contextos pedentes
+        /// </summary>
+        /// <returns>bool sucess</returns>
         internal bool Save()
         {
             bool sucess = false;
