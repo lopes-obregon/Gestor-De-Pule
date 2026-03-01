@@ -52,6 +52,7 @@ namespace Gestor_De_Pule.src.Controllers
                 DisputaController = new(context);
                 ApostadorController = new ApostadorController(context);
                 _caixaController = new CaixaController(context);
+                _puleService = new(context);
             }
         }
         internal  List<Animal>? AttComboBoxAnimais(object disputaSelecionadaUi)
@@ -160,14 +161,30 @@ namespace Gestor_De_Pule.src.Controllers
             Pules = _puleRepository.ReadPules().ToList();
         }
 
-        internal  string RemovePule(object puleSelecionadoUi)
+        internal  string RemovePule(object puleSelecionadoUi, List<Animal> animals)
         {
             bool sucess = false;
-            Pule? puleSelecionado = puleSelecionadoUi as Pule;
-            if(puleSelecionado is not null)
+            int idPule = 0;
+            if(puleSelecionadoUi is int)
             {
-               // sucess = Pule.Remove(puleSelecionado);
-                sucess = _puleRepository.Remove(puleSelecionado);
+                idPule = (int)puleSelecionadoUi;
+            }
+            if(idPule !=0)
+            {
+                // sucess = Pule.Remove(puleSelecionado);
+                try
+                {
+                    if(Pule.Id !=  idPule){
+                        Pule = Pules?.FirstOrDefault(p=> p.Id == idPule);
+                        sucess = _puleService.Remove(Pule.Id, Pules, animals);
+                    }
+                    //sucess = _puleRepository.Remove(idPule);
+
+                }
+                catch (NullReferenceException)
+                {
+                    sucess = _puleService.Remove(idPule, Pules, animals);
+                }
                 if (sucess) return "Pule Removido Com Sucesso!";
                 else return "Erro ao Remover O Pule!";
             }
@@ -272,55 +289,11 @@ namespace Gestor_De_Pule.src.Controllers
         /// <param name="valor">New value to set for the 'Pule'.</param>
         /// <param name="númeroDoPule">New number to assign to the 'Pule'.</param>
         /// <returns>A success or error message indicating the result of the update operation.</returns>
-        internal string Update(ListBox.ObjectCollection animaisSelecionados, object? pagamento, decimal valor, int númeroDoPule)
-        {
-            bool sucess = false;
-            AnimalController.LoadAnimais(animaisSelecionados);
-            _caixaController.LoadCaixa();
-            var caixa = _caixaController.Caixa;
-            var animais = AnimalController.Animals;
-            var pule = Pule;
-            if(pule is not null){
-                pule.Animais?.Clear();
-                foreach(var animal in animais)
-                {
-                    if(animal is not null)
-                    {
-                        pule.Animais?.Add(animal);
-                    }
-                }
-                    if (valor != pule.Valor)
-                    {
-                        pule.Valor = valor;
-                    }
-                    if(númeroDoPule != pule.Número)
-                {
-                    pule.Número = númeroDoPule;
-                }
-                if (pagamento is  StatusPagamento status)
-                {
-                    
-                    if (pule.StatusPagamento != status)
-                    {
-                        pule.StatusPagamento = status;
-                    }
-                }
-                if(caixa is not null)
-                {
-                    if(pule.StatusPagamento == StatusPagamento.Pago)
-                        caixa.TotalEmCaixa += (decimal) pule.Valor;
-                }
-                sucess = _puleRepository.Save();
-                if (sucess) return "Sucesso ao Atualizar O Pule!";
-            }
-            
-            return "Erro ao Atualizar o Pule!";
-            
-        }
+        
 
-        internal string Update(List<Animal> animais, object? pagamento, float valor, int númeroDoPule, int rodada)
+        internal string Update(List<Animal> animais, object? pagamento, decimal valor, int númeroDoPule, int rodadaId)
         {
-            throw new NotImplementedException();
+            return _puleService.Update(animais, pagamento, valor, númeroDoPule, rodadaId, Pule);
         }
         /// <summary>
         /// Gera novo pule

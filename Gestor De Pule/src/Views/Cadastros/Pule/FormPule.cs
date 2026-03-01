@@ -35,6 +35,7 @@ namespace Gestor_De_Pule.src.Views.Pule
                 _disputaController?.LoadDisputa(pule.DisputaId);
             }
             SetComponent();
+            numericUpDownNRodada.Enabled = false;
         }
         /// <summary>
         /// Inicializa os controllers
@@ -108,6 +109,7 @@ namespace Gestor_De_Pule.src.Views.Pule
                 if (rodada is not null)
                 {
                     numericUpDownNRodada.Value = rodada.Nrodadas;
+                    
 
                 }
             }
@@ -211,7 +213,7 @@ namespace Gestor_De_Pule.src.Views.Pule
                 if (isAtt)
                 {
                     var animais = _animalController.GetAnimals(animaisSelecionados);
-                    mensagem = _puleController.Update(animais, pagamento, (float)valor, númeroDoPule, rodada);
+                    mensagem = _puleController.Update(animais, pagamento, valor, númeroDoPule, rodada);
                 }
                 else
                 {

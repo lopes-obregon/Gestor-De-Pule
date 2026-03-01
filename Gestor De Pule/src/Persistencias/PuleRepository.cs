@@ -187,33 +187,21 @@ namespace Gestor_De_Pule.src.Persistencias
         /// <returns></returns>
         internal  bool Remove(Pule puleSelecionado)
         {
-            
+            bool sucess = false;
             try
             {
-                if (puleSelecionado is not null)
-                {
-                    _data.Pules.Attach(puleSelecionado);
-                    foreach (var animal in puleSelecionado.Animais)
-                    {
-                        if (animal is not null)
-                        {
-                            _data.Animals.Attach(animal);
-                            if (animal.Pules.Any(p => p.Id == puleSelecionado.Id))
-                            {
 
-                                animal.Pules.Remove(puleSelecionado);
-                                _data.Animals.Update(animal);
-                            }
-                        }
-                    }
-                    puleSelecionado.Animais.Clear();
-                    _data.Pules.Remove(puleSelecionado);
-                    _data.SaveChanges();
-                    return true;
-                }
+                _data.Pules.Remove(puleSelecionado);
+                _data.SaveChanges();
+                sucess= true;
+
             }
-            catch (Exception ex){ return false;  Log.Error(ex, "Erro ao Remover O pule {Id}", puleSelecionado.Id); }
-            return false;
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Erro ao Remover O pule {Id}", puleSelecionado.Id);
+                sucess=  false;
+            }
+            return sucess;
         }
         /// <summary>
         /// Atualizar o Pule com novos Animais;
@@ -294,8 +282,6 @@ namespace Gestor_De_Pule.src.Persistencias
             try
             {
                 return _data.Pules
-                    .Include(p => p.Apostador)
-                    .Include(p => p.Animais)
                     .ToList();
             }
             catch(Exception ex) {
@@ -370,6 +356,68 @@ namespace Gestor_De_Pule.src.Persistencias
                 Log.Error(ex, $"Erro ao carregar o pule {id}");
             }
             return null;
+        }
+        /// <summary>
+        /// Procuro no cache do ef caso não ache procura no db com o id do pule fornescido
+        /// </summary>
+        /// <param name="idPule"></param>
+        /// <returns>Animal list que pertence ao id do pule fornescido</returns>
+        internal List<Animal>? GetAnimaisToPule(int idPule)
+        {
+            List<Animal> animals = null;
+            try
+            {
+                var track = _data.ChangeTracker.Entries<Animal>().Select(e => e.Entity).Where(an => an.Pules.Any(p => p.Id == idPule)).ToList();
+                if(track != null)
+                {
+                    animals = track;
+                }
+                else
+                {
+                    var db = _data.Animals.Where(an => an.Pules.Any(p => p.Id == idPule)).Include(a => a.Pules).ToList();
+                    if (db is not null)
+                    {
+                        animals = db;
+                    }
+                }
+            }
+            catch (ArgumentNullException)
+            {
+                var db = _data.Animals.Where(an=> an.Pules.Any(p=> p.Id == idPule)).Include(a=> a.Pules).ToList();
+                if(db is not null)
+                {
+                    animals = db;
+                }
+            }
+            catch(Exception ex)
+            {
+                Log.Error(ex, $"Erro ao carregar os animais para o pule {idPule}");
+            }
+            return animals;
+        }
+
+        internal List<Pule> GetPulesToAnimal(int idAnimal)
+        {
+            List<Pule> pules = new();
+            try
+            {
+                var track = _data.ChangeTracker.Entries<Pule>().Select(e => e.Entity).Where(p => p.Animais.Any(a => a.Id == idAnimal)).ToList();
+                if (track is not null)
+                    pules = track;
+            }
+            catch (ArgumentNullException)
+            {
+                var db = _data.Pules.Where(p => p.Animais.Any(a => a.Id == idAnimal)).ToList();
+                if (db is not null)
+                {
+                    pules = db;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"Erro ao tentar carregar os pules com id ");
+            }
+            return pules;
         }
     }
 }

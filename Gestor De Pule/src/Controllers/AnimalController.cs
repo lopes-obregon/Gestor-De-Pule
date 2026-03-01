@@ -259,7 +259,7 @@ namespace Gestor_De_Pule.src.Controllers
             
             if (animais is null)
                 animais = new List<Animal>();
-            Animals = animais.Cast<Animal>().ToList();
+            //Animals = animais.Cast<Animal>().ToList();
             return animais;
         }
     }

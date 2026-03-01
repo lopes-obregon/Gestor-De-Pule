@@ -20,7 +20,7 @@ namespace Gestor_De_Pule.src.Model
         /// <summary>
         /// Id Apostador
         /// </summary>
-        public int ApostadorId { get; set; }
+        public int? ApostadorId { get; set; }
         /// <summary>
         /// Navegate Apostador
         /// </summary>
@@ -40,7 +40,7 @@ namespace Gestor_De_Pule.src.Model
         /// <summary>
         /// Id Disputa
         /// </summary>
-        public int DisputaId { get; set; }
+        public int? DisputaId { get; set; }
         /// <summary>
         /// Disputa navegate
         /// </summary>
@@ -93,14 +93,17 @@ namespace Gestor_De_Pule.src.Model
         internal String AnimaisToString()
         {
             string nomeAnimal = String.Empty;
-            for(int i =0; i < Animais.Count; i++)
+            if (Animais != null)
             {
-                if(Animais[i] is not null)
+                for (int i = 0; i < Animais.Count; i++)
                 {
-                    nomeAnimal += Animais[i].Nome;
-                    if (i+1 < Animais.Count)
+                    if (Animais[i] is not null)
                     {
-                        nomeAnimal += ", ";
+                        nomeAnimal += Animais[i].Nome;
+                        if (i + 1 < Animais.Count)
+                        {
+                            nomeAnimal += ", ";
+                        }
                     }
                 }
             }

@@ -99,10 +99,10 @@ namespace Gestor_De_Pule.src.Views.Pule
             var res = System.Windows.MessageBox.Show("Deseja Realmente remover O Pule ?", "Pergunta", System.Windows.MessageBoxButton.YesNoCancel);
             if(res == MessageBoxResult.Yes)
             {
-                var puleSelecionado = listViewPules.SelectedItem;
+                var puleSelecionado = listViewPules.SelectedValue;
                 String mensagem = String.Empty;
                 //mensagem = PuleController.RemovePule(puleSelecionado);
-                mensagem = _puleController.RemovePule(puleSelecionado);
+                mensagem = _puleController.RemovePule(puleSelecionado, _animController.Animals);
                 System.Windows.MessageBox.Show(mensagem);
             }
             UpdateListViewPules();
