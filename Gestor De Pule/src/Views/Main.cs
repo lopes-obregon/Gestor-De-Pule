@@ -17,10 +17,15 @@ namespace Gestor_De_Pule
     {
         private FinanceiroController _financeiroController;
         private DisputaController _disputaController;
+        private ResultadoController _resultadoController;
+        private AnimalController _animalController;
         public Main()
         {
             _financeiroController = new FinanceiroController();
             _disputaController = new DisputaController();
+            var context = _disputaController.GetContext();
+            _resultadoController = new(context.GetDataBase());
+            _animalController = new AnimalController(context.GetDataBase());
             InitializeComponent();
             //MainController.LoadLists();
             InitComboBox();
@@ -42,7 +47,7 @@ namespace Gestor_De_Pule
 
         private void TabControlComand()
         {
-            tabControl.TabPages[0].Text = "Rodada 1";
+            tabControl.TabPages[0].Text = "Resumo";
             tabControl.TabPages.RemoveAt(1);
         }
         /// <summary>
@@ -50,12 +55,15 @@ namespace Gestor_De_Pule
         /// </summary>
         private void InitComboBox()
         {
-            comboBoxDisputas.Items.Clear();
+            //comboBoxDisputas.Items.Clear();
+            comboBoxDisputas.DataSource = null;
             //var disputasCadastradas = MainController.ListarDisputas();
             var disputasCadastradas = _disputaController.ListarDisputas();
             if (disputasCadastradas is not null)
             {
-                comboBoxDisputas.Items.AddRange(disputasCadastradas.ToArray());
+                comboBoxDisputas.DisplayMember = "Nome";
+                comboBoxDisputas.ValueMember = "Id";
+                comboBoxDisputas.DataSource = disputasCadastradas;
             }
             /*comboBoxApostadores.Items.Clear();
             comboBoxAnimais.Items.Clear();
@@ -144,17 +152,17 @@ namespace Gestor_De_Pule
         /// <param name="e"></param>
         private void BuscarDisputa(object sender, EventArgs e)
         {
-            var disputaSelecionadaUi = comboBoxDisputas.SelectedItem;
+            int idDisputa = (int)comboBoxDisputas.SelectedValue;
             ClearDatagridDisputas();
             ClearTab();
-            if (disputaSelecionadaUi is null)
+            if (idDisputa ==0)
             {
                 //preencher o data grid
                 SetDataGridDisputa();
             }
             else
             {
-                SetDataGridDisputa(disputaSelecionadaUi);
+                SetDataGridDisputa(idDisputa);
             }
 
         }
@@ -171,25 +179,32 @@ namespace Gestor_De_Pule
             }
         }
 
-        private void SetDataGridDisputa(object disputaSelecionadaUi)
+        private void SetDataGridDisputa(int idDisputa)
         {
             int totalAbas = tabControl.TabPages.Count;
-            int cnt = 1;
+            int cnt = 0;
             //var disputaSelecionadoDb = MainController.BuscarDisputa(disputaSelecionadaUi);
-            _disputaController.BuscarDisputa(disputaSelecionadaUi);
+            _disputaController.GetById(idDisputa);
             _disputaController.LoadRodada();
-            var disputaSelecionadoDb = _disputaController.Disputa;
+            var disputa = _disputaController.Disputa;
 
-            if (disputaSelecionadoDb is not null)
+            if (disputa is not null)
             {
-                labelDisputaNome.Text = "Disputa:" + disputaSelecionadoDb.Nome;
-                foreach (var resultado in disputaSelecionadoDb.ResultadoList)
+                labelDisputaNome.Text = "Disputa:" + disputa.Nome;
+                if(disputa.ResultadoList is not null && disputa.ResultadoList.Count > 0)
                 {
-                    dataGridViewDisputas.Rows.Add(resultado.Animal.Nome, resultado.Posição, resultado.Tempo);
-                }
-                var rodadas = disputaSelecionadoDb.Rodadas;
+                    foreach (var resultado in disputa.ResultadoList)
+                    {
+                        if (resultado is not null)
+                        {
+                            dataGridViewDisputas.Rows.Add(resultado.Animal.Nome, resultado.Posição, resultado.Tempo);
 
-                if (rodadas is not null && rodadas.Count > 0 && rodadas[0].Nrodadas != totalAbas)
+                        }
+                    }
+                }
+                var rodadas = disputa.Rodadas;
+
+                if (rodadas is not null && rodadas.Count > 0 && disputa.GetNMaiorRodada() > totalAbas)
                 {
 
                     foreach (var rodada in rodadas)
@@ -230,6 +245,11 @@ namespace Gestor_De_Pule
         /// <param name="rodada"></param>
         private void NewDataGridPage(TabPage tabPage, Rodada rodada)
         {
+            if (rodada.ResultadoDestaRodada is null)
+
+                _resultadoController.LoadResultados();
+            rodada.ResultadoDestaRodada = _resultadoController.GetResultados(rodada.Id);
+
             DataGridView dataGridView = new DataGridView();// novo data grid
             dataGridView.Dock = DockStyle.Fill; // ocupa toda a tela
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -237,6 +257,7 @@ namespace Gestor_De_Pule
             dataGridView.Columns.Add("nome", "Nome");
             dataGridView.Columns.Add("posição", "Posição");
             dataGridView.Columns.Add("tempo", "Tempo");
+                
             var resultados = rodada.ResultadoDestaRodada;  //lista que contem os animais da rodada
 
             if (resultados is not null && resultados.Count > 0)
@@ -246,7 +267,7 @@ namespace Gestor_De_Pule
                     if (resultado is not null)
                     {
 
-                        var animal = resultado.Animal;
+                        var animal = _animalController.GetAnimalById(resultado.AnimalId);
                         if (resultado is not null)
                         {
                             if (animal is not null)

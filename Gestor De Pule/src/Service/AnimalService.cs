@@ -21,6 +21,16 @@ namespace Gestor_De_Pule.src.Service
         {
             return _animalRepository.LoadAnimaisWithPules();
         }
+        /// <summary>
+        /// Chama o repository para buscar o animal pelo id
+        /// </summary>
+        /// <param name="animalId"></param>
+        /// <returns>O animal encontrado ou não no banco</returns>
+        internal Animal? GetAnimalById(int animalId)
+        {
+            return _animalRepository.GetAnimalById(animalId);
+
+        }
 
         internal List<Animal>? GetAnimalsByIdPule(int id)
         {

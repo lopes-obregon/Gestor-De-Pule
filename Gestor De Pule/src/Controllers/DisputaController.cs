@@ -751,6 +751,28 @@ namespace Gestor_De_Pule.src.Controllers
             if (sucss) return "Disputa Salva com sucesso!";
             else return "Desculpe Algo deu errado !";
         }
+        /// <summary>
+        /// Obtem a disputa pelo id fornescido.
+        /// </summary>
+        /// <param name="idDisputa"></param>
+        /// <returns>Disputa encontrada caso contratrio null</returns>
+        internal Disputa? GetById(int idDisputa)
+        {
+            //primeiro verifica na memória
+            if (Disputa is not  null)
+            {
+                if (Disputa.Id != idDisputa)
+                {
+                    Disputa = Disputas.FirstOrDefault(d => d.Id == idDisputa) ?? _disputaService.GetById(idDisputa);
+                }
+            }
+            else
+            {
+                Disputa = Disputas.FirstOrDefault(d => d.Id == idDisputa) ?? _disputaService.GetById(idDisputa);
+            }
+
+                return Disputa;
+        }
     }
 }
     

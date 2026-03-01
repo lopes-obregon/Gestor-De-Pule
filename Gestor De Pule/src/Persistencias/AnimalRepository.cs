@@ -89,6 +89,33 @@ namespace Gestor_De_Pule.src.Persistencias
             return sucess;
         }
         /// <summary>
+        /// Busca o animal conforme o id fornescido
+        /// </summary>
+        /// <param name="animalId"></param>
+        /// <returns>O animal track ou db</returns>
+        internal Animal? GetAnimalById(int animalId)
+        {
+            Animal animal = null;
+            try
+            {
+                var track = _db.ChangeTracker.Entries<Animal>().Select(e => e.Entity).FirstOrDefault(a => a.Id == animalId);
+                if (track is not null)
+                    animal = track;
+                else
+                {
+                    var db = _db.Animals.FirstOrDefault(a => a.Id == animalId);
+                    if (db is not null)
+                        animal = db;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"Erro ao tentar buscar o animal com o id {animalId}");
+            }
+            return animal;
+        }
+
+        /// <summary>
         /// verifica em track se tem rastreado os animais, caso não tenha pesquisa no banco.
         /// </summary>
         /// <param name="id"></param>

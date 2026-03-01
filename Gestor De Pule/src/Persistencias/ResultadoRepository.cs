@@ -239,5 +239,33 @@ namespace Gestor_De_Pule.src.Persistencias
         {
             _db.Dispose();
         }
+        /// <summary>
+        /// verifica se tem rastreio dos resultados caso não tenha procura no banco
+        /// </summary>
+        /// <param name="idRodada"></param>
+        /// <returns>lista de resultados ou null se não achar</returns>
+        internal List<Resultado>? ReadResultadosByidRodada(int idRodada)
+        {
+            List<Resultado> resultados = null;
+            try
+            {
+                var track = _db.ChangeTracker.Entries<Resultado>().Select(e => e.Entity).Where(rod => rod.RodadaId == idRodada).ToList();
+                if (track is not null && track.Count > 0)
+                    resultados = track;
+                else
+                {
+                    var db = _db.Resultados.Where(rod => rod.RodadaId == idRodada).ToList();
+                    if (db is not null && db.Count > 0)
+                    {
+                        resultados = db;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"Erro ao tentar carregar os resultados da Rodada {idRodada}");
+            }
+            return resultados;
+        }
     }
 }

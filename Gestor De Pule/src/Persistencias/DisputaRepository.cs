@@ -525,18 +525,31 @@ namespace Gestor_De_Pule.src.Persistencias
             }
             return disputa1;
         }
-
+        /// <summary>
+        /// Load rodadas list, com id da disputa
+        /// </summary>
+        /// <param name="disputa"></param>
+        /// <returns>Rodada list </returns>
         internal List<Rodada>? LoadRodadas(Disputa disputa)
         {
             List<Rodada> rodadas = null;
             try
             {
-                var disputaDb = _dataBase.Disputas.Include(_ => _.Rodadas)
+                var track = _dataBase.ChangeTracker.Entries<Rodada>().Select(e=> e.Entity).Where(rod=> rod.DisputaId == disputa.Id).ToList();
+                if(track is not null && track.Count > 0)
+                    rodadas = track;
+                else
+                {
+                    var db = _dataBase.Rodas.Where(rod=> rod.DisputaId==disputa.Id).ToList();
+                    if(db is not null)
+                        rodadas = db;
+                }
+                /*var disputaDb = _dataBase.Disputas.Include(_ => _.Rodadas)
                     .ThenInclude(rod=> rod.ResultadoDestaRodada)
                     
                     .FirstOrDefault(_ => _.Id == disputa.Id);
                 if (disputaDb is not null && disputaDb.Rodadas is not null)
-                    rodadas = disputaDb.Rodadas;
+                    rodadas = disputaDb.Rodadas;*/
             }
             catch (Exception ex)
             {
