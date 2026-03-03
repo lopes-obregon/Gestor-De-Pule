@@ -1,5 +1,6 @@
 ﻿using Gestor_De_Pule.src.Model;
 using Gestor_De_Pule.src.Models;
+using Microsoft.AspNetCore.Mvc.Razor.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -72,6 +73,34 @@ namespace Gestor_De_Pule.src.Persistencias
                 }
             }
             return rodada;
+        }
+        /// <summary>
+        /// Obtem a rodada com o id da disputa fornescida
+        /// </summary>
+        /// <param name="idDisputa"></param>
+        /// <returns>As RODADAS QUE TEM O ID DA DISPUTA ou null caso contrario</returns>
+        internal List<Rodada>? GetByIdRodadas(int idDisputa)
+        {
+            List<Rodada> rodadas = null;
+            try
+            {
+                var track = _dataBase.ChangeTracker.Entries<Rodada>().Select(e => e.Entity).Where(r => r.DisputaId == idDisputa).ToList();
+                if (track is not null && track.Count > 0)
+                    rodadas = track;
+                else
+                {
+                    var db = _dataBase.Rodas.Where(r => r.DisputaId == idDisputa).ToList();
+                    if(db != null)
+                    {
+                        rodadas = db;
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                Log.Error(ex, $"Erro ao tentar carregar a disputa com id {idDisputa}");
+            }
+            return rodadas;
         }
 
         internal Rodada? isTrack(Rodada? rodada)

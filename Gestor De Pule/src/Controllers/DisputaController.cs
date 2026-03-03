@@ -8,7 +8,7 @@ namespace Gestor_De_Pule.src.Controllers
     class DisputaController
     {
         public List<Animal> Animals { get; set; } = new List<Animal>();
-        public Disputa? Disputa { get; private set; } = null;
+        public Disputa? Disputa => _disputaService.Disputa;
         public List<Disputa> Disputas { get; private set; } = new List<Disputa>();
         public List<Animal> AnimaisRemovidos { get; private set; } = new List<Animal>();
         public Disputa DisputaLocal { get; private set; }
@@ -254,45 +254,8 @@ namespace Gestor_De_Pule.src.Controllers
         {
             bool sucess = false;
             int idDisputa = 0;
-            Disputa? disputaSelecionado = null;
-            try
-            {
-                idDisputa = (int)itemSelecionadoUi;
-
-            }
-            catch (InvalidCastException ex)
-            {
-               
-                disputaSelecionado = itemSelecionadoUi as Disputa;
-            }
-            if (disputaSelecionado == null)
-            {
-                //pode ser um id do tipo int
-                //carregar disputa por id
-                if (Disputas.Count > 0){
-                    Disputa = Disputas.FirstOrDefault(d => d.Id == idDisputa); 
-                    sucess = true;
-                }
-                else
-                    {
-                    //Disputa = DisputaRepository?.ReadDisputa(idDisputa); 
-                    Disputa = _disputaService.GetById(idDisputa);
-                    sucess = true; 
-                }
-                if (Disputa == null) sucess = false;
-            }
-            else
-            {
-                //Disputa = DisputaRepository.ReadDisputa(disputaSelecionado);
-                Disputa = DisputaRepository.ReadDisputa(disputaSelecionado);
-                sucess = true;
-                if (Disputa == null) sucess = false;
-
-               /* if (sucess)
-                    RodadaController.LoadRodada(Disputa.Id);*/
-                //_resultadoController.LoadResultado(Disputa.Id);
-
-            }
+            sucess = _disputaService.GetById(itemSelecionadoUi);
+            
             if (sucess == false) return "Erro Ao carregar a disputa!";
             else return "Disputa Carregado com Sucesso!";
         }
@@ -324,29 +287,9 @@ namespace Gestor_De_Pule.src.Controllers
         {
             Disputa? disputaSelecionado = disputaSelecionadoUi as Disputa;
             bool sucess = false;
-            if (disputaSelecionado is not null)
+            if (disputaSelecionado != null)
             {
-                if(disputaSelecionado.Id != Disputa.Id)
-                    //rastreio
-                    Disputa = DisputaRepository?.Track(disputaSelecionado);
-
-                if (Disputa is not null)
-                {
-                    if (Disputa.Rodadas is null || Disputa.Rodadas.Count == 0)
-                        Disputa.Rodadas = DisputaRepository.GetRodadas(Disputa.Id);
-                    Disputa.RemoveRodadas();
-                    Disputa.RemovePules();
-
-                    sucess = DisputaRepository.Remove(Disputa);
-                }
-
-
-
-                //------------------------------------------//
-
-
-
-                
+                sucess = _disputaService.RemoveDisputaSelecionado(disputaSelecionado);
             }
             if (sucess) return true;
             else return false;
@@ -413,44 +356,24 @@ namespace Gestor_De_Pule.src.Controllers
             }
             else { return false; }
         }
-
+        /// <summary>
+        /// Chama o serviço de disputa
+        /// </summary>
+        /// <returns>Lista de Disputas</returns>
         internal List<Disputa>? ListarDisputas()
         {
-            if (Disputas is not null)
-                return Disputas.ToList();
-            else
-            {
-                Disputas = DisputaRepository.GetDisputas()?.ToList();
-                return Disputas?.ToList();
-            }
+            return _disputaService.GetDisputs();
+           
         }
 
-        internal Disputa? BuscarDisputa(object disputaSelecionadaUi)
-        {
-            
-            Disputa? disputaSelecionado = disputaSelecionadaUi as Disputa;
-            if (disputaSelecionado is not null && disputaSelecionado.Id != Disputa?.Id)
-            {
-                Disputa = DisputaRepository.ReadDisputa(disputaSelecionado);
-                return Disputa;
-            }
-            else return null;
-        }
+       
 
-        internal Disputa? Reload(Disputa disputaMemória)
-        {
-            return DisputaRepository.Reload(disputaMemória);
-        }
-
-        internal void InitAnimalController()
-        {
-            if (_animalController == null)
-                _animalController = new AnimalController();
-        }
+     
 
         internal string Cadastrar(string nomeDisputa, DateTime? date, ListBox.ObjectCollection items, int quantidadeRodadas)
         {
             int i = 0;
+            bool sucess = false;
             if (String.IsNullOrEmpty(nomeDisputa))
             {
                 return "Precisa De Um Nome Para Disputa!";
@@ -467,116 +390,15 @@ namespace Gestor_De_Pule.src.Controllers
             }
             else
             {
-                List<Animal> animaisSelecionadosUi = items.Cast<Animal>().ToList();
-                List<Animal> animaisSelecionados = new List<Animal>();
-                bool sucess = false;
-                if (animaisSelecionadosUi is not null)
-                {
-                    animaisSelecionados = Animals.Where(an => animaisSelecionadosUi.Any(anUi => anUi.Id == an.Id)).ToList();
-                }
-
-
-                
-                    
-
-                
-                var caixa = _caixaController.GetCaixaRepository().GetCaixa();
-                if (Disputa is null)
-                {
-                    Disputa = DisputaRepository.isCreate(nomeDisputa);
-                    if (Disputa is null)
-                    {
-                        NovaDisputa(nomeDisputa, date ?? DateTime.Now, null);
-                        DisputaRepository.AddContext(Disputa);
-                    }
-                }
-               
-                
-                    //Para cada nova rodada devemos criar novas disputas.
-                    while (i < quantidadeRodadas)
-                    {
-                        RodadaController.NovaRodada(quantidadeRodadas);
-                        var rodada = RodadaController.Rodada;
-                        if (rodada is not null)
-                        {
-                            if (rodada.Nrodadas == 0)
-                                rodada.Nrodadas = (byte)quantidadeRodadas;
-                            if (rodada.Disputa == null)
-                                rodada.Disputa = Disputa;
-
-                            foreach (var animalUi in animaisSelecionados)
-                            {
-                                if (animalUi is null)
-                                    continue;
-
-                                //var resultado = new Resultado(animal);
-                                //var animal = _animalController.Repository.Consultar(animalUi);
-                                //var animal = DisputaRepository.DataBase.Animals.Find(animalUi.Id);
-                                var animal = _animalController.IsTracked(animalUi);
-                                if (animal is not null)
-                                {
-                                    var resultado = new Resultado();
-                                    //adiciona ao contexto
-                                    //_resultadoController.ResultadoRepository.AddContext(resultado);
-                                    //DisputaRepository.AddContext(resultado);
-
-                                    animal.Associete(resultado);
-                                    //resultado.Animal = animal;
-                                    if (rodada.ResultadoDestaRodada is null)
-                                        rodada.ResultadoDestaRodada = new();
-                                    rodada.ResultadoDestaRodada.Add(resultado);
-                                    //Disputa.Associete(resultado);
-                                    resultado.Disputa = Disputa;
-                                    //DisputaRepository.CheckDuplicate();
-                                    if (resultado.Disputa is null)
-                                        resultado.Disputa = Disputa;
-                                    if (Disputa.Caixa is null)
-                                        Disputa.Caixa = caixa;
-
-                                    if (caixa is not null)
-                                        caixa.Associete(Disputa);
-
-
-                                    //sucess = _rodadaController.RodadaRepository.Save(rodada);
-                                    //rodada.Associete(Disputa.ResultadoList);
-                                    //_rodadaController.RodadaRepository.Update(rodada, Disputa);
-
-
-                                }
-                            }
-                            if (Disputa.Rodadas is null)
-                                Disputa.Rodadas = new();
-                            //verificar se já foi atribuida por algum motivo nas rodadas
-                            if(!Disputa.Rodadas.Any(rod => Object.ReferenceEquals(rod, rodada)))
-                                Disputa.Rodadas.Add(rodada); //caso for diferentes ele adiciona caso contrario não faz nada
-
-                        }
-                        i++;
-                    }
-                        
-
-
-
-
-                    
-
-                
-               
-                sucess = DisputaRepository.Save();
+                _disputaService.Create(nomeDisputa, date, items, quantidadeRodadas);
+                sucess = _disputaService.Save();
                 if (!sucess)
                     return "Erro ao salvar A Disputa";
-                return "Disputa salva com sucesso!";
-
+                return "Disputa salva com sucesso!";  
             }
         }
 
-        private void NovaDisputa(string nomeDisputa, DateTime dateTime, Resultado? resultado)
-        {
-            if (resultado == null)
-                Disputa = new Disputa(nomeDisputa, dateTime);
-            else
-                Disputa = new Disputa(nomeDisputa, dateTime, resultado);
-        }
+      
         /// <summary>
         /// Releases resources associated with the repository's database.
         /// </summary>
@@ -663,17 +485,12 @@ namespace Gestor_De_Pule.src.Controllers
             return equals;
         }
         /// <summary>
-        /// Load Rodada if null
+        /// call service dispts
         /// </summary>
         internal void LoadRodada()
         {
-            if(Disputa is not null)
-            {
-                if(Disputa.Rodadas is null)
-                {
-                    Disputa.Rodadas = DisputaRepository?.LoadRodadas(Disputa);
-                }
-            }
+            _disputaService.LoadRodadas();
+            
         }
 
         internal void LoadCaixa()
@@ -736,9 +553,9 @@ namespace Gestor_De_Pule.src.Controllers
      
         internal Disputa NovaDisputa(string nomeDisputa, DateTime? date, Caixa caixa)
         {
-            Disputa = new Disputa(nomeDisputa, date, caixa);
-            DisputaRepository?.AddContext(Disputa);
-            return Disputa;
+            return _disputaService.NovaDisputa(nomeDisputa, date, caixa);
+            
+            
         }
         /// <summary>
         /// Save Context
@@ -758,20 +575,12 @@ namespace Gestor_De_Pule.src.Controllers
         /// <returns>Disputa encontrada caso contratrio null</returns>
         internal Disputa? GetById(int idDisputa)
         {
-            //primeiro verifica na memória
-            if (Disputa is not  null)
-            {
-                if (Disputa.Id != idDisputa)
-                {
-                    Disputa = Disputas.FirstOrDefault(d => d.Id == idDisputa) ?? _disputaService.GetById(idDisputa);
-                }
-            }
-            else
-            {
-                Disputa = Disputas.FirstOrDefault(d => d.Id == idDisputa) ?? _disputaService.GetById(idDisputa);
-            }
+            return _disputaService.GetById(idDisputa);
+        }
 
-                return Disputa;
+        internal List<Rodada>? LoadRodadas(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

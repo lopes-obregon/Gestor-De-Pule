@@ -26,9 +26,19 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
             var context = _controllerDisputa.GetContext().GetDataBase();
             _animController = new AnimalController(context);
             _resultadoController = new ResultadoController(context);
+            _rdadaController = new(context);
             InitializeComponent();
             this.Text = "Atualizar Disputa";
-            int disputaId = int.Parse(disputaUi.ToString());
+            int disputaId = 0;
+            try
+            {
+                disputaId = int.Parse(disputaUi.ToString());
+
+            }
+            catch (NullReferenceException)
+            {
+                MessageBox.Show("Disputa Inválida!");
+            }
             _controllerDisputa.LoadDisputa(disputaId);
             InitComboBoxs();
             SetItens();
@@ -44,12 +54,10 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
                 textBoxNomeDaDisputa.Text = disputa.Nome;
                 dateTimePicker1.Value = disputa.DataEHora;
                 disputa.ResultadoList = null;//limpar o lixo
+                if (disputa.Rodadas is null)
+                    disputa.Rodadas = _rdadaController.GetRodadasById(disputa.Id);
                 numericUpDownQuantidadeRodadas.Value = disputa.GetNMaiorRodada();
-                if(disputa.Rodadas is not null )
-                    {
-
-                    //var list = disputa.ResultadoList.Select(_ => _.Animal).ToArray();
-                    //var list = disputa.Rodadas.SelectMany(rod => rod.ResultadoDestaRodada).Select(res => res.Animal);
+                
                     _resultadoController.LoadResultados();
                     _animController.LoadAnimais();
                     var listAnimalId = _resultadoController.Resultados.Where(res => res.DisputaId == disputa.Id).Select(res => res.AnimalId).ToList();
@@ -60,8 +68,7 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
                         listBoxAnimaisToDisputa.DisplayMember = "Nome";
                         listBoxAnimaisToDisputa.ValueMember = "Id";
                     }
-                    
-                }
+              
                 
             }
             

@@ -9,6 +9,11 @@ namespace Gestor_De_Pule.src.Persistencias
     {
         private DataBase _dataBase;
        // public DataBase DataBase { get { return _dataBase; } }
+       /// <summary>
+       /// Retorna o contexto da instancia
+       /// </summary>
+       /// <returns>Return o context intance</returns>
+       public DataBase GetDataBase => _dataBase;
         public DisputaRepository()
         {
             _dataBase = new DataBase();

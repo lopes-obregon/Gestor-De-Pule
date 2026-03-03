@@ -57,9 +57,6 @@
             tabControl = new TabControl();
             tabPage1 = new TabPage();
             dataGridViewDisputas = new DataGridView();
-            ColumnAnimalNome = new DataGridViewTextBoxColumn();
-            ColumnPosição = new DataGridViewTextBoxColumn();
-            ColumnTempo = new DataGridViewTextBoxColumn();
             tabPage2 = new TabPage();
             labelDisputaNome = new Label();
             windowCadastroDisputaBindingSource = new BindingSource(components);
@@ -67,11 +64,14 @@
             button3 = new Button();
             flowLayoutPanel1 = new FlowLayoutPanel();
             button4 = new Button();
+            button5 = new Button();
             tableLayoutPanel2 = new TableLayoutPanel();
             labelVitória = new Label();
             labelTotalGanhadores = new Label();
             labelPagamentoPorPule = new Label();
-            button5 = new Button();
+            ColumnAnimalNome = new DataGridViewTextBoxColumn();
+            ColumnPosição = new DataGridViewTextBoxColumn();
+            ColumnTempo = new DataGridViewTextBoxColumn();
             menuStrip1.SuspendLayout();
             tableLayoutPanelFiltrosSelect.SuspendLayout();
             flowLayoutPanelButtons.SuspendLayout();
@@ -313,26 +313,6 @@
             dataGridViewDisputas.Size = new Size(640, 268);
             dataGridViewDisputas.TabIndex = 1;
             // 
-            // ColumnAnimalNome
-            // 
-            ColumnAnimalNome.HeaderText = "Nome Do Animal";
-            ColumnAnimalNome.Name = "ColumnAnimalNome";
-            ColumnAnimalNome.ReadOnly = true;
-            // 
-            // ColumnPosição
-            // 
-            ColumnPosição.HeaderText = "Posição";
-            ColumnPosição.Name = "ColumnPosição";
-            ColumnPosição.ReadOnly = true;
-            // 
-            // ColumnTempo
-            // 
-            dataGridViewCellStyle1.Format = "hh\\:mm\\:ss\\,ff";
-            dataGridViewCellStyle1.NullValue = null;
-            ColumnTempo.DefaultCellStyle = dataGridViewCellStyle1;
-            ColumnTempo.HeaderText = "Tempo";
-            ColumnTempo.Name = "ColumnTempo";
-            // 
             // tabPage2
             // 
             tabPage2.Location = new Point(4, 24);
@@ -397,6 +377,16 @@
             button4.UseVisualStyleBackColor = true;
             button4.Click += CalcularPrêmio;
             // 
+            // button5
+            // 
+            button5.Location = new Point(127, 32);
+            button5.Name = "button5";
+            button5.Size = new Size(96, 23);
+            button5.TabIndex = 7;
+            button5.Text = "Nova Rodada";
+            button5.UseVisualStyleBackColor = true;
+            button5.Click += NovaRodada;
+            // 
             // tableLayoutPanel2
             // 
             tableLayoutPanel2.BackColor = SystemColors.ActiveBorder;
@@ -441,15 +431,26 @@
             labelPagamentoPorPule.TabIndex = 2;
             labelPagamentoPorPule.Text = "Pagamento Por Pule";
             // 
-            // button5
+            // ColumnAnimalNome
             // 
-            button5.Location = new Point(127, 32);
-            button5.Name = "button5";
-            button5.Size = new Size(96, 23);
-            button5.TabIndex = 7;
-            button5.Text = "Nova Rodada";
-            button5.UseVisualStyleBackColor = true;
-            button5.Click += NovaRodada;
+            ColumnAnimalNome.HeaderText = "Nome Do Animal";
+            ColumnAnimalNome.Name = "ColumnAnimalNome";
+            ColumnAnimalNome.ReadOnly = true;
+            // 
+            // ColumnPosição
+            // 
+            ColumnPosição.HeaderText = "Posição";
+            ColumnPosição.Name = "ColumnPosição";
+            ColumnPosição.ReadOnly = true;
+            // 
+            // ColumnTempo
+            // 
+            dataGridViewCellStyle1.Format = "hh\\:mm\\:ss\\,ff";
+            dataGridViewCellStyle1.NullValue = null;
+            ColumnTempo.DefaultCellStyle = dataGridViewCellStyle1;
+            ColumnTempo.HeaderText = "Tempo";
+            ColumnTempo.Name = "ColumnTempo";
+            ColumnTempo.ReadOnly = true;
             // 
             // Main
             // 
@@ -510,9 +511,6 @@
         private DataGridView dataGridViewDisputas;
         private BindingSource windowCadastroDisputaBindingSource;
         private Button button2;
-        private DataGridViewTextBoxColumn ColumnAnimalNome;
-        private DataGridViewTextBoxColumn ColumnPosição;
-        private DataGridViewTextBoxColumn ColumnTempo;
         private Button button3;
         private ToolStripMenuItem financeiroToolStripMenuItem;
         private ToolStripMenuItem fluxoDeCaixaToolStripMenuItem;
@@ -528,5 +526,8 @@
         private TabPage tabPage1;
         private TabPage tabPage2;
         private Button button5;
+        private DataGridViewTextBoxColumn ColumnAnimalNome;
+        private DataGridViewTextBoxColumn ColumnPosição;
+        private DataGridViewTextBoxColumn ColumnTempo;
     }
 }

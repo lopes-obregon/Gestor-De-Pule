@@ -6,6 +6,7 @@ namespace Gestor_De_Pule.src.Service
     internal class ResultadoService
     {
         private ResultadoRepository _repository;
+        public List<Resultado>? Resultados;
         public ResultadoService(object data)
         {
             _repository = new ResultadoRepository(data);
@@ -17,13 +18,32 @@ namespace Gestor_De_Pule.src.Service
         /// <returns>retorna a lista buscada o nova lista vazia</returns>
         internal List<Resultado> GetResultadosByidRodada(int idRodada)
         {
-            List<Resultado> resultados = new List<Resultado>();
-            var db = _repository.ReadResultadosByidRodada(idRodada);
-            if (db != null)
+            List<Resultado> resultados;
+            if (Resultados != null)
             {
-                resultados = db;
+                resultados = Resultados.Where(res => res.RodadaId == idRodada).ToList();
             }
+            else
+            {
+                resultados = _repository.ReadResultadosByidRodada(idRodada);
+            }
+            if(resultados is null)
+                resultados = new List<Resultado>();
             return resultados;
+
+
+
+         
+        }
+        /// <summary>
+        /// Load Resultados in Resultados cache;
+        /// </summary>
+        internal void LoadResultados()
+        {
+            if(Resultados is null || Resultados.Count == 0)
+            {
+                Resultados = _repository.ReadResultados();
+            }
         }
     }
 }

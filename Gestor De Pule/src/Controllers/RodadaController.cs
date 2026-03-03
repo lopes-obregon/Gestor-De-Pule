@@ -14,7 +14,7 @@ namespace Gestor_De_Pule.src.Controllers
         /// <summary>
         /// List cache Rodadas
         /// </summary>
-        public List<Rodada> Rodadas { get; private set; }
+        public List<Rodada>? Rodadas => _rodaService.Rodadas;
         public RodadaRepository RodadaRepository { get; private set; }
         public RodadaService _rodaService { get; private set; }
         public RodadaController(object data)
@@ -25,19 +25,6 @@ namespace Gestor_De_Pule.src.Controllers
         public RodadaController()
         {
             RodadaRepository = new RodadaRepository();
-        }
-        internal void NovaRodada(Disputa disputa, int quantidadeRodadas, List<Pule>? pules, List<Resultado>? resultadoList)
-        {
-           Rodada = new Rodada(disputa,  quantidadeRodadas, pules, resultadoList);
-        }
-
-        internal void NovaRodada(int quantidadeRodadas)
-        {
-            if(quantidadeRodadas > 0)
-            {
-                Rodada = new Rodada(quantidadeRodadas);
-                RodadaRepository.AddContext(Rodada);
-            }
         }
         /// <summary>
         /// Carrega a rodada com base no id da disputa
@@ -114,6 +101,16 @@ namespace Gestor_De_Pule.src.Controllers
                 Rodada = _rodaService.GetById(rodadaId);
             }
             return Rodada;
+        }
+        /// <summary>
+        /// Chama o serviço de obter rodadas
+        /// </summary>
+        /// <param name="idDisputa"></param>
+        /// <returns>Lista De Rodadas</returns>
+        internal List<Rodada>? GetRodadasById(int idDisputa)
+        {
+            return _rodaService.GetByIdRodadas(idDisputa);
+            
         }
     }
 }

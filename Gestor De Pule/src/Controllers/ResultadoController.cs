@@ -28,14 +28,13 @@ namespace Gestor_De_Pule.src.Controllers
             return Resultado;
             
         }
-
+        /// <summary>
+        /// Carrega resultados no service ou cache Resultados;
+        /// </summary>
         internal void LoadResultados()
         {
-            if (Resultados is null || Resultados.Count == 0)
-            {
-               // Resultados = new List<Resultado>();
-                Resultados = ResultadoRepository.ReadResultados();
-            }
+            _resultadoService.LoadResultados();
+            
             
         }
         /// <summary>
@@ -73,16 +72,9 @@ namespace Gestor_De_Pule.src.Controllers
         /// <returns>Retorna os resultados encontrados </returns>
         internal List<Resultado>? GetResultados(int idRodada)
         {
-            List<Resultado> resultados;
-            if(Resultados != null)
-            {
-                resultados = Resultados.Where(res=> res.RodadaId == idRodada).ToList();
-            }
-            else
-            {
-                resultados = _resultadoService.GetResultadosByidRodada(idRodada);
-            }
-            return resultados;
+           
+                return _resultadoService.GetResultadosByidRodada(idRodada);
+            
         }
     }
 }

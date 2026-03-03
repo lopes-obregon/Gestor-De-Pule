@@ -269,23 +269,9 @@ namespace Gestor_De_Pule.src.Controllers
         /// <returns>O animal buscado ou null se não encontrar</returns>
         internal Animal? GetAnimalById(int animalId)
         {
-            Animal animal = null;
-            if(Animals is not null && Animals.Count > 0)
-            {
-                animal = Animals.FirstOrDefault(a=> a.Id == animalId);
-            }
-            else
-            {
-                if (Animal is not null && Animal.Id == animalId)
-                    animal = Animal;
-                else
-                {
-                    animal = _animalService.GetAnimalById(animalId);
-                }
-
-            }
-
-            return animal;
+            return _animalService.GetAnimalById(animalId);
         }
+
+                   
     }
 }

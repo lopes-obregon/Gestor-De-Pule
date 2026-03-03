@@ -185,9 +185,14 @@ namespace Gestor_De_Pule.src.Persistencias
             catch (Exception ex) { Log.Error(ex, $"Erro ao tentar encontrar {animalUi.Id} -  {animalUi.Nome}"); }
             return null;
         }
-
+        /// <summary>
+        /// Procua os animais conforme a lista forncescida;
+        /// </summary>
+        /// <param name="animaisSelecionados"></param>
+        /// <returns>List de animais encontrados</returns>
         internal List<Animal> LoadAnimais(ListBox.ObjectCollection animaisSelecionados)
         {
+            
             var animaisUi = animaisSelecionados.Cast<Animal>().ToList();
             var animaisTrack = new List<Animal>();
             if(animaisUi is not null && animaisUi.Count > 0)
