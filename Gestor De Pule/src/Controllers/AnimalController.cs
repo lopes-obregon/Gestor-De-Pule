@@ -213,8 +213,20 @@ namespace Gestor_De_Pule.src.Controllers
             return animals;
            
         }
+        /// <summary>
+        /// Chama o serviço que busca os animais
+        /// </summary>
+        /// <param name="animaisSelecionados"></param>
+        /// <returns>Os Animais buscados</returns>
+        internal List<Animal>? GetAnimals(List<int> animaisSelecionados)
+        {
+            if (animaisSelecionados.Count > 0)
+            {
+                return _animalService.GetAnimalsByIdList(animaisSelecionados);
 
-     
+            }
+            else return null;
+        }
         /// <summary>
         /// objets To animals in memory
         /// </summary>

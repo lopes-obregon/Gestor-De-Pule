@@ -19,6 +19,7 @@ namespace Gestor_De_Pule
         private DisputaController _disputaController;
         private ResultadoController _resultadoController;
         private AnimalController _animalController;
+        private RodadaController _rodadaController;
         public Main()
         {
             _financeiroController = new FinanceiroController();
@@ -26,6 +27,7 @@ namespace Gestor_De_Pule
             var context = _disputaController.GetContext();
             _resultadoController = new(context.GetDataBase());
             _animalController = new AnimalController(context.GetDataBase());
+            _rodadaController = new RodadaController(context.GetDataBase());
             InitializeComponent();
             //MainController.LoadLists();
             InitComboBox();
@@ -155,7 +157,7 @@ namespace Gestor_De_Pule
             int idDisputa = (int)comboBoxDisputas.SelectedValue;
             ClearDatagridDisputas();
             ClearTab();
-            if (idDisputa ==0)
+            if (idDisputa == 0)
             {
                 //preencher o data grid
                 SetDataGridDisputa();
@@ -170,11 +172,11 @@ namespace Gestor_De_Pule
         private void ClearTab()
         {
             var pages = tabControl.TabPages;
-            if(pages is not null)
+            if (pages is not null)
             {
-                while(pages.Count > 1)
+                while (pages.Count > 1)
                 {
-                    pages.RemoveAt(pages.Count-1);
+                    pages.RemoveAt(pages.Count - 1);
                 }
             }
         }
@@ -191,7 +193,7 @@ namespace Gestor_De_Pule
             if (disputa is not null)
             {
                 labelDisputaNome.Text = "Disputa:" + disputa.Nome;
-                if(disputa.ResultadoList is not null && disputa.ResultadoList.Count > 0)
+                if (disputa.ResultadoList is not null && disputa.ResultadoList.Count > 0)
                 {
                     foreach (var resultado in disputa.ResultadoList)
                     {
@@ -204,18 +206,18 @@ namespace Gestor_De_Pule
                 }
                 var rodadas = disputa.Rodadas;
 
-                if (rodadas is not null && rodadas.Count > 0 && disputa.GetNMaiorRodada() > totalAbas)
+                if (rodadas is not null && rodadas.Count > 0 && disputa.GetNMaiorRodada() > totalAbas - 1)
                 {
 
                     foreach (var rodada in rodadas)
                     {
                         if (rodada is not null)
                         {
-                                    //para cada rodada nova adiciona na pagina
-                                    TabPage tabPage = new TabPage($"Rodada {++cnt}");
-                                    NewDataGridPage(tabPage, rodada);
-                                    tabControl.TabPages.Add(tabPage);
-                            
+                            //para cada rodada nova adiciona na pagina
+                            TabPage tabPage = new TabPage($"Rodada {++cnt}");
+                            NewDataGridPage(tabPage, rodada);
+                            tabControl.TabPages.Add(tabPage);
+
 
                         }
                     }
@@ -246,9 +248,12 @@ namespace Gestor_De_Pule
         private void NewDataGridPage(TabPage tabPage, Rodada rodada)
         {
             if (rodada.ResultadoDestaRodada is null)
-
+            {
                 _resultadoController.LoadResultados();
-            rodada.ResultadoDestaRodada = _resultadoController.GetResultados(rodada.Id);
+
+
+                rodada.ResultadoDestaRodada = _resultadoController.GetResultados(rodada.Id);
+            }
 
             DataGridView dataGridView = new DataGridView();// novo data grid
             dataGridView.Dock = DockStyle.Fill; // ocupa toda a tela
@@ -257,7 +262,7 @@ namespace Gestor_De_Pule
             dataGridView.Columns.Add("nome", "Nome");
             dataGridView.Columns.Add("posição", "Posição");
             dataGridView.Columns.Add("tempo", "Tempo");
-                
+
             var resultados = rodada.ResultadoDestaRodada;  //lista que contem os animais da rodada
 
             if (resultados is not null && resultados.Count > 0)
@@ -266,8 +271,11 @@ namespace Gestor_De_Pule
                 {
                     if (resultado is not null)
                     {
-
-                        var animal = _animalController.GetAnimalById(resultado.AnimalId);
+                        var animalId = 0;
+                        if (resultado.Animal != null)
+                            animalId = resultado.Animal.Id;
+                        else animalId = resultado.AnimalId;
+                            var animal = _animalController.GetAnimalById(animalId);
                         if (resultado is not null)
                         {
                             if (animal is not null)
@@ -289,11 +297,12 @@ namespace Gestor_De_Pule
             dataGridViewDisputas.Rows.Clear();
         }
 
-        private void SetDataGridDisputa(bool isNewRod=false)
+        private void SetDataGridDisputa(bool isNewRod = false)
         {
             //var disputaCadastrados = MainController.ListarDisputas();
             int cnt = 0;
-            if(!isNewRod){
+            if (!isNewRod)
+            {
                 var disputaCadastrados = _disputaController.ListarDisputas();
                 if (disputaCadastrados is not null)
                 {
@@ -308,7 +317,7 @@ namespace Gestor_De_Pule
 
                         }
                     }
-                } 
+                }
                 disputaCadastrados = _disputaController.ListarDisputas();
                 if (disputaCadastrados is not null)
                 {
@@ -330,20 +339,20 @@ namespace Gestor_De_Pule
                 var disputa = _disputaController.Disputa;
                 var rodadas = disputa?.Rodadas;
 
-                if(disputa is not null)
+                if (disputa is not null)
                 {
-                    if(rodadas is not null)
+                    if (rodadas is not null)
                     {
-                        cnt= rodadas.Count;
+                        cnt = rodadas.Count;
                         foreach (var rodada in rodadas.Skip(rodadas.Count - 1))
                         {
-                            if(rodada is not null)
+                            if (rodada is not null)
                             {
                                 var pages = tabControl.TabPages;
-                                if(pages is not null)
+                                if (pages is not null)
                                 {
                                     //cada rodada nova quero uma nova pag
-                                    TabPage tabPage = new TabPage($"Rodada {++cnt}");
+                                    TabPage tabPage = new TabPage($"Rodada {cnt}");
                                     NewDataGridPage(tabPage, rodada);
                                     tabControl.TabPages.Add(tabPage);
 
@@ -380,8 +389,8 @@ namespace Gestor_De_Pule
             }
             MessageBox.Show(mensagem);
         }
-        
-        
+
+
         /// <summary>
         /// Calculo da posição do animanl na view
         /// </summary>
@@ -533,35 +542,37 @@ namespace Gestor_De_Pule
         {
             var disputa = _disputaController.Disputa;
             var rodadas = disputa?.Rodadas;
-            byte nRodadas = disputa?.Rodadas.Max(res=> res.Nrodadas) ?? 0;
-            if(disputa is not null)
+            byte nRodadas = disputa?.Rodadas.Max(res => res.Nrodadas) ?? 0;
+            if (disputa is not null)
             {
                 //se rodada não é nula podemos criar novas rodadas
-                var rodadaController = _disputaController.RodadaController;
-                if(rodadaController is not null)
+
+                if (_rodadaController is not null)
                 {
-                    rodadaController.NovaRodada();
-                    var rodadaNova = rodadaController.Rodada;
+                    //_rodadaController.NovaRodada();
+                    //var rodadaNova = _rodadaController.Rodada;
+                    var rodadaNova = _rodadaController.NovaRodada();
                     if (rodadaNova is not null)
                     {
                         rodadaNova.Disputa = disputa;
                         rodadaNova.Nrodadas = ++nRodadas;
 
                         //seleciona e devolve todos os animais da lista de resultados
-                        var animais = disputa.ResultadoList?.Select(res => res.Animal).ToList();
+                        //var animais = disputa.ResultadoList?.Select(res => res.Animal).ToList();
+                        var animais = _animalController.GetAnimals(disputa.GetAnimalsRodadasIds());
                         if (animais is not null)
                         {
-                            foreach (var animal  in animais)
+                            foreach (var animal in animais)
                             {
-                                if (animal is not null)
-                                {
-                                    _disputaController.ResultadoController.NovoResultado();
-                                    var resultado = _disputaController.ResultadoController.Resultado;
+                                if (animal is not null){
+                                    //_disputaController.ResultadoControlleNovoResultado();
+                                     var resultado = _resultadoController.NovoResultado();
+                                    //var resultado = _disputaController.ResultadoController.Resultado;
                                     if (resultado is not null)
                                     {
                                         resultado.Disputa = disputa;
                                         resultado.Animal = animal;
-                                       animal.Resultados.Add(resultado);
+                                        animal.Resultados.Add(resultado);
                                         if (rodadaNova.ResultadoDestaRodada is null)
                                             rodadaNova.ResultadoDestaRodada = new();
                                         rodadaNova.ResultadoDestaRodada.Add(resultado);
@@ -582,3 +593,4 @@ namespace Gestor_De_Pule
         }
     }
 }
+ 

@@ -43,22 +43,17 @@ namespace Gestor_De_Pule.src.Controllers
         }
 
       
-        //gera nova rodada sem parametros
+        /// <summary>
+        /// Chama serviço para criar nova rodada
+        /// </summary>
+        /// <returns>A nova rodada criada</returns>
         internal Rodada NovaRodada()
         {
-            Rodada = new();
-            RodadaRepository.AddContext(Rodada);
-            Rodada.ResultadoDestaRodada = new();
-            return Rodada;
+
+            return _rodaService.NewRodada();
         }
 
-        internal Rodada NovaRodada(Disputa disputa)
-        {
-            Rodada = new(disputa);
-            RodadaRepository.AddContext(Rodada);
-            //Rodada.ResultadoDestaRodada = new();
-            return Rodada;
-        }
+     
         /// <summary>
         /// Dispose Data base
         /// </summary>

@@ -114,6 +114,32 @@ namespace Gestor_De_Pule.src.Persistencias
             }
             return animal;
         }
+        /// <summary>
+        /// Verifica se tem animais rastreados caso tenha procura pelo os ids fornecido na lista, caso não tenha procura no banco
+        /// </summary>
+        /// <param name="animaisSelecionados"></param>
+        /// <returns>Retorna a lista dos animais pesquisados</returns>
+        internal List<Animal>? GetAnimalByIdList(List<int> animaisSelecionados)
+        {
+            List<Animal>? animals = null;
+            try
+            {
+                //verificar se existe os animais no rastreio
+                var track = _db.ChangeTracker.Entries<Animal>().Select(e => e.Entity).Where(a => animaisSelecionados.Contains(a.Id)).Distinct().ToList();
+                if (track is not null && track.Count > 0)
+                    animals = track;
+                else
+                {
+                    var db = _db.Animals.Where(a => animaisSelecionados.Contains(a.Id)).ToList();
+                    if(db is not null &&  db.Count > 0) animals = db;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Erro ao tentar Carregar os animais da lista fornecida!");
+            }
+            return animals;
+        }
 
         /// <summary>
         /// verifica em track se tem rastreado os animais, caso não tenha pesquisa no banco.

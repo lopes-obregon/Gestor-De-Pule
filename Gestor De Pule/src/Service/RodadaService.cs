@@ -8,14 +8,17 @@ namespace Gestor_De_Pule.src.Service
         /// <summary>
         /// DataBase or context
         /// </summary>
+        
         private RodadaRepository _repository;
         /// <summary>
         /// List in cache Rodadas
         /// </summary>
+        
         public List<Rodada>? Rodadas;
         /// <summary>
         /// Property Rodada cache
         /// </summary>
+        
         public Rodada? Rodada;
         public RodadaService(object data)
         {
@@ -74,6 +77,17 @@ namespace Gestor_De_Pule.src.Service
                 Rodada = new Rodada(quantidadeRodadas);
                 _repository.AddContext(Rodada);
             }
+        }
+        /// <summary>
+        /// Cria nova rodada e adiciona ao contexto
+        /// </summary>
+        /// <returns>Nova Rodada com resultados list 0</returns>
+        internal Rodada NewRodada()
+        {
+            Rodada = new();
+            _repository.AddContext(Rodada);
+            Rodada.ResultadoDestaRodada = new();
+            return Rodada;
         }
     }
 }

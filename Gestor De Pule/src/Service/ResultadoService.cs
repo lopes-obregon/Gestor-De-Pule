@@ -5,8 +5,18 @@ namespace Gestor_De_Pule.src.Service
 {
     internal class ResultadoService
     {
+        /// <summary>
+        /// field repository resultado
+        /// </summary>
         private ResultadoRepository _repository;
+        /// <summary>
+        /// propriedade de resultados
+        /// </summary>
         public List<Resultado>? Resultados;
+        /// <summary>
+        /// Propriedade de resultado
+        /// </summary>
+        public Resultado? Resultado;
         public ResultadoService(object data)
         {
             _repository = new ResultadoRepository(data);
@@ -44,6 +54,19 @@ namespace Gestor_De_Pule.src.Service
             {
                 Resultados = _repository.ReadResultados();
             }
+        }
+        /// <summary>
+        /// Cria a nova instancia para resultado
+        /// </summary>
+        /// <returns>Nova Instancia criada</returns>
+        internal Resultado NovoResultado()
+        {
+            Resultado = new Resultado();
+            _repository.AddContext(Resultado);
+            if (Resultados is null)
+                Resultados = new();
+            Resultados.Add(Resultado);
+            return Resultado;
         }
     }
 }

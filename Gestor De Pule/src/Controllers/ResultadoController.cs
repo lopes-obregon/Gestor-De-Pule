@@ -19,14 +19,14 @@ namespace Gestor_De_Pule.src.Controllers
             Resultados = new List<Resultado>();
         }
         public ResultadoController() { ResultadoRepository = new ResultadoRepository();}
-
+        /// <summary>
+        /// Faz a chamada do serviço para criar nova instancia do resultado
+        /// </summary>
+        /// <returns>Instancia criada</returns>
         internal Resultado NovoResultado()
         {
-            Resultado = new Resultado();
-            ResultadoRepository.AddContext(Resultado);
-            Resultados.Add(Resultado);
-            return Resultado;
-            
+
+            return _resultadoService.NovoResultado();
         }
         /// <summary>
         /// Carrega resultados no service ou cache Resultados;

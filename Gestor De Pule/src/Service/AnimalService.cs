@@ -38,7 +38,12 @@ namespace Gestor_De_Pule.src.Service
             {
                 animal = Animals.FirstOrDefault(a => a.Id == animalId);
             }
-            else
+            else if(Animals is not null && !Animals.Any(a=> a.Id == animalId))
+            {
+                animal = _animalRepository.GetAnimalById(animalId);
+                if(animal is not null)
+                    Animals.Add(animal);
+            }
             {
                 if (Animal is not null && Animal.Id == animalId)
                     animal = Animal;
@@ -89,6 +94,25 @@ namespace Gestor_De_Pule.src.Service
 
             }
 
+        }
+        /// <summary>
+        /// Verifica se existe animais no cache, caso não tenha procura no banco;
+        /// </summary>
+        /// <param name="animaisSelecionados"></param>
+        /// <returns>List de animais pesquisado</returns>
+        internal List<Animal>? GetAnimalsByIdList(List<int> animaisSelecionados)
+        {
+            List<Animal>? animais;
+            if(Animals is not null)
+            {
+                animais = Animals.Where(a => animaisSelecionados.Contains(a.Id)).Distinct().ToList();
+            }
+            else
+            {
+                animais = _animalRepository.GetAnimalByIdList(animaisSelecionados);
+            }
+
+                return animais;
         }
     }
 }

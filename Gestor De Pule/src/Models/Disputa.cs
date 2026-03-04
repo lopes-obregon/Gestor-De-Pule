@@ -890,5 +890,31 @@ namespace Gestor_De_Pule.src.Models
             }
             return isMesmo;
         }
+        /// <summary>
+        /// Seleciona os animais com base na primeira rodada
+        /// </summary>
+        /// <returns>um list id dos animais da primeira rodada</returns>
+        internal List<int> GetAnimalsRodadasIds()
+        {
+            var animais = new List<int>();
+            if(Rodadas != null && Rodadas.Count > 0)
+            {
+                var rodada = Rodadas[0];
+                if(rodada != null)
+                {
+                    if(rodada.ResultadoDestaRodada is not null && rodada.ResultadoDestaRodada.Count > 0)
+                    {
+                        var animal = rodada.ResultadoDestaRodada[0].AnimalId;
+                        var animal2 = rodada.ResultadoDestaRodada[1].AnimalId;
+                        if(animal != 0 && animal2 != 0)
+                        {
+                            animais.Add(animal);
+                            animais.Add(animal2);
+                        }
+                    }
+                }
+            }
+            return animais;
+        }
     }
 }
