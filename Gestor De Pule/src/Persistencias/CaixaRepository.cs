@@ -214,5 +214,39 @@ namespace Gestor_De_Pule.src.Persistencias
             }
             return caixa;
         }
+        /// <summary>
+        /// Retorna uma entidade <see cref="Caixa"/> pelo seu ID.
+        /// Primeiro verifica se já existe uma instância rastreada pelo ChangeTracker
+        /// com a coleção <see cref="Caixa.Disputs"/> carregada.
+        /// Caso contrário, consulta o banco de dados incluindo as disputas relacionadas.
+        /// Em caso de erro, registra no log e retorna null.
+        /// </summary>
+        /// <param name="caixaId">Identificador único da caixa a ser buscada.</param>
+        /// <returns>
+        /// A entidade <see cref="Caixa"/> encontrada com suas disputas carregadas,
+        /// ou null se não existir ou ocorrer erro.
+        /// </returns>
+        internal Caixa? GetCaixaById(int caixaId)
+        {
+            Caixa? caixa = null;
+            try
+            {
+                var track = _db.ChangeTracker.Entries<Caixa>().Select(e => e.Entity).FirstOrDefault(c => c.Id == caixaId);
+                if (track is not null && track.Disputs is not null)
+                    caixa = track;
+                else
+                {
+                    var caixaDb = _db.Caixas.Include(c => c.Disputs).FirstOrDefault(c => c.Id == caixaId);
+                    if (caixaDb is not null)
+                        caixa = caixaDb;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"Erro ao tentar carregar a caixa de ID {caixaId}");
+            }
+            return caixa;
+        }
     }
 }

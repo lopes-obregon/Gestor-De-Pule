@@ -419,5 +419,68 @@ namespace Gestor_De_Pule.src.Persistencias
             }
             return pules;
         }
+        /// <summary>
+        /// Verifica se tem pules rastreados caso não tenha consulta no banco
+        /// </summary>
+        /// <param name="idDisputa"></param>
+        /// <returns>List de pules</returns>
+    
+        internal List<Pule>? GetPulesWithIdDisputs(int idDisputa)
+        {
+            List<Pule>? pules = null;
+            try
+            {
+                var track = _data.ChangeTracker.Entries<Pule>().Select(e => e.Entity).Where(p => p.DisputaId == idDisputa).ToList();
+                if ( track.Count > 0)
+                    pules = track;
+                else
+                {
+                    var db = _data.Pules.Where(_ => _.DisputaId == idDisputa).ToList();
+                    if (db.Count > 0)
+                        pules = db;
+                }
+            }
+            catch(Exception ex)
+            {
+                Log.Error(ex, $"Erro ao tentar encontrar os pules relacionados com a disputa de id {idDisputa}");
+                
+            }
+            return pules;
+        }
+
+
+        /// <summary>
+        /// Retorna a lista de <see cref="Pule"/> associada a uma disputa pelo ID informado.
+        /// Primeiro verifica se já existem entidades rastreadas pelo ChangeTracker com a coleção
+        /// de animais carregada. Caso contrário, consulta o banco de dados incluindo os animais
+        /// relacionados. Em caso de erro, registra no log e retorna null.
+        /// </summary>
+        /// <param name="idDisputa">Identificador único da disputa.</param>
+        /// <returns>
+        /// A lista de <see cref="Pule"/> encontrada com seus animais carregados,
+        /// ou null se não houver registros ou ocorrer erro.
+        /// </returns>
+        internal List<Pule>? GetPulesWithIdDisputsAndAnimalInclude(int idDisputa)
+        {
+            List<Pule>? pules = null;
+            try
+            {
+                var track = _data.ChangeTracker.Entries<Pule>().Select(e => e.Entity).Where(p => p.DisputaId == idDisputa).ToList();
+                if (track.Count > 0 && track.Any(p => p.Animais != null))
+                    pules = track;
+                else
+                {
+                    var db = _data.Pules.Where(p => p.DisputaId == idDisputa).Include(p => p.Animais).ToList();
+                    if (db.Count > 0)
+                        pules = db;
+
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, $"Erro ao tentar carregar os pules relacionado a disputa id {idDisputa}");
+            }
+            return pules;
+        }
     }
 }

@@ -1,14 +1,28 @@
 ﻿using Gestor_De_Pule.src.Persistencias;
 using Gestor_De_Pule.src.Models;
 using System.Diagnostics.CodeAnalysis;
+using Gestor_De_Pule.src.Service;
 namespace Gestor_De_Pule.src.Controllers
 {
     internal class CaixaController
-    {
-        private CaixaRepository _caixaRepository;
-        public CaixaRepository GetCaixaRepository() {  return _caixaRepository; }
-        public Caixa Caixa {  get;  private set; }
 
+    {
+        /// <summary>
+        /// repository de cauxa
+        /// </summary>
+        private CaixaRepository _caixaRepository;
+        /// <summary>
+        /// método que chama o caixa repository
+        /// </summary>
+        /// <returns>intancia de caixaRepository</returns>
+        public CaixaRepository GetCaixaRepository() {  return _caixaRepository; }
+        /// <summary>
+        /// Propriedade que retorna o chache de caixa
+        /// </summary>
+        /// 
+        public Caixa Caixa => _caixaService.Caixa;
+
+        private CaixaService _caixaService;
         internal void NovoCaixa()
         {
             Caixa caixa = new Caixa();
@@ -21,21 +35,27 @@ namespace Gestor_De_Pule.src.Controllers
         public CaixaController(object data)
         {
             _caixaRepository = new CaixaRepository(data);
+            _caixaService = new CaixaService(data);
         }
-        public CaixaController() { 
-            _caixaRepository = new CaixaRepository();
-        
-        }
+       
+        /// <summary>
+        /// faz a chamada para Carrega no cache o caixa existente
+        /// </summary>
         public void LoadCaixa()
         {
-            if (Caixa is null)
-                Caixa = _caixaRepository.GetCaixa();
-        }
 
+            _caixaService.GetCaixa();
+                    //Caixa = _caixaRepository.GetCaixa();
+        }
+        /// <summary>
+        /// faz a chamada para carregar em cache o caixa com as disputas relacionadas.
+        /// </summary>
+        /// <param name="id"></param>
         internal void LoadCaixaWithDisput(int id)
         {
             if (Caixa is null)
-                Caixa = _caixaRepository.GetCaixaWithDisput(id);
+                _caixaService.GetCaixaWithDisput(id);
+                    //_caixaRepository.GetCaixaWithDisput(id);
         }
         /// <summary>
         /// Remove disput in caixa.Disputs
@@ -64,5 +84,15 @@ namespace Gestor_De_Pule.src.Controllers
             }
             return sucss;
         }
+
+
+
+        /// <summary>
+        /// Retorna uma entidade <see cref="Caixa"/> pelo ID informado,
+        /// delegando a busca ao serviço de caixa.
+        /// </summary>
+        /// <param name="caixaId">Identificador único da caixa a ser buscada.</param>
+        /// <returns>A entidade <see cref="Caixa"/> encontrada ou null se não existir.</returns>
+        internal Caixa? GetCaixaById(int caixaId) => _caixaService.GetCaixaById(caixaId);
     }
 }

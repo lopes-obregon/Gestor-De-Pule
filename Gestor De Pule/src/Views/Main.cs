@@ -1,4 +1,5 @@
 using Gestor_De_Pule.src.Controllers;
+using Gestor_De_Pule.src.Model;
 using Gestor_De_Pule.src.Models;
 using Gestor_De_Pule.src.Views;
 using Gestor_De_Pule.src.Views.Apostador;
@@ -15,32 +16,27 @@ namespace Gestor_De_Pule
 {
     public partial class Main : Form
     {
-        private FinanceiroController _financeiroController;
-        private DisputaController _disputaController;
-        private ResultadoController _resultadoController;
-        private AnimalController _animalController;
-        private RodadaController _rodadaController;
+      
+        private ViewController _viewController;
         public Main()
         {
-            _financeiroController = new FinanceiroController();
-            _disputaController = new DisputaController();
-            var context = _disputaController.GetContext();
-            _resultadoController = new(context.GetDataBase());
-            _animalController = new AnimalController(context.GetDataBase());
-            _rodadaController = new RodadaController(context.GetDataBase());
+           
+            _viewController = new();
+
             InitializeComponent();
             //MainController.LoadLists();
             InitComboBox();
             //this.Dock = DockStyle.Fill;
             //então carrego na memória.
             //FinanceiroController.LoadCaixaInit();
-            _financeiroController.LoadCaixaInit();
-            var caixa = _financeiroController.Caixa;
-            if (caixa is null)
+           // _financeiroController.LoadCaixaInit();
+            _viewController.LoadCaixa();
+            var caixa = _viewController.GetCaixa();
+           /* if (caixa is null)
             {
                 //então preciso criar um novo caixa;
                 _financeiroController.OpenNewCaixa();
-            }
+            }*/
 
             TabControlComand();
             dataGridViewDisputas.Dock = DockStyle.Fill;
@@ -60,7 +56,8 @@ namespace Gestor_De_Pule
             //comboBoxDisputas.Items.Clear();
             comboBoxDisputas.DataSource = null;
             //var disputasCadastradas = MainController.ListarDisputas();
-            var disputasCadastradas = _disputaController.ListarDisputas();
+            var disputasCadastradas = _viewController.ListarDisputas();
+            //var disputasCadastradas = _disputaController.ListarDisputas();
             if (disputasCadastradas is not null)
             {
                 comboBoxDisputas.DisplayMember = "Nome";
@@ -155,6 +152,7 @@ namespace Gestor_De_Pule
         private void BuscarDisputa(object sender, EventArgs e)
         {
             int idDisputa = (int)comboBoxDisputas.SelectedValue;
+            
             ClearDatagridDisputas();
             ClearTab();
             if (idDisputa == 0)
@@ -186,9 +184,12 @@ namespace Gestor_De_Pule
             int totalAbas = tabControl.TabPages.Count;
             int cnt = 0;
             //var disputaSelecionadoDb = MainController.BuscarDisputa(disputaSelecionadaUi);
-            _disputaController.GetById(idDisputa);
-            _disputaController.LoadRodada();
-            var disputa = _disputaController.Disputa;
+            //_disputaController.GetById(idDisputa);
+            _viewController.SetDisputa(idDisputa);
+            _viewController.LoadRodadas();
+            //_disputaController.LoadRodada();
+            //var disputa = _disputaController.Disputa;
+            var disputa = _viewController.GetDisputa() as Disputa;
 
             if (disputa is not null)
             {
@@ -249,10 +250,12 @@ namespace Gestor_De_Pule
         {
             if (rodada.ResultadoDestaRodada is null)
             {
-                _resultadoController.LoadResultados();
+                _viewController.LoadResultados();
+                //_resultadoController.LoadResultados();
+                rodada.ResultadoDestaRodada = _viewController.GetResultados(rodada.Id);
 
 
-                rodada.ResultadoDestaRodada = _resultadoController.GetResultados(rodada.Id);
+                //rodada.ResultadoDestaRodada = _resultadoController.GetResultados(rodada.Id);
             }
 
             DataGridView dataGridView = new DataGridView();// novo data grid
@@ -275,7 +278,9 @@ namespace Gestor_De_Pule
                         if (resultado.Animal != null)
                             animalId = resultado.Animal.Id;
                         else animalId = resultado.AnimalId;
-                            var animal = _animalController.GetAnimalById(animalId);
+                        
+                        var animal = _viewController.GetAnimalById(animalId) as Animal;
+                        //var animal = _animalController.GetAnimalById(animalId);
                         if (resultado is not null)
                         {
                             if (animal is not null)
@@ -303,7 +308,7 @@ namespace Gestor_De_Pule
             int cnt = 0;
             if (!isNewRod)
             {
-                var disputaCadastrados = _disputaController.ListarDisputas();
+                var disputaCadastrados = _viewController.ListarDisputas() as List<Disputa>;
                 if (disputaCadastrados is not null)
                 {
                     foreach (var disputa in disputaCadastrados)
@@ -318,7 +323,7 @@ namespace Gestor_De_Pule
                         }
                     }
                 }
-                disputaCadastrados = _disputaController.ListarDisputas();
+                disputaCadastrados = _viewController.ListarDisputas() as List<Disputa>;
                 if (disputaCadastrados is not null)
                 {
                     foreach (var disputa in disputaCadastrados)
@@ -336,7 +341,7 @@ namespace Gestor_De_Pule
             }
             else
             {
-                var disputa = _disputaController.Disputa;
+                var disputa = _viewController.GetDisputa() as Disputa;
                 var rodadas = disputa?.Rodadas;
 
                 if (disputa is not null)
@@ -377,11 +382,11 @@ namespace Gestor_De_Pule
         private void SalvarDados(object sender, EventArgs e)
         {
             string mensagem = String.Empty;
-            var disputa = _disputaController.Disputa;
+            var disputa = _viewController.GetDisputa() as Disputa;
             if (disputa is not null)
             {
                 // DisputaController.LoadDisputa(disputaSelecionado);
-                mensagem = _disputaController.SalvarDisputa();
+                mensagem = _viewController.SalvarDisputa();
             }
             else
             {
@@ -399,7 +404,8 @@ namespace Gestor_De_Pule
         private void CalcularPosição(object sender, EventArgs e)
         {
             int indexPage = tabControl.SelectedIndex;
-            var disputa = _disputaController.Disputa;
+            var disputa = _viewController.GetDisputa() as Disputa;
+            
             if (disputa is not null)
             {
                 //primeira página    
@@ -452,37 +458,40 @@ namespace Gestor_De_Pule
 
                             var tempoAnimal1 = dgv.Rows[0].Cells[2].Value.ToString();
                             var animal1 = dgv.Rows[0].Cells[0].Value.ToString();
-                            var tempoAnimal2 = dgv.Rows[1].Cells[2].Value;
+                            var tempoAnimal2 = dgv.Rows[1].Cells[2].Value.ToString();
                             var animal2 = dgv.Rows[1].Cells[0].Value.ToString();
-                            disputa.ajustarPosiçãoDosAnimais(tempoAnimal1, tempoAnimal2);
+                            disputa.ajustarPosiçãoDosAnimais(tempoAnimal1, tempoAnimal2, indexPage-1);
                             if (!(String.IsNullOrEmpty(animal1) && String.IsNullOrEmpty(animal2)))
                             {
-                                var rodadas = disputa.Rodadas;
-                                if (rodadas is not null)
+                                //Parei aqui
+                                //ajustar rodada para aba espeficifica
+                                var rodada = disputa.Rodadas[indexPage-1];
+                                if (rodada is not null)
                                 {
-                                    foreach (var rodada in rodadas)
+                                   if(rodada.ResultadoDestaRodada is not null)
                                     {
-                                        if (rodada is not null)
+                                        foreach (var resultado in rodada.ResultadoDestaRodada)
                                         {
-                                            foreach (var resultado in rodada.ResultadoDestaRodada)
-                                                if (resultado is not null)
+                                            if (resultado is not null)
+                                            {
+                                                var animal = resultado.Animal;
+                                                if (animal is not null)
                                                 {
-                                                    var animal = resultado.Animal;
-                                                    if (animal is not null)
+                                                    if (String.Equals(animal1, animal.Nome))
                                                     {
-                                                        if (String.Equals(animal1, animal.Nome))
-                                                        {
-                                                            dgv.Rows[0].Cells[1].Value = resultado.Posição;
-                                                        }
-                                                        else if (String.Equals(animal2, animal.Nome))
-                                                        {
-                                                            dgv.Rows[1].Cells[1].Value = resultado.Posição;
-                                                        }
+                                                        dgv.Rows[0].Cells[1].Value = resultado.Posição;
                                                     }
-
+                                                    else if (String.Equals(animal2, animal.Nome))
+                                                    {
+                                                        dgv.Rows[1].Cells[1].Value = resultado.Posição;
+                                                    }
                                                 }
+
+                                            }
                                         }
                                     }
+                                        
+                                    
                                 }
                             }
 
@@ -501,24 +510,15 @@ namespace Gestor_De_Pule
 
         private void CalcularPrêmio(object sender, EventArgs e)
         {
-            var disputa = _disputaController.Disputa;
+            _viewController.LoadEntToPrice();
 
-
-            if (disputa is not null)
-            {
-                disputa.Pules = null;
-                //fazer uma atualização com os dados do banco.
-                //var disputa = Disputa.Reload(disputaMemória);
-                labelVitória.Text = "Vitória: " + disputa.GetNomeAnimalVencedor();
+            labelVitória.Text = _viewController.GetNomeAnimaisVencedores();
                 //labelTotalGanhadores.Text = "Total Ganhadores: " + disputa.CntTotalGanhadoresPules().ToString();
-                labelTotalGanhadores.Text = "Total Ganhadores: " + disputa.CntTotalGanhadoresPulesToLists();
-                if (disputa.Caixa is null)
-                    _disputaController.LoadCaixa();
-                if (disputa.Pules is null || disputa.Pules.Count == 0)
-                    _disputaController.loadPules();
-                labelPagamentoPorPule.Text = "Pagamento Por Pule: " + disputa.PagamentoPorPule();
+                /*labelTotalGanhadores.Text = "Total Ganhadores: " + disputa.CntTotalGanhadoresPulesToLists();
+              
+                    labelPagamentoPorPule.Text = "Pagamento Por Pule: " + disputa.PagamentoPorPule();*/
 
-            }
+            
 
         }
 
@@ -540,18 +540,18 @@ namespace Gestor_De_Pule
         /// <param name="e"></param>
         private void NovaRodada(object sender, EventArgs e)
         {
-            var disputa = _disputaController.Disputa;
+            var disputa = _viewController.GetDisputa() as Disputa;
             var rodadas = disputa?.Rodadas;
             byte nRodadas = disputa?.Rodadas.Max(res => res.Nrodadas) ?? 0;
             if (disputa is not null)
             {
                 //se rodada não é nula podemos criar novas rodadas
 
-                if (_rodadaController is not null)
+                if (_viewController is not null)
                 {
                     //_rodadaController.NovaRodada();
                     //var rodadaNova = _rodadaController.Rodada;
-                    var rodadaNova = _rodadaController.NovaRodada();
+                    var rodadaNova = _viewController.NovaRodada();
                     if (rodadaNova is not null)
                     {
                         rodadaNova.Disputa = disputa;
@@ -559,14 +559,14 @@ namespace Gestor_De_Pule
 
                         //seleciona e devolve todos os animais da lista de resultados
                         //var animais = disputa.ResultadoList?.Select(res => res.Animal).ToList();
-                        var animais = _animalController.GetAnimals(disputa.GetAnimalsRodadasIds());
+                        var animais = _viewController.GetAnimals(disputa.GetAnimalsRodadasIds());
                         if (animais is not null)
                         {
                             foreach (var animal in animais)
                             {
                                 if (animal is not null){
                                     //_disputaController.ResultadoControlleNovoResultado();
-                                     var resultado = _resultadoController.NovoResultado();
+                                     var resultado = _viewController.NovoResultado();
                                     //var resultado = _disputaController.ResultadoController.Resultado;
                                     if (resultado is not null)
                                     {

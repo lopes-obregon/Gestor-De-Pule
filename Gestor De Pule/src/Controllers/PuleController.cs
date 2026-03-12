@@ -9,7 +9,7 @@ namespace Gestor_De_Pule.src.Controllers
 {
     internal class PuleController
     {
-        public List<Pule>? Pules { get; private set; }
+        public List<Pule>? Pules => _puleService.Pules;
         public Pule? Pule { get; private set; }
        
         public List<Pule> PulesApostador { get; internal set; }
@@ -157,8 +157,8 @@ namespace Gestor_De_Pule.src.Controllers
         /// </summary>
         internal  void LoadPules()
         {
-            Pules = new List<Pule>();
-            Pules = _puleRepository.ReadPules().ToList();
+            _puleService.LoadPules();
+            
         }
 
         internal  string RemovePule(object puleSelecionadoUi, List<Animal> animals)
@@ -343,5 +343,21 @@ namespace Gestor_De_Pule.src.Controllers
                 Pule = _puleService.GetById(id);
             return Pule;
         }
+        /// <summary>
+        /// Faz cahamada para o serviço de pule
+        /// </summary>
+        /// <param name="idDisputa"></param>
+        internal List<Pule>? LoadPules(int idDisputa)
+        {
+            return _puleService.GetPulesByIdWithIdDisputs(idDisputa);
+        }
+
+      
+        /// <summary>
+        /// Chama o método do serviço que rastreia os pules com o id fornescido
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Pules Buscados or null</returns>
+        internal List<Pule>? LoadPulesWithAnimals(int id) => _puleService.LoadPulesWithAnimals(id);
     }
 }

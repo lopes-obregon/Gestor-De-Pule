@@ -209,6 +209,7 @@ namespace Gestor_De_Pule.src.Models
         internal string GetNomeAnimalVencedor()
         {
             string mensagem = String.Empty;
+            List<(string, int)>? animalVencedor = null;
             if(Rodadas is null || Rodadas.Count == 0){
                 if (ResultadoList is not null && ResultadoList.Count > 0)
                 {
@@ -220,10 +221,27 @@ namespace Gestor_De_Pule.src.Models
                             {
                                 if (resultado.Animal != null && !String.IsNullOrEmpty(resultado.Animal.Nome))
                                 {
-                                    return resultado.Animal.Nome;
+                                    if(animalVencedor is null)
+                                        animalVencedor = new List<(string, int)>();
+                                    var animal = (resultado.Animal.Nome, 1);
+                                    if (animalVencedor.Contains(animal))
+                                    {
+                                        animal = animalVencedor.FirstOrDefault(a=> a.Item1 == resultado.Animal.Nome);
+                                        animal.Item2 += 1;
+                                    }
+                                    else
+                                    {
+                                        animalVencedor.Add((resultado.Animal.Nome, 1));
+
+                                    }
                                 }
                             }
                         }
+                    }
+                    var vencedor = animalVencedor?.OrderByDescending(a => a.Item2).FirstOrDefault();
+                    if(vencedor  != null)
+                    {
+                        mensagem = $"Animal Vencedor {vencedor.Value.Item1}, Com {vencedor.Value.Item2} Vitórias!";
                     }
                 }
                 else
@@ -677,11 +695,43 @@ namespace Gestor_De_Pule.src.Models
         internal string CntTotalGanhadoresPulesToLists()
         {
             string mensagem = String.Empty;
-            int cntVencedoresList1 = this.ResultadoList
+            int cntRodada = 0;
+            int cntGanhadores = 0;
+           
+           /* int cntVencedoresList1 = this.ResultadoList
                 .Count(res => res.Posição == 1);
             int cntVencedorList2 = this.Rodadas.SelectMany(r => r.ResultadoDestaRodada)
                 .Count(res => res.Posição == 1);
-            mensagem = $"Rodada 1: {cntVencedoresList1} Ganhador , Demais Rodadas {cntVencedorList2} Ganhador(es)";
+            mensagem = $"Rodada 1: {cntVencedoresList1} Ganhador , Demais Rodadas {cntVencedorList2} Ganhador(es)";*/
+           if(Rodadas is not null && Rodadas.Count > 0)
+            {
+                foreach(var rodada in Rodadas)
+                {
+                    if(rodada is not null)
+                    {
+                        if (rodada.ResultadoDestaRodada is not null)
+                        {
+                            var resultadoVencedor = rodada.ResultadoDestaRodada.FirstOrDefault(r=> r.Posição == 1);
+                            if(resultadoVencedor != null)
+                            {
+                                var animalVencedor = resultadoVencedor.Animal;
+                                if(animalVencedor is not null)
+                                {
+                                    var pules = rodada.PulesDestaRodada;
+                                    if(pules is not null && pules.Count > 0)
+                                    {
+                                        
+                                        cntGanhadores = pules.Count(p => p.Animais.Any(a=> a.Id == animalVencedor.Id));
+                                    }
+                                }
+
+                            }
+                            mensagem += $"Rodada {++cntRodada}: {cntGanhadores} Ganhador(es)  ";
+                        }
+
+                    }
+                }
+            }
             return mensagem;
 
         }
@@ -915,6 +965,32 @@ namespace Gestor_De_Pule.src.Models
                 }
             }
             return animais;
+        }
+
+        internal void ajustarPosiçãoDosAnimais(string? tempoAnimal1, string? tempoAnimal2, int v)
+        {
+            string? tempo1Str = tempoAnimal1?.ToString()?.Replace(',', '.');
+            string? tempo2Str = tempoAnimal2?.ToString()?.Replace(',', '.');
+            if (Rodadas is not null)
+            {
+                var rodada = Rodadas[v];
+                if(rodada is not null && rodada.ResultadoDestaRodada is not null)
+                {
+                    if (TimeSpan.TryParse(tempo1Str, out TimeSpan tempo1) && TimeSpan.TryParse(tempo2Str, out TimeSpan tempo2))
+                    {
+                        if (tempo1 < tempo2)
+                        {
+                            rodada.ResultadoDestaRodada[0].Posição = 1;
+                            rodada.ResultadoDestaRodada[1].Posição = 2;
+                        }
+                        else
+                        {
+                            rodada.ResultadoDestaRodada[0].Posição = 2;
+                            rodada.ResultadoDestaRodada[1].Posição = 1;
+                        }
+                    }
+                }
+            }
         }
     }
 }

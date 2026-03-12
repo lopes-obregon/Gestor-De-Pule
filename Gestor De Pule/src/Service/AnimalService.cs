@@ -23,7 +23,8 @@ namespace Gestor_De_Pule.src.Service
         /// <returns>List animals with pules</returns>
         public List<Animal> LoadAnimaisWithPules()
         {
-            return _animalRepository.LoadAnimaisWithPules();
+            Animals =  _animalRepository.LoadAnimaisWithPules();
+            return Animals;
         }
         /// <summary>
         /// Chama o repository para buscar o animal pelo id
@@ -113,6 +114,29 @@ namespace Gestor_De_Pule.src.Service
             }
 
                 return animais;
+        }
+        /// <summary>
+        /// set Animals and call repository
+        /// </summary>
+        /// <param name="pulesIds"></param>
+        internal void LoadAnimaisWithPules(List<int> pulesIds)
+        {
+            Animals = _animalRepository.LoadAnimaisWithPules(pulesIds);
+        }
+        /// <summary>
+        /// Load in cache Animals
+        /// </summary>
+        internal void GetAnimals()
+        {
+            Animals = _animalRepository.ReadAnimals();
+        }
+        /// <summary>
+        /// Load animals in cache 
+        /// </summary>
+        /// <param name="animaisSelecionados"></param>
+        internal void LoadAnimais(ListBox.ObjectCollection animaisSelecionados)
+        {
+            Animals = _animalRepository.LoadAnimais(animaisSelecionados);
         }
     }
 }

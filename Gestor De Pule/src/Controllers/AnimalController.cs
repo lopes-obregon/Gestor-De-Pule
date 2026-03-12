@@ -8,8 +8,8 @@ namespace Gestor_De_Pule.src.Controllers
 {
     internal class AnimalController
     {
-      
-       public  List<Animal> Animals { get; private set; } = new List<Animal>();
+
+        public List<Animal>? Animals => _animalService.Animals;
         public Animal? Animal { get; private set; } = new();
         //repository
         private AnimalRepository _animalRepository { get;  set; }
@@ -36,11 +36,9 @@ namespace Gestor_De_Pule.src.Controllers
         /// </summary>
         internal  void LoadAnimais()
         {
-            if(Animals is null || Animals.Count == 0) 
-            
-            
-                Animals = _animalRepository.ReadAnimals().ToList();
-            
+            if (Animals is null || Animals.Count == 0)
+                _animalService.GetAnimals();
+                //Animals = _animalRepository.ReadAnimals().ToList();
         }
 
         internal  string Salvar(int número, string nome, string proprietário, string treinador, string jockey, string cidade)
@@ -182,7 +180,8 @@ namespace Gestor_De_Pule.src.Controllers
         /// <param name="animaisSelecionados">The collection of selected animal items to load.</param>
         internal void LoadAnimais(ListBox.ObjectCollection animaisSelecionados)
         {
-            Animals = _animalRepository.LoadAnimais(animaisSelecionados);
+            _animalService.LoadAnimais(animaisSelecionados);
+           // Animals = _animalRepository.LoadAnimais(animaisSelecionados);
         }
 
         internal void LoadAnimalWithListResultado(object selectedItem)
@@ -247,7 +246,7 @@ namespace Gestor_De_Pule.src.Controllers
         /// </summary>
         internal void LoadAnimaisWithPules()
         {
-            Animals = _animalService.LoadAnimaisWithPules();
+            _animalService.LoadAnimaisWithPules();
         }
         /// <summary>
         /// Pesquisa no cache caso não tenha vai verificar no banco
@@ -283,7 +282,13 @@ namespace Gestor_De_Pule.src.Controllers
         {
             return _animalService.GetAnimalById(animalId);
         }
-
-                   
+        /// <summary>
+        /// call service to load animals in cache
+        /// </summary>
+        /// <param name="pulesIds"></param>
+        internal void LoadAnimaisWithPulesId(List<int> pulesIds)
+        {
+            _animalService.LoadAnimaisWithPules(pulesIds);
+        }
     }
 }

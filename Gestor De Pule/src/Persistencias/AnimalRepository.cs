@@ -270,6 +270,38 @@ namespace Gestor_De_Pule.src.Persistencias
             }
             return animals;
         }
+        /// <summary>
+        /// Carrega os animais conforme suas relações com os pules fornescidos
+        /// </summary>
+        /// <param name="pulesIds"></param>
+        /// <returns>List animal</returns>
+        internal List<Animal>? LoadAnimaisWithPules(List<int> pulesIds)
+        {
+            List<Animal> animais = null;
+            try
+            {
+                var track = _db.ChangeTracker.Entries<Animal>().Select(e => e.Entity).Where(a => a.Pules.Any(p => pulesIds.Contains(p.Id))).ToList();
+                if (track.Count > 0)
+                    animais = track;
+                else
+                {
+                    var db  = _db.Animals.Where(a => a.Pules.Any(p => pulesIds.Contains(p.Id))).ToList();
+                    if (db.Count > 0)
+                        animais = db;
+                }
+            }
+            catch (NullReferenceException)
+            {
+                var db = _db.Animals.Where(a => a.Pules.Any(p => pulesIds.Contains(p.Id))).ToList();
+                if (db.Count > 0)
+                    animais = db;
+            }
+            catch (Exception ex){
+                Log.Error(ex, "Erro ao tentar buscar os animais!");
+
+            }
+            return animais;
+        }
 
         internal Animal? LoadAnimalWithResultado(Animal? animal)
         {
