@@ -89,5 +89,16 @@ namespace Gestor_De_Pule.src.Service
             Rodada.ResultadoDestaRodada = new();
             return Rodada;
         }
+        /// <summary>
+        /// Carrega em cache as rodadas que estão relacionadas para uma determinada disputa.
+        /// </summary>
+        /// <param name="id"> id da disputa que deseja carregar suas rodadas</param>
+        internal void LoadRodadasWithResultadosByIdDisputa(int id)
+        {
+            if(Rodadas is null ||  Rodadas.Count == 0)
+            {
+                Rodadas = _repository.GetByIdRodadasByIdDisputa(id);
+            }
+        }
     }
 }

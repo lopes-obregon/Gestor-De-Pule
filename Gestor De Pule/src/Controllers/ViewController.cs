@@ -123,6 +123,19 @@ namespace Gestor_De_Pule.src.Controllers
         {
             throw new NotImplementedException();
         }
+        /// <summary>
+        /// Delega a chamada para mensagem para o pagamento do pule.
+        /// </summary>
+        /// <returns> A mensagem da quantidade que deve ser pago por pule.</returns>
+        internal string PagamentoPorPule()
+        {
+            string valor = String.Empty;
+            string mensagem = String.Empty;
+            valor = _viewService.PagamentoPorPule();
+            if (!String.IsNullOrEmpty(valor))
+                mensagem = "Pagamento Por Pule: " + valor;
+            return mensagem;
+        }
 
         internal string SalvarDisputa()
         {
@@ -136,6 +149,16 @@ namespace Gestor_De_Pule.src.Controllers
         internal void SetDisputa(int idDisputa)
         {
             _viewService.SetDisputa(idDisputa);
+        }
+        /// <summary>
+        /// Delega para o serviço <see cref="_viewService"/> para fazer a chamada onde traz outra mensagem dos ganhadores.
+        /// </summary>
+        /// <returns>Uma mensagem informando quantos ganhadores teve em cada Rodada</returns>
+        internal string TotalGanhadoresPulesPorRodada()
+        {
+            string mensagem = string.Empty;
+            mensagem = _viewService.GetTotalGanhadoresPulesPorRodada();
+            return mensagem;
         }
     }
 }

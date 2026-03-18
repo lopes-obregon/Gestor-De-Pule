@@ -513,6 +513,8 @@ namespace Gestor_De_Pule
             _viewController.LoadEntToPrice();
 
             labelVitória.Text = _viewController.GetNomeAnimaisVencedores();
+            labelTotalGanhadores.Text = _viewController.TotalGanhadoresPulesPorRodada();
+            labelPagamentoPorPule.Text = _viewController.PagamentoPorPule();
                 //labelTotalGanhadores.Text = "Total Ganhadores: " + disputa.CntTotalGanhadoresPules().ToString();
                 /*labelTotalGanhadores.Text = "Total Ganhadores: " + disputa.CntTotalGanhadoresPulesToLists();
               

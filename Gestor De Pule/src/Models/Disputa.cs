@@ -1,6 +1,7 @@
 ﻿using Gestor_De_Pule.src.Model;
 using Gestor_De_Pule.src.Persistencias;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
 using System.Diagnostics;
 
 namespace Gestor_De_Pule.src.Models
@@ -991,6 +992,54 @@ namespace Gestor_De_Pule.src.Models
                     }
                 }
             }
+        }
+
+        internal string GetTotalGanhadoresPorPulesEmRodadas()
+        {
+            string mensagem = String.Empty;
+            int idAnimalVencedor = 0;
+            int quantidadeDePulesVencedores = 0;
+            int nRodada = 0;
+            if(Rodadas is not null && Rodadas.Count > 0)
+            {
+                foreach(var rodada in Rodadas)
+                {
+                    if(rodada is not null && rodada.PulesDestaRodada != null)
+                    {
+                        idAnimalVencedor = rodada.ResultadoDestaRodada?.FirstOrDefault(res => res.Posição == 1)?.AnimalId ?? 0;
+                        if(idAnimalVencedor != 0)
+                        {
+                            quantidadeDePulesVencedores = rodada.PulesDestaRodada?.Where(pules => pules.Animais.Any(an=> an.Id == idAnimalVencedor)).Count() ?? 0;
+                            mensagem += $"RODADA {++nRodada}, Nº Pules Vencedores {quantidadeDePulesVencedores}\t";
+                        }
+                    }
+                }
+            }
+            return mensagem;
+        }
+        /// <summary>
+        /// Calcula quantos vencedores em cada rodada
+        /// </summary>
+        /// <returns>o total de vencedores da quela rodada</returns>
+        internal int QuantidadeDePulesVencedoresTotal()
+        {
+            int cnt = 0;
+          if(Rodadas?.Count > 0)
+            {
+                foreach(var rodada in Rodadas)
+                {
+                    if(rodada is not null)
+                    {
+                        var resultado = rodada.ResultadoDestaRodada?.FirstOrDefault(res => res.Posição == 1);
+                        if(resultado is not null)
+                        {
+                            //var animalId = resultado.AnimalId;
+                            cnt += rodada.PulesDestaRodada.Count(p => p.Animais.Any(an => an.Id == resultado.AnimalId));
+                        }
+                    }
+                }
+            }
+          return cnt;
         }
     }
 }

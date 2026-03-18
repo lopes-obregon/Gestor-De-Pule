@@ -23,19 +23,24 @@ namespace Gestor_De_Pule.src.Service
         private ResultadoService _resultadoService;
         /// <summary>
         /// Serviço responsável por operações relacionadas à entidade <see cref="Animal"/>.
-        /// Utilizado para acessar, manipular e gerenciar disputas no contexto da aplicação.
+        /// Utilizado para acessar, manipular e gerenciar Animais no contexto da aplicação.
         /// </summary>
         private AnimalService _animalService;
         /// <summary>
         /// Serviço responsável por operações relacionadas à entidade <see cref="Caixa"/>.
-        /// Utilizado para acessar, manipular e gerenciar disputas no contexto da aplicação.
+        /// Utilizado para acessar, manipular e gerenciar Caixa no contexto da aplicação.
         /// </summary>
         private CaixaService _caixaService;
         /// <summary>
         /// Serviço responsável por operações relacionadas à entidade <see cref="Pule"/>.
-        /// Utilizado para acessar, manipular e gerenciar disputas no contexto da aplicação.
+        /// Utilizado para acessar, manipular e gerenciar Pule no contexto da aplicação.
         /// </summary>
         private PuleService _puleService;
+        /// <summary>
+        /// Serviço Responsável por operações relacionadas à entidade <see cref="Rodada"/>.
+        /// Utilizado para acessar, manipular e gerenciar Rodada no contexto da aplicação.
+        /// </summary>
+        private RodadaService _rodadaService;
         public ViewService(DataBase dataBase)
         {
             
@@ -44,6 +49,7 @@ namespace Gestor_De_Pule.src.Service
             _animalService = new AnimalService(dataBase);
             _caixaService = new CaixaService(dataBase);
             _puleService = new PuleService(dataBase);
+            _rodadaService = new RodadaService(dataBase);
         }
         /// <summary>
         /// Retorna uma entidade <see cref="Animal"/> pelo ID informado,
@@ -128,6 +134,18 @@ namespace Gestor_De_Pule.src.Service
         {
             return _resultadoService.GetResultadosByidRodada(id);
         }
+
+        internal string GetTotalGanhadoresPulesPorRodada()
+        {
+            string mensagem = String.Empty;
+            var disputa = _disputaService.Disputa;
+            if(disputa is not null)
+            {
+                mensagem = disputa.GetTotalGanhadoresPorPulesEmRodadas();
+            }
+            return mensagem;
+        }
+
         /// <summary>
         /// Carrega a entidade <see cref="Caixa"/> através do serviço de caixa,
         /// inicializando ou atualizando os dados da caixa atual.
@@ -150,6 +168,8 @@ namespace Gestor_De_Pule.src.Service
                     _puleService.LoadPulesWithAnimals(disputa.Id);
                 if (_animalService.Animals is null)
                     _animalService.LoadAnimaisWithPules();
+                if(_rodadaService.Rodadas is null)
+                    _rodadaService.LoadRodadasWithResultadosByIdDisputa(disputa.Id);
             }
         }
 
@@ -168,6 +188,42 @@ namespace Gestor_De_Pule.src.Service
         internal void LoadRodadas()
         {
             _disputaService.LoadRodadas();
+        }
+        /// <summary>
+        /// Se tem uma disputa valida chama o procedimento que calcula o valor para ser pago por pule
+        /// </summary>
+        /// <returns>O valor que deve ser pago por pule</returns>
+        internal string PagamentoPorPule()
+        {
+            var disputa = _disputaService.Disputa;
+            var caixa = _caixaService.Caixa;
+            string mensagem = String.Empty;
+            int quantidadeDePulesVencedores;
+            decimal totalArrecadado = 0.0m;
+            decimal valorTaxa = 0.0m;
+            decimal prêmioLiquido = 0;
+            if (disputa is not null)
+            {
+                //mensagem =disputa.PagamentoPorPule();
+                quantidadeDePulesVencedores = disputa.QuantidadeDePulesVencedoresTotal();
+                try
+                {
+                    totalArrecadado = _puleService.Pules.Where(p => p.DisputaId == disputa.Id).Sum(p => p.Valor);
+
+                }
+                catch (ArgumentNullException)
+                {
+                    _puleService.LoadPulesWithDisputaById(disputa.Id);
+                    totalArrecadado = _puleService.Pules.Where(p => p.DisputaId == disputa.Id).Sum(p => p.Valor);
+                }
+                if(caixa is not null)
+                {
+                    valorTaxa = totalArrecadado * caixa.Taxa;
+                    prêmioLiquido = totalArrecadado - valorTaxa;
+                   mensagem =  (prêmioLiquido / quantidadeDePulesVencedores).ToString("C");
+                }
+            }
+            return mensagem;
         }
 
         /// <summary>

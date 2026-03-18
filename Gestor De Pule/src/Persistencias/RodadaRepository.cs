@@ -102,6 +102,38 @@ namespace Gestor_De_Pule.src.Persistencias
             }
             return rodadas;
         }
+        /// <summary>
+        /// Com o id fornescido busca uma lista de rodadas que estão associadas a disputa fornescida.
+        /// </summary>
+        /// <param name="idDisputa"> Identificador unico da disputa</param>
+        /// <param name="includePule"> flag se deseja carregar com o pule ou não</param>
+        /// <returns>a lista de <see cref="Rodada"/> buscada</returns>
+        internal List<Rodada>? GetByIdRodadasByIdDisputa(int idDisputa, bool includePule=true)
+        {
+            List<Rodada>? rodadas = null;
+            try
+            {
+                //verificar se ja tem disputas rastreadas para esse id
+                var track = _dataBase.ChangeTracker.Entries<Rodada>().Select(e => e.Entity).Where(rod => rod.DisputaId == idDisputa).ToList();
+                if (track.Count > 0)
+                    rodadas = track;
+                else
+                {
+                    if(includePule)
+                    {
+                        var dbRodadas = _dataBase.Rodas.Where(rod => rod.DisputaId == idDisputa).Include(rod => rod.PulesDestaRodada).ToList();
+                        if (dbRodadas.Count > 0)
+                            rodadas = dbRodadas;
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"Erro ao tentar carregar as rodadas com a disputa de Id{idDisputa}");
+            }
+            return rodadas;
+        }
 
         internal Rodada? isTrack(Rodada? rodada)
         {

@@ -215,5 +215,17 @@ namespace Gestor_De_Pule.src.Service
             }
             return pules;
         }
+        /// <summary>
+        /// Set cache pules para consultas futuras
+        /// </summary>
+        /// <param name="id"> identificador da disputa que deseja encontrar os pules associados</param>
+        internal void LoadPulesWithDisputaById(int id)
+        {
+            var pules = _repository.GetPulesWithIdDisputs(id);
+            if (pules is null)
+                Pules = new List<Pule>();
+            else
+                Pules = pules;
+        }
     }
 }
