@@ -114,9 +114,20 @@ namespace Gestor_De_Pule.src.Controllers
         /// </summary>
         internal void LoadRodadas() => _viewService.LoadRodadas();
 
-        internal Rodada NovaRodada()
+        internal (string mensagem, bool erro) NovaRodada()
         {
-            throw new NotImplementedException();
+            bool sucss = false;
+            string mensagem = String.Empty;
+            sucss = _viewService.NovaRodada();
+            if (sucss)
+            {
+                mensagem = "Rodada Criada Com Sucesso!";
+            }
+            else
+            {
+                mensagem = "Erro ao Criar a Nova Rodada!";
+            }
+            return (mensagem, sucss);
         }
 
         internal Resultado NovoResultado()
@@ -139,7 +150,18 @@ namespace Gestor_De_Pule.src.Controllers
 
         internal string SalvarDisputa()
         {
-            throw new NotImplementedException();
+            string mensagem = String.Empty;
+            bool sucess = _viewService.Save();
+
+            if (sucess)
+            {
+                mensagem = "Salvo Com Sucesso!";
+            }
+            else
+            {
+                mensagem = "Erro Ao salvar!";
+            }
+            return mensagem;
         }
 
         /// <summary>

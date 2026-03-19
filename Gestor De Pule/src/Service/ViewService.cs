@@ -41,6 +41,10 @@ namespace Gestor_De_Pule.src.Service
         /// Utilizado para acessar, manipular e gerenciar Rodada no contexto da aplicação.
         /// </summary>
         private RodadaService _rodadaService;
+        /// <summary>
+        /// Repository geral para salvar alterações de contextos
+        /// </summary>
+        private Repository _repository;
         public ViewService(DataBase dataBase)
         {
             
@@ -50,6 +54,7 @@ namespace Gestor_De_Pule.src.Service
             _caixaService = new CaixaService(dataBase);
             _puleService = new PuleService(dataBase);
             _rodadaService = new RodadaService(dataBase);
+            _repository = new Repository(dataBase);
         }
         /// <summary>
         /// Retorna uma entidade <see cref="Animal"/> pelo ID informado,
@@ -189,6 +194,45 @@ namespace Gestor_De_Pule.src.Service
         {
             _disputaService.LoadRodadas();
         }
+
+        internal bool NovaRodada()
+        {
+            var rodada = _rodadaService.NewRodada();
+            var disputa = _disputaService.Disputa;
+            bool sucess = false;
+            byte nRodada;
+            if (disputa != null)
+            {
+                var animais = _animalService.GetAnimalsWithDisputaId(disputa.Id);
+                if (animais != null)
+                {
+                    foreach (var animal in animais)
+                    {
+                        if (animal is not null)
+                        {
+                            var resulado = _resultadoService.NovoResultado();
+                            animal.Resultados.Add(resulado);
+                            if (rodada.ResultadoDestaRodada is null)
+                                rodada.ResultadoDestaRodada = new();
+                            rodada.ResultadoDestaRodada.Add(resulado);
+                            resulado.Disputa = disputa;
+                            _resultadoService.Resultados?.Add(resulado);
+
+                        }
+                    }
+                    nRodada = (byte)disputa.GetNMaiorRodada();
+                    rodada.Nrodadas = ++nRodada;
+                    /*var ultimoPules = disputa.GetLastPulesRodadas();
+                    rodada.PulesDestaRodada = ultimoPules;*/
+                    disputa.Rodadas?.Add(rodada);
+                    _rodadaService.Rodadas?.Add(rodada);
+                }
+                sucess = _repository.Save();
+                
+            }
+            return sucess;
+        }
+
         /// <summary>
         /// Se tem uma disputa valida chama o procedimento que calcula o valor para ser pago por pule
         /// </summary>
@@ -205,16 +249,17 @@ namespace Gestor_De_Pule.src.Service
             if (disputa is not null)
             {
                 //mensagem =disputa.PagamentoPorPule();
-                quantidadeDePulesVencedores = disputa.QuantidadeDePulesVencedoresTotal();
                 try
                 {
                     totalArrecadado = _puleService.Pules.Where(p => p.DisputaId == disputa.Id).Sum(p => p.Valor);
+                    quantidadeDePulesVencedores = disputa.QuantidadeDePulesVencedoresTotal();
 
                 }
                 catch (ArgumentNullException)
                 {
                     _puleService.LoadPulesWithDisputaById(disputa.Id);
                     totalArrecadado = _puleService.Pules.Where(p => p.DisputaId == disputa.Id).Sum(p => p.Valor);
+                    quantidadeDePulesVencedores = disputa.QuantidadeDePulesVencedoresTotal();
                 }
                 if(caixa is not null)
                 {
@@ -224,6 +269,14 @@ namespace Gestor_De_Pule.src.Service
                 }
             }
             return mensagem;
+        }
+        /// <summary>
+        /// Delegate repository save
+        /// </summary>
+        /// <returns>true if saved the context or false if the context not saved.</returns>
+        internal bool Save()
+        {
+            return _repository.Save();
         }
 
         /// <summary>

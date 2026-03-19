@@ -14,12 +14,12 @@ namespace Gestor_De_Pule.src.Models
         /// </summary>
         public int DisputaId {  get; set; }
         /// <summary>
-        /// Navegate
+        /// Navegate <see cref="Disputa"/>
         /// </summary>
         public Disputa? Disputa { get; set; }
         /// <summary>
         /// Nº rodada referente
-        /// </summary>
+       /// </summary>
         public byte Nrodadas { get; set; }
         /// <summary>
         ///     List dos pules da rodada referente

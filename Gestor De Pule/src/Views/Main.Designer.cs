@@ -57,6 +57,9 @@
             tabControl = new TabControl();
             tabPage1 = new TabPage();
             dataGridViewDisputas = new DataGridView();
+            ColumnAnimalNome = new DataGridViewTextBoxColumn();
+            ColumnPosição = new DataGridViewTextBoxColumn();
+            ColumnTempo = new DataGridViewTextBoxColumn();
             tabPage2 = new TabPage();
             labelDisputaNome = new Label();
             windowCadastroDisputaBindingSource = new BindingSource(components);
@@ -69,9 +72,6 @@
             labelVitória = new Label();
             labelTotalGanhadores = new Label();
             labelPagamentoPorPule = new Label();
-            ColumnAnimalNome = new DataGridViewTextBoxColumn();
-            ColumnPosição = new DataGridViewTextBoxColumn();
-            ColumnTempo = new DataGridViewTextBoxColumn();
             menuStrip1.SuspendLayout();
             tableLayoutPanelFiltrosSelect.SuspendLayout();
             flowLayoutPanelButtons.SuspendLayout();
@@ -313,6 +313,27 @@
             dataGridViewDisputas.Size = new Size(640, 268);
             dataGridViewDisputas.TabIndex = 1;
             // 
+            // ColumnAnimalNome
+            // 
+            ColumnAnimalNome.HeaderText = "Nome Do Animal";
+            ColumnAnimalNome.Name = "ColumnAnimalNome";
+            ColumnAnimalNome.ReadOnly = true;
+            // 
+            // ColumnPosição
+            // 
+            ColumnPosição.HeaderText = "Posição";
+            ColumnPosição.Name = "ColumnPosição";
+            ColumnPosição.ReadOnly = true;
+            // 
+            // ColumnTempo
+            // 
+            dataGridViewCellStyle1.Format = "hh\\:mm\\:ss\\,ff";
+            dataGridViewCellStyle1.NullValue = null;
+            ColumnTempo.DefaultCellStyle = dataGridViewCellStyle1;
+            ColumnTempo.HeaderText = "Tempo";
+            ColumnTempo.Name = "ColumnTempo";
+            ColumnTempo.ReadOnly = true;
+            // 
             // tabPage2
             // 
             tabPage2.Location = new Point(4, 24);
@@ -398,9 +419,9 @@
             tableLayoutPanel2.Location = new Point(721, 145);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 3;
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 129F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 53.8461533F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 46.1538467F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 58F));
             tableLayoutPanel2.Size = new Size(372, 208);
             tableLayoutPanel2.TabIndex = 7;
             // 
@@ -416,7 +437,7 @@
             // labelTotalGanhadores
             // 
             labelTotalGanhadores.AutoSize = true;
-            labelTotalGanhadores.Location = new Point(3, 39);
+            labelTotalGanhadores.Location = new Point(3, 80);
             labelTotalGanhadores.Name = "labelTotalGanhadores";
             labelTotalGanhadores.Size = new Size(99, 15);
             labelTotalGanhadores.TabIndex = 1;
@@ -425,32 +446,11 @@
             // labelPagamentoPorPule
             // 
             labelPagamentoPorPule.AutoSize = true;
-            labelPagamentoPorPule.Location = new Point(3, 78);
+            labelPagamentoPorPule.Location = new Point(3, 149);
             labelPagamentoPorPule.Name = "labelPagamentoPorPule";
             labelPagamentoPorPule.Size = new Size(115, 15);
             labelPagamentoPorPule.TabIndex = 2;
             labelPagamentoPorPule.Text = "Pagamento Por Pule";
-            // 
-            // ColumnAnimalNome
-            // 
-            ColumnAnimalNome.HeaderText = "Nome Do Animal";
-            ColumnAnimalNome.Name = "ColumnAnimalNome";
-            ColumnAnimalNome.ReadOnly = true;
-            // 
-            // ColumnPosição
-            // 
-            ColumnPosição.HeaderText = "Posição";
-            ColumnPosição.Name = "ColumnPosição";
-            ColumnPosição.ReadOnly = true;
-            // 
-            // ColumnTempo
-            // 
-            dataGridViewCellStyle1.Format = "hh\\:mm\\:ss\\,ff";
-            dataGridViewCellStyle1.NullValue = null;
-            ColumnTempo.DefaultCellStyle = dataGridViewCellStyle1;
-            ColumnTempo.HeaderText = "Tempo";
-            ColumnTempo.Name = "ColumnTempo";
-            ColumnTempo.ReadOnly = true;
             // 
             // Main
             // 

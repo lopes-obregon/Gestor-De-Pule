@@ -382,16 +382,11 @@ namespace Gestor_De_Pule
         private void SalvarDados(object sender, EventArgs e)
         {
             string mensagem = String.Empty;
-            var disputa = _viewController.GetDisputa() as Disputa;
-            if (disputa is not null)
-            {
-                // DisputaController.LoadDisputa(disputaSelecionado);
-                mensagem = _viewController.SalvarDisputa();
-            }
-            else
-            {
-                mensagem = "Erro Ao tentar salvar a Disputa";
-            }
+
+
+            // DisputaController.LoadDisputa(disputaSelecionado);
+            mensagem = _viewController.SalvarDisputa();
+          
             MessageBox.Show(mensagem);
         }
 
@@ -542,56 +537,22 @@ namespace Gestor_De_Pule
         /// <param name="e"></param>
         private void NovaRodada(object sender, EventArgs e)
         {
-            var disputa = _viewController.GetDisputa() as Disputa;
-            var rodadas = disputa?.Rodadas;
-            byte nRodadas = disputa?.Rodadas.Max(res => res.Nrodadas) ?? 0;
-            if (disputa is not null)
+            string mensagem = String.Empty;
+            bool sucess = false;
+            (mensagem, sucess) = _viewController.NovaRodada();
+            MessageBox.Show(mensagem);
+            if (sucess)
             {
-                //se rodada não é nula podemos criar novas rodadas
-
-                if (_viewController is not null)
-                {
-                    //_rodadaController.NovaRodada();
-                    //var rodadaNova = _rodadaController.Rodada;
-                    var rodadaNova = _viewController.NovaRodada();
-                    if (rodadaNova is not null)
-                    {
-                        rodadaNova.Disputa = disputa;
-                        rodadaNova.Nrodadas = ++nRodadas;
-
-                        //seleciona e devolve todos os animais da lista de resultados
-                        //var animais = disputa.ResultadoList?.Select(res => res.Animal).ToList();
-                        var animais = _viewController.GetAnimals(disputa.GetAnimalsRodadasIds());
-                        if (animais is not null)
-                        {
-                            foreach (var animal in animais)
-                            {
-                                if (animal is not null){
-                                    //_disputaController.ResultadoControlleNovoResultado();
-                                     var resultado = _viewController.NovoResultado();
-                                    //var resultado = _disputaController.ResultadoController.Resultado;
-                                    if (resultado is not null)
-                                    {
-                                        resultado.Disputa = disputa;
-                                        resultado.Animal = animal;
-                                        animal.Resultados.Add(resultado);
-                                        if (rodadaNova.ResultadoDestaRodada is null)
-                                            rodadaNova.ResultadoDestaRodada = new();
-                                        rodadaNova.ResultadoDestaRodada.Add(resultado);
-                                    }
-                                }
-                            }
-                            disputa.Rodadas?.Add(rodadaNova);
-                        }
-                    }
-
-                }
                 SetDataGridDisputa(true);
             }
             else
             {
                 MessageBox.Show("Erro Disputa com uma Rodada ou erro interno, Por Favor Tente Buscar a Disputa Primeiro!");
+
             }
+
+
+            
         }
     }
 }

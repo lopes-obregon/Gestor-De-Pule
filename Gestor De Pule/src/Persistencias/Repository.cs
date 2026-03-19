@@ -43,5 +43,23 @@ namespace Gestor_De_Pule.src.Persistencias
         {
             _context.Disputas.Attach(disputa);
         }
+        /// <summary>
+        /// Save the context pending.  
+        /// </summary>
+        /// <returns>true to save the context or false to not save context. </returns>
+        internal bool Save()
+        {
+            bool sucess = false;
+            try
+            {
+                _context.SaveChanges();
+                sucess = true;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Erro ao Salvar Dados de contexto!");
+            }
+            return sucess;
+        }
     }
 }

@@ -1034,12 +1034,34 @@ namespace Gestor_De_Pule.src.Models
                         if(resultado is not null)
                         {
                             //var animalId = resultado.AnimalId;
-                            cnt += rodada.PulesDestaRodada.Count(p => p.Animais.Any(an => an.Id == resultado.AnimalId));
+                            if (rodada.PulesDestaRodada != null)
+                            {
+                                cnt += rodada.PulesDestaRodada.Count(p => p.Animais.Any(an => an.Id == resultado.AnimalId));
+                            }
                         }
                     }
                 }
             }
           return cnt;
+        }
+        /// <summary>
+        /// Get last <see cref="Rodada"/>
+        /// </summary>
+        /// <returns> <see cref="Pule"/> from the <see cref="Rodada"/></returns>
+        internal List<Pule> GetLastPulesRodadas()
+        {
+            List<Pule> pules = new List<Pule>();
+            if(Rodadas?.Count > 0)
+            {
+                //ultima rodada
+                var lastRodadas = Rodadas.LastOrDefault();
+                if(lastRodadas is not null && lastRodadas.PulesDestaRodada is not null)
+                {
+                    pules = lastRodadas.PulesDestaRodada.ToList();// pega os pules da ultima rodada
+                }
+                
+            }
+            return pules;
         }
     }
 }

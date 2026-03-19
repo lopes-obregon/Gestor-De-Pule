@@ -138,5 +138,17 @@ namespace Gestor_De_Pule.src.Service
         {
             Animals = _animalRepository.LoadAnimais(animaisSelecionados);
         }
+        /// <summary>
+        /// Obtem em memória os animais referente a Disputa relacionada
+        /// </summary>
+        /// <param name="id"> identificador da Disputa</param>
+        /// <returns>List com os Animais encontrados.</returns>
+        internal List<Animal> GetAnimalsWithDisputaId(int id)
+        {
+            List<Animal> animais = new();
+            if (Animals is not null)
+                animais = Animals.Where(an => an.Resultados.Any(res => res.DisputaId == id)).DistinctBy(a => a.Id).ToList();
+            return animais;
+        }
     }
 }
