@@ -10,13 +10,13 @@ namespace Gestor_De_Pule.src.Controllers
 
         public ResultadoRepository ResultadoRepository { get; private set; }
         public Resultado? Resultado { get; private set; }
-        public List<Resultado> Resultados { get; set; }
+        public List<Resultado>? Resultados => _resultadoService.Resultados;
         private ResultadoService _resultadoService {  get; set; }
         public ResultadoController(object data) { 
         
             ResultadoRepository = new ResultadoRepository(data);
             _resultadoService = new(data);
-            Resultados = new List<Resultado>();
+            //Resultados = new List<Resultado>();
         }
         public ResultadoController() { ResultadoRepository = new ResultadoRepository();}
         /// <summary>
@@ -75,6 +75,14 @@ namespace Gestor_De_Pule.src.Controllers
            
                 return _resultadoService.GetResultadosByidRodada(idRodada);
             
+        }
+        /// <summary>
+        /// Delegate Reload to service.
+        /// </summary>
+        /// <param name="id">unique <see cref="Disputa"/> identifier</param>
+        internal void ReloadResultados(int id)
+        {
+            _resultadoService.ReloadResultadosWithDisputaId(id);
         }
     }
 }

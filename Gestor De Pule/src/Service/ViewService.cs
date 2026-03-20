@@ -222,8 +222,26 @@ namespace Gestor_De_Pule.src.Service
                     }
                     nRodada = (byte)disputa.GetNMaiorRodada();
                     rodada.Nrodadas = ++nRodada;
-                    /*var ultimoPules = disputa.GetLastPulesRodadas();
-                    rodada.PulesDestaRodada = ultimoPules;*/
+                    var ultimoPules = disputa.GetLastPulesRodadas();
+                    if(ultimoPules != null)
+                    {
+                        foreach(var pule in ultimoPules)
+                        {
+                            //criar novo pule com mesmo dados
+                            if(pule is not null)
+                            {
+                                var novoPule = _puleService.NovoPule(pule);
+                                if(novoPule != null)
+                                {
+                                    if (rodada.PulesDestaRodada is null)
+                                        rodada.PulesDestaRodada = new();
+                                    rodada.PulesDestaRodada.Add(novoPule);//adiciona o novo pule para a lista de rodadas.
+                                }
+
+                            }
+                        }
+                    }
+                    //rodada.PulesDestaRodada = ultimoPules;
                     disputa.Rodadas?.Add(rodada);
                     _rodadaService.Rodadas?.Add(rodada);
                 }

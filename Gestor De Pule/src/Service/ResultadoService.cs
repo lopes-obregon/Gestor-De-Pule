@@ -68,5 +68,13 @@ namespace Gestor_De_Pule.src.Service
             Resultados.Add(Resultado);
             return Resultado;
         }
+        /// <summary>
+        /// Stores 'Results'  in memory.
+        /// </summary>
+        /// <param name="id"> unique <see cref="Disputa"/> identifier </param>
+        internal void ReloadResultadosWithDisputaId(int id)
+        {
+            Resultados = _repository.ReadResultadosWithDisputaId(id);
+        }
     }
 }

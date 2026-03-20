@@ -82,14 +82,6 @@ namespace Gestor_De_Pule.src.Model
             this.Número = númeroDoPule;
             Date = DateTime.Now;
         }
-
-        //sett gett métodos
-
-       
-
-       
-
-        
         internal String AnimaisToString()
         {
             string nomeAnimal = String.Empty;
@@ -116,78 +108,7 @@ namespace Gestor_De_Pule.src.Model
         {
             return Número.ToString();
         }
-
-        internal static Pule? ToPule(object puleSelecionadoUi)
-        {
-            Pule? pule = puleSelecionadoUi as Pule;
-            if (pule == null) return null;
-            else return pule;
-        }
-
-        internal static List<Pule>? ToPules(object puleSelecionadosUi)
-        {
-            List<Pule>? pules = puleSelecionadosUi as List<Pule>;
-            if (pules == null) return null; return pules;
-        }
-
-        internal static Apostador? ReloadPuleApostador(int idApostador)
-        {
-            using DataBase db = new DataBase();
-            Apostador? apostador = null;
-            try
-            {
-                if(idApostador != 0)
-                {
-                    var apostadorPuleDb = db.Apostadors.FirstOrDefault(ap => ap.Id ==idApostador);
-                    if(apostadorPuleDb != null)
-                    {
-                        apostador = apostadorPuleDb;
-                        
-                    }
-                }
-            }
-            catch { return apostador; }
-            return apostador;
-        }
-
-        internal static Pule? ReloadPule(Pule pule)
-        {
-            using DataBase db = new DataBase();
-            Pule? puler = null;
-            try
-            {
-                if(pule != null)
-                {
-                    var puleDb = db.Pules.FirstOrDefault(pu => pu.Id ==pule.Id);
-                    if(puleDb != null)
-                    {
-                        puler = puleDb;
-                        
-                    }
-                }
-            }
-            catch { return puler; }
-            return puler;
-        }
-        /// <summary>
-        /// Reloads the Apostador property from the database for the current instance.
-        /// </summary>
-        internal void ReloadApostador()
-        {
-            using DataBase db = new DataBase();
-            try
-            {
-                if(this != null)
-                {
-                    var puleDb = db.Pules
-                        .Include(p => p.Apostador)
-                        .FirstOrDefault(p => p.Id == this.Id);
-                    if (puleDb != null)
-                        this.Apostador = puleDb.Apostador;
-                }
-            }
-            catch { this.Apostador = null;}
-        }
+       
         /// <summary>
         /// verifica se o item fornecido é um apostador e verifica se os ids são iguais
         /// </summary>
@@ -199,6 +120,23 @@ namespace Gestor_De_Pule.src.Model
             if(apostador != null)
                 if(ApostadorId == apostador.Id) return true;
             return false;
+        }
+        /// <summary>
+        /// Set in new pule data
+        /// </summary>
+        /// <returns>A new <see cref="Pule"/>.</returns>
+        internal Pule Clone()
+        {
+            return new Pule
+            {
+                Apostador = this.Apostador,
+                Disputa = this.Disputa,
+                StatusPagamento = this.StatusPagamento,
+                Date = this.Date,
+                Animais = this.Animais,
+                Valor = this.Valor,
+                Número = this.Número
+            };
         }
     }
 }

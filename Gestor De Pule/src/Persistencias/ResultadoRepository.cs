@@ -267,5 +267,31 @@ namespace Gestor_De_Pule.src.Persistencias
             }
             return resultados;
         }
+        /// <summary>
+        /// Search <see cref="Resultado"/> list that have associete with <see cref="Disputa"/>
+        /// </summary>
+        /// <param name="id"> unique <see cref="Disputa"/> identifier</param>
+        /// <returns>A instance <see cref="List{Resultado}"/> with  'Resultados' found</returns>
+        internal List<Resultado>? ReadResultadosWithDisputaId(int id)
+        {
+            List<Resultado>? resultados = null;
+            try
+            {
+                var track = _db.ChangeTracker.Entries<Resultado>().Select(e => e.Entity).Where(res => res.DisputaId == id).ToList();
+                if (track.Count > 0)
+                    resultados = track;
+                else
+                {
+                    var db = _db.Resultados.Where(res => res.DisputaId == id).ToList();
+                    if (db.Count > 0)
+                        resultados = db;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"Erro ao tentar carregar as disputas com Id {id}");
+            }
+            return resultados;
+        }
     }
 }

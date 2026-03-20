@@ -60,6 +60,8 @@ namespace Gestor_De_Pule.src.Views.Cadastros.Disputa
                 
                     _resultadoController.LoadResultados();
                     _animController.LoadAnimais();
+                /*if(_resultadoController.Resultados.Count == 0)
+                    _resultadoController.ReloadResultados(disputa.Id);*/
                     var listAnimalId = _resultadoController.Resultados.Where(res => res.DisputaId == disputa.Id).Select(res => res.AnimalId).ToList();
                     var listAnimal = _animController.Animals.Where(a => listAnimalId.Contains(a.Id)).ToList();
                    if(listAnimal != null)

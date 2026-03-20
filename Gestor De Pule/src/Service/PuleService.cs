@@ -1,5 +1,6 @@
 ﻿using Gestor_De_Pule.src.Model;
 using Gestor_De_Pule.src.Persistencias;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Gestor_De_Pule.src.Service
 {
@@ -226,6 +227,20 @@ namespace Gestor_De_Pule.src.Service
                 Pules = new List<Pule>();
             else
                 Pules = pules;
+        }
+        /// <summary>
+        /// A new Pule with data pule info
+        /// </summary>
+        /// <param name="pule"> To copy data</param>
+        /// <returns> new pule</returns>
+        internal Pule? NovoPule(Pule pule)
+        {
+            Pule novoPule = pule.Clone();
+            _repository.AddContext(novoPule);
+            if(Pules is not null)
+                Pules.Add(novoPule);
+            return novoPule;
+            
         }
     }
 }
