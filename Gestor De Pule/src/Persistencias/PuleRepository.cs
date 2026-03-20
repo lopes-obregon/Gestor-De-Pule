@@ -482,5 +482,31 @@ namespace Gestor_De_Pule.src.Persistencias
             }
             return pules;
         }
+        /// <summary>
+        /// verify in track or Data base to seach 'Pules'
+        /// </summary>
+        /// <param name="disputsId"> unique <see cref="List"/> <see cref="int"/> <see cref="Disputa"/></param>
+        /// <returns><see cref="List"/> <see cref="Pule"/></returns>
+        internal List<Pule> LoadPulesAssociedDisputa(List<int> disputsId)
+        {
+            List<Pule> pules = new();
+            try
+            {
+                var track = _data.ChangeTracker.Entries<Pule>().Select(e => e.Entity).Where(pu => disputsId.Any(id => pu.DisputaId == id)).ToList();
+                if (track.Count > 0)
+                    pules = track;
+                else
+                {
+                    var db = _data.Pules.Where(pu => disputsId.Any(id => pu.DisputaId == id)).ToList();
+                    if (db.Count > 0)
+                        pules = db;
+                }
+            }
+            catch(Exception e)
+            {
+                Log.Error(e, $"Erro ao tentar carregar as disputas da lista!");
+            }
+            return pules;
+        }
     }
 }

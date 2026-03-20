@@ -1,6 +1,7 @@
 ﻿
 using Gestor_De_Pule.src.Models;
 using Gestor_De_Pule.src.Persistencias;
+using Gestor_De_Pule.src.Service;
 
 namespace Gestor_De_Pule.src.Controllers
 {
@@ -9,37 +10,29 @@ namespace Gestor_De_Pule.src.Controllers
         public   Caixa? Caixa {  set; get; } = null;
         private CaixaRepository _caixaRepository;
         private Repository _repository;
+        /// <summary>
+        /// Service <see cref="Caixa"/>
+        /// </summary>
+        private CaixaService _caixaService;
         public FinanceiroController() 
         {
             _repository = new Repository();
             var db = _repository.GetDataBase();
             _caixaRepository = new CaixaRepository(db);
-            Caixa = _caixaRepository.GetCaixa();
+            //Caixa = _caixaRepository.GetCaixa();
+            _caixaService = new CaixaService(db);
         }
         /// <summary>
-        /// Init caixa in instance
+        /// Delegate init caixa
         /// </summary>
         internal  void InitCaixa()
         {
-           if(Caixa is null)
-            {
-                var caixaDb = _caixaRepository.GetCaixa();
-                if (caixaDb is not null)
-                    Caixa = (Caixa?)caixaDb;
-            }
-
+            _caixaService.GetCaixa();
         }
-        /// <summary>
-        /// carrega no caixa o primeiro caixa aberto;
-        /// </summary>
-        internal  void LoadCaixaInit()
-        {
-            if (Caixa is null)
-                Caixa = _caixaRepository.LoadInit();
-        }
-        
-       
-
+      /// <summary>
+      /// 
+      /// </summary>
+      /// <param name="taxa"></param>
         internal  void SaveOrAttTaxa(decimal taxa)
         {
             if(Caixa is not null && Caixa.Taxa != taxa){
@@ -66,6 +59,43 @@ namespace Gestor_De_Pule.src.Controllers
         internal void Dispose()
         {
             _repository.GetDataBase().Dispose();
+        }
+        /// <summary>
+        /// Delegate to <see cref="_caixaService"/> to check
+        /// </summary>
+        /// <returns>true if <see cref="Caixa"/> null or false if <see cref="Caixa"/> not null</returns>
+        internal bool CaixaIsNull()
+        {
+            bool result =  _caixaService.CaixaIsNull();
+            return result;
+        }
+        /// <summary>
+        /// Delegate load <see cref="CaixaService"/> to call loads 'disputs'
+        /// </summary>
+        internal void LoadDisputs()
+        {
+            _caixaService.LoadDisputs();
+        }
+        /// <summary>
+        /// Delegate to <see cref="_caixaService"/> to get 'totalEmCaixa'.
+        /// </summary>
+        /// <returns>A string with a value coin.</returns>
+        internal string GetTotalEmCaixa()
+        {
+            return _caixaService.GetTotalEmCaixa();
+        }
+
+        internal string GetEntradaDeApostas()
+        {
+            return _caixaService.GetEntradaDeApostas();
+        }
+        /// <summary>
+        /// Delegate service to get prize
+        /// </summary>
+        /// <returns>A string with prize value</returns>
+        internal string PremioApagar()
+        {
+            return _caixaService.PrêmioParaPagar();
         }
     }
 }

@@ -23,16 +23,20 @@ namespace Gestor_De_Pule.src.Views.Financeiro.FluxoCaixa
             LabelFluxoDeCaixa.Content = "FlUXO DE CAIXA - DATA: " + DateTime.Now.ToString("dd/MM/yyyy");
             if(_financeiroController is not null)
             {
-                _financeiroController.LoadCaixaInit();
+                _financeiroController.InitCaixa();
+                _financeiroController.LoadDisputs();
                 var caixa = _financeiroController.Caixa;
-                if (caixa != null)
+                if (!_financeiroController.CaixaIsNull())
                 {
                     //checar os pules pagos ou a quantidade que foram pagos
-                   // caixa.TotalEmCaixaWithPulePago();
+                    // caixa.TotalEmCaixaWithPulePago();
                     //método só para teste
-                    LabelSaldoTotalCaixa.Content = "SALDO TOTAL EM CAIXA: " + caixa.TotalEmCaixa.ToString("C");
-                    LabelEntradaDeAposta.Content = "(+) Entradas de Apostas: " + caixa.GetEntradaDeApostas().ToString("C");
-                    LabelPremioApagar.Content = "(-) Prêmios a Pagar: " + caixa.GetPremioApagar().ToString("C");
+                    //LabelSaldoTotalCaixa.Content = "SALDO TOTAL EM CAIXA: " + caixa.TotalEmCaixa.ToString("C");
+                    LabelSaldoTotalCaixa.Content = "SALDO TOTAL EM CAIXA: " + _financeiroController.GetTotalEmCaixa();
+                    //LabelEntradaDeAposta.Content = "(+) Entradas de Apostas: " + caixa.GetEntradaDeApostas().ToString("C");
+                    LabelEntradaDeAposta.Content = "(+) Entradas de Apostas: " + _financeiroController.GetEntradaDeApostas();
+                    //LabelPremioApagar.Content = "(-) Prêmios a Pagar: " + caixa.GetPremioApagar().ToString("C");
+                    LabelPremioApagar.Content = "(-) Prêmios a Pagar: " + _financeiroController.PremioApagar();
                     LabelLucro.Content = " (=) TAXA DA CASA (LUCRO): " + caixa.Lucro().ToString("C");
                     LabelInfo.Content = "TAXA CALCULADA DE: " + caixa.Taxa.ToString("P");
                 }

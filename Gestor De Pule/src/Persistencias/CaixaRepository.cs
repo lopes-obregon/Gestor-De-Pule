@@ -112,7 +112,7 @@ namespace Gestor_De_Pule.src.Persistencias
             Caixa caixa = null;
             try
             {
-                var caixaDb = _db.Caixas.Include(cai => cai.Disputs).ThenInclude(dis => dis.Pules).FirstOrDefault(cai => cai.Open == IsOpen.Open);
+                var caixaDb = _db.Caixas.FirstOrDefault(cai => cai.Open == IsOpen.Open);
                 if (caixaDb != null)
                 {
                     caixa = caixaDb;

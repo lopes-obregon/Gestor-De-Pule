@@ -27,6 +27,19 @@ namespace Gestor_De_Pule.src.Persistencias
                )
                .CreateLogger();
         }
+        public DisputaRepository(object data)
+        {
+            _dataBase = (DataBase)data;
+            Log.Logger = new LoggerConfiguration()
+               .WriteTo.File(
+               "logs/log.txt",
+               rollingInterval: RollingInterval.Day, //cria um arquivo por dia
+               retainedFileCountLimit: 7,//mantem 7 arquivos
+               fileSizeLimitBytes: 10_000_000,//limite de 10 mb
+               rollOnFileSizeLimit: true //cria novo arquivo quando chegar o limite
+               )
+               .CreateLogger();
+        }
 
         public DisputaRepository(DataBase data)
         {
@@ -654,6 +667,28 @@ namespace Gestor_De_Pule.src.Persistencias
                 Log.Error(ex, $"Erro ao carregar a disputa id {idDisputa}");
             }
             return disputa;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"> unique <see cref="Caixa"/> idenfier</param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        internal List<Disputa>? GetDisputasByCauxaId(int id)
+        {
+            List<Disputa>? disputas = null;
+            try
+            {
+                var db = _dataBase.Disputas.Where(dis => dis.CaixaId == id).ToList();
+                if (db.Count > 0)
+                    disputas = db;
+
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"Erro ao carregar a disputas com caixa de id {id}");
+            }
+            return disputas;
         }
     }
 }

@@ -42,6 +42,10 @@ namespace Gestor_De_Pule.src.Service
             _caixaService = new CaixaService(data);
             _rdadaService = new RodadaService(data);
         }
+        public DisputaService(object data)
+        {
+            _disputaRepository = new DisputaRepository(data);
+        }
         internal string AtualizarDados(Disputa? disputa, string nomeDisputa, DateTime? date, List<int> idsAnimais, int quantidadeRodadas)
         {
 
@@ -431,6 +435,17 @@ namespace Gestor_De_Pule.src.Service
             Disputa = new Disputa(nomeDisputa, date, caixa);
             _disputaRepository.AddContext(Disputa);
             return Disputa;
+        }
+        /// <summary>
+        /// Loads <see cref="Disputs"/>  in memory
+        /// </summary>
+        /// <param name="id">unique <see cref="Caixa"/> identifier</param>
+        internal void LoadDisputsByCaixaId(int id)
+        {
+            if(Disputs is null ||  Disputs.Count == 0)
+            {
+                Disputs = _disputaRepository.GetDisputasByCauxaId(id);
+            }
         }
     }
 }

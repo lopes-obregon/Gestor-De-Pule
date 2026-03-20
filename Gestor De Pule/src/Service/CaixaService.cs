@@ -12,11 +12,15 @@ namespace Gestor_De_Pule.src.Service
         /// <summary>
         /// Cache in the Caixa
         /// </summary>
+        /// 
         public Caixa Caixa { get; private set; }
-
+        private readonly  DisputaService _disputaService;
+        private readonly PuleService _puleService;
        public CaixaService(object data)
         {
             _repository = new CaixaRepository(data);
+            _disputaService = new(data);
+            _puleService = new(data);
         }
 
 
@@ -67,7 +71,73 @@ namespace Gestor_De_Pule.src.Service
             Caixa = caixa;
             return caixa;
         }
+        /// <summary>
+        /// check if variable Caixa is null
+        /// </summary>
+        /// <returns> true or false</returns>
+        internal bool CaixaIsNull()
+        {
+            if (Caixa is null)
+                return true;
+            else
+                return false;
+        }
+        /// <summary>
+        /// if <see cref="Caixa"/> not null delegate service to loads disputs.
+        /// </summary>
+        internal void LoadDisputs()
+        {
+            if(Caixa is not null && (Caixa.Disputs is null || Caixa.Disputs.Count == 0))
+            {
+                _disputaService.LoadDisputsByCaixaId(Caixa.Id);
+            }
+        }
+        /// <summary>
+        /// Retrieves the total cash value formatted as currency.
+        /// </summary>
+        /// <returns>Returns an empty string if the Box object is not defined.</returns>
+        internal string GetTotalEmCaixa()
+        {
+            string mensagem = String.Empty;
+           if(Caixa is not null)
+            {
+                mensagem =  Caixa.TotalEmCaixa.ToString("C");
+            }
+           return mensagem;
+        }
 
-       
+        internal string GetEntradaDeApostas()
+        {
+            string total = String.Empty;
+            if(Caixa is not null)
+            {
+                if(Caixa.Disputs is not null && Caixa.Disputs.Any(dis=> dis.Pules == null))
+                {
+                    var disputsId = Caixa.Disputs.Select(dis=> dis.Id).ToList();// projeta uma lista com os ids da disputa
+                    if(disputsId.Count > 0)
+                    {
+                        _puleService.LoadPulesAssociedDisputa(disputsId);
+                    }
+                }
+              total =  Caixa.GetEntradaDeApostas().ToString("C");
+            }
+            return total;
+        }
+        /// <summary>
+        /// Get the prize amount to be paid, formatted as currency.
+        /// </summary>
+        /// <returns>
+        /// A string representing the prize value in monetary format,
+        /// or an empty string if there is no <see cref="Caixa"/>
+        /// </returns>
+        internal string PrêmioParaPagar()
+        {
+            string total = String.Empty;
+            if(Caixa is not null)
+            {
+                total = Caixa.GetPremioApagar().ToString("C");
+            }
+            return total;
+        }
     }
 }

@@ -242,5 +242,13 @@ namespace Gestor_De_Pule.src.Service
             return novoPule;
             
         }
+        /// <summary>
+        /// Loads  <see cref="Pules"/> in memory
+        /// </summary>
+        /// <param name="disputsId"> unique <see cref="List"/> <see cref="int"/> <see cref="Disputa"/></param>
+        internal void LoadPulesAssociedDisputa(List<int> disputsId)
+        {
+            Pules = _repository.LoadPulesAssociedDisputa(disputsId);
+        }
     }
 }
