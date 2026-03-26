@@ -16,11 +16,11 @@ namespace Gestor_De_Pule
 {
     public partial class Main : Form
     {
-      
+
         private ViewController _viewController;
         public Main()
         {
-           
+
             _viewController = new();
 
             InitializeComponent();
@@ -29,14 +29,14 @@ namespace Gestor_De_Pule
             //this.Dock = DockStyle.Fill;
             //então carrego na memória.
             //FinanceiroController.LoadCaixaInit();
-           // _financeiroController.LoadCaixaInit();
+            // _financeiroController.LoadCaixaInit();
             _viewController.LoadCaixa();
             var caixa = _viewController.GetCaixa();
-           /* if (caixa is null)
-            {
-                //então preciso criar um novo caixa;
-                _financeiroController.OpenNewCaixa();
-            }*/
+            /* if (caixa is null)
+             {
+                 //então preciso criar um novo caixa;
+                 _financeiroController.OpenNewCaixa();
+             }*/
 
             TabControlComand();
             dataGridViewDisputas.Dock = DockStyle.Fill;
@@ -152,7 +152,7 @@ namespace Gestor_De_Pule
         private void BuscarDisputa(object sender, EventArgs e)
         {
             int idDisputa = (int)comboBoxDisputas.SelectedValue;
-            
+
             ClearDatagridDisputas();
             ClearTab();
             if (idDisputa == 0)
@@ -257,7 +257,7 @@ namespace Gestor_De_Pule
 
                 //rodada.ResultadoDestaRodada = _resultadoController.GetResultados(rodada.Id);
             }
-
+            Span<char> formatTime = stackalloc char[20]; // cria um buffer na pilha
             DataGridView dataGridView = new DataGridView();// novo data grid
             dataGridView.Dock = DockStyle.Fill; // ocupa toda a tela
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -278,13 +278,17 @@ namespace Gestor_De_Pule
                         if (resultado.Animal != null)
                             animalId = resultado.Animal.Id;
                         else animalId = resultado.AnimalId;
-                        
+
                         var animal = _viewController.GetAnimalById(animalId) as Animal;
                         //var animal = _animalController.GetAnimalById(animalId);
                         if (resultado is not null)
                         {
                             if (animal is not null)
-                                dataGridView.Rows.Add(animal.Nome, resultado.Posição, resultado.Tempo + ",00");
+                                if (resultado.Tempo.TryFormat(formatTime, out int charsWrite, @"hh\:mm\:ss\,ff"))
+                                {
+                                    dataGridView.Rows.Add(animal.Nome, resultado.Posição, new string(formatTime.Slice(0, charsWrite)));//slice incia apartir de 0 vai até onde foi escruto
+
+                                }
 
                         }
 
@@ -385,10 +389,37 @@ namespace Gestor_De_Pule
 
 
             // DisputaController.LoadDisputa(disputaSelecionado);
+            CheckTime();
             mensagem = _viewController.SalvarDisputa();
-          
+
             MessageBox.Show(mensagem);
         }
+        /// <summary>
+        /// Updates time values in DataGridView controls within each TabPage of the tabControl, excluding the first tab.
+        /// </summary>
+        private void CheckTime()
+        {
+            int index = 0;
+            foreach (TabPage tab in tabControl.TabPages)
+            {
+                if (tab is not null)
+                {
+                    var grid = tab.Controls.OfType<DataGridView>().FirstOrDefault();
+                    if (grid is not null && index > 0)
+                    {
+                        _viewController.SetTimeInResultados(grid, index++);
+
+                    }
+                    else
+                    {
+                        index++;
+                    }
+
+                }
+            }
+        }
+
+
 
 
         /// <summary>
@@ -400,16 +431,16 @@ namespace Gestor_De_Pule
         {
             int indexPage = tabControl.SelectedIndex;
             var disputa = _viewController.GetDisputa() as Disputa;
-            
+
             if (disputa is not null)
             {
                 //primeira página    
                 if (indexPage == 0)
                 {
-                    var tempoAnimal1 = dataGridViewDisputas.Rows[0].Cells[2].Value;
                     var animal1 = dataGridViewDisputas.Rows[0].Cells[0].Value.ToString();
-                    var tempoAnimal2 = dataGridViewDisputas.Rows[1].Cells[2].Value;
+                    var tempoAnimal1 = dataGridViewDisputas.Rows[0].Cells[2].Value;
                     var animal2 = dataGridViewDisputas.Rows[1].Cells[0].Value.ToString();
+                    var tempoAnimal2 = dataGridViewDisputas.Rows[1].Cells[2].Value;
 
                     disputa.ajustarPosiçãoDosAnimais(tempoAnimal1, tempoAnimal2, true);
                     //disputa.Atualizar();
@@ -455,15 +486,15 @@ namespace Gestor_De_Pule
                             var animal1 = dgv.Rows[0].Cells[0].Value.ToString();
                             var tempoAnimal2 = dgv.Rows[1].Cells[2].Value.ToString();
                             var animal2 = dgv.Rows[1].Cells[0].Value.ToString();
-                            disputa.ajustarPosiçãoDosAnimais(tempoAnimal1, tempoAnimal2, indexPage-1);
+                            disputa.ajustarPosiçãoDosAnimais(tempoAnimal1, tempoAnimal2, indexPage - 1);
                             if (!(String.IsNullOrEmpty(animal1) && String.IsNullOrEmpty(animal2)))
                             {
                                 //Parei aqui
                                 //ajustar rodada para aba espeficifica
-                                var rodada = disputa.Rodadas[indexPage-1];
+                                var rodada = disputa.Rodadas[indexPage - 1];
                                 if (rodada is not null)
                                 {
-                                   if(rodada.ResultadoDestaRodada is not null)
+                                    if (rodada.ResultadoDestaRodada is not null)
                                     {
                                         foreach (var resultado in rodada.ResultadoDestaRodada)
                                         {
@@ -485,8 +516,8 @@ namespace Gestor_De_Pule
                                             }
                                         }
                                     }
-                                        
-                                    
+
+
                                 }
                             }
 
@@ -510,12 +541,12 @@ namespace Gestor_De_Pule
             labelVitória.Text = _viewController.GetNomeAnimaisVencedores();
             labelTotalGanhadores.Text = _viewController.TotalGanhadoresPulesPorRodada();
             labelPagamentoPorPule.Text = _viewController.PagamentoPorPule();
-                //labelTotalGanhadores.Text = "Total Ganhadores: " + disputa.CntTotalGanhadoresPules().ToString();
-                /*labelTotalGanhadores.Text = "Total Ganhadores: " + disputa.CntTotalGanhadoresPulesToLists();
-              
-                    labelPagamentoPorPule.Text = "Pagamento Por Pule: " + disputa.PagamentoPorPule();*/
+            //labelTotalGanhadores.Text = "Total Ganhadores: " + disputa.CntTotalGanhadoresPules().ToString();
+            /*labelTotalGanhadores.Text = "Total Ganhadores: " + disputa.CntTotalGanhadoresPulesToLists();
 
-            
+                labelPagamentoPorPule.Text = "Pagamento Por Pule: " + disputa.PagamentoPorPule();*/
+
+
 
         }
 
@@ -552,7 +583,7 @@ namespace Gestor_De_Pule
             }
 
 
-            
+
         }
     }
 }

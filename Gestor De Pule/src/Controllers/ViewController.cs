@@ -173,6 +173,16 @@ namespace Gestor_De_Pule.src.Controllers
             _viewService.SetDisputa(idDisputa);
         }
         /// <summary>
+        /// Updates the time value in the specified row of the DataGridView resultados grid.
+        /// </summary>
+        /// <param name="grid">The DataGridView containing the resultados data.</param>
+        /// <param name="index">The zero-based index of the row to update.</param>
+        internal void SetTimeInResultados(DataGridView grid, int index)
+        {
+            _viewService.SetTimeInResultado(grid, index);
+        }
+
+        /// <summary>
         /// Delega para o serviço <see cref="_viewService"/> para fazer a chamada onde traz outra mensagem dos ganhadores.
         /// </summary>
         /// <returns>Uma mensagem informando quantos ganhadores teve em cada Rodada</returns>

@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             menuStrip1 = new MenuStrip();
             arquivoToolStripMenuItem1 = new ToolStripMenuItem();
             sairToolStripMenuItem = new ToolStripMenuItem();
@@ -327,9 +327,9 @@
             // 
             // ColumnTempo
             // 
-            dataGridViewCellStyle1.Format = "hh\\:mm\\:ss\\,ff";
-            dataGridViewCellStyle1.NullValue = null;
-            ColumnTempo.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Format = "hh\\:mm\\:ss\\,ff";
+            dataGridViewCellStyle2.NullValue = null;
+            ColumnTempo.DefaultCellStyle = dataGridViewCellStyle2;
             ColumnTempo.HeaderText = "Tempo";
             ColumnTempo.Name = "ColumnTempo";
             ColumnTempo.ReadOnly = true;

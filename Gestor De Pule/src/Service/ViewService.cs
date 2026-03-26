@@ -306,5 +306,47 @@ namespace Gestor_De_Pule.src.Service
         {
             _disputaService.GetById(idDisputa);
         }
+        /// <summary>
+        /// Updates the time values in the current round's results based on the data from the specified DataGridView.
+        /// </summary>
+        /// <param name="grid">The DataGridView containing animal names and time values.</param>
+        /// <param name="index">The one-based index of the round to update.</param>
+        internal void SetTimeInResultado(DataGridView grid, int index)
+        {
+            Disputa? disputa = _disputaService.Disputa;
+            Rodada rodada;
+            string nomeAnimal;
+            TimeSpan tempo;
+            int rowIndex = 0;
+            if (disputa != null && disputa.Rodadas?.Count > 0)
+            {
+                rodada = disputa.Rodadas[index - 1];//primeira roada
+                if (rodada.ResultadoDestaRodada?.Count > 0)
+                {
+                    foreach (Resultado resultado in rodada.ResultadoDestaRodada)
+                    {
+                        nomeAnimal = grid.Rows[rowIndex].Cells[0]?.Value?.ToString() ?? String.Empty;
+                        var tempoGrid = grid.Rows[rowIndex].Cells[2]?.Value?.ToString()?.Replace(',', '.');
+                        if(tempoGrid is not null)
+                        {
+                            tempo = TimeSpan.Parse(tempoGrid.ToString());
+                        }
+                        else
+                            tempo = TimeSpan.Zero;
+                        //tempo = TimeSpan.ParseExact(grid.Rows[rowIndex].Cells[2]?.Value?.ToString() ?? "00:00:00,00", @"hh\:mm\:ss\,ff", null);
+                        if (!String.IsNullOrEmpty(nomeAnimal))
+                        {
+                            if (resultado.Animal?.Nome == nomeAnimal)
+                            {
+                                if (tempo != resultado.Tempo)
+                                    resultado.Tempo = tempo;
+                            }
+                        }
+                        rowIndex++;
+                    }
+
+                }
+            }
+        }
     }
 }
