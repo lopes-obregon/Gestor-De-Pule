@@ -83,7 +83,7 @@ namespace Gestor_De_Pule.src.Models
             return result;
         }
 
-        internal decimal GetPremioApagar()
+        internal (decimal, decimal) GetPremioApagar()
         {
             decimal total = 0.00m;
             decimal taxa = 0.00m;
@@ -100,40 +100,34 @@ namespace Gestor_De_Pule.src.Models
                 taxa = total * Taxa;
                 prêmioLíquido = total - taxa;
             }
-            return prêmioLíquido;
+            return (prêmioLíquido,taxa);
         }
-
+        /// <summary>
+        /// get result from the <see cref="GetPremioApagar"/>
+        /// separetes the result 2
+        /// </summary>
+        /// <returns>Result 2</returns>
         internal decimal Lucro()
         {
-            decimal total = 0.00m;
-            decimal taxa = 0.00m;
-            decimal prêmioLíquido = 0.00m;
-            if (Disputs is not null && Disputs.Count > 0)
-            {
-                foreach (var disputa in Disputs)
-                {
-                    if (disputa is not null)
-                    {
-                        total += disputa.GetTotalValorPule();
-                    }
-                }
-                taxa = total * Taxa;
-                prêmioLíquido = total - taxa;
-            }
-            return taxa;
+            (decimal, decimal) result;
+            result = GetPremioApagar();
+            return result.Item2;
         }
 
-        internal string FecharDia()
+        internal void FecharDia()
         {
             this.TotalEmCaixa += this.Lucro();
-            if (Caixa.Fechar(this))
+            this.DateClose = DateTime.Now;
+            this.Open = IsOpen.Close;
+            
+           /* if (Caixa.Fechar(this))
             {
                 return "Caixa Fechado com sucesso na Data: " + DateTime.Now.ToString("dd/MM/yyyy");
             }
             else
             {
                 return "Erro ao fechar o caixa!";
-            }
+            }*/
         }
 
         private static bool Fechar(Caixa caixa)
@@ -157,6 +151,16 @@ namespace Gestor_De_Pule.src.Models
             catch { return fechou; }
             return fechou;
         }
+        /// <summary>
+        /// Tenta retirar um valor do lucro disponível no caixa.
+        /// Se houver saldo suficiente (TotalEmCaixa + Lucro), o valor é subtraído
+        /// e o método retorna true. Caso contrário, retorna false.
+        /// </summary>
+        /// <param name="valor">Valor a ser retirado do lucro.</param>
+        /// <returns>
+        /// True se o valor foi retirado com sucesso; 
+        /// False se não havia saldo suficiente.
+        /// </returns>
 
         internal bool RetirarLucro(decimal valor)
         {
@@ -229,22 +233,27 @@ namespace Gestor_De_Pule.src.Models
             }
             return disputs;
         }
-
-        internal string PagaDisputa(object disputaSelecionadaUi, decimal valor)
+        /// <summary>
+        /// search in <see cref="Disputs"/> 
+        /// </summary>
+        /// <param name="disputeId"> unique identifier from the <see cref="Disputa"/></param>
+        /// <param name="valor"> a value thet is paid to  <see cref="Disputa.TotalPago"/></param>
+        /// <returns>A string with the  result operation.</returns>
+        internal string PagaDisputa(int disputeId, decimal valor)
         {
             bool sucess = false;
             string mensagem = string.Empty;
-            Disputa? disputaSelecionado = disputaSelecionadaUi as Disputa;
+            Disputa? dispute = this.Disputs?.FirstOrDefault(dis => dis.Id == disputeId);//certificando que a disputa existe na lista que está relacionado com o caixa.
             
-            if (disputaSelecionado != null)
+            if (dispute != null)
             {
-                if (disputaSelecionado.TotalPago is null)
-                    disputaSelecionado.TotalPago = Decimal.Zero;
+                if (dispute.TotalPago is null)
+                    dispute.TotalPago = Decimal.Zero;
                 if (this.TotalEmCaixa > valor)
                 {
-                    disputaSelecionado.Pagamento = Model.StatusPagamento.Pago;
-                    disputaSelecionado.TotalPago += valor;
-                    sucess = disputaSelecionado.UpdatePagamentoEpagamento();
+                    dispute.Pagamento = Model.StatusPagamento.Pago;
+                    dispute.TotalPago += valor;
+                    sucess = dispute.UpdatePagamentoEpagamento();
                     if (sucess)
                         mensagem = "Disputa Pago Com Sucesso!";
                     else

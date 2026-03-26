@@ -1,8 +1,6 @@
 ﻿
 
 using Gestor_De_Pule.src.Controllers;
-using System.Globalization;
-using System.Printing;
 
 namespace Gestor_De_Pule.src.Views.Financeiro.Taxa
 {
@@ -14,9 +12,9 @@ namespace Gestor_De_Pule.src.Views.Financeiro.Taxa
         {
             InitializeComponent();
             _financeiroController.InitCaixa();
-            var caixa = _financeiroController.Caixa;
-            if (caixa != null)
-                labelTaxaAtual.Text = "Taxa Atual: " + caixa.Taxa.ToString("P");
+            labelTaxaAtual.Text = "Taxa Atual: " + _financeiroController.GetTaxa();
+            
+                //labelTaxaAtual.Text = "Taxa Atual: " + caixa.Taxa.ToString("P");
         }
 
         private void SalvarTaxa(object sender, EventArgs e)
@@ -36,9 +34,10 @@ namespace Gestor_De_Pule.src.Views.Financeiro.Taxa
 
         private void AtualizarTaxaLabel()
         {
-            var caixa = _financeiroController.Caixa;
+            /*var caixa = _financeiroController.Caixa;
             if (caixa is not null)
-                labelTaxaAtual.Text = "Taxa Atual: " + caixa.Taxa.ToString("P");
+                labelTaxaAtual.Text = "Taxa Atual: " + caixa.Taxa.ToString("P");*/
+            labelTaxaAtual.Text = "Taxa Atual:" + _financeiroController.GetTaxa();
             numericUpDown1.Value = 0.00m;
         }
 

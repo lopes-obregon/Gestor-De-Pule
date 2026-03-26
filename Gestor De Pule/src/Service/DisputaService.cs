@@ -447,5 +447,19 @@ namespace Gestor_De_Pule.src.Service
                 Disputs = _disputaRepository.GetDisputasByCauxaId(id);
             }
         }
+        /// <summary>
+        /// search a dispute  in disputs list 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns> A dispute searched</returns>
+        internal Disputa? SelectDispute(int id)
+        {
+            Disputa? dispute = null;
+            if(Disputs?.Count > 0)
+            {
+                dispute = Disputs.FirstOrDefault(dis=> dis.Id == id);
+            }
+            return dispute;
+        }
     }
 }

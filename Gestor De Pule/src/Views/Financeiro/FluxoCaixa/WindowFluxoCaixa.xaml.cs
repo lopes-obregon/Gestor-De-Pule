@@ -1,4 +1,5 @@
-﻿using Gestor_De_Pule.src.Controllers;
+﻿using Gestor_De_Pule.Migrations;
+using Gestor_De_Pule.src.Controllers;
 using Microsoft.VisualBasic;
 using System.Windows;
 
@@ -15,7 +16,9 @@ namespace Gestor_De_Pule.src.Views.Financeiro.FluxoCaixa
             InitializeComponent();
             Init();
         }
-
+        /// <summary>
+        /// Init component <see cref="_financeiroController"/> to write message in window.
+        /// </summary>
         private void Init()
         {
             _financeiroController = new FinanceiroController();
@@ -37,8 +40,10 @@ namespace Gestor_De_Pule.src.Views.Financeiro.FluxoCaixa
                     LabelEntradaDeAposta.Content = "(+) Entradas de Apostas: " + _financeiroController.GetEntradaDeApostas();
                     //LabelPremioApagar.Content = "(-) Prêmios a Pagar: " + caixa.GetPremioApagar().ToString("C");
                     LabelPremioApagar.Content = "(-) Prêmios a Pagar: " + _financeiroController.PremioApagar();
-                    LabelLucro.Content = " (=) TAXA DA CASA (LUCRO): " + caixa.Lucro().ToString("C");
-                    LabelInfo.Content = "TAXA CALCULADA DE: " + caixa.Taxa.ToString("P");
+                    //LabelLucro.Content = " (=) TAXA DA CASA (LUCRO): " + caixa.Lucro().ToString("C");
+                    LabelLucro.Content = " (=) TAXA DA CASA (LUCRO): " + _financeiroController.Lucro();
+                    //LabelInfo.Content = "TAXA CALCULADA DE: " + caixa.Taxa.ToString("P");
+                    LabelInfo.Content = "TAXA CALCULADA DE: " + _financeiroController.GetTaxa();
                 }
                 else
                 {
@@ -53,44 +58,70 @@ namespace Gestor_De_Pule.src.Views.Financeiro.FluxoCaixa
            // var caixa = FinanceiroController.Caixa;
 
         }
-
+        /// <summary>
+        /// Button call <see cref="FecharDia(object, RoutedEventArgs)"/>, with a message.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FecharDia(object sender, RoutedEventArgs e)
         {
-            var caixa = _financeiroController.Caixa;
-            if (caixa != null)
+            string mensagem = String.Empty;
+            if (_financeiroController != null)
             {
-                string mensagem = caixa.FecharDia();
+
+                mensagem = _financeiroController.FecharDia();
                 System.Windows.MessageBox.Show(mensagem);
             }
             else
             {
                 System.Windows.MessageBox.Show("Algo deu Errado!");
             }
+           /* var caixa = _financeiroController.Caixa;
+            if (caixa != null)
+            {
+                mensagem = caixa.FecharDia();
+                System.Windows.MessageBox.Show(mensagem);
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("Algo deu Errado!");
+            }*/
         }
 
 
         private void RetiraLucro(object sender, RoutedEventArgs e)
         {
-            var caixa = _financeiroController.Caixa;
-            string valorStr = Interaction.InputBox("Quanto Deseja retirar?", "Retirada de Lucro", "0");
-            if (caixa != null)
+            string valorStr = String.Empty;
+            if (_financeiroController != null)
             {
-                if(decimal.TryParse(valorStr, out decimal valor))
+                //var caixa = _financeiroController.Caixa;
+                valorStr = Interaction.InputBox("Quanto Deseja retirar?", "Retirada de Lucro", "0");
+
+                if (decimal.TryParse(valorStr, out decimal valor))
                 {
-                    System.Windows.MessageBoxResult result = System.Windows.MessageBox.Show($"Você deseja retirar {valor.ToString("C")}?","Confirmação" ,System.Windows.MessageBoxButton.YesNo, MessageBoxImage.Question);
-                    if(result == MessageBoxResult.Yes)
+                    System.Windows.MessageBoxResult result = System.Windows.MessageBox.Show($"Você deseja retirar {valor.ToString("C")}?", "Confirmação", System.Windows.MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (result == MessageBoxResult.Yes)
                     {
-                        if (!caixa.RetirarLucro(valor))
+                        if (!_financeiroController.RetirarLucro(valor))
                         {
                             System.Windows.MessageBox.Show("Saldo insuficiente, caso haja Lucro feche o caixa!");
                         }
+                        /*if (!caixa.RetirarLucro(valor))
+                        {
+                            System.Windows.MessageBox.Show("Saldo insuficiente, caso haja Lucro feche o caixa!");
+                        }*/
 
                     }
                 }
 
             }
         }
-
+        /// <summary>
+        /// Create a new instance to window <see cref="WindowPagamentoDeDisputa"/>.
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PagarDisputa(object sender, RoutedEventArgs e)
         {
             _financeiroController?.Dispose();

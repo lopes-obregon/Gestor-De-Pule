@@ -133,11 +133,140 @@ namespace Gestor_De_Pule.src.Service
         internal string PrêmioParaPagar()
         {
             string total = String.Empty;
+            (decimal, decimal) resultado;
             if(Caixa is not null)
             {
-                total = Caixa.GetPremioApagar().ToString("C");
+                resultado = Caixa.GetPremioApagar();
+                total = resultado.Item1.ToString("C");
             }
             return total;
+        }
+        /// <summary>
+        /// if <see cref="Caixa"/> not null call Lucro funciton.
+        /// </summary>
+        /// <returns> A string  with value of the profit </returns>
+        internal string Lucro()
+        {
+            string lucro = String.Empty;
+            if(Caixa is not null)
+            {
+                lucro = Caixa.Lucro().ToString("C");
+            }
+            return lucro;
+        }
+        /// <summary>
+        /// Set <see cref="Caixa.Taxa"/> in the <see cref="Caixa"/>
+        /// </summary>
+        /// <param name="taxa"></param>
+        internal void SetTaxa(decimal taxa)
+        {
+            if (Caixa is not null && Caixa.Taxa != taxa)
+            {
+                Caixa.Taxa = taxa;
+            }
+
+        }
+        /// <summary>
+        /// Save context
+        /// </summary>
+        internal void Save()
+        {
+
+            _repository.Save();
+        }
+        /// <summary>
+        /// close  register cash
+        /// </summary>
+        /// <returns>A string with message with date close register cash</returns>
+        internal string FecharDia()
+        {
+            string fechar = String.Empty;
+            bool fechou = false;
+            if (Caixa is not null)
+            {
+                Caixa.FecharDia();
+                fechou = _repository.Save();
+                if (fechou)
+                {
+                    fechar = "Caixa Fechado com sucesso na Data: " + DateTime.Now.ToString("dd/MM/yyyy");
+                }
+                else
+                {
+                   fechar = "Erro ao fechar o caixa!";
+                }
+            }
+            else
+            {
+                fechar = "Desculpe mas Algo deu errado!";
+            }
+                return fechar;
+        }
+        /// <summary>
+        /// Seach disputs not pay.
+        /// </summary>
+        /// <returns>A <see cref="List"/> with Disputs not pay</returns>
+        internal List<Disputa> GetDisputaNãoPagas()
+        {
+            List<Disputa> disputas = new List<Disputa>();
+            if(Caixa is not null)
+                disputas = Caixa.DisputsNãoPagos();
+            return disputas;
+        }
+        /// <summary>
+        /// Get taxa from the cash register
+        /// </summary>
+        /// <returns>A string with value or '-'</returns>
+        internal string GetTaxa()
+        {
+            if (Caixa is not null)
+                return Caixa.Taxa.ToString("P");
+            else
+                return "-";
+        }
+        /// <summary>
+        /// try to remove a profit value by object 'caixa'.
+        /// if 'caixa' is defined delegate operation to him.
+        /// Caso contrário, retorna falso.
+        /// </summary>
+        /// <param name="valor"></param>
+        /// <returns>
+        /// if the value remove with success return true.
+        /// else return false.
+        /// </returns>
+        internal bool RetirarLucro(decimal valor)
+        {
+            if(Caixa is not null)
+                return Caixa.RetirarLucro(valor);
+            else return false;
+        }
+        /// <summary>
+        /// Processes payment for the selected dispute and returns a status message.
+        /// </summary>
+        /// <param name="disputaSelecionadaUi">The selected dispute object from the UI.</param>
+        /// <param name="value">The payment amount to be processed.</param>
+        /// <returns>A message indicating the result of the payment operation.</returns>
+        internal string PayDispute(object disputaSelecionadaUi, decimal value)
+        {
+            var dispute = _disputaService.Disputa;
+            Disputa? selectedDispute = disputaSelecionadaUi as Disputa;
+           string message = String.Empty;
+            if(dispute is not null)
+            {
+                if (selectedDispute is not null)
+                {
+                    if (selectedDispute.Id != dispute.Id)
+                    {
+                        dispute = _disputaService.SelectDispute(selectedDispute.Id);
+                    }
+                    if (Caixa is not null && dispute is not null)
+                    {
+                        message = Caixa.PagaDisputa(dispute.Id, value);
+
+                    }
+                }
+                    
+            }
+            return message;
         }
     }
 }

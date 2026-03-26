@@ -180,12 +180,15 @@ namespace Gestor_De_Pule.src.Persistencias
             return disputas;
         }
 
-        internal void Save()
+        internal bool Save()
         {
+            bool sucess = false;
             try
             {
                 _db.SaveChanges();
+                sucess = true;
             }catch(Exception ex){ Log.Error(ex, "Erro ao atualizar ou salvar os dados do caixa!"); }
+            return sucess;
         }
 
         internal Caixa? GetCaixaWithDisput(int id)

@@ -13,6 +13,7 @@ namespace Gestor_De_Pule.src.Views.Financeiro.FluxoCaixa
         private  FinanceiroController? _financeiroController = null;
         public WindowPagamentoDeDisputa()
         {
+            _financeiroController = new FinanceiroController();
             InitializeComponent();
             
             initCampos();
@@ -25,14 +26,26 @@ namespace Gestor_De_Pule.src.Views.Financeiro.FluxoCaixa
             InitializeComponent();
             initCampos();
         }
-
+        /// <summary>
+        /// Init <see cref="ComboBoxDisputasCadastradas"/> with value disputs not pay.
+        /// </summary>
         private void initCampos()
         {
-            _financeiroController = new FinanceiroController();
-            
+
+
 
             //financeiroController.LoadCaixaLocal();
-            if (_financeiroController is not null && _financeiroController.Caixa is not null && _financeiroController.Caixa.Disputs is not null)
+            if (_financeiroController != null)
+            {
+                _financeiroController.Init();
+                var disputasNãoPagas = _financeiroController.GetDisputasNãoPagas();
+                if (disputasNãoPagas.Count() > 0)
+                {
+                    ComboBoxDisputasCadastradas.ItemsSource = disputasNãoPagas;
+
+                }
+            }
+            /*if (_financeiroController is not null && _financeiroController.Caixa is not null && _financeiroController.Caixa.Disputs is not null)
             {
                 var disputas = _financeiroController.Caixa.DisputsNãoPagos();
                 if (disputas != null)
@@ -41,7 +54,7 @@ namespace Gestor_De_Pule.src.Views.Financeiro.FluxoCaixa
                     ComboBoxDisputasCadastradas.ItemsSource = disputas;
                 }
 
-            }
+            }*/
 
         }
 
@@ -49,7 +62,11 @@ namespace Gestor_De_Pule.src.Views.Financeiro.FluxoCaixa
         {
             e.Handled = !decimal.TryParse(e.Text, NumberStyles.Number,new CultureInfo("pt-BR"), out _); // só aceitua nº
         }
-
+        /// <summary>
+        /// Pay dispute with correct value
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PagarDisputa(object sender, RoutedEventArgs e)
         {
             var disputaSelecionadaUi = ComboBoxDisputasCadastradas.SelectedItem;
@@ -69,11 +86,12 @@ namespace Gestor_De_Pule.src.Views.Financeiro.FluxoCaixa
                 else
                 {
                     //considero um valor válido 
-                    if (_financeiroController is not null && _financeiroController.Caixa is not null)
+                    if (_financeiroController is not null)
                     {
                         //só para teste
                         // financeiroController.CaixaLocal.TotalEmCaixaWithPulePago();
-                        mensagem = _financeiroController.Caixa.PagaDisputa(disputaSelecionadaUi, valor);
+                        //mensagem = _financeiroController.Caixa.PagaDisputa(disputaSelecionadaUi, valor);
+                        mensagem = _financeiroController.PayDispute(disputaSelecionadaUi, valor);
                     }
                 }
                 System.Windows.MessageBox.Show(mensagem);
