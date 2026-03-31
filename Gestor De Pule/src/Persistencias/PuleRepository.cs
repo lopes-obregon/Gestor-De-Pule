@@ -508,5 +508,30 @@ namespace Gestor_De_Pule.src.Persistencias
             }
             return pules;
         }
+        /// <summary>
+        /// Retrieves a list of pules associated with the specified animal.
+        /// </summary>
+        /// <param name="animalId">The unique identifier of the animal.</param>
+        /// <returns>A list of pules linked to the given animal. Returns an empty list if none are found.</returns>
+        internal List<Pule> ReadPulesWithAnimal(int animalId)
+        {
+            List<Pule> pules = new();
+            try
+            {
+                var track = _data.ChangeTracker.Entries<Pule>().Select(e => e.Entity).Where(p => p.Animais.Any(a => a.Id == animalId)).ToList();
+                if (track.Count > 0) pules = track;
+                else
+                {
+                    var db = _data.Pules.Where(p => p.Animais.Any(a => a.Id == animalId)).ToList();
+                    if (db.Count > 0)
+                        pules = db;
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, $"Erro ao carregar os pules do animal com id {animalId}");
+            }
+            return pules;
+        }
     }
 }

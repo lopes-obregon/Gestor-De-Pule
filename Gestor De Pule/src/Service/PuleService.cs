@@ -250,5 +250,24 @@ namespace Gestor_De_Pule.src.Service
         {
             Pules = _repository.LoadPulesAssociedDisputa(disputsId);
         }
+        /// <summary>
+        /// Loads Pules associated with the specified animal if none are currently loaded.
+        /// </summary>
+        /// <param name="animalId">The unique identifier of the animal.</param>
+        internal void LoadPulesWithAnimalById(int animalId)
+        {
+            if(Pules.Count == 0)
+                Pules = _repository.ReadPulesWithAnimal(animalId);
+        }
+        /// <summary>
+        /// Gets the total number of Pules in the collection.
+        /// </summary>
+        /// <returns>The number of Pules if any exist; otherwise, 0.</returns>
+        internal int GetTotalPules()
+        {
+            if(Pules.Count > 0)
+                return Pules.Count;
+            return 0;
+        }
     }
 }

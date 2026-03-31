@@ -408,69 +408,11 @@ namespace Gestor_De_Pule.src.Controllers
             DisputaRepository = null;
 
         }
-
-        internal void ReloadDisputas()
-        {
-            if (_repository is null || _repository.GetDataBase() is null)
-            {
-                //gera novamente o contexto
-                _repository = new Repository();
-                if (DisputaRepository == null)
-                    DisputaRepository = new DisputaRepository(_repository.GetDataBase()); // recarrega o contexto
-                if (DisputaRepository != null)
-                    Disputas = DisputaRepository.GetDisputas();
-
-
-
-            }
-        }
-
-        internal void RemoveAnimalDisputa(object selectedItem)
-        {
-            //animal carregado;
-            _animalController.LoadAnimal(selectedItem);
-            var animal = _animalController.Animal;
-            if (animal != null)
-            {
-                if (animal.Resultados is null)
-                {
-                    _animalController.LoadListsResultado();
-                    animal.Resultados = _animalController.Animal.Resultados;
-                }
-                if (animal.Resultados.Count > 0)
-                {
-                    var resultado = animal.Resultados.FirstOrDefault(_ => _.Disputa?.Id == Disputa?.Id);
-
-                    if (resultado is not null)
-                    {
-                        if (Disputa is not null && Disputa.ResultadoList is not null && Disputa.ResultadoList.Count > 0)
-                        {
-
-
-                            resultado.Disputa = null;
-                            Disputa.ResultadoList.Remove(resultado);
-
-                            //animal.Resultados.Remove(resultado);
-                        }
-
-                    }
-                }
-            }
-        }
-
         internal void LoadDisputs()
         {
             Disputas = DisputaRepository.GetDisputas();
         }
 
-        internal Disputa? FindDisputa(Disputa disputaUi)
-        {
-            Disputa? disputa = null;
-            if (Disputas is null || Disputas.Count == 0)
-                Disputas = DisputaRepository.ReadDisputas();
-            disputa = Disputas?.Find(d=> d.Id == disputaUi.Id);
-            return disputa;
-        }
 
         internal bool IsEquals(object item)
         {

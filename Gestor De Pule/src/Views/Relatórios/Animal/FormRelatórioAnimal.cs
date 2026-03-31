@@ -7,7 +7,7 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Animal
         private AnimalController _animalController;
         public FormRelatórioAnimal()
         {
-            _animalController = new AnimalController(new PuleController());
+            _animalController = new AnimalController();
             InitializeComponent();
             InitComboBox();
         }
@@ -16,27 +16,31 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Animal
         {
             comboBoxAnimais.Items.Clear();
             //RelatórioAnimalController.LoadLists();
-            _animalController.LoadListsAnimalAndPules();
+            _animalController.LoadAnimais();
             var animais = _animalController.Animals;
             if (animais != null)
             {
-                comboBoxAnimais.Items.AddRange(animais.ToArray());
+                //biding
+                //comboBoxAnimais.Items.AddRange(animais.ToArray());
+                comboBoxAnimais.DataSource = animais;
+                comboBoxAnimais.DisplayMember = "Nome";
+                comboBoxAnimais.ValueMember = "Id";
             }
         }
 
         private void GerarRelatório(object sender, EventArgs e)
         {
-            var animalSelecionadoUi = comboBoxAnimais.SelectedItem;
-            _animalController.AnimalSelecionado(animalSelecionadoUi);
-
+            int animalId = (int)comboBoxAnimais.SelectedValue;
+            _animalController.AnimalSelecionado(animalId);
+            _animalController.LoadPules(animalId);
 
             var animal = _animalController.Animal;
-            if (animal != null)
+            if (!_animalController.IsNull())
             {
                 listViewApostadores.Items.Clear();
                 listViewPulesAnimal.Items.Clear();
-                labelAnimalNome.Text = $"{animal.Número} - {animal.Nome}";
-                labelTotalPules.Text = $"Total De Pules {animal.Pules.Count}";
+                labelAnimalNome.Text = _animalController.GetAnimalNúmeroNome();
+                labelTotalPules.Text = $"Total De Pules {_animalController.TotalPules().ToString()}";
                 int totalApostador = 0;
                 decimal totalApostado = 0.0m;
                 foreach (var pule in animal.Pules)

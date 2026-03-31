@@ -10,27 +10,31 @@ namespace Gestor_De_Pule.src.Controllers
     {
 
         public List<Animal>? Animals => _animalService.Animals;
-        public Animal? Animal { get; private set; } = new();
+        public Animal? Animal => _animalService.Animal;
         //repository
         private AnimalRepository _animalRepository { get;  set; }
+        private readonly Repository _context;
+
         //Controllers
         public PuleController? _puleController { get; private set; } = null;
         private AnimalService _animalService { get; set; }
         public AnimalController()
         {
+            _context = new Repository();
+            var context = _context.GetDataBase();
+            PuleService puleService = new(context);
             _animalRepository = new AnimalRepository();
+
+            _animalService = new(context, puleService);
             //_puleController = new PuleController();
         }
         public AnimalController(object data)
         {
+            PuleService puleService = new(data);
             _animalRepository  = new AnimalRepository(data);
-            _animalService = new AnimalService(data);
+            _animalService = new AnimalService(data, puleService);
         }
-        public AnimalController(PuleController puleController)
-        {
-            _puleController = puleController;
-            _animalRepository = new AnimalRepository();
-        }
+     
         /// <summary>
         /// Load in Animals list animals
         /// </summary>
@@ -54,18 +58,9 @@ namespace Gestor_De_Pule.src.Controllers
                 return "Erro ao Salvar o animal";
         }
 
-        internal  void AnimalSelecionado(object animalSelecionadoUi)
+        internal  void AnimalSelecionado(int animalId)
         {
-            Animal? animalSelecionado = null;
-            if (animalSelecionadoUi is Animal)
-            {
-                animalSelecionado = animalSelecionadoUi as Animal;
-                //Animal? animalConsultado = Animal.Consultar(animalSelecionado);
-                //Animal? animalConsultado = _animalRepository.Consultar(animalSelecionado);
-                Animal? animalConsultado = Animals.FirstOrDefault(_ => _.Id == animalSelecionado?.Id) ?? _animalRepository.Consultar(animalSelecionado);
-                if (animalConsultado is not null) Animal = animalConsultado;
-                else Animal = null;
-            }
+            _animalService.GetAnimalById(animalId);
         }
 
         internal  string Atualizar(int número, string nome, string proprietário, string treinador, string cidade, string jockey)
@@ -135,7 +130,7 @@ namespace Gestor_De_Pule.src.Controllers
             if (animalSelecionado != null)
             {
                 Animal? TrackAnimal = _animalRepository.IsTracked(animalSelecionado);
-                Animal = TrackAnimal;
+               // Animal = TrackAnimal;
             }
         }
 
@@ -163,17 +158,7 @@ namespace Gestor_De_Pule.src.Controllers
             Animal? animal = null;
             animal = _animalRepository?.IsTracked(animalUi);
             return animal;
-        }
-
-        internal List<Pule> GetPules(Animal animal)
-        {
-            var pules = _animalRepository.GetPules(animal);
-            if (pules == null)
-                return new List<Pule>();
-            else
-                return pules.ToList();
-
-        }
+        }    
         /// <summary>
         /// Loads animals from the repository based on the selected items and assigns them to the Animals property.
         /// </summary>
@@ -184,11 +169,7 @@ namespace Gestor_De_Pule.src.Controllers
            // Animals = _animalRepository.LoadAnimais(animaisSelecionados);
         }
 
-        internal void LoadAnimalWithListResultado(object selectedItem)
-        {
-            Animal? animal = selectedItem as Animal;
-            Animal = _animalRepository.LoadAnimalWithResultado(animal);
-        }
+       
         /// <summary>
         /// Dispose Context;
         /// </summary>
@@ -289,6 +270,36 @@ namespace Gestor_De_Pule.src.Controllers
         internal void LoadAnimaisWithPulesId(List<int> pulesIds)
         {
             _animalService.LoadAnimaisWithPules(pulesIds);
+        }
+        /// <summary>
+        /// Indicates whether the associated animal is null.
+        /// </summary>
+        /// <returns>true if the animal is null; otherwise, false.</returns>
+        internal bool IsNull()
+        {
+            return _animalService.AnimalIsNull();
+        }
+      
+        /// <summary>
+        /// Retrieves the animal's number and name as a string.
+        /// </summary>
+        /// <returns>A string containing the animal's number and name.</returns>
+        internal string GetAnimalNúmeroNome()
+        {
+            return _animalService.GetNúmeroNome();
+        }
+
+        internal void LoadPules(int animalId)
+        {
+            _animalService.PulesWithAnimalId(animalId);
+        }
+        /// <summary>
+        /// Gets the total number of pules from the animal service.
+        /// </summary>
+        /// <returns>The total count of pules.</returns>
+        internal int TotalPules()
+        {
+            return _animalService.GetTotalPules();
         }
     }
 }

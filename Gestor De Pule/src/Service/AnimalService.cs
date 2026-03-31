@@ -6,15 +6,19 @@ namespace Gestor_De_Pule.src.Service
     internal class AnimalService
     {
         private AnimalRepository _animalRepository;
+       
         public Animal? Animal;
         /// <summary>
         /// Campo onde contem os animais em memória
         /// </summary>
+        
         public List<Animal>? Animals;
 
-        public AnimalService(object data)
+        private readonly PuleService _puleService;
+        public AnimalService(object data, PuleService puleService)
         {
             _animalRepository = new AnimalRepository(data);
+            _puleService = puleService;
         }
 
         /// <summary>
@@ -59,8 +63,8 @@ namespace Gestor_De_Pule.src.Service
 
             }
 
-          
 
+            Animal = animal;
             return animal;
 
         }
@@ -149,6 +153,45 @@ namespace Gestor_De_Pule.src.Service
             if (Animals is not null)
                 animais = Animals.Where(an => an.Resultados.Any(res => res.DisputaId == id)).DistinctBy(a => a.Id).ToList();
             return animais;
+        }
+        /// <summary>
+        /// check if animal is null
+        /// </summary>
+        /// <returns>true if animal is null or false</returns>
+        internal bool AnimalIsNull()
+        {
+            if (Animals is null)
+                return true;
+            else
+                return false;
+        }
+      
+        /// <summary>
+        /// Gets a formatted string containing the animal's number and name, or a placeholder if the animal is null.
+        /// </summary>
+        /// <returns>A string in the format "Número - Nome" if the animal is not null; otherwise, a placeholder string.</returns>
+        internal string GetNúmeroNome()
+        {
+            if (Animal is null)
+                return "-----------";
+            else
+                return $"{Animal.Número} - {Animal.Nome}";
+        }
+        /// <summary>
+        /// Loads pules associated with the specified animal identifier.
+        /// </summary>
+        /// <param name="animalId">The unique identifier of the animal.</param>
+        internal void PulesWithAnimalId(int animalId)
+        {
+            _puleService.LoadPulesWithAnimalById(animalId);
+        }
+        /// <summary>
+        /// Retrieves the total number of pules from the underlying service.
+        /// </summary>
+        /// <returns>The total number of pules.</returns>
+        internal int GetTotalPules()
+        {
+            return _puleService.GetTotalPules();
         }
     }
 }

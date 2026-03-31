@@ -5,11 +5,11 @@
     <description>Most recent changes with links to updates</description>
     <language>en</language>
     <item>
-      <title>Gestor De Pule 1.3.0</title>
-      <pubDate>Thu, 19 Mar 2026 21:19:45 -04:00</pubDate>
-      <sparkle:version>1.3.0</sparkle:version>
-      <sparkle:shortVersionString>1.3.0</sparkle:shortVersionString>
-      <enclosure url="https://github.com/lopes-obregon/Gestor-De-Pule/releases/download/V1.3.0/GestorDePule-1.3.0.zip/GestorDePule-1.3.0.zip" sparkle:version="1.3.0" sparkle:shortVersionString="1.3.0" length="84125500" sparkle:os="windows" type="application/zip" sparkle:criticalUpdate="false" sparkle:signature="On0auMyrxZjmTwiuI9XvsK1uBtQh9c8F2Z+SVVL6p4YQhEfmWKNLoKk5NYEMc6mv2uQUbiNs3yNdmUo6g0CVAw==" />
+      <title>Gestor De Pule 1.3.1</title>
+      <pubDate>Thu, 26 Mar 2026 17:26:17 -04:00</pubDate>
+      <sparkle:version>1.3.1</sparkle:version>
+      <sparkle:shortVersionString>1.3.1</sparkle:shortVersionString>
+      <enclosure url="https://github.com/lopes-obregon/Gestor-De-Pule/releases/download/v1.3.1/GestorDePule-1.3.1.zip" sparkle:version="1.3.1" sparkle:shortVersionString="1.3.1" length="84128166" sparkle:os="windows" type="application/zip" sparkle:criticalUpdate="false" sparkle:signature="QzRr0quMZLBKKJ8r4HFTQ7wgTRom/OpFeKuXXNXAbt5E14ORuUMS7PjOoo2c2EaZH1XF6ez3pqY+QrTH8bnaCA==" />
     </item>
   </channel>
 </rss>
