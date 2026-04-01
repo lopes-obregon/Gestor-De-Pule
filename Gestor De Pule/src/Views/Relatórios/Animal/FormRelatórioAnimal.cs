@@ -33,7 +33,7 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Animal
             int animalId = (int)comboBoxAnimais.SelectedValue;
             _animalController.AnimalSelecionado(animalId);
             _animalController.LoadPules(animalId);
-
+            _animalController.LoadApostadores(animalId);
             var animal = _animalController.Animal;
             if (!_animalController.IsNull())
             {
@@ -43,7 +43,12 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Animal
                 labelTotalPules.Text = $"Total De Pules {_animalController.TotalPules().ToString()}";
                 int totalApostador = 0;
                 decimal totalApostado = 0.0m;
-                foreach (var pule in animal.Pules)
+                if (!_animalController.ApostadoresIsNull())
+                {
+                    labelTotalApostadores.Text = $"Total De Apostadores {totalApostador}";
+                    labelTotalApostadoAnimal.Text = $"Total Apostado {totalApostado.ToString("C")}";
+                }
+                /*foreach (var pule in animal.Pules)
                 {
                     var puleBuscado = PuleController.ToPule(_animalController.SearchPule(pule));
                     if (puleBuscado is not null)
@@ -63,9 +68,8 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Animal
                         }
 
                     }
-                }
-                labelTotalApostadores.Text = $"Total De Apostadores {totalApostador}";
-                labelTotalApostadoAnimal.Text = $"Total Apostado {totalApostado.ToString("C")}";
+                }*/
+                
             }
         }
 

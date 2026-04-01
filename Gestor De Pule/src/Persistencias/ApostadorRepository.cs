@@ -21,6 +21,19 @@ namespace Gestor_De_Pule.src.Persistencias
                 .CreateLogger();
         }
 
+        public ApostadorRepository(object dataBase)
+        {
+            _dataBase = (DataBase)dataBase;
+            Log.Logger = new LoggerConfiguration()
+               .WriteTo.File(
+               "logs/log.txt",
+               rollingInterval: RollingInterval.Day, //cria um arquivo por dia
+               retainedFileCountLimit: 7,//mantem 7 arquivos
+               fileSizeLimitBytes: 10_000_000,//limite de 10 mb
+               rollOnFileSizeLimit: true //cria novo arquivo quando chegar o limite
+               )
+               .CreateLogger();
+        }
         public ApostadorRepository(DataBase dataBase)
         {
             _dataBase = dataBase;
@@ -120,6 +133,35 @@ namespace Gestor_De_Pule.src.Persistencias
                 }
             }
            return apostadorDb;
+        }
+        /// <summary>
+        /// Retrieves a list of apostadors associated with the specified animal ID from the change tracker or database.
+        /// </summary>
+        /// <param name="animalId">The unique identifier of the animal.</param>
+        /// <returns>A list of apostadors linked to the specified animal ID. Returns an empty list if none are found.</returns>
+        internal List<Apostador> LoadWithAnimalId(int animalId)
+        {
+            List<Apostador> apostadors = new List<Apostador>();
+            try
+            {
+                var track = _dataBase.ChangeTracker.Entries<Apostador>().Select(e => e.Entity).Where(ap => ap.Pules.Any(p => p.Animais.Any(a => a.Id == animalId))).ToList();
+                if (track.Count > 0)
+                {
+                    apostadors = track;
+                }
+                else
+                {
+                    //achatando a lista para não ter lista de lista;
+                    var db = _dataBase.Apostadors.Where(ap => ap.Pules.SelectMany(p => p.Animais).Any(a => a.Id == animalId)).ToList();
+                    if (db.Count > 0)
+                        apostadors = db;
+                }
+
+            }catch(Exception ex)
+            {
+                Log.Error(ex, $"Erro ao tentar linkar os apostadores com o Animal de id {animalId}");
+            }
+            return apostadors;
         }
 
         internal List<Apostador> ReadApostadores()

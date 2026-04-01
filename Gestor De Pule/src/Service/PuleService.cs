@@ -256,7 +256,7 @@ namespace Gestor_De_Pule.src.Service
         /// <param name="animalId">The unique identifier of the animal.</param>
         internal void LoadPulesWithAnimalById(int animalId)
         {
-            if(Pules.Count == 0)
+            if(Pules is null  || Pules.Count == 0)
                 Pules = _repository.ReadPulesWithAnimal(animalId);
         }
         /// <summary>

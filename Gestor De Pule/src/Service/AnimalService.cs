@@ -15,10 +15,21 @@ namespace Gestor_De_Pule.src.Service
         public List<Animal>? Animals;
 
         private readonly PuleService _puleService;
-        public AnimalService(object data, PuleService puleService)
+        private readonly ApostadorService _apostadorService;
+        public AnimalService(DataBase data)
         {
             _animalRepository = new AnimalRepository(data);
+            if(_puleService is null)
+                _puleService = new PuleService(data);
+            if(_apostadorService is null)
+                _apostadorService = new ApostadorService(data);
+            
+        }
+        public AnimalService(object data, PuleService puleService, ApostadorService apostadorService): this((DataBase)data)
+        {
+            
             _puleService = puleService;
+            _apostadorService = apostadorService;
         }
 
         /// <summary>
@@ -38,31 +49,25 @@ namespace Gestor_De_Pule.src.Service
         internal Animal? GetAnimalById(int animalId)
         {
             Animal? animal;
-        
-            if (Animals is not null && Animals.Count > 0)
+
+            if (Animals?.Count > 0)
             {
                 animal = Animals.FirstOrDefault(a => a.Id == animalId);
             }
-            else if(Animals is not null && !Animals.Any(a=> a.Id == animalId))
+            else if (Animals is not null && !Animals.Any(a => a.Id == animalId))
             {
                 animal = _animalRepository.GetAnimalById(animalId);
-                if(animal is not null)
+                if (animal is not null)
                     Animals.Add(animal);
             }
+            else
             {
-                if (Animal is not null && Animal.Id == animalId)
-                    animal = Animal;
-                else
-                {
-                    animal = _animalRepository.GetAnimalById(animalId);
-                    if (Animals is null)
-                        Animals = new List<Animal>();
-                    if (animal != null)
-                        Animals.Add(animal);
-                }
-
+                animal = _animalRepository.GetAnimalById(animalId);
+                if (Animals is null)
+                    Animals = new List<Animal>();
+                if (animal != null)
+                    Animals.Add(animal);
             }
-
 
             Animal = animal;
             return animal;
@@ -192,6 +197,25 @@ namespace Gestor_De_Pule.src.Service
         internal int GetTotalPules()
         {
             return _puleService.GetTotalPules();
+        }
+        /// <summary>
+        /// Loads apostadores associated with the specified animal identifier.
+        /// </summary>
+        /// <param name="animalId">The identifier of the animal to filter apostadores.</param>
+        internal void LoadApostadoresWithAnimalId(int animalId)
+        {
+            _apostadorService.LoadApostadoresWithAnimalId(animalId);
+        }
+        /// <summary>
+        /// Detect if apostadores from service is null
+        /// </summary>
+        /// <returns> true if <see cref="_apostadorService.Apostadores"/> is null or  false otherwite</returns>
+        internal bool ApostadoresIsNull()
+        {
+
+            if(_apostadorService.Apostadores is null)
+                return true;
+            else return false;
         }
     }
 }

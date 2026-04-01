@@ -23,16 +23,19 @@ namespace Gestor_De_Pule.src.Controllers
             _context = new Repository();
             var context = _context.GetDataBase();
             PuleService puleService = new(context);
+            ApostadorService apostadorService = new(context);
             _animalRepository = new AnimalRepository();
 
-            _animalService = new(context, puleService);
+            _animalService = new(context, puleService, apostadorService);
             //_puleController = new PuleController();
         }
         public AnimalController(object data)
         {
             PuleService puleService = new(data);
+            ApostadorService apostadorService = new(data);
             _animalRepository  = new AnimalRepository(data);
-            _animalService = new AnimalService(data, puleService);
+            
+            _animalService = new AnimalService(data, puleService, apostadorService);
         }
      
         /// <summary>
@@ -300,6 +303,22 @@ namespace Gestor_De_Pule.src.Controllers
         internal int TotalPules()
         {
             return _animalService.GetTotalPules();
+        }
+        /// <summary>
+        /// Loads apostadores associated with the specified animal identifier.
+        /// </summary>
+        /// <param name="animalId">The identifier of the animal whose apostadores are to be loaded.</param>
+        internal void LoadApostadores(int animalId)
+        {
+            _animalService.LoadApostadoresWithAnimalId(animalId);
+        }
+        /// <summary>
+        /// Determines if 'Apostadores' collection is null or no
+        /// </summary>
+        /// <returns> true is null or false otherwite</returns>
+        internal bool ApostadoresIsNull()
+        {
+            return _animalService.ApostadoresIsNull();
         }
     }
 }

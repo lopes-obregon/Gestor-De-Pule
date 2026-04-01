@@ -10,7 +10,7 @@ namespace Gestor_De_Pule.src.Views
             InitializeComponent();
             _controller = new AnimalController();
            //AnimalController.AnimalSelecionado(animalSelecionado);
-            _controller.AnimalSelecionado(animalSelecionado);
+            _controller.AnimalSelecionado((int)animalSelecionado);
             SetAnimalData();
         }
 
