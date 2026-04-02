@@ -15,6 +15,7 @@ bin/
 *.nuget.cache
 *.assets.cache
 *.vs
+*.rar
 # Ignora pastas específicas de release e debug
 Gestor De Pule/bin/Release/
 Gestor De Pule/bin/Debug/
