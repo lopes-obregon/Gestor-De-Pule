@@ -203,7 +203,7 @@ namespace Gestor_De_Pule.src.Service
         /// </summary>
         /// <param name="idDisputa"> identificador unico da disputa</param>
         /// <returns>List with pules search</returns>
-        internal List<Pule>? LoadPulesWithAnimals(int idDisputa)
+        internal List<Pule>? LoadPulesWithAnimalsInDisputs(int idDisputa)
         {
             List<Pule> pules;
             if (Pules is not null)
@@ -213,6 +213,7 @@ namespace Gestor_De_Pule.src.Service
             else
             {
                 pules = _repository.GetPulesWithIdDisputsAndAnimalInclude(idDisputa);
+                Pules = pules ?? new List<Pule>();
             }
             return pules;
         }
@@ -254,10 +255,23 @@ namespace Gestor_De_Pule.src.Service
         /// Loads Pules associated with the specified animal if none are currently loaded.
         /// </summary>
         /// <param name="animalId">The unique identifier of the animal.</param>
-        internal void LoadPulesWithAnimalById(int animalId)
+        internal List<Pule> LoadPulesWithAnimalById(int animalId)
         {
-            if(Pules is null  || Pules.Count == 0)
+            List<Pule> pules = new List<Pule>();
+            if (Pules is null || Pules.Count == 0)
+            {
                 Pules = _repository.ReadPulesWithAnimal(animalId);
+                pules = Pules;
+            }
+            else
+            {
+                //caso leia e não tenha nada em memória temos que procurar nos restraeados ou banco;
+                pules = Pules.Where(p => p.Animais.Any(a => a.Id == animalId)).ToList();
+                if(pules.Count == 0)
+                    pules = Pules = _repository.ReadPulesWithAnimal(animalId);
+
+            }
+            return pules;
         }
         /// <summary>
         /// Gets the total number of Pules in the collection.
@@ -268,6 +282,14 @@ namespace Gestor_De_Pule.src.Service
             if(Pules.Count > 0)
                 return Pules.Count;
             return 0;
+        }
+        /// <summary>
+        /// Loads pules associated with the specified animal identifier.
+        /// </summary>
+        /// <param name="animalId">The identifier of the animal whose pules are to be loaded.</param>
+        internal void LoadPulesWithAnimals(int animalId)
+        {
+            Pules = _repository.ReadPulesWithAnimal(animalId);
         }
     }
 }

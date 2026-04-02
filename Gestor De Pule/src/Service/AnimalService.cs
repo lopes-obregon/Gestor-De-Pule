@@ -186,9 +186,10 @@ namespace Gestor_De_Pule.src.Service
         /// Loads pules associated with the specified animal identifier.
         /// </summary>
         /// <param name="animalId">The unique identifier of the animal.</param>
-        internal void PulesWithAnimalId(int animalId)
+        /// <returns>A list pules with associet animal</returns>
+        internal List<Pule> PulesWithAnimalId(int animalId)
         {
-            _puleService.LoadPulesWithAnimalById(animalId);
+            return _puleService.LoadPulesWithAnimalById(animalId);
         }
         /// <summary>
         /// Retrieves the total number of pules from the underlying service.
@@ -216,6 +217,56 @@ namespace Gestor_De_Pule.src.Service
             if(_apostadorService.Apostadores is null)
                 return true;
             else return false;
+        }
+        /// <summary>
+        /// Retrieves a list of bettors who have placed bets on the specified animal.
+        /// </summary>
+        /// <param name="animalId">The identifier of the animal to filter bettors by.</param>
+        /// <returns>A list of bettors associated with the specified animal. Returns an empty list if none are found.</returns>
+        internal List<Apostador> Apostadores(int animalId)
+        {
+            List<Apostador> apostadors = new List<Apostador>();
+            if(_apostadorService.Apostadores.Count > 0)
+            {
+
+                apostadors = _apostadorService.Apostadores.Where(ap => ap.Pules.Any(p => p.Animais.Any(a => a.Id == animalId))).ToList();
+
+               
+            }
+            return apostadors;
+        }
+
+      
+
+        /// <summary>
+        /// Check if <see cref="PuleService.Pules"/> is null
+        /// </summary>
+        /// <returns>true if is null or false otherwite</returns>
+        internal bool PulesIsNull()
+        {
+            if(_puleService.Pules is null)
+                return true;
+            else return false;
+        }
+        /// <summary>
+        /// Calculates the total amount wagered for the specified animal.
+        /// </summary>
+        /// <param name="animalId">The identifier of the animal.</param>
+        /// <returns>The total amount wagered as a decimal value.</returns>
+        internal decimal TotalApostado(int animalId)
+        {
+            decimal total =0.0m;
+            if(_puleService.Pules.Count > 0)
+            {
+                foreach (var pule in _puleService.Pules)
+                {
+                    if (pule is not null && pule.Animais is not null && pule.Animais.Any(a=> a.Id == animalId))
+                    {
+                        total += pule.Valor;
+                    }
+                }
+            }
+            return total;
         }
     }
 }

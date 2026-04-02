@@ -358,6 +358,6 @@ namespace Gestor_De_Pule.src.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Pules Buscados or null</returns>
-        internal List<Pule>? LoadPulesWithAnimals(int id) => _puleService.LoadPulesWithAnimals(id);
+        internal List<Pule>? LoadPulesWithAnimals(int id) => _puleService.LoadPulesWithAnimalsInDisputs(id);
     }
 }

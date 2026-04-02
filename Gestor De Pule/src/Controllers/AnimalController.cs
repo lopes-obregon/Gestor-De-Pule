@@ -320,5 +320,33 @@ namespace Gestor_De_Pule.src.Controllers
         {
             return _animalService.ApostadoresIsNull();
         }
+        /// <summary>
+        /// Retrieves a list of apostadores associated with the specified animal.
+        /// </summary>
+        /// <param name="animalId">The identifier of the animal.</param>
+        /// <returns>A list of apostadores linked to the given animal.</returns>
+        internal List<Apostador> GetApostadores(int animalId)
+        {
+            return _animalService.Apostadores(animalId);
+        }
+        /// <summary>
+        /// Determines whether the pulse information is null.
+        /// </summary>
+        /// <returns>true if the pulse information is null; otherwise, false.</returns>
+        internal bool PulesIsNull()
+        {
+            return _animalService.PulesIsNull();
+        }
+        /// <summary>
+        /// Delegate to service to calc total wagered
+        /// </summary>
+        /// <param name="animalId"></param>
+        /// <returns>Value total wagered</returns>
+        internal decimal TotalApostado(int animalId)
+        {
+            return _animalService.TotalApostado(animalId);
+        }
+
+        internal List<Pule> GetPulesWithAnimalId(int animalId) => _animalService.PulesWithAnimalId(animalId);
     }
 }

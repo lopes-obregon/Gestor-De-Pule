@@ -21,13 +21,16 @@ namespace Gestor_De_Pule.src.Service
         /// <param name="animalId">The identifier of the animal to filter apostadores by.</param>
         internal void LoadApostadoresWithAnimalId(int animalId)
         {
+            //memória vazia
             if (Apostadores.Count == 0)
             {
                 Apostadores = _repository.LoadWithAnimalId(animalId);
             }
             else
             {
-                Apostadores = Apostadores.Where(ap => ap.Pules.SelectMany(p => p.Animais).Any(a => a.Id == animalId)).ToList();
+                //mémoria com dados
+                if(!Apostadores.Any(ap=> ap.Pules.Any(p=> p.Animais.Any(a=> a.Id == animalId))))//caso não houver carrega do banco ou rastreados
+                    Apostadores = _repository.LoadWithAnimalId(animalId);
             }
         }
     }

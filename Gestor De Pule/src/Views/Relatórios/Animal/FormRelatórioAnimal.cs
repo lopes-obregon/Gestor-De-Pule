@@ -31,6 +31,7 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Animal
         private void GerarRelatório(object sender, EventArgs e)
         {
             int animalId = (int)comboBoxAnimais.SelectedValue;
+            int index = 0;
             _animalController.AnimalSelecionado(animalId);
             _animalController.LoadPules(animalId);
             _animalController.LoadApostadores(animalId);
@@ -41,12 +42,44 @@ namespace Gestor_De_Pule.src.Views.Relatórios.Animal
                 listViewPulesAnimal.Items.Clear();
                 labelAnimalNome.Text = _animalController.GetAnimalNúmeroNome();
                 labelTotalPules.Text = $"Total De Pules {_animalController.TotalPules().ToString()}";
-                int totalApostador = 0;
-                decimal totalApostado = 0.0m;
+                //int totalApostador = 0;
+                //decimal totalApostado = 0.0m;
                 if (!_animalController.ApostadoresIsNull())
                 {
-                    labelTotalApostadores.Text = $"Total De Apostadores {totalApostador}";
-                    labelTotalApostadoAnimal.Text = $"Total Apostado {totalApostado.ToString("C")}";
+                    var apostadores = _animalController.GetApostadores(animalId);
+
+                    if (apostadores.Count > 0)
+                    {
+                        labelTotalApostadores.Text = $"Total De Apostadores {apostadores.Count}";
+                        if (!_animalController.PulesIsNull())
+                        {
+                            var pules = _animalController.GetPulesWithAnimalId(animalId);
+                            labelTotalApostadoAnimal.Text = $"Total Apostado {_animalController.TotalApostado(animalId).ToString("C")}";
+                            foreach(var apostador in apostadores)
+                            {
+                                if(pules.Count > 0){
+                                    var pule = pules[index++];
+                                    if (apostador is not null && pule is not null)
+                                    {
+
+                                        var item = new ListViewItem(apostador.Contato);
+                                        var itemPule = new ListViewItem(pule.Número.ToString());
+                                        item.SubItems.Add(apostador.Nome);
+                                        if (pule.ApostadorId == apostador.Id)
+                                            item.SubItems.Add(pule.Número.ToString());
+                                        listViewApostadores.Items.Add(item);
+                                        //pule
+                                        itemPule.SubItems.Add(apostador.Nome);
+                                        itemPule.SubItems.Add(pule.Valor.ToString("C"));
+                                        listViewPulesAnimal.Items.Add(itemPule);
+                                    } 
+                                }
+                            }
+                        
+                        }
+
+                    }
+
                 }
                 /*foreach (var pule in animal.Pules)
                 {

@@ -522,15 +522,26 @@ namespace Gestor_De_Pule.src.Persistencias
                 if (track.Count > 0) pules = track;
                 else
                 {
-                    var db = _data.Pules.Where(p => p.Animais.Any(a => a.Id == animalId)).ToList();
-                    if (db.Count > 0)
-                        pules = db;
+                   pules = LoadPulesWithAnimal(animalId);
                 }
+            }
+            catch (ArgumentNullException)
+            {
+                pules = LoadPulesWithAnimal(animalId);
             }
             catch (Exception e)
             {
                 Log.Error(e, $"Erro ao carregar os pules do animal com id {animalId}");
             }
+            return pules;
+        }
+
+        private List<Pule> LoadPulesWithAnimal(int animalId)
+        {
+            List<Pule> pules = new();
+            var db = _data.Pules.Where(p => p.Animais.Any(a => a.Id == animalId)).Include(p=> p.Animais).ToList();
+            if(db.Count > 0)
+                { pules = db; }
             return pules;
         }
     }

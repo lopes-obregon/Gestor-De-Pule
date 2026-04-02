@@ -170,7 +170,7 @@ namespace Gestor_De_Pule.src.Service
                 if (_caixaService.Caixa is null)
                     _caixaService.GetCaixa();
                 if (_puleService.Pules is null)
-                    _puleService.LoadPulesWithAnimals(disputa.Id);
+                    _puleService.LoadPulesWithAnimalsInDisputs(disputa.Id);
                 if (_animalService.Animals is null)
                     _animalService.LoadAnimaisWithPules();
                 if(_rodadaService.Rodadas is null)
