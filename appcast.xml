@@ -9,7 +9,7 @@
       <pubDate>Tue, 07 Apr 2026 09:14:55 -04:00</pubDate>
       <sparkle:version>1.3.2</sparkle:version>
       <sparkle:shortVersionString>1.3.2</sparkle:shortVersionString>
-      <enclosure url="https://github.com/lopes-obregon/Gestor-De-Pule/releases/download/v1.3.2.zip" sparkle:version="1.3.2" sparkle:shortVersionString="1.3.2" length="283193761" sparkle:os="windows" type="application/zip" sparkle:criticalUpdate="false" sparkle:signature="JHh0rE9tHjHCaUikELU0WjA7+PFzSigtw0TSKDvAIJYsDq7sC8oy1Ljmt+Tq2+Ix2SlBDWcSPPZY+C9OnbHOAg==" />
+      <enclosure url="https://github.com/lopes-obregon/Gestor-De-Pule/releases/download/v1.3.2/v1.3.2.zip" sparkle:version="1.3.2" sparkle:shortVersionString="1.3.2" length="283193761" sparkle:os="windows" type="application/zip" sparkle:criticalUpdate="false" sparkle:signature="JHh0rE9tHjHCaUikELU0WjA7+PFzSigtw0TSKDvAIJYsDq7sC8oy1Ljmt+Tq2+Ix2SlBDWcSPPZY+C9OnbHOAg==" />
     </item>
   </channel>
 </rss>
