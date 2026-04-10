@@ -11,6 +11,9 @@ using Gestor_De_Pule.src.Views.Relatórios.Animal;
 using Gestor_De_Pule.src.Views.Relatórios.Apostador;
 using Gestor_De_Pule.src.Views.Relatórios.Disputa;
 using Gestor_De_Pule.src.Views.Relatórios.Pule;
+using NetSparkleUpdater;
+using NetSparkleUpdater.Enums;
+using NetSparkleUpdater.SignatureVerifiers;
 
 namespace Gestor_De_Pule
 {
@@ -22,7 +25,7 @@ namespace Gestor_De_Pule
         {
 
             _viewController = new();
-
+            Updater();
             InitializeComponent();
             //MainController.LoadLists();
             InitComboBox();
@@ -75,6 +78,26 @@ namespace Gestor_De_Pule
                 comboBoxAnimais.Items.AddRange(MainController.Animals.ToArray());
             }*/
 
+        }
+        private void Updater()
+        {
+
+
+            //var sparkle = new SparkleUpdater("https://raw.githubusercontent.com/lopes-obregon/Gestor-De-Pule/refs/heads/master/appcast.xml",
+            var sparkle = new SparkleUpdater("https://github.com/lopes-obregon/Gestor-De-Pule/releases/download/v1.3.2/appcast.xml",
+                new Ed25519Checker(SecurityMode.Strict, "/oSnntxisUdYkJG/Kh8Es6DTZ7gwTMRykGSEKJP8cTE="))
+            {
+                UIFactory = new NetSparkleUpdater.UI.WPF.UIFactory(),
+                RelaunchAfterUpdate = true,
+
+
+            };
+
+            //sparkle.Configuration.AssemblyAccessor.AssemblyVersion
+            //sparkle.CheckForUpdatesQuietly();
+            //sparkle.Configuration.SetVersionToSkip("1.0.0");
+
+            sparkle.StartLoop(true);
         }
 
         private void JanelaCadastro(object sender, EventArgs e)
