@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
   <channel>
-    <title>Gestor De Pule</title>
+    <title>GestorPule</title>
     <description>Most recent changes with links to updates</description>
     <language>en</language>
     <item>
-      <title>Gestor De Pule 1.3.1</title>
-      <pubDate>Thu, 26 Mar 2026 17:26:17 -04:00</pubDate>
-      <sparkle:version>1.3.1</sparkle:version>
-      <sparkle:shortVersionString>1.3.1</sparkle:shortVersionString>
-      <enclosure url="https://github.com/lopes-obregon/Gestor-De-Pule/releases/download/v1.3.1/GestorDePule-1.3.1.zip" sparkle:version="1.3.1" sparkle:shortVersionString="1.3.1" length="84128166" sparkle:os="windows" type="application/zip" sparkle:criticalUpdate="false" sparkle:signature="QzRr0quMZLBKKJ8r4HFTQ7wgTRom/OpFeKuXXNXAbt5E14ORuUMS7PjOoo2c2EaZH1XF6ez3pqY+QrTH8bnaCA==" />
+      <title>GestorPule 1.3.2</title>
+      <pubDate>Fri, 10 Apr 2026 17:12:21 -04:00</pubDate>
+      <sparkle:version>1.3.2</sparkle:version>
+      <sparkle:shortVersionString>1.3.2</sparkle:shortVersionString>
+      <enclosure url="https://github.com/lopes-obregon/Gestor-De-Pule/releases/download/v1.3.2/v1.3.2.zip" sparkle:version="1.3.2" sparkle:shortVersionString="1.3.2" length="84130893" sparkle:os="windows" type="application/zip" sparkle:criticalUpdate="false" sparkle:signature="vyo/rl/RZsQ4LkAFolVMqVMxK1tHZV1dXhBDnurcZgpvHDHU9IwZiai6VmXhMjWYhpTrBQ0zcTYOJXtLizixCQ==" />
     </item>
   </channel>
 </rss>
