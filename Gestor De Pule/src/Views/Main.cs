@@ -84,7 +84,7 @@ namespace Gestor_De_Pule
 
 
             //var sparkle = new SparkleUpdater("https://raw.githubusercontent.com/lopes-obregon/Gestor-De-Pule/refs/heads/master/appcast.xml",
-            var sparkle = new SparkleUpdater("https://github.com/lopes-obregon/Gestor-De-Pule/releases/download/v1.3.2/appcast.xml",
+            var sparkle = new SparkleUpdater("https://lopes-obregon.github.io/Gestor-De-Pule/appcast.xml",
                 new Ed25519Checker(SecurityMode.Strict, "/oSnntxisUdYkJG/Kh8Es6DTZ7gwTMRykGSEKJP8cTE="))
             {
                 UIFactory = new NetSparkleUpdater.UI.WPF.UIFactory(),
